@@ -1,7 +1,9 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { FaCartPlus } from 'react-icons/fa';
 
 export default function ProductCard({
+  _id,
   imageName,
   imageUrl,
   title,
@@ -16,8 +18,8 @@ export default function ProductCard({
           className="object-cover w-full h-56"
           src={imageUrl}
           alt={`Cover for ${imageName}`}
-          width={380}
-          height={200}
+          width={520}
+          height={260}
           priority={true}
         />
         <span className="absolute bottom-0 right-0 inline-flex items-center px-3 py-1 mr-4 -mb-3 text-xs font-medium leading-tight text-orange-800 bg-orange-200 border rounded-full">
@@ -28,12 +30,11 @@ export default function ProductCard({
       <div className="flex flex-col justify-between flex-1">
         <div className="flex flex-col justify-between flex-1 p-6 bg-white">
           <div>
-            <a
-              href="/"
-              className="block text-xl font-semibold leading-7 text-gray-800 hover:underline"
-            >
-              {title}
-            </a>
+            <Link href={`/products/${encodeURIComponent(_id)}`}>
+              <a className="block text-xl font-semibold leading-7 text-gray-800 hover:underline">
+                {title}
+              </a>
+            </Link>
 
             <p className="mt-3 text-base leading-6 text-gray-500">{desc}</p>
           </div>

@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { GiCakeSlice } from 'react-icons/gi';
 import Axios from 'axios';
 // files
-import Nav from '../components/Nav';
-import ProductCard from '../components/ProductCard';
+import Nav from '../../components/Nav';
+import ProductCard from '../../components/ProductCard';
 
 export default function Products({ products }: any) {
   const [productss] = useState(products || []);
@@ -31,6 +31,7 @@ export default function Products({ products }: any) {
               productss.map((product: any) => (
                 <ProductCard
                   key={product._id}
+                  _id={product._id}
                   imageName={product.images[0].imageName}
                   imageUrl={product.images[0].imageUrl}
                   title={product.title}
