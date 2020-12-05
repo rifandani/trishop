@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       'http://localhost:3000/api/admin/verification',
       {
         headers: {
-          Cookie: ctx.req.headers?.cookie, // send along cookies from headers client
+          Cookie: ctx.req.headers?.cookie, // send along cookies from req headers client
         },
       },
     );
@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     return {
-      props: { userId: res?.data?.decoded?.sub },
+      props: { userId: res?.data?.decoded?.sub }, // send back user _id
     };
   } catch (err) {
     return {

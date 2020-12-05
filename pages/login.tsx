@@ -1,12 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import {
-  ChangeEvent,
-  FormEvent,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 // files
@@ -22,7 +16,7 @@ export default function Login() {
     prefetch('/products');
   }, []);
 
-  const onSubmit = useCallback((e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     const user = {
@@ -60,7 +54,7 @@ export default function Login() {
           position: 'bottom-left',
         });
       });
-  }, []);
+  };
 
   return (
     <main className="bg-white h-screen my-custom-font-family">

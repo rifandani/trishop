@@ -42,7 +42,11 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
             }
 
             // login SUCCESS -------------------------- as USER
-            res.status(200).json({ message: 'You are logged in' });
+            res.status(200).json({
+              error: false,
+              message: 'You are logged in',
+              // jwt: sign({ sub: user._id }, mySecretKey, { expiresIn: '3h' }), // buat cookie client
+            });
             return resolve();
           } else {
             // error => salah masukin password

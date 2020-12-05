@@ -1,12 +1,30 @@
 import Link from 'next/link';
 import { useState } from 'react';
-import { GiHamburgerMenu, GiShoppingCart } from 'react-icons/gi';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+import { options } from '../utils/config';
 
 const Nav = () => {
   const [toggle, setToggle] = useState(false);
+  const [cookie] = useState(Cookies.get('auth') || '');
+
+  const { push } = useRouter();
 
   function toggleBurger() {
     setToggle((prevState) => !prevState);
+  }
+
+  async function logout() {
+    Cookies.remove('auth'); // remove auth cookie
+
+    // push back to home and toast
+    await push('/');
+    toast.success('Logout success', {
+      ...options,
+      position: 'bottom-left',
+    });
   }
 
   return (
@@ -74,11 +92,20 @@ const Nav = () => {
             </li>
           </ul>
 
-          <Link href="/login">
-            <button className="mx-auto font-bold rounded-full py-4 px-8 shadow mt-4 bg-white text-orange-800 hover:underline lg:mx-0 lg:mt-0">
-              Login
+          {cookie ? (
+            <button
+              onClick={logout}
+              className="mx-auto font-bold rounded-full py-4 px-8 shadow mt-4 bg-white text-red-500 hover:underline lg:mx-0 lg:mt-0"
+            >
+              Logout
             </button>
-          </Link>
+          ) : (
+            <Link href="/login">
+              <button className="mx-auto font-bold rounded-full py-4 px-8 shadow mt-4 bg-white text-orange-800 hover:underline lg:mx-0 lg:mt-0">
+                Login
+              </button>
+            </Link>
+          )}
         </section>
       </article>
 

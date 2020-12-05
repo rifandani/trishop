@@ -25,7 +25,7 @@ export default function setCookie(payload: Payload, res: NextApiResponse) {
     'Set-Cookie',
     // seperti JSON.stringify untuk cookies
     cookie.serialize('auth', jwt, {
-      httpOnly: true, // javscript can't access our cookies
+      httpOnly: false, // berarti client side javascript can't access our cookies
       secure: process.env.NODE_ENV !== 'development',
       sameSite: 'strict',
       maxAge: 60 * 60 * 3, // 3 hour

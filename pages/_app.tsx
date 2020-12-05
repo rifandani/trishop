@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import 'gridjs/dist/theme/mermaid.css';
+import { CookiesProvider } from 'react-cookie';
 // files
 // import '../styles/normalize.css';
 

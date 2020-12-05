@@ -12,6 +12,7 @@ export default function Dashboard({ user }: any) {
   );
 }
 
+// page hanya bisa diakses jika ada valid query _id
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const _id = ctx.query._id;
 
