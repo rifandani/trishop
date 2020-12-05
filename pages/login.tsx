@@ -32,7 +32,7 @@ export default function Login() {
 
         // if role == 'ADMIN'
         if (userId) {
-          await push(`/admin/dashboard?_id=${userId}`); // query == '_id'
+          await push('/admin/dashboard');
           return toast.success('Welcome to admin dashboard', {
             ...options,
             position: 'bottom-left',

@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 // files
 import { options } from '../../utils/config';
 
-export default function Navbar({ children, userId }: any) {
+export default function Navbar({ children }: any) {
   const { pathname, push } = useRouter();
 
   const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -71,7 +71,7 @@ export default function Navbar({ children, userId }: any) {
                 </a>
               </Link>
 
-              <Link href={`/admin/dashboard?_id=${userId}`}>
+              <Link href="/admin/dashboard">
                 <a
                   className={`flex items-center mt-4 py-2 px-6 ${
                     pathname === '/admin/dashboard'

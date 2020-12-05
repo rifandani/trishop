@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 // files
 import { options } from '../../utils/config';
 
-export default function AddUser({ userId }: any) {
+export default function AddUser() {
   const { push } = useRouter();
 
   const [name, setName] = useState<string>('');
@@ -24,7 +24,7 @@ export default function AddUser({ userId }: any) {
           position: 'bottom-left',
         });
 
-        push(`/admin/dashboard?_id=${userId}`);
+        push('/admin/dashboard');
       })
       .catch((err) =>
         toast.error(err.message, { ...options, position: 'bottom-left' }),

@@ -7,7 +7,7 @@ import Dropzone from './Dropzone';
 import { options } from '../../utils/config';
 import { storage } from '../../firebase/config';
 
-export default function AddProduct({ userId }: any) {
+export default function AddProduct() {
   const { push } = useRouter();
 
   const [title, setTitle] = useState<string>('');
@@ -55,7 +55,7 @@ export default function AddProduct({ userId }: any) {
               position: 'bottom-left',
             });
 
-            push(`/admin/dashboard?_id=${userId}`);
+            push('/admin/dashboard');
           })
           .catch((err) =>
             toast.error(err.message, {
