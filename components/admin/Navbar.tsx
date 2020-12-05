@@ -10,13 +10,27 @@ import {
   FaFolderPlus,
   FaCpanel,
 } from 'react-icons/fa';
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 // files
+import { options } from '../../utils/config';
 
 export default function Navbar({ children, userId }: any) {
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
 
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
+
+  async function logout() {
+    Cookies.remove('auth'); // remove auth cookie
+
+    // push back to home and toast
+    await push('/');
+    toast.success('Logout success', {
+      ...options,
+      position: 'bottom-left',
+    });
+  }
 
   return (
     <article className="w-full h-screen overflow-hidden bg-gray-200">
@@ -25,7 +39,6 @@ export default function Navbar({ children, userId }: any) {
           {/*  div dgn onCLick, biar bisa keluar dari toggle sidebar */}
           {/* @click="sidebarOpen = false" */}
           <div
-            // className="sidebarOpen ? 'block' : 'hidden'"
             className={`fixed z-20 inset-0 bg-black opacity-50 transition-opacity lg:hidden ${
               toggleSidebar ? 'block' : 'hidden'
             }`}
@@ -33,7 +46,6 @@ export default function Navbar({ children, userId }: any) {
           ></div>
 
           <div
-            // className="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
             className={`fixed z-30 inset-y-0 left-0 w-64 bg-gray-900 overflow-y-auto transition duration-300 transform lg:translate-x-0 lg:static lg:inset-0 ${
               toggleSidebar
                 ? 'translate-x-0 ease-out'
@@ -157,24 +169,17 @@ export default function Navbar({ children, userId }: any) {
                       toggleDropdown ? '' : 'hidden'
                     }`}
                   >
-                    <a
-                      href="/"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-500 hover:text-white"
-                    >
-                      Profile
-                    </a>
-                    <a
-                      href="/"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-500 hover:text-white"
-                    >
-                      Products
-                    </a>
-                    <a
-                      href="/login"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-500 hover:text-white"
+                    <Link href="/admin/profile">
+                      <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-500 hover:text-white">
+                        Profile
+                      </a>
+                    </Link>
+                    <span
+                      onClick={logout}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white cursor-pointer"
                     >
                       Logout
-                    </a>
+                    </span>
                   </div>
                 </div>
               </div>
