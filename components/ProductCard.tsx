@@ -7,6 +7,7 @@ export default function ProductCard({
   imageName,
   imageUrl,
   title,
+  price,
   stock,
   desc,
   labels,
@@ -31,19 +32,23 @@ export default function ProductCard({
         <div className="flex flex-col justify-between flex-1 p-6 bg-white">
           <div>
             <Link href={`/products/${encodeURIComponent(_id)}`}>
-              <a className="block text-xl font-semibold leading-7 text-gray-800 hover:underline">
+              <a className="block text-xl font-semibold leading-7 text-gray-800 hover:underline italic">
                 {title}
               </a>
             </Link>
+
+            <p className="mt-1 text-sm tracking-wider">
+              Rp <strong className="text-lg text-red-500">{price}</strong>
+            </p>
 
             <p className="mt-3 text-base leading-6 text-gray-500">{desc}</p>
           </div>
 
           <p className="mt-3 text-sm font-medium leading-5">
             {labels &&
-              labels.map((label: any, i: number) => (
+              labels.map((label: string, i: number) => (
                 <a key={i} href="/" className="inline-block">
-                  <span className="inline-flex items-center px-3 py-1 mr-2 text-xs font-medium leading-tight text-blue-800 bg-blue-200 rounded-full hover:underline">
+                  <span className="inline-flex items-center px-3 py-1 mr-2 text-xs font-medium leading-tight text-blue-800 bg-blue-200 rounded-full hover:opacity-75">
                     {label}
                   </span>
                 </a>
@@ -53,7 +58,7 @@ export default function ProductCard({
 
         {/* button */}
         <div className="flex items-center p-6 bg-gradient-to-t from-orange-200 to-white">
-          <button className="flex items-center mx-auto font-bold rounded-full py-4 px-8 shadow text-white bg-orange-800 hover:underline">
+          <button className="flex items-center mx-auto font-bold rounded-full py-4 px-8 shadow text-white bg-orange-800 hover:opacity-75">
             <FaCartPlus className="text-white mr-2" /> Buy Now
           </button>
         </div>

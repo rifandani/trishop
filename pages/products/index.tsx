@@ -35,6 +35,7 @@ export default function Products({ products }: any) {
                   imageName={product.images[0].imageName}
                   imageUrl={product.images[0].imageUrl}
                   title={product.title}
+                  price={product.price}
                   stock={product.stock}
                   desc={product.desc}
                   labels={product.labels}

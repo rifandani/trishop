@@ -24,12 +24,13 @@ export default async function getProducts(
     // ------------------------------------------- POST
   } else if (req.method === 'POST') {
     // destructure request body form
-    const { title, stock, desc, labels, images } = req.body;
+    const { title, price, stock, desc, labels, images } = req.body;
 
     try {
       // POST product to mongo
       const product = await Product.create({
         title,
+        price,
         stock,
         desc,
         labels,
@@ -45,7 +46,7 @@ export default async function getProducts(
     // ------------------------------------------- PUT
   } else if (req.method === 'PUT') {
     // destructure body requests
-    const { _id, title, stock, desc, labels, images } = req.body;
+    const { _id, title, price, stock, desc, labels, images } = req.body;
 
     try {
       // find existing product
@@ -53,6 +54,7 @@ export default async function getProducts(
 
       // update product
       product.title = title;
+      product.price = price;
       product.stock = stock;
       product.desc = desc;
       product.labels = labels;

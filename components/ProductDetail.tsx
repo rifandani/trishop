@@ -94,12 +94,12 @@ export default function ProductDetail({ product }: any) {
             <div className="flex items-center space-x-4">
               <div>
                 <div className="rounded-lg bg-gray-100 flex py-2 px-3">
-                  <span className="text-orange-400 mr-1 mt-1">Rp</span>
+                  <span className="text-orange-400 mr-2 mt-1">Rp</span>
                   <span className="font-bold text-orange-800 text-3xl line-through mr-2">
-                    30.000
+                    {(product.price * 110) / 100}
                   </span>
                   <span className="font-bold text-orange-800 text-3xl">
-                    27.000
+                    {product.price}
                   </span>
                 </div>
               </div>
@@ -143,7 +143,7 @@ export default function ProductDetail({ product }: any) {
                 product.labels.map((label: string, i: number) => (
                   <span
                     key={i}
-                    className="cursor-pointer inline-flex items-center px-3 py-1 mr-2 text-blue-800 bg-blue-200 rounded-full hover:underline text-xs uppercase tracking-wide font-semibold"
+                    className="cursor-pointer inline-flex items-center px-3 py-1 mr-2 text-blue-800 bg-blue-200 rounded-full hover:opacity-50 text-xs uppercase tracking-wide font-semibold"
                   >
                     {label}
                   </span>

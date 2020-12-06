@@ -13,6 +13,7 @@ export default function EditProduct({ product }: any) {
   const router = useRouter();
 
   const [title, setTitle] = useState<string>(product?.title || '');
+  const [price, setPrice] = useState<string>(product?.price + '' || '0'); // parse to INT later
   const [stock, setStock] = useState<string>(product?.stock + '' || '1'); // parse to INT later
   const [desc, setDesc] = useState<string>(product?.desc || ''); // textarea
   const [label1, setLabel1] = useState<string>(product?.labels[0] || '');
@@ -74,6 +75,7 @@ export default function EditProduct({ product }: any) {
               Axios.put(`${URL}s`, {
                 _id: product._id,
                 title,
+                price,
                 stock,
                 desc,
                 labels,
@@ -148,6 +150,25 @@ export default function EditProduct({ product }: any) {
                         required
                         onChange={(e) => setTitle(e.target.value)}
                         value={title}
+                      />
+                    </div>
+
+                    {/* price */}
+                    <div className="col-span-6 sm:col-span-4">
+                      <label
+                        htmlFor="price"
+                        className="block text-sm font-medium leading-5 text-gray-700"
+                      >
+                        Price
+                      </label>
+                      <input
+                        className="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        id="price"
+                        type="number"
+                        min={0}
+                        required
+                        onChange={(e) => setPrice(e.target.value)}
+                        value={price}
                       />
                     </div>
 

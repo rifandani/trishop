@@ -11,6 +11,7 @@ export default function AddProduct() {
   const { push } = useRouter();
 
   const [title, setTitle] = useState<string>('');
+  const [price, setPrice] = useState<string>('0'); // parse to INT later
   const [stock, setStock] = useState<string>('1'); // parse to INT later
   const [desc, setDesc] = useState<string>(''); // textarea
   const [label1, setLabel1] = useState<string>('');
@@ -44,6 +45,7 @@ export default function AddProduct() {
       if (i === images.length - 1 && url) {
         Axios.post('http://localhost:3000/api/admin/products', {
           title,
+          price,
           stock,
           desc,
           labels,
@@ -106,6 +108,25 @@ export default function AddProduct() {
                         required
                         onChange={(e) => setTitle(e.target.value)}
                         value={title}
+                      />
+                    </div>
+
+                    {/* price */}
+                    <div className="col-span-6 sm:col-span-4">
+                      <label
+                        htmlFor="price"
+                        className="block text-sm font-medium leading-5 text-gray-700"
+                      >
+                        Price
+                      </label>
+                      <input
+                        className="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        id="price"
+                        type="number"
+                        min={0}
+                        required
+                        onChange={(e) => setPrice(e.target.value)}
+                        value={price}
                       />
                     </div>
 
