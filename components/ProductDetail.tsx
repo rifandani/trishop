@@ -51,7 +51,7 @@ export default function ProductDetail({ product }: any) {
                 images.map((image: any, i: number) => (
                   <div key={i}>
                     <Image
-                      className="rounded-lg cursor-pointer"
+                      className="rounded-lg cursor-pointer hover:opacity-50"
                       onClick={() => setImageIndex(i)}
                       src={image.imageUrl}
                       alt={image.imageName}

@@ -45,7 +45,6 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
             res.status(200).json({
               error: false,
               message: 'You are logged in',
-              // jwt: sign({ sub: user._id }, mySecretKey, { expiresIn: '3h' }), // buat cookie client
             });
             return resolve();
           } else {
