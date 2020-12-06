@@ -7,6 +7,16 @@ import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa';
 export default function ProductDetail({ product }: any) {
   const [images] = useState(product.images || []);
   const [imageIndex, setImageIndex] = useState<number>(0);
+  const [quantity, setQuantity] = useState<string>('1');
+
+  function addToCart() {
+    const item = {
+      ...product,
+      quantity: Number(quantity),
+    };
+
+    console.log(item);
+  }
 
   return (
     <article className="py-6">
@@ -119,12 +129,18 @@ export default function ProductDetail({ product }: any) {
                 <span className=" text-xs uppercase text-gray-400 tracking-wide font-semibold">
                   Quantity:
                 </span>
-                <select className="focus:outline-none focus:ring focus:border-orange-300 cursor-pointer appearance-none rounded-xl border border-gray-200 ml-2 pl-4 pr-4 h-15">
+                <select
+                  className="focus:outline-none focus:ring focus:border-orange-300 cursor-pointer appearance-none rounded-xl border border-gray-200 ml-2 pl-4 pr-4 h-15"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                >
                   {product &&
                     Array(product.stock)
                       .fill('whatever')
                       .map((_: any, i: number) => (
-                        <option key={i}>{i + 1}</option>
+                        <option key={i} value={i + 1}>
+                          {i + 1}
+                        </option>
                       ))}
                 </select>
               </label>
@@ -152,7 +168,10 @@ export default function ProductDetail({ product }: any) {
 
             {/* cart & wishlist */}
             <div className="flex items-center pt-6 space-x-4">
-              <button className="flex items-center h-10 px-6 py-2 font-semibold rounded-full bg-orange-800 hover:bg-orange-400 text-white">
+              <button
+                onClick={addToCart}
+                className="flex items-center h-10 px-6 py-2 font-semibold rounded-full bg-orange-800 hover:opacity-50 text-white"
+              >
                 <FaCartPlus className="mr-2" /> Add to Cart
               </button>
 

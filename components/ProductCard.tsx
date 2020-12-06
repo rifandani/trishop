@@ -23,8 +23,12 @@ export default function ProductCard({
           height={260}
           priority={true}
         />
-        <span className="absolute bottom-0 right-0 inline-flex items-center px-3 py-1 mr-4 -mb-3 text-xs font-medium leading-tight text-orange-800 bg-orange-200 border rounded-full">
+        <span className="absolute bottom-0 left-0 inline-flex items-center px-3 py-1 ml-4 -mb-3 text-xs font-medium leading-tight text-orange-800 bg-orange-200 border rounded-full">
           stock: {stock}
+        </span>
+        <span className="absolute bottom-0 right-0 inline-flex items-center px-3 py-1 mr-4 -mb-3 text-xs font-medium leading-tight text-orange-800 bg-orange-200 border rounded-full">
+          Rp <strong className="mx-1 text-lg text-red-500">{price}</strong> /
+          pcs
         </span>
       </div>
 
@@ -36,10 +40,6 @@ export default function ProductCard({
                 {title}
               </a>
             </Link>
-
-            <p className="mt-1 text-sm tracking-wider">
-              Rp <strong className="text-lg text-red-500">{price}</strong>
-            </p>
 
             <p className="mt-3 text-base leading-6 text-gray-500">{desc}</p>
           </div>
@@ -57,11 +57,11 @@ export default function ProductCard({
         </div>
 
         {/* button */}
-        <div className="flex items-center p-6 bg-gradient-to-t from-orange-200 to-white">
+        {/* <div className="flex items-center p-6 bg-gradient-to-t from-orange-200 to-white">
           <button className="flex items-center mx-auto font-bold rounded-full py-4 px-8 shadow text-white bg-orange-800 hover:opacity-75">
             <FaCartPlus className="text-white mr-2" /> Buy Now
           </button>
-        </div>
+        </div> */}
       </div>
     </section>
   );
