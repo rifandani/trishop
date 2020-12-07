@@ -1,3 +1,7 @@
+// import { InitialState } from './CartContext';
+
+import { InitialState } from './CartContext';
+
 export interface Image {
   imageName: string;
   imageUrl: string;
@@ -16,27 +20,56 @@ export interface Product {
   _id: string;
 }
 
-export interface InitialState {
-  cart: Payload[];
-}
-
+// keseluruhan object product + quantity
 export interface Payload extends Product {
   quantity: number;
 }
 
 export interface Action {
   type: string;
-  payload: Payload | string;
+  payload: Payload;
 }
 
-export default (state: InitialState, { type, payload }: Action) => {
+export default function CartReducer(
+  state: InitialState,
+  { type, payload }: Action,
+) {
   switch (type) {
     case 'ADD_PRODUCT':
+      // cek kalo sudah ada barang yg sama di cart list
+      const prevPayload = state.cart.find((el) => el._id === payload._id);
+      // cari index nya
+      const prevPayloadIndex = state.cart.findIndex(
+        (el) => el._id === payload._id,
+      );
+      let newCart = [...state.cart];
+
+      // kalo ada, hanya ganti quantity dari payload tersebut
+      if (prevPayload !== undefined || prevPayloadIndex !== -1) {
+        newCart.splice(prevPayloadIndex, 1); // remove element from array index
+
+        return {
+          ...state,
+          cart: [...newCart, payload],
+        };
+      }
+
       return {
         ...state,
         cart: [...state.cart, payload],
       };
+
+    case 'DEL_PRODUCT':
+      const filteredCart = state.cart.filter(
+        (product) => product._id !== payload._id,
+      );
+
+      return {
+        ...state,
+        cart: filteredCart,
+      };
+
     default:
       return state;
   }
-};
+}

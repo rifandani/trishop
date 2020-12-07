@@ -1,7 +1,20 @@
+import { useContext } from 'react';
 import { IoMdClose, IoIosCard } from 'react-icons/io';
 import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri';
+// files
+import { CartContext } from '../contexts/CartContext';
+import { Payload } from '../contexts/CartReducer';
 
 export default function Cart() {
+  const { cart, dispatch } = useContext(CartContext);
+
+  function deleteProduct(product: Payload) {
+    dispatch({
+      type: 'DEL_PRODUCT',
+      payload: product,
+    });
+  }
+
   return (
     <div className="flex justify-center mb-0 mt-16 md:mb-10 md:mt-20 lg:mt-24">
       <div className="flex flex-col w-full p-8 text-gray-800 bg-white shadow-lg md:w-4/5 lg:w-4/5">
@@ -25,42 +38,52 @@ export default function Cart() {
 
             {/* isi product */}
             <tbody>
-              <tr>
-                <td className="hidden pb-4 md:table-cell">
-                  <img
-                    src="https://limg.app/i/Calm-Cormorant-Catholic-Pinball-Blaster-yM4oub.jpeg"
-                    className="w-20 rounded"
-                    alt="Thumbnail"
-                  />
-                </td>
-                <td>
-                  <p className="flex items-center justify-between mb-2">
-                    Earphone
-                    <IoMdClose className="mr-3 transform hover:scale-150 transition duration-500 cursor-pointer text-red-500" />
-                  </p>
-                </td>
-                <td className="justify-center md:justify-end md:flex mt-6">
-                  <div className="w-20 h-10">
-                    <div className="relative flex flex-row w-full h-8">
-                      <input
-                        type="number"
-                        value="2"
-                        className="w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black"
+              {/* gatau kenapa squigly di .map nya */}
+              {cart &&
+                (cart as any[]).map((product: Payload) => (
+                  <tr
+                    key={product._id}
+                    className="transition duration-500 ease-in-out"
+                  >
+                    <td className="hidden pb-4 md:table-cell">
+                      <img
+                        className="w-20 rounded"
+                        src={product.images[0].imageUrl}
+                        alt={product.images[0].imageName}
                       />
-                    </div>
-                  </div>
-                </td>
-                <td className="hidden text-right md:table-cell">
-                  <span className="text-sm lg:text-base font-medium">
-                    10.00€
-                  </span>
-                </td>
-                <td className="text-right">
-                  <span className="text-sm lg:text-base font-medium">
-                    20.00€
-                  </span>
-                </td>
-              </tr>
+                    </td>
+                    <td>
+                      <p className="flex items-center justify-between mb-2">
+                        {product.title}
+                        <span onClick={() => deleteProduct(product)}>
+                          <IoMdClose className="mr-3 transform hover:scale-150 transition duration-500 cursor-pointer text-red-500" />
+                        </span>
+                      </p>
+                    </td>
+                    <td className="justify-center md:justify-end md:flex mt-3">
+                      <div className="w-20 h-10">
+                        <div className="relative flex flex-row w-full h-8">
+                          <input
+                            className="w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black"
+                            type="number"
+                            onChange={() => {}}
+                            value={product.quantity.toString()}
+                          />
+                        </div>
+                      </div>
+                    </td>
+                    <td className="hidden text-right md:table-cell">
+                      <span className="text-sm lg:text-base font-medium">
+                        Rp {product.price}
+                      </span>
+                    </td>
+                    <td className="text-right">
+                      <span className="text-sm lg:text-base font-medium">
+                        Rp {product.price * product.quantity}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
 

@@ -6,9 +6,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import 'gridjs/dist/theme/mermaid.css';
-import { CookiesProvider } from 'react-cookie';
 // files
 // import '../styles/normalize.css';
+import { CartProvider } from '../contexts/CartContext';
 
 // create a custom progress bar
 NProgress.configure({ showSpinner: false });
@@ -44,10 +44,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         />
       </Head>
 
-      <>
+      <CartProvider>
         <Component {...pageProps} />
         <ToastContainer />
-      </>
+      </CartProvider>
     </>
   );
 }

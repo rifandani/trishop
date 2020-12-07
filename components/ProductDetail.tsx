@@ -1,21 +1,33 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useContext } from 'react';
 import { useState } from 'react';
 import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa';
 // files
+import { CartContext } from '../contexts/CartContext';
 
 export default function ProductDetail({ product }: any) {
   const [images] = useState(product.images || []);
   const [imageIndex, setImageIndex] = useState<number>(0);
   const [quantity, setQuantity] = useState<string>('1');
 
-  function addToCart() {
-    const item = {
+  const { cart, dispatch } = useContext(CartContext);
+
+  async function addToCart() {
+    const payload = {
       ...product,
-      quantity: Number(quantity),
+      quantity: parseInt(quantity),
     };
 
-    console.log(item);
+    // dispatch butuh waktu
+    dispatch({
+      type: 'ADD_PRODUCT',
+      payload,
+    });
+  }
+
+  async function addToWishlist() {
+    console.log('cart => ', cart);
   }
 
   return (
@@ -48,6 +60,7 @@ export default function ProductDetail({ product }: any) {
                 <Image
                   className="rounded-lg"
                   src={images[imageIndex].imageUrl}
+                  alt={images[imageIndex].imageName}
                   height={300}
                   width={650}
                 />
@@ -175,7 +188,10 @@ export default function ProductDetail({ product }: any) {
                 <FaCartPlus className="mr-2" /> Add to Cart
               </button>
 
-              <div className="flex items-center cursor-pointer h-10 p-3 rounded-full border-gray-200 border">
+              <div
+                onClick={addToWishlist}
+                className="flex items-center cursor-pointer h-10 p-3 rounded-full border-gray-200 border"
+              >
                 <FaHeart className="h-14 text-gray-400 mr-2" />
                 <span className="focus:outline-none focus:ring text-xs uppercase text-gray-400 tracking-wide font-semibold">
                   Add to Wishlist

@@ -4,6 +4,7 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+// files
 import { options } from '../utils/config';
 
 const Nav = () => {
