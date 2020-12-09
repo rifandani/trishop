@@ -1,17 +1,88 @@
-import { useContext } from 'react';
+import Axios from 'axios';
+import { useContext, useEffect, useState } from 'react';
 import { IoMdClose, IoIosCard } from 'react-icons/io';
 import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri';
+import { toast } from 'react-toastify';
 // files
 import { CartContext } from '../contexts/CartContext';
 import { Payload } from '../contexts/CartReducer';
+import { options } from '../utils/config';
 
 export default function Cart() {
-  const { cart, dispatch } = useContext(CartContext);
+  const [coupon, setCoupon] = useState<string>('');
+  const [couponDiscount, setCouponDiscount] = useState<number>(0); // float
+  const [subtotal, setSubtotal] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
+
+  const { cart, dispatch } = useContext(CartContext); // cart context
+
+  useEffect(() => {
+    const initialValue = 0;
+    const mySubtotal = (cart as Payload[]).reduce(
+      (accumulator, currentValue) => {
+        return accumulator + currentValue.price * currentValue.quantity;
+      },
+      initialValue,
+    );
+    setSubtotal(mySubtotal);
+
+    const priceAfterDiscount = Math.floor(mySubtotal * couponDiscount);
+
+    setTotal(mySubtotal - priceAfterDiscount);
+  }, [cart, couponDiscount]);
 
   function deleteProduct(product: Payload) {
     dispatch({
       type: 'DEL_PRODUCT',
       payload: product,
+    });
+  }
+
+  function onChangeQuantity() {
+    // kalau ingin functionality ini, maka harus Call API untuk product tersebut, lalu ngecek jangan sampai quantity nya melebihi dari yg ada di database
+    toast.warning(
+      'You cant change the quantity here. Please, delete the product in the cart first.',
+      {
+        ...options,
+        position: 'bottom-left',
+      },
+    );
+  }
+
+  async function applyCoupon() {
+    const couponData = {
+      coupon: coupon.toLowerCase(),
+    };
+
+    // call coupon API
+    const res = await Axios.post('/api/coupon', couponData);
+
+    // kalau error, return toast
+    if (res?.data.error) {
+      return toast.error(res?.data.message, {
+        ...options,
+        position: 'bottom-left',
+      });
+    }
+
+    // set value coupon
+    const discountValue = res?.data.discount;
+    setCouponDiscount(discountValue); // float
+
+    toast.success('Coupon applied', {
+      ...options,
+      position: 'bottom-left',
+    });
+  }
+
+  function deleteCoupon() {
+    // reset all coupon
+    setCoupon('');
+    setCouponDiscount(0);
+
+    toast.info('Coupon reset', {
+      ...options,
+      position: 'bottom-left',
     });
   }
 
@@ -40,7 +111,7 @@ export default function Cart() {
             <tbody>
               {/* gatau kenapa squigly di .map nya */}
               {cart &&
-                (cart as any[]).map((product: Payload) => (
+                (cart as Payload[]).map((product) => (
                   <tr
                     key={product._id}
                     className="transition duration-500 ease-in-out"
@@ -53,24 +124,20 @@ export default function Cart() {
                       />
                     </td>
                     <td>
-                      <p className="flex items-center justify-between mb-2">
+                      <p className="flex items-end justify-between mb-2">
                         {product.title}
                         <span onClick={() => deleteProduct(product)}>
                           <IoMdClose className="mr-3 transform hover:scale-150 transition duration-500 cursor-pointer text-red-500" />
                         </span>
                       </p>
                     </td>
-                    <td className="justify-center md:justify-end md:flex mt-3">
-                      <div className="w-20 h-10">
-                        <div className="relative flex flex-row w-full h-8">
-                          <input
-                            className="w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black"
-                            type="number"
-                            onChange={() => {}}
-                            value={product.quantity.toString()}
-                          />
-                        </div>
-                      </div>
+                    <td className="justify-center items-center md:justify-end md:flex">
+                      <input
+                        className="flex w-16 h-10 md:mt-3 font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black"
+                        type="number"
+                        onChange={() => onChangeQuantity()}
+                        value={product.quantity.toString()}
+                      />
                     </td>
                     <td className="hidden text-right md:table-cell">
                       <span className="text-sm lg:text-base font-medium">
@@ -103,11 +170,15 @@ export default function Cart() {
                 <div className="justify-center md:flex">
                   <div className="flex items-center w-full h-13 pl-3 bg-white bg-gray-100 border rounded-full">
                     <input
-                      placeholder="Apply coupon"
-                      value="90off"
                       className="w-full bg-gray-100 outline-none appearance-none focus:outline-none active:outline-none focus:border-blue-500 border-1"
+                      placeholder="Apply coupon"
+                      onChange={(e) => setCoupon(e.target.value)}
+                      value={coupon}
                     />
-                    <button className="text-sm flex items-center px-3 py-1 text-white bg-orange-800 rounded-full outline-none md:px-4 hover:opacity-50 focus:outline-none active:outline-none">
+                    <button
+                      onClick={applyCoupon}
+                      className="text-sm flex items-center px-3 py-1 text-white bg-orange-800 rounded-full outline-none md:px-4 hover:opacity-50 focus:outline-none active:outline-none"
+                    >
                       <RiCoupon2Fill className="w-8 text-lg" />
                       <span className="font-medium">Apply</span>
                     </button>
@@ -145,16 +216,19 @@ export default function Cart() {
                     Subtotal
                   </div>
                   <div className="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900">
-                    148,827.53€
+                    Rp {subtotal}
                   </div>
                 </div>
                 <div className="flex justify-between pt-4 border-b">
                   <div className="flex items-center lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-gray-800">
-                    <RiDeleteBin6Line className="mr-2 w-4 text-red-600 transform transition duration-500 hover:scale-125 cursor-pointer" />
-                    <span>Coupon "90off"</span>
+                    <RiDeleteBin6Line
+                      onClick={deleteCoupon}
+                      className="mr-2 w-4 text-red-600 transform transition duration-500 hover:scale-125 cursor-pointer"
+                    />
+                    <span>Coupon "{coupon}"</span>
                   </div>
                   <div className="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-green-500">
-                    -133,944.77€
+                    - Rp {Math.floor(subtotal * couponDiscount)}
                   </div>
                 </div>
                 <div className="flex justify-between pt-4 border-b">
@@ -162,7 +236,7 @@ export default function Cart() {
                     Total
                   </div>
                   <div className="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-red-600">
-                    17,859.3€
+                    Rp {total}
                   </div>
                 </div>
 
