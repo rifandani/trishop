@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa';
 // files
 import { CartContext } from '../contexts/CartContext';
+import { Product } from '../contexts/CartReducer';
 
-export default function ProductDetail({ product }: any) {
+export default function ProductDetail({ product }: { product: Product }) {
   const [images] = useState(product.images || []);
   const [imageIndex, setImageIndex] = useState<number>(0);
   const [quantity, setQuantity] = useState<string>('1');

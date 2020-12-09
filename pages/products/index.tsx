@@ -5,8 +5,9 @@ import Axios from 'axios';
 // files
 import Nav from '../../components/Nav';
 import ProductCard from '../../components/ProductCard';
+import { Product } from '../../contexts/CartReducer';
 
-export default function Products({ products }: any) {
+export default function Products({ products }: { products: Product[] }) {
   const [productss] = useState(products || []);
 
   return (
@@ -28,7 +29,7 @@ export default function Products({ products }: any) {
           {/* content cards */}
           <article className="grid max-w-lg gap-10 mx-auto mt-12 md:grid-cols-2 lg:grid-cols-3 md:max-w-none">
             {productss &&
-              productss.map((product: any) => (
+              productss.map((product) => (
                 <ProductCard
                   key={product._id}
                   _id={product._id}

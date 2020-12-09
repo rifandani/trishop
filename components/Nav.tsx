@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import { FaShoppingCart } from 'react-icons/fa';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
@@ -78,16 +79,9 @@ const Nav = () => {
               </Link>
             </li>
             <li className="mr-3">
-              <Link href="/marketplaces">
-                <a className="inline-block py-2 px-4 text-white font-bold hover:text-orange-800 hover:underline">
-                  Marketplaces
-                </a>
-              </Link>
-            </li>
-            <li className="mr-3">
               <Link href="/cart">
-                <a className="inline-block py-2 px-4 text-white font-bold hover:text-green-500 hover:underline">
-                  Cart
+                <a className="inline-block py-2 mt-1 px-4 lg:mr-2">
+                  <FaShoppingCart className="text-green-500 text-xl transform transition duration-500 hover:scale-150 hover:text-green-400" />
                 </a>
               </Link>
             </li>

@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Header from '../components/Header';
 import Portfolio from '../components/Portfolio';
 import Customers from '../components/Customers';
-import Stores from '../components/Stores';
+import StoresHome from '../components/StoresHome';
 import CTA from '../components/CTA';
 import Footer from '../components/Footer';
 
@@ -20,7 +20,7 @@ export default function Home() {
 
       <Customers />
 
-      <Stores />
+      <StoresHome />
 
       <CTA />
 

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { BsArrowRight } from 'react-icons/bs';
 
-const Stores = () => {
+const StoresHome = () => {
   return (
     <article className="relative py-16 bg-white min-w-screen">
       <div className="container px-10 mx-auto sm:px-5">
@@ -85,4 +85,4 @@ const Stores = () => {
   );
 };
 
-export default Stores;
+export default StoresHome;
