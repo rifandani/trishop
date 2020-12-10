@@ -13,7 +13,7 @@
     "build:watch": "postcss styles/tailwind.css -o styles/main.css --watch"
   },
   "dependencies": {
-    "autoprefixer": "^10.0.4",
+    "autoprefixer": "^10.1.0",
     "axios": "^0.21.0",
     "bcrypt": "^5.0.0",
     "cookie": "^0.4.1",

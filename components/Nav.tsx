@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FaShoppingCart } from 'react-icons/fa';
 import Cookies from 'js-cookie';
@@ -7,12 +7,15 @@ import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 // files
 import { options } from '../utils/config';
+import { CartContext } from '../contexts/CartContext';
 
 const Nav = () => {
   const [toggle, setToggle] = useState(false);
   const [cookie] = useState(Cookies.get('auth') || '');
 
   const { push } = useRouter();
+
+  const { cart } = useContext(CartContext);
 
   function toggleBurger() {
     setToggle((prevState) => !prevState);
@@ -81,7 +84,10 @@ const Nav = () => {
             <li className="mr-3">
               <Link href="/cart">
                 <a className="inline-block py-2 mt-1 px-4 lg:mr-2">
-                  <FaShoppingCart className="text-green-500 text-xl transform transition duration-500 hover:scale-150 hover:text-green-400" />
+                  <div className="flex space-x-2">
+                    <FaShoppingCart className="text-purple-700 text-xl transform transition duration-500 hover:scale-150 hover:text-purple-400" />
+                    <p className="text-green-500">{cart ? cart.length : 0}</p>
+                  </div>
                 </a>
               </Link>
             </li>
