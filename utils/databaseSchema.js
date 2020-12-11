@@ -16,6 +16,7 @@ export const users = [
 export const products = [
   {
     title: 'Xiaomi Redmi Note 4',
+    price: 125000,
     stock: 12,
     desc: 'My first xiaomi phone',
     labels: ['electronics', 'smartphone'],

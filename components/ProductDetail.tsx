@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { useState } from 'react';
 import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa';
@@ -13,6 +14,8 @@ export default function ProductDetail({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState<string>('1');
 
   const { cart, dispatch } = useContext(CartContext);
+
+  const { push } = useRouter();
 
   async function addToCart() {
     const payload = {
@@ -29,6 +32,10 @@ export default function ProductDetail({ product }: { product: Product }) {
 
   async function addToWishlist() {
     console.log('cart => ', cart);
+  }
+
+  async function clickLabel(label: string) {
+    await push(`/products/categories?_label=${label}`);
   }
 
   return (
@@ -173,6 +180,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                 product.labels.map((label: string, i: number) => (
                   <span
                     key={i}
+                    onClick={() => clickLabel(label)}
                     className="cursor-pointer inline-flex items-center px-3 py-1 mr-2 text-blue-800 bg-blue-200 rounded-full hover:opacity-50 text-xs uppercase tracking-wide font-semibold"
                   >
                     {label}

@@ -1,6 +1,10 @@
 // files
 
+import { useRouter } from 'next/router';
+
 const Checkout = () => {
+  const { push } = useRouter();
+
   return (
     <main className="my-8 bg-white">
       <div className="container mx-auto px-6">
@@ -41,7 +45,6 @@ const Checkout = () => {
                       <input
                         type="radio"
                         className="form-radio h-5 w-5 text-blue-600"
-                        checked
                       />
                       <span className="ml-2 text-sm text-gray-700">
                         MS Delivery
@@ -100,7 +103,10 @@ const Checkout = () => {
                 </div>
               </div>
               <div className="flex items-center justify-between mt-8">
-                <button className="flex items-center text-gray-700 text-sm font-medium rounded hover:underline focus:outline-none">
+                <button
+                  onClick={async () => await push('/cart')}
+                  className="flex items-center text-gray-700 text-sm font-medium rounded hover:underline focus:outline-none"
+                >
                   <svg
                     className="h-5 w-5"
                     fill="none"

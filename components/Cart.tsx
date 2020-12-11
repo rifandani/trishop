@@ -3,10 +3,13 @@ import { useContext, useEffect, useState } from 'react';
 import { IoMdClose, IoIosCard } from 'react-icons/io';
 import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
+import { Transition } from '@headlessui/react';
 // files
 import { CartContext } from '../contexts/CartContext';
 import { Payload } from '../contexts/CartReducer';
 import { options } from '../utils/config';
+import { useRouter } from 'next/router';
 
 export default function Cart() {
   const [coupon, setCoupon] = useState<string>('');
@@ -14,6 +17,7 @@ export default function Cart() {
   const [subtotal, setSubtotal] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
 
+  const { push } = useRouter();
   const { cart, dispatch } = useContext(CartContext); // cart context
 
   useEffect(() => {
@@ -86,6 +90,28 @@ export default function Cart() {
     });
   }
 
+  async function checkout() {
+    const authCookie = Cookies.get('auth');
+
+    if (!authCookie) {
+      await push('/login');
+      return toast.warning('Please login first to proceed to checkout', {
+        ...options,
+        position: 'bottom-left',
+      });
+    } else if (cart.length === 0) {
+      return toast.dark(
+        'Please add a product to cart before proceeding to checkout',
+        {
+          ...options,
+          position: 'bottom-left',
+        },
+      );
+    }
+
+    await push('/cart/checkout');
+  }
+
   return (
     <div className="flex justify-center mb-0 mt-16 md:mb-10 md:mt-20 lg:mt-24">
       <div className="flex flex-col w-full p-8 text-gray-800 bg-white shadow-lg md:w-4/5 lg:w-4/5">
@@ -112,9 +138,17 @@ export default function Cart() {
               {/* gatau kenapa squigly di .map nya */}
               {cart &&
                 (cart as Payload[]).map((product) => (
-                  <tr
+                  <Transition
                     key={product._id}
+                    as="tr"
+                    show={Boolean(cart)}
                     className="transition duration-500 ease-in-out"
+                    enter="transition ease-in-out duration-300 transform"
+                    enterFrom="-translate-x-full"
+                    enterTo="translate-x-0"
+                    leave="transition ease-in-out duration-300 transform"
+                    leaveFrom="translate-x-0"
+                    leaveTo="-translate-x-full"
                   >
                     <td className="hidden pb-4 md:table-cell">
                       <img
@@ -149,7 +183,12 @@ export default function Cart() {
                         Rp {product.price * product.quantity}
                       </span>
                     </td>
-                  </tr>
+                  </Transition>
+                  // <tr
+                  //   key={product._id}
+                  //   className="transition duration-500 ease-in-out"
+                  // >
+                  // </tr>
                 ))}
             </tbody>
           </table>
@@ -241,7 +280,10 @@ export default function Cart() {
                 </div>
 
                 {/* checkout button */}
-                <button className="flex items-center justify-center w-full px-10 py-3 mt-6 font-medium text-white uppercase bg-orange-800 rounded-full shadow item-center hover:opacity-50 focus:shadow-outline focus:outline-none">
+                <button
+                  onClick={checkout}
+                  className="flex items-center justify-center w-full px-10 py-3 mt-6 font-medium text-white uppercase bg-orange-800 rounded-full shadow item-center hover:opacity-50 focus:shadow-outline focus:outline-none"
+                >
                   <IoIosCard className="text-lg" />
                   <span className="ml-2">Proceed to checkout</span>
                 </button>

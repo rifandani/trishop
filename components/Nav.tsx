@@ -5,17 +5,17 @@ import { FaShoppingCart } from 'react-icons/fa';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { Transition } from '@headlessui/react';
 // files
 import { options } from '../utils/config';
 import { CartContext } from '../contexts/CartContext';
 
 const Nav = () => {
-  const [toggle, setToggle] = useState(false);
-  const [cookie] = useState(Cookies.get('auth') || '');
+  const [toggle, setToggle] = useState(true); // toggle hamburger menu
+  const [cookie] = useState(Cookies.get('auth') || ''); // cookie
 
-  const { push } = useRouter();
-
-  const { cart } = useContext(CartContext);
+  const { push } = useRouter(); // next router
+  const { cart } = useContext(CartContext); // cart context
 
   function toggleBurger() {
     setToggle((prevState) => !prevState);
@@ -61,10 +61,16 @@ const Nav = () => {
         </section>
 
         {/* nav content */}
-        <section
-          className={`${
-            toggle ? null : 'hidden'
-          } z-20 w-full flex-grow p-4 text-black lg:flex lg:items-center lg:w-auto lg:mt-0 lg:p-0 lg:bg-transparent`}
+        <Transition
+          className="z-20 w-full flex-grow p-4 text-black lg:flex lg:items-center lg:w-auto lg:mt-0 lg:p-0 lg:bg-transparent"
+          as="section"
+          show={toggle}
+          enter="transition ease-in-out duration-300 transform"
+          enterFrom="-translate-x-full"
+          enterTo="translate-x-0"
+          leave="transition ease-in-out duration-300 transform"
+          leaveFrom="translate-x-0"
+          leaveTo="-translate-x-full"
         >
           <ul className="list-reset lg:flex justify-end flex-1 items-center">
             <li className="mr-3">
@@ -85,7 +91,7 @@ const Nav = () => {
               <Link href="/cart">
                 <a className="inline-block py-2 mt-1 px-4 lg:mr-2">
                   <div className="flex space-x-2">
-                    <FaShoppingCart className="text-purple-700 text-xl transform transition duration-500 hover:scale-150 hover:text-purple-400" />
+                    <FaShoppingCart className="text-orange-800 text-xl transform transition duration-500 hover:scale-150 hover:text-orange-400" />
                     <p className="text-green-500">{cart ? cart.length : 0}</p>
                   </div>
                 </a>
@@ -107,7 +113,7 @@ const Nav = () => {
               </button>
             </Link>
           )}
-        </section>
+        </Transition>
       </article>
 
       {/* mobile content */}
