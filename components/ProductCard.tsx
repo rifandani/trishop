@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaCartPlus } from 'react-icons/fa';
 
 export default function ProductCard({
   _id,
