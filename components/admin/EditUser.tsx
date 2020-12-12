@@ -27,7 +27,7 @@ export default function EditUser() {
         setCreatedAt(new Date(res.data.createdAt).toDateString());
         setUpdatedAt(new Date(res.data.updatedAt).toDateString());
       })
-      .catch((err) => setError(true));
+      .catch(() => setError(true));
   }, []);
 
   async function onSubmit(e: FormEvent) {
@@ -40,7 +40,7 @@ export default function EditUser() {
       email,
       password,
     })
-      .then((res) => {
+      .then(() => {
         toast.success('User updated 👍', {
           ...options,
           position: 'bottom-left',
