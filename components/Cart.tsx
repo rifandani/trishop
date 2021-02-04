@@ -59,7 +59,7 @@ export default function Cart() {
     };
 
     // call coupon API
-    const res = await Axios.post('/api/coupon', couponData);
+    const res = await Axios.post('/coupon', couponData);
 
     // kalau error, return toast
     if (res?.data.error) {
@@ -113,7 +113,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="flex justify-center mb-0 mt-16 md:mb-10 md:mt-20 lg:mt-24">
+    <div className="flex justify-center mt-16 mb-0 md:mb-10 md:mt-20 lg:mt-24">
       <div className="flex flex-col w-full p-8 text-gray-800 bg-white shadow-lg md:w-4/5 lg:w-4/5">
         <article className="flex-1">
           {/* product table */}
@@ -122,13 +122,13 @@ export default function Cart() {
               <tr className="h-12 uppercase">
                 <th className="hidden md:table-cell"></th>
                 <th className="text-left ">Product</th>
-                <th className="md:text-center lg:text-right text-left pl-5 lg:pl-0">
+                <th className="pl-5 text-left md:text-center lg:text-right lg:pl-0">
                   <span className="lg:hidden" title="Quantity">
                     Qtd
                   </span>
                   <span className="hidden lg:inline ">Quantity</span>
                 </th>
-                <th className="hidden text-right  md:table-cell">Unit price</th>
+                <th className="hidden text-right md:table-cell">Unit price</th>
                 <th className="text-right text-red-600">Total price</th>
               </tr>
             </thead>
@@ -161,25 +161,25 @@ export default function Cart() {
                       <p className="flex items-end justify-between mb-2">
                         {product.title}
                         <span onClick={() => deleteProduct(product)}>
-                          <IoMdClose className="mr-3 transform hover:scale-150 transition duration-500 cursor-pointer text-red-500" />
+                          <IoMdClose className="mr-3 text-red-500 transition duration-500 transform cursor-pointer hover:scale-150" />
                         </span>
                       </p>
                     </td>
-                    <td className="justify-center items-center md:justify-end md:flex">
+                    <td className="items-center justify-center md:justify-end md:flex">
                       <input
-                        className="flex w-16 h-10 md:mt-3 font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black"
+                        className="flex w-16 h-10 font-semibold text-center text-gray-700 bg-gray-200 outline-none md:mt-3 focus:outline-none hover:text-black focus:text-black"
                         type="number"
                         onChange={() => onChangeQuantity()}
                         value={product.quantity.toString()}
                       />
                     </td>
                     <td className="hidden text-right md:table-cell">
-                      <span className="text-sm lg:text-base font-medium">
+                      <span className="text-sm font-medium lg:text-base">
                         Rp {product.price}
                       </span>
                     </td>
                     <td className="text-right">
-                      <span className="text-sm lg:text-base font-medium">
+                      <span className="text-sm font-medium lg:text-base">
                         Rp {product.price * product.quantity}
                       </span>
                     </td>
@@ -207,7 +207,7 @@ export default function Cart() {
                   If you have a coupon code, please enter it in the box below
                 </p>
                 <div className="justify-center md:flex">
-                  <div className="flex items-center w-full h-13 pl-3 bg-white bg-gray-100 border rounded-full">
+                  <div className="flex items-center w-full pl-3 bg-white bg-gray-100 border rounded-full h-13">
                     <input
                       className="w-full bg-gray-100 outline-none appearance-none focus:outline-none active:outline-none focus:border-blue-500 border-1"
                       placeholder="Apply coupon"
@@ -216,7 +216,7 @@ export default function Cart() {
                     />
                     <button
                       onClick={applyCoupon}
-                      className="text-sm flex items-center px-3 py-1 text-white bg-orange-800 rounded-full outline-none md:px-4 hover:opacity-50 focus:outline-none active:outline-none"
+                      className="flex items-center px-3 py-1 text-sm text-white bg-orange-800 rounded-full outline-none md:px-4 hover:opacity-50 focus:outline-none active:outline-none"
                     >
                       <RiCoupon2Fill className="w-8 text-lg" />
                       <span className="font-medium">Apply</span>
@@ -251,30 +251,30 @@ export default function Cart() {
                   you have entered
                 </p>
                 <div className="flex justify-between border-b">
-                  <div className="lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-center text-gray-800">
+                  <div className="m-2 text-lg font-bold text-center text-gray-800 lg:px-4 lg:py-2 lg:text-xl">
                     Subtotal
                   </div>
-                  <div className="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900">
+                  <div className="m-2 font-bold text-center text-gray-900 lg:px-4 lg:py-2 lg:text-lg">
                     Rp {subtotal}
                   </div>
                 </div>
                 <div className="flex justify-between pt-4 border-b">
-                  <div className="flex items-center lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-gray-800">
+                  <div className="flex items-center m-2 text-lg font-bold text-gray-800 lg:px-4 lg:py-2 lg:text-xl">
                     <RiDeleteBin6Line
                       onClick={deleteCoupon}
-                      className="mr-2 w-4 text-red-600 transform transition duration-500 hover:scale-125 cursor-pointer"
+                      className="w-4 mr-2 text-red-600 transition duration-500 transform cursor-pointer hover:scale-125"
                     />
                     <span>Coupon "{coupon}"</span>
                   </div>
-                  <div className="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-green-500">
+                  <div className="m-2 font-bold text-center text-green-500 lg:px-4 lg:py-2 lg:text-lg">
                     - Rp {Math.floor(subtotal * couponDiscount)}
                   </div>
                 </div>
                 <div className="flex justify-between pt-4 border-b">
-                  <div className="lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-center">
+                  <div className="m-2 text-lg font-bold text-center lg:px-4 lg:py-2 lg:text-xl">
                     Total
                   </div>
-                  <div className="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-red-600">
+                  <div className="m-2 font-bold text-center text-red-600 lg:px-4 lg:py-2 lg:text-lg">
                     Rp {total}
                   </div>
                 </div>

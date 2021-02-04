@@ -26,7 +26,7 @@ export default function Login() {
 
     // POST req /login
     axios
-      .post('/api/login', user)
+      .post('/login', user)
       .then(async (res) => {
         const userId = res?.data?._id;
 
@@ -57,20 +57,20 @@ export default function Login() {
   };
 
   return (
-    <main className="bg-white h-screen my-custom-font-family">
-      <div className="w-full flex flex-wrap">
+    <main className="h-screen bg-white my-custom-font-family">
+      <div className="flex flex-wrap w-full">
         {/* <!-- Login Section --> */}
-        <article className="w-full md:w-1/2 flex flex-col">
-          <section className="flex justify-center md:justify-start pt-12 md:pl-12 md:-mb-24">
+        <article className="flex flex-col w-full md:w-1/2">
+          <section className="flex justify-center pt-12 md:justify-start md:pl-12 md:-mb-24">
             <Link href="/">
-              <span className="bg-orange-800 text-white font-bold text-xl p-4 cursor-pointer hover:underline">
+              <span className="p-4 text-xl font-bold text-white bg-orange-800 cursor-pointer hover:underline">
                 Logo
               </span>
             </Link>
           </section>
 
-          <section className="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-            <p className="text-center text-3xl">Welcome</p>
+          <section className="flex flex-col justify-center px-8 pt-8 my-auto md:justify-start md:pt-0 md:px-24 lg:px-32">
+            <p className="text-3xl text-center">Welcome</p>
 
             <form className="flex flex-col pt-3 md:pt-8" onSubmit={onSubmit}>
               <div className="flex flex-col pt-4">
@@ -78,7 +78,7 @@ export default function Login() {
                   Email
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 mt-1 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   placeholder="your@email.com"
                   type="email"
                   required
@@ -94,7 +94,7 @@ export default function Login() {
                   Password
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 mt-1 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   placeholder="Password"
                   type="password"
                   minLength={6}
@@ -107,17 +107,17 @@ export default function Login() {
               </div>
 
               <input
-                className="bg-orange-800 text-white font-bold text-lg p-2 mt-8 cursor-pointer rounded hover:underline"
+                className="p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer hover:underline"
                 type="submit"
                 value="Log In"
               />
             </form>
 
-            <div className="text-center pt-12 pb-12">
+            <div className="pt-12 pb-12 text-center">
               <p>
                 Don't have an account?{' '}
                 <Link href="/register">
-                  <a className="underline font-semibold cursor-pointer hover:text-orange-800">
+                  <a className="font-semibold underline cursor-pointer hover:text-orange-800">
                     Register here.
                   </a>
                 </Link>
@@ -129,7 +129,7 @@ export default function Login() {
         {/* <!-- Image Section --> */}
         <article className="w-1/2 shadow-2xl">
           <img
-            className="object-cover w-full h-screen hidden md:block"
+            className="hidden object-cover w-full h-screen md:block"
             src="https://source.unsplash.com/IXUM4cJynP0"
             alt="login page cover"
           />

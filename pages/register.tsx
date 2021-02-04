@@ -23,7 +23,7 @@ export default function Register() {
 
     // POST req /register
     axios
-      .post('/api/register', user)
+      .post('/register', user)
       .then(async (res) => {
         console.log('👤 => ', res.data);
 
@@ -45,27 +45,27 @@ export default function Register() {
   };
 
   return (
-    <main className="bg-white h-screen my-custom-font-family">
-      <div className="w-full flex flex-wrap">
+    <main className="h-screen bg-white my-custom-font-family">
+      <div className="flex flex-wrap w-full">
         {/* <!-- Register Section --> */}
-        <article className="w-full md:w-1/2 flex flex-col">
+        <article className="flex flex-col w-full md:w-1/2">
           <section className="flex justify-center pt-12 md:justify-start md:pl-12 md:-mb-12">
             <Link href="/">
-              <span className="bg-orange-800 text-white font-bold text-xl p-4 cursor-pointer hover:underline">
+              <span className="p-4 text-xl font-bold text-white bg-orange-800 cursor-pointer hover:underline">
                 Logo
               </span>
             </Link>
           </section>
 
-          <section className="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-            <p className="text-center text-3xl">Join Us</p>
+          <section className="flex flex-col justify-center px-8 pt-8 my-auto md:justify-start md:pt-0 md:px-24 lg:px-32">
+            <p className="text-3xl text-center">Join Us</p>
             <form className="flex flex-col pt-3 md:pt-8" onSubmit={onSubmit}>
               <div className="flex flex-col pt-4">
                 <label htmlFor="name" className="text-lg">
                   Name
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 mt-1 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   placeholder="John Smith"
                   minLength={3}
                   required
@@ -81,7 +81,7 @@ export default function Register() {
                   Email
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 mt-1 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   placeholder="your@email.com"
                   type="email"
                   required
@@ -97,7 +97,7 @@ export default function Register() {
                   Password
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 mt-1 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   placeholder="Password"
                   type="password"
                   minLength={6}
@@ -112,15 +112,15 @@ export default function Register() {
               <input
                 type="submit"
                 value="Register"
-                className="bg-orange-800 text-white font-bold text-lg hover:underline p-2 mt-8 cursor-pointer rounded"
+                className="p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer hover:underline"
               />
             </form>
 
-            <div className="text-center pt-8 pb-8">
+            <div className="pt-8 pb-8 text-center">
               <p>
                 Already have an account?{' '}
                 <Link href="/login">
-                  <a className="underline font-semibold cursor-pointer hover:text-orange-800">
+                  <a className="font-semibold underline cursor-pointer hover:text-orange-800">
                     Log in here.
                   </a>
                 </Link>
@@ -132,7 +132,7 @@ export default function Register() {
         {/* <!-- Image Section --> */}
         <article className="w-1/2 shadow-2xl">
           <img
-            className="object-cover w-full h-screen hidden md:block"
+            className="hidden object-cover w-full h-screen md:block"
             src="https://source.unsplash.com/IXUM4cJynP0"
             alt="register page cover"
           />
