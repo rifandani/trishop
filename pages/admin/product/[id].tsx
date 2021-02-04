@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import Axios from 'axios';
 // files
 import Navbar from '../../../components/admin/Navbar';
 import EditProduct from '../../../components/admin/EditProduct';
+import Product from '../../../mongo/models/Product';
 
 export default function ProductEdit({ product }: any) {
   return (
@@ -13,29 +13,38 @@ export default function ProductEdit({ product }: any) {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  // params contains the product '_id'.
-  // If the route is like /products/1, then params.id is 1
-  const res = await Axios.get(
-    `http://localhost:3000/api/admin/product?_id=${params?.id}`,
-  );
-  const product = res?.data;
+  try {
+    // params contains the product '_id'.
+    // If the route is like /products/1, then params.id is 1
+    const product = await Product.findById(params?.id);
 
-  return { props: { product } };
+    return { props: { product } };
+  } catch {
+    return {
+      notFound: true,
+    };
+  }
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // Call an external API endpoint to get products
-  const res = await Axios.get('http://localhost:3000/api/admin/products');
-  const products = res?.data;
+  try {
+    // GET products
+    const products = await Product.find();
 
-  // Get the paths we want to pre-render based on products _id
-  const paths = products.map((product: any) => ({
-    params: { id: product._id },
-  }));
+    // Get the paths we want to pre-render based on products _id
+    const paths = products.map((product: any) => ({
+      params: { id: product._id },
+    }));
 
-  // We'll pre-render only these paths at build time.
-  return {
-    paths,
-    fallback: false, // means other routes should 404.
-  };
+    // We'll pre-render only these paths at build time.
+    return {
+      paths,
+      fallback: false, // means other routes should 404.
+    };
+  } catch (err) {
+    return {
+      paths: [],
+      fallback: false, // means other routes should 404.
+    };
+  }
 };

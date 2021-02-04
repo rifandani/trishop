@@ -1,10 +1,24 @@
 {
   "name": "trishop",
-  "version": "0.1.0",
+  "description": "Fullstack e-commerce website built with Next.js",
+  "version": "1.0.0",
   "private": true,
+  "author": {
+    "name": "Tri Rizeki Rifandani",
+    "email": "tri.rifandani@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "reactjs",
+    "nextjs",
+    "tailwindcss",
+    "swr",
+    "axios",
+    "gridjs"
+  ],
   "scripts": {
     "dev": "next dev",
-    "dev2": "rm -rf ./.next && next dev",
+    "dev2": "rm -rf ./.next && next",
     "build": "next build",
     "start": "next start",
     "export": "next export",

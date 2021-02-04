@@ -1,12 +1,12 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import Axios from 'axios';
 // files
 import Nav from '../../../components/Nav';
 import ProductDetail from '../../../components/ProductDetail';
+import Product from '../../../mongo/models/Product';
 
 export default function ProductDetailPage({ product }: any) {
   return (
-    <div className="flex flex-col space-y-12 mt-3 lg:mt-5">
+    <div className="flex flex-col mt-3 space-y-12 lg:mt-5">
       <Nav />
 
       <ProductDetail product={product} />
@@ -15,28 +15,39 @@ export default function ProductDetailPage({ product }: any) {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const _id = ctx?.params?._id;
+  try {
+    const _id = ctx?.params?._id;
 
-  const res = await Axios(`http://localhost:3000/api/admin/product?_id=${_id}`);
-  const product = res?.data;
+    const product = await Product.findById(_id);
 
-  return {
-    props: { product },
-  };
+    return {
+      props: { product },
+    };
+  } catch (err) {
+    return {
+      notFound: true,
+    };
+  }
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await Axios('http://localhost:3000/api/admin/products');
-  const products = res?.data;
+  try {
+    const products = await Product.find();
 
-  // Get the paths we want to pre-render based on products
-  const paths = products.map((product: any) => ({
-    params: { _id: product._id },
-  }));
+    // Get the paths we want to pre-render based on products
+    const paths = products.map((product: any) => ({
+      params: { _id: product._id },
+    }));
 
-  // We'll pre-render only these paths at build time.
-  return {
-    paths: paths,
-    fallback: false, // means other routes should 404
-  };
+    // We'll pre-render only these paths at build time.
+    return {
+      paths: paths,
+      fallback: false, // means other routes should 404
+    };
+  } catch (err) {
+    return {
+      paths: [],
+      fallback: false, // means other routes should 404
+    };
+  }
 };

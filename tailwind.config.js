@@ -5,7 +5,7 @@ module.exports = {
   },
   purge: ['./pages/**/*.js', './components/**/*.js'], // remove unused styles in production
   darkMode: false, // or 'media' or 'class'
-  target: 'relaxed',
+  target: 'relaxed', // removed in 2.0
   prefix: '',
   important: false,
   separator: ':',

@@ -1,15 +1,12 @@
 import { GetStaticProps } from 'next';
-import { useState } from 'react';
 import { GiCakeSlice } from 'react-icons/gi';
-import Axios from 'axios';
 // files
 import Nav from '../../components/Nav';
 import ProductCard from '../../components/ProductCard';
-import { Product } from '../../contexts/CartReducer';
+import { Product as Prod } from '../../contexts/CartReducer';
+import Product from '../../mongo/models/Product';
 
-export default function Products({ products }: { products: Product[] }) {
-  const [productss] = useState(products || []);
-
+export default function Products({ products }: { products: Prod[] }) {
   return (
     <div className="flex flex-col">
       <Nav />
@@ -28,20 +25,19 @@ export default function Products({ products }: { products: Product[] }) {
 
           {/* content cards */}
           <article className="grid max-w-lg gap-10 mx-auto mt-12 md:grid-cols-2 lg:grid-cols-3 md:max-w-none">
-            {productss &&
-              productss.map((product) => (
-                <ProductCard
-                  key={product._id}
-                  _id={product._id}
-                  imageName={product.images[0].imageName}
-                  imageUrl={product.images[0].imageUrl}
-                  title={product.title}
-                  price={product.price}
-                  stock={product.stock}
-                  desc={product.desc}
-                  labels={product.labels}
-                />
-              ))}
+            {products?.map((product) => (
+              <ProductCard
+                key={product._id}
+                _id={product._id}
+                imageName={product.images[0].imageName}
+                imageUrl={product.images[0].imageUrl}
+                title={product.title}
+                price={product.price}
+                stock={product.stock}
+                desc={product.desc}
+                labels={product.labels}
+              />
+            ))}
           </article>
         </div>
       </main>
@@ -51,8 +47,7 @@ export default function Products({ products }: { products: Product[] }) {
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const res = await Axios.get('http://localhost:3000/api/admin/products');
-    const products = res?.data;
+    const products = await Product.find();
 
     // kalau products tidak a da
     if (!products) {
