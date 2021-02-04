@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 //   try {
 //     const res = await Axios.get(
-//       `http://localhost:3000/api/admin/user?_id=${_id}`,
+//       `/admin/user?_id=${_id}`,
 //     );
 
 //     // jika user.role === 'ADMIN'

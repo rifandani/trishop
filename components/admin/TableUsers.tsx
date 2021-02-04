@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import useUsers from '../../hooks/useUsers';
 import { options } from '../../utils/config';
 
-const url = 'http://localhost:3000/api/admin/user';
+const url = '/admin/user';
 
 export default function TableUsers() {
   const { push } = useRouter();

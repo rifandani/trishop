@@ -1,12 +1,11 @@
 import { GetServerSideProps } from 'next';
-import { useState, useEffect } from 'react';
 import useSWR from 'swr';
-import Axios from 'axios';
 // files
-import Product from '../../../mongo/models/Product';
-import { Image } from '../../../contexts/CartReducer';
 import Categories from '../../../components/Categories';
 import Nav from '../../../components/Nav';
+import Product from '../../../mongo/models/Product';
+import { Image } from '../../../contexts/CartReducer';
+import connectDB, { disconnectDB } from '../../../mongo/config/connectDB';
 
 export interface PRODUCT {
   createdAt: string;
@@ -22,44 +21,40 @@ export interface PRODUCT {
 }
 
 interface CategoryIndexProps {
-  queryProducts: PRODUCT[];
+  queryProducts: string;
 }
 
 const CategoriesIndex = ({ queryProducts }: CategoryIndexProps) => {
-  const [products, setProducts] = useState([]);
-
-  const { data, error } = useSWR(
-    'http://localhost:3000/api/admin/categories',
-    (url) => Axios.get(url).then((res) => res.data),
-  );
-
-  useEffect(() => {
-    getProducts();
-  }, []);
-
-  async function getProducts() {
-    const res = await Axios('http://localhost:3000/api/admin/products');
-    setProducts(res.data);
-  }
-
-  if (error) return <h1>ERROR</h1>;
+  const { data, error } = useSWR<string[]>('/admin/categories');
 
   return (
     <>
       <Nav />
 
-      <Categories
-        labels={data}
-        products={products}
-        setProducts={setProducts}
-        queryProducts={queryProducts}
-      />
+      {error && 'Error'}
+
+      {data && (
+        <Categories labels={data} queryProducts={JSON.parse(queryProducts)} />
+      )}
     </>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const _label = ctx.query._label as string;
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  await connectDB();
+  const _label = query?._label;
+
+  // if there is no query
+  if (!_label) {
+    const noLabels = await Product.find();
+
+    await disconnectDB();
+    return {
+      props: {
+        queryProducts: JSON.stringify(noLabels),
+      },
+    };
+  }
 
   const queryProducts = await Product.find({
     labels: { $in: [_label] },
@@ -67,6 +62,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     .limit(10)
     .sort({ createdAt: -1 }); // desc
 
+  await disconnectDB();
   return {
     props: { queryProducts: JSON.stringify(queryProducts) }, // harus di serialize ke JSON dlu
   };

@@ -43,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 // export const getServerSideProps: GetServerSideProps = async (ctx) => {
 //   try {
 //     const res = await Axios.get(
-//       'http://localhost:3000/api/admin/verification',
+//       '/admin/verification',
 //       {
 //         headers: {
 //           Cookie: ctx.req.headers?.cookie, // send along cookies from headers client

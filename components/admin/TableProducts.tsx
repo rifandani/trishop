@@ -9,7 +9,7 @@ import useProducts from '../../hooks/useProducts';
 import { options } from '../../utils/config';
 import { storage } from '../../firebase/config';
 
-const url = 'http://localhost:3000/api/admin/product';
+const url = '/admin/product';
 
 export default function TableProducts() {
   const { push } = useRouter();

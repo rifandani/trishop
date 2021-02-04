@@ -7,3 +7,7 @@ export default function connectDB() {
     useCreateIndex: true,
   });
 }
+
+export function disconnectDB() {
+  return mongoose.disconnect();
+}

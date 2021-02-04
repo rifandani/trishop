@@ -1,12 +1,15 @@
-import { GetStaticProps } from 'next';
 import { GiCakeSlice } from 'react-icons/gi';
+import useSWR from 'swr';
 // files
 import Nav from '../../components/Nav';
 import ProductCard from '../../components/ProductCard';
-import { Product as Prod } from '../../contexts/CartReducer';
-import Product from '../../mongo/models/Product';
+import { Product } from '../../contexts/CartReducer';
 
-export default function Products({ products }: { products: Prod[] }) {
+export default function Products() {
+  const { data, error } = useSWR<Product[] | []>('/admin/products', {
+    refreshInterval: 10000,
+  });
+
   return (
     <div className="flex flex-col">
       <Nav />
@@ -25,44 +28,25 @@ export default function Products({ products }: { products: Prod[] }) {
 
           {/* content cards */}
           <article className="grid max-w-lg gap-10 mx-auto mt-12 md:grid-cols-2 lg:grid-cols-3 md:max-w-none">
-            {products?.map((product) => (
-              <ProductCard
-                key={product._id}
-                _id={product._id}
-                imageName={product.images[0].imageName}
-                imageUrl={product.images[0].imageUrl}
-                title={product.title}
-                price={product.price}
-                stock={product.stock}
-                desc={product.desc}
-                labels={product.labels}
-              />
-            ))}
+            {data &&
+              (data as Product[]).map((product) => (
+                <ProductCard
+                  key={product._id}
+                  _id={product._id}
+                  imageName={product.images[0].imageName}
+                  imageUrl={product.images[0].imageUrl}
+                  title={product.title}
+                  price={product.price}
+                  stock={product.stock}
+                  desc={product.desc}
+                  labels={product.labels}
+                />
+              ))}
+
+            {error && 'Error...'}
           </article>
         </div>
       </main>
     </div>
   );
 }
-
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    const products = await Product.find();
-
-    // kalau products tidak a da
-    if (!products) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      };
-    }
-
-    return {
-      props: { products },
-    };
-  } catch (err) {
-    return { notFound: true };
-  }
-};

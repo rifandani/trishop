@@ -43,7 +43,7 @@ export default function AddProduct() {
 
       // save ke MONGODB, hanya ketika sudah upload semua image
       if (i === images.length - 1 && url) {
-        Axios.post('http://localhost:3000/api/admin/products', {
+        Axios.post('/admin/products', {
           title,
           price,
           stock,
@@ -90,7 +90,7 @@ export default function AddProduct() {
           {/* form */}
           <div className="mt-5 md:mt-0 md:col-span-2">
             <form onSubmit={onSubmit}>
-              <div className="shadow overflow-hidden sm:rounded-md">
+              <div className="overflow-hidden shadow sm:rounded-md">
                 <div className="px-4 py-5 bg-white sm:p-6">
                   <div className="grid grid-cols-6 gap-6">
                     {/* title */}
@@ -102,7 +102,7 @@ export default function AddProduct() {
                         Title
                       </label>
                       <input
-                        className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                         id="title"
                         minLength={3}
                         required
@@ -120,7 +120,7 @@ export default function AddProduct() {
                         Price
                       </label>
                       <input
-                        className="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                         id="price"
                         type="number"
                         min={0}
@@ -139,7 +139,7 @@ export default function AddProduct() {
                         Stock
                       </label>
                       <input
-                        className="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                         id="stock"
                         type="number"
                         min={1}
@@ -158,7 +158,7 @@ export default function AddProduct() {
                         Description
                       </label>
                       <textarea
-                        className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                         id="desc"
                         required
                         onChange={(e) => setDesc(e.target.value)}
@@ -176,7 +176,7 @@ export default function AddProduct() {
                       </label>
                       <div className="flex space-x-1">
                         <input
-                          className="mt-1 form-input w-1/3 py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                          className="w-1/3 px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                           id="label1"
                           minLength={3}
                           required
@@ -184,14 +184,14 @@ export default function AddProduct() {
                           value={label1}
                         />
                         <input
-                          className="mt-1 form-input w-1/3 py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                          className="w-1/3 px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                           id="label2"
                           minLength={3}
                           onChange={(e) => setLabel2(e.target.value)}
                           value={label2}
                         />
                         <input
-                          className="mt-1 form-input w-1/3 py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                          className="w-1/3 px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                           id="label3"
                           minLength={3}
                           onChange={(e) => setLabel3(e.target.value)}
@@ -215,10 +215,10 @@ export default function AddProduct() {
                 </div>
 
                 {/* button */}
-                <div className="px-4 py-3 bg-green-100 text-right sm:px-6">
+                <div className="px-4 py-3 text-right bg-green-100 sm:px-6">
                   <button
                     type="submit"
-                    className="py-2 px-6 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-500 shadow-sm hover:bg-green-600 focus:outline-none focus:border-white active:bg-green-600 transition duration-150 ease-in-out"
+                    className="px-6 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-green-500 border border-transparent rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:border-white active:bg-green-600"
                   >
                     Add New
                   </button>

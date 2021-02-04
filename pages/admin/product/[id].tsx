@@ -2,9 +2,11 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 // files
 import Navbar from '../../../components/admin/Navbar';
 import EditProduct from '../../../components/admin/EditProduct';
+import { Product as Prod } from '../../../contexts/CartReducer';
 import Product from '../../../mongo/models/Product';
+import connectDB, { disconnectDB } from '../../../mongo/config/connectDB';
 
-export default function ProductEdit({ product }: any) {
+export default function ProductEdit({ product }: { product: Prod }) {
   return (
     <Navbar>
       <EditProduct product={product} />
@@ -13,38 +15,43 @@ export default function ProductEdit({ product }: any) {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  try {
-    // params contains the product '_id'.
-    // If the route is like /products/1, then params.id is 1
-    const product = await Product.findById(params?.id);
+  await connectDB();
+  const _id = params?._id;
+  const productObj: Prod = await Product.findById(_id);
 
-    return { props: { product } };
-  } catch {
+  const product = {
+    _id: productObj._id.toString(),
+    labels: productObj.labels,
+    images: productObj.images,
+    title: productObj.title,
+    price: productObj.price,
+    stock: productObj.stock,
+    desc: productObj.desc,
+    createdAt: productObj.createdAt.toString(),
+    updatedAt: productObj.updatedAt.toString(),
+    __v: productObj.__v,
+  };
+
+  if (!productObj) {
     return {
       notFound: true,
     };
   }
+
+  await disconnectDB();
+  return { props: { product } };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  try {
-    // GET products
-    const products = await Product.find();
+  await connectDB();
+  const products: Prod[] = await Product.find();
 
-    // Get the paths we want to pre-render based on products _id
-    const paths = products.map((product: any) => ({
-      params: { id: product._id },
-    }));
+  const paths = products.map((product) => ({
+    params: { id: product._id.toString() },
+  }));
 
-    // We'll pre-render only these paths at build time.
-    return {
-      paths,
-      fallback: false, // means other routes should 404.
-    };
-  } catch (err) {
-    return {
-      paths: [],
-      fallback: false, // means other routes should 404.
-    };
-  }
+  return {
+    paths,
+    fallback: false, // means other routes should 404.
+  };
 };
