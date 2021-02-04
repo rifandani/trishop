@@ -16,8 +16,8 @@ export default function ProductEdit({ product }: { product: Prod }) {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   await connectDB();
-  const _id = params?._id;
-  const productObj: Prod = await Product.findById(_id);
+  const id = params?.id;
+  const productObj: Prod = await Product.findById(id);
 
   const product = {
     _id: productObj._id.toString(),
