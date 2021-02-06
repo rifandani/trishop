@@ -1,0 +1,17 @@
+@tailwind base;
+
+html,
+body {
+  scroll-behavior: smooth;
+  @apply bg-white dark:bg-gray-900;
+}
+
+/* Start purging... */
+@tailwind components;
+/* Stop purging. */
+
+/* Start purging... */
+@tailwind utilities;
+/* Stop purging. */
+
+/* Your own custom utilities */

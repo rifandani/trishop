@@ -9,7 +9,7 @@ import 'gridjs/dist/theme/mermaid.css';
 import axios from 'axios';
 import { SWRConfig } from 'swr';
 // files
-// import '../styles/normalize.css';
+import '../styles/index.css';
 import { CartProvider } from '../contexts/CartContext';
 
 // create a custom progress bar
@@ -59,10 +59,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         {/* link */}
         <link
           href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
           rel="stylesheet"
         />
         <link rel="icon" href="favicon.ico" />
