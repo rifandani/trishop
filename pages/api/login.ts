@@ -7,7 +7,7 @@ import setCookie from '../../utils/setCookie';
 
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
   // hilangin warning harus return promise
-  return new Promise(async (resolve, reject) => {
+  return new Promise<void>(async (resolve, reject) => {
     // connect db
     await connectDB();
 

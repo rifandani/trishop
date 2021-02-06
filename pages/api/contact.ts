@@ -6,7 +6,7 @@ export default async function register(
   res: NextApiResponse,
 ) {
   // hilangin warning harus return promise
-  return new Promise(async (resolve, reject) => {
+  return new Promise<void>(async (resolve) => {
     if (req.method === 'POST') {
       // destructure request body form
       const { email, subject, message } = req.body;

@@ -10,7 +10,7 @@ export default async function register(
   res: NextApiResponse,
 ) {
   // hilangin warning harus return promise
-  return new Promise(async (resolve, reject) => {
+  return new Promise<void>(async (resolve) => {
     // connect db
     await connectDB();
 
