@@ -1,0 +1,83 @@
+@tailwind base;
+
+/* Start purging... */
+@tailwind components;
+/* Stop purging. */
+
+/* Start purging... */
+@tailwind utilities;
+/* Stop purging. */
+
+@layer base {
+  html,
+  body {
+    scroll-behavior: smooth;
+    @apply bg-white dark:bg-gray-900;
+  }
+}
+
+@layer components {
+  /* in fields form */
+  .error-message {
+    @apply block w-full px-4 py-2 mt-2 text-sm italic text-red-700 bg-red-200 rounded-md;
+  }
+
+  /* NAV */
+  .nav__link {
+    @apply inline-block px-4 py-2 font-bold text-yellow-800 hover:text-white hover:underline;
+  }
+
+  .nav__login-btn {
+    @apply px-8 py-4 mx-auto mt-4 font-bold text-yellow-800 bg-white rounded-full shadow hover:underline lg:mx-0 lg:mt-0;
+  }
+
+  .nav__logout-btn {
+    @apply px-8 py-4 mx-auto mt-4 font-bold text-red-500 bg-white rounded-full shadow hover:underline lg:mx-0 lg:mt-0;
+  }
+
+  /* HEADER */
+  .header__order-now-btn {
+    @apply px-8 py-4 mx-auto my-6 font-bold text-yellow-800 bg-white rounded-full shadow-lg lg:mx-0 hover:underline;
+  }
+
+  /* FOOTER */
+  .footer__text-link {
+    @apply text-base leading-6 text-black hover:underline;
+  }
+}
+
+.shadow-pop-bl:hover {
+  animation: shadow-pop-bl 0.3s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+}
+
+.text-shadow-pop-bl:hover {
+  animation: text-shadow-pop-bl 0.6s both;
+}
+
+@keyframes shadow-pop-bl {
+  0% {
+    box-shadow: 0 0 #92400e, 0 0 #92400e, 0 0 #92400e, 0 0 #92400e, 0 0 #92400e,
+      0 0 #92400e, 0 0 #92400e, 0 0 #92400e;
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    box-shadow: -1px 1px #92400e, -2px 2px #92400e, -3px 3px #92400e,
+      -4px 4px #92400e, -5px 5px #92400e, -6px 6px #92400e, -7px 7px #92400e,
+      -8px 8px #92400e;
+    transform: translateX(8px) translateY(-8px);
+  }
+}
+
+@keyframes text-shadow-pop-bl {
+  0% {
+    text-shadow: 0 0 #92400e, 0 0 #92400e, 0 0 #92400e, 0 0 #92400e, 0 0 #92400e,
+      0 0 #92400e, 0 0 #92400e, 0 0 #92400e;
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    text-shadow: -1px 1px #92400e, -2px 2px #92400e, -3px 3px #92400e,
+      -4px 4px #92400e, -5px 5px #92400e, -6px 6px #92400e, -7px 7px #92400e,
+      -8px 8px #92400e;
+    transform: translateX(8px) translateY(-8px);
+  }
+}
