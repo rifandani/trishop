@@ -4,7 +4,7 @@ import Nav from './Nav'
 
 const Header = () => {
   return (
-    <header className="leading-normal tracking-normal text-white bg-gradient-to-r from-yellow-800 via-yellow-400 to-yellow-200">
+    <header className="leading-normal tracking-normal text-white bg-gradient-to-r from-orange-800 via-orange-400 to-orange-200">
       {/* nav */}
       <Nav />
 
@@ -28,18 +28,18 @@ const Header = () => {
 
           {/* <!--Right Col--> */}
           <div className="w-full py-6 text-center md:w-3/5">
-            {/* <img
+            <img
               className="z-50 w-full md:w-4/5"
               src="images/cake.png"
-              alt="cake"
-            /> */}
-            <Image
+              alt="cake illustration"
+            />
+            {/* <Image
               className="z-50 w-full md:w-4/5"
               src="/images/cake.png"
               alt="cake illustration"
               width={500}
               height={430}
-            />
+            /> */}
           </div>
         </div>
       </section>

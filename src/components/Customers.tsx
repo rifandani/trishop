@@ -1,6 +1,6 @@
 const Customers = () => {
   return (
-    <article className="py-4 border-b bg-gradient-to-r from-yellow-200 via-yellow-500 to-yellow-800">
+    <article className="py-4 border-b bg-gradient-to-r from-orange-200 via-orange-500 to-orange-800">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
         {/* title */}
         <h2 className="w-full my-2 text-3xl font-black leading-tight text-center text-white lg:mt-8">
@@ -9,7 +9,7 @@ const Customers = () => {
 
         {/* straight line */}
         <div className="w-full mb-4">
-          <div className="w-64 h-1 py-0 mx-auto my-0 bg-yellow-200 rounded-t opacity-25"></div>
+          <div className="w-64 h-1 py-0 mx-auto my-0 bg-orange-200 rounded-t opacity-25"></div>
         </div>
 
         {/* list of customers */}

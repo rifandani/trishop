@@ -3,18 +3,18 @@ import {
   FaShoppingCart,
   FaShoppingBag,
   FaMoneyBillWave,
-} from 'react-icons/fa';
-import { useRouter } from 'next/router';
+} from 'react-icons/fa'
+import { useRouter } from 'next/router'
 // files
-import TableUsers from './TableUsers';
-import useUsers from '../../hooks/useUsers';
-import TableProducts from './TableProducts';
-import useProducts from '../../hooks/useProducts';
+import TableUsers from './TableUsers'
+import useUsers from '../../hooks/useUsers'
+import TableProducts from './TableProducts'
+import useProducts from '../../hooks/useProducts'
 
 export default function AdminDashboard() {
-  const { users, usersIsLoading, usersIsError } = useUsers();
-  const { products, productsIsLoading, productsIsError } = useProducts();
-  const { push } = useRouter();
+  const { users, usersIsLoading, usersIsError } = useUsers()
+  const { products, productsIsLoading, productsIsError } = useProducts()
+  const { push } = useRouter()
 
   return (
     <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
@@ -63,7 +63,7 @@ export default function AdminDashboard() {
             {/* Weekly Orders */}
             <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
               <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-yellow-500 bg-opacity-75 rounded-full">
+                <div className="p-3 bg-orange-500 bg-opacity-75 rounded-full">
                   <FaShoppingCart className="w-8 h-8 text-white" />
                 </div>
 
@@ -125,5 +125,5 @@ export default function AdminDashboard() {
         <TableProducts />
       </div>
     </main>
-  );
+  )
 }

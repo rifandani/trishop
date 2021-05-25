@@ -1,41 +1,41 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useContext } from 'react';
-import { useState } from 'react';
-import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa';
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useContext } from 'react'
+import { useState } from 'react'
+import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa'
 // files
-import { CartContext } from '../contexts/CartContext';
-import { Product } from '../contexts/CartReducer';
+import { CartContext } from '../contexts/CartContext'
+import { Product } from '../contexts/CartReducer'
 
 export default function ProductDetail({ product }: { product: Product }) {
-  const [images] = useState(product.images || []);
-  const [imageIndex, setImageIndex] = useState<number>(0);
-  const [quantity, setQuantity] = useState<string>('1');
+  const [images] = useState(product.images || [])
+  const [imageIndex, setImageIndex] = useState<number>(0)
+  const [quantity, setQuantity] = useState<string>('1')
 
-  const { cart, dispatch } = useContext(CartContext);
+  const { cart, dispatch } = useContext(CartContext)
 
-  const { push } = useRouter();
+  const { push } = useRouter()
 
   async function addToCart() {
     const payload = {
       ...product,
       quantity: parseInt(quantity),
-    };
+    }
 
     // dispatch butuh waktu
     dispatch({
       type: 'ADD_PRODUCT',
       payload,
-    });
+    })
   }
 
   async function addToWishlist() {
-    console.log('cart => ', cart);
+    console.log('cart => ', cart)
   }
 
   async function clickLabel(label: string) {
-    await push(`/products/categories?_label=${label}`);
+    await push(`/products/categories?_label=${label}`)
   }
 
   return (
@@ -111,11 +111,11 @@ export default function ProductDetail({ product }: { product: Product }) {
 
             {/* reviews */}
             <div className="my-3 flex items-center space-x-1">
-              <FaStar className="h-14 text-yellow-500" />
-              <FaStar className="h-14 text-yellow-500" />
-              <FaStar className="h-14 text-yellow-500" />
-              <FaStar className="h-14 text-yellow-500" />
-              <FaStar className="h-14 text-yellow-500" />
+              <FaStar className="h-14 text-orange-500" />
+              <FaStar className="h-14 text-orange-500" />
+              <FaStar className="h-14 text-orange-500" />
+              <FaStar className="h-14 text-orange-500" />
+              <FaStar className="h-14 text-orange-500" />
               <span className="pl-4 text-xs uppercase text-gray-400 tracking-wide font-semibold">
                 147 reviews
               </span>
@@ -211,5 +211,5 @@ export default function ProductDetail({ product }: { product: Product }) {
         </article>
       </section>
     </article>
-  );
+  )
 }

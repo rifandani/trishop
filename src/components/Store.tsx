@@ -24,7 +24,7 @@ export default function Store({
         <div className="flex flex-col overflow-hidden rounded-lg shadow-2xl">
           <div className="flex items-center h-8 text-white bg-gray-900">
             <div className="w-3 h-3 ml-3 bg-red-400 rounded-full"></div>
-            <div className="w-3 h-3 ml-2 bg-yellow-400 rounded-full"></div>
+            <div className="w-3 h-3 ml-2 bg-orange-400 rounded-full"></div>
             <div className="w-3 h-3 ml-2 bg-green-400 rounded-full"></div>
           </div>
 
@@ -34,7 +34,7 @@ export default function Store({
 
       {/* content */}
       <article className="relative w-1/2 h-full pl-12">
-        <h1 className="text-sm font-bold tracking-wide text-yellow-800 uppercase">
+        <h1 className="text-sm font-bold tracking-wide text-orange-800 uppercase">
           Store {rank}
         </h1>
 
@@ -45,7 +45,7 @@ export default function Store({
         <p className="mt-3 text-base text-gray-600">{desc}</p>
         <a
           href="/"
-          className="flex items-center mt-8 font-medium text-yellow-300 transition duration-500 transform hover:underline hover:skew-x-12 hover:text-yellow-800"
+          className="flex items-center mt-8 font-medium text-orange-300 transition duration-500 transform hover:underline hover:skew-x-12 hover:text-orange-800"
         >
           <span>View in Google Maps</span>
           <FaLocationArrow className="w-4 h-4 ml-3" />

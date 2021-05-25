@@ -27,7 +27,7 @@ const Nav = () => {
   }
 
   return (
-    <nav className="fixed top-0 z-30 w-full text-white bg-gradient-to-r from-yellow-800 via-yellow-400 to-yellow-200">
+    <nav className="fixed top-0 z-30 w-full text-white bg-gradient-to-r from-orange-800 via-orange-400 to-orange-200">
       <article className="container flex flex-wrap items-center justify-between w-full py-2 mx-auto mt-0">
         {/* logo */}
         <section className="flex items-center pl-3">
@@ -55,7 +55,7 @@ const Nav = () => {
         <section className="block pr-4 lg:hidden">
           <button
             onClick={() => setToggle(!toggle)}
-            className="flex items-center px-3 py-2 text-yellow-800 border border-yellow-800 rounded appearance-none hover:text-yellow-500 hover:border-yellow-500 focus:outline-none"
+            className="flex items-center px-3 py-2 text-orange-800 border border-orange-800 rounded appearance-none hover:text-orange-500 hover:border-orange-500 focus:outline-none"
           >
             {/* burger menu */}
             <GiHamburgerMenu className="w-3 h-3" />
@@ -91,7 +91,7 @@ const Nav = () => {
               <Link href="/cart">
                 <a className="inline-block px-4 py-2 mt-1 lg:mr-2">
                   <div className="flex space-x-2">
-                    <FaShoppingCart className="text-xl text-yellow-800 transition duration-500 transform hover:scale-150 hover:text-yellow-400" />
+                    <FaShoppingCart className="text-xl text-orange-800 transition duration-500 transform hover:scale-150 hover:text-orange-400" />
                     <p className="text-white">{cart ? cart.length : 0}</p>
                   </div>
                 </a>
@@ -116,28 +116,28 @@ const Nav = () => {
         <article className="container flex-wrap items-center justify-center w-full pb-5 mx-auto mt-0">
           <section className="w-full ">
             <Link href="/" >
-              <a className="inline-block px-4 py-2 font-bold text-white hover:text-yellow-800 hover:underline">
+              <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
                 Products
               </a>
             </Link>
           </section>
           <section className="w-full ">
             <Link href="/" >
-              <a className="inline-block px-4 py-2 font-bold text-white hover:text-yellow-800 hover:underline">
+              <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
                 Stores
               </a>
             </Link>
           </section>
           <section className="w-full ">
             <Link href="/" >
-              <a className="inline-block px-4 py-2 font-bold text-white hover:text-yellow-800 hover:underline">
+              <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
                 Marketplaces
               </a>
             </Link>
           </section>
           <section className="w-full ">
             <Link href="/login" >
-              <button className="px-8 py-4 mx-auto mt-2 ml-4 font-bold text-yellow-800 bg-white rounded-full shadow hover:underline">
+              <button className="px-8 py-4 mx-auto mt-2 ml-4 font-bold text-orange-800 bg-white rounded-full shadow hover:underline">
                 Login
               </button>
             </Link>

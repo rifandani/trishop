@@ -119,9 +119,7 @@ export default function Login() {
                   </div>
 
                   <button
-                    className={`${
-                      isSubmitting ? 'opacity-50' : 'opacity-100'
-                    } p-2 mt-8 text-lg font-bold text-white bg-yellow-800 rounded cursor-pointer hover:underline`}
+                    className="p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer disabled:opacity-50 hover:underline"
                     type="submit"
                     disabled={isSubmitting}
                   >
@@ -136,7 +134,7 @@ export default function Login() {
               <p>
                 Don't have an account?{' '}
                 <Link href="/register">
-                  <a className="font-semibold underline cursor-pointer hover:text-yellow-800">
+                  <a className="font-semibold underline cursor-pointer hover:text-orange-800">
                     Register here.
                   </a>
                 </Link>

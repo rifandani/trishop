@@ -45,7 +45,7 @@ const StoresHome = () => {
 
           {/* content */}
           <div className="w-full mt-10 ml-0 lg:mt-0 lg:flex-1 lg:w-1/2 xl:w-1/3 lg:ml-10">
-            <div className="px-20 py-5 text-white bg-yellow-800 lg:h-full">
+            <div className="px-20 py-5 text-white bg-orange-800 lg:h-full">
               <p className="mt-2 text-sm italic uppercase">Stores</p>
               <p className="mt-10 mb-5 text-2xl font-bold">
                 Find us in many places
@@ -60,7 +60,7 @@ const StoresHome = () => {
 
               <div className="mt-8">
                 <Link href="/stores">
-                  <a className="flex items-center text-yellow-300 hover:text-yellow-500">
+                  <a className="flex items-center text-orange-300 hover:text-orange-500">
                     <div className="flex-initial">See more details</div>
                     <BsArrowRight className="flex-shrink w-4 ml-3" />
                   </a>

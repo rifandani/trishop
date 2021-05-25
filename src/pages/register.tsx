@@ -131,7 +131,7 @@ export default function RegisterPage() {
                   <button
                     className={`${
                       isSubmitting ? 'opacity-50' : 'opacity-100'
-                    } p-2 mt-8 text-lg font-bold text-white bg-yellow-800 rounded cursor-pointer hover:underline`}
+                    } p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer hover:underline`}
                     disabled={isSubmitting}
                     type="submit"
                   >
@@ -146,7 +146,7 @@ export default function RegisterPage() {
               <p>
                 Already have an account?{' '}
                 <Link href="/login">
-                  <a className="font-semibold underline cursor-pointer hover:text-yellow-800">
+                  <a className="font-semibold underline cursor-pointer hover:text-orange-800">
                     Log in here.
                   </a>
                 </Link>

@@ -24,11 +24,11 @@
 
   /* NAV */
   .nav__link {
-    @apply inline-block px-4 py-2 font-bold text-yellow-800 hover:text-white hover:underline;
+    @apply inline-block px-4 py-2 font-bold text-orange-800 hover:text-white hover:underline;
   }
 
   .nav__login-btn {
-    @apply px-8 py-4 mx-auto mt-4 font-bold text-yellow-800 bg-white rounded-full shadow hover:underline lg:mx-0 lg:mt-0;
+    @apply px-8 py-4 mx-auto mt-4 font-bold text-orange-800 bg-white rounded-full shadow hover:underline lg:mx-0 lg:mt-0;
   }
 
   .nav__logout-btn {
@@ -37,7 +37,7 @@
 
   /* HEADER */
   .header__order-now-btn {
-    @apply px-8 py-4 mx-auto my-6 font-bold text-yellow-800 bg-white rounded-full shadow-lg lg:mx-0 hover:underline;
+    @apply px-8 py-4 mx-auto my-6 font-bold text-orange-800 bg-white rounded-full shadow-lg lg:mx-0 hover:underline;
   }
 
   /* FOOTER */

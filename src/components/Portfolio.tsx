@@ -6,7 +6,7 @@ const Portfolio = () => {
     <article className="container py-16 mx-auto">
       <div className="flex flex-wrap">
         <section className="w-full px-4 mb-8 lg:w-1/2 lg:mb-0">
-          <div className="flex flex-col justify-center h-full px-20 py-5 text-white bg-yellow-800">
+          <div className="flex flex-col justify-center h-full px-20 py-5 text-white bg-orange-800">
             <p className="mt-2 text-sm italic uppercase">Showcase</p>
             <h2 className="mt-10 mb-5 text-2xl font-bold ">
               Witness the beauty of our works
@@ -19,7 +19,7 @@ const Portfolio = () => {
               for great food and respect for the environment.
             </p>
             <Link href="/">
-              <a className="flex items-center text-yellow-300 hover:text-yellow-500">
+              <a className="flex items-center text-orange-300 hover:text-orange-500">
                 <div className="flex-initial">See all products</div>
                 <BsArrowRight className="flex-shrink w-4 ml-3" />
               </a>
