@@ -9,7 +9,7 @@ import Footer from 'components/Footer'
 
 export default function HomePage() {
   return (
-    <>
+    <div className="bg-white">
       <Head>
         <title>TriShop - Cake Shop</title>
       </Head>
@@ -25,6 +25,6 @@ export default function HomePage() {
       <CTA />
 
       <Footer />
-    </>
+    </div>
   )
 }

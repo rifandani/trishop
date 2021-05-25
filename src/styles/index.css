@@ -42,7 +42,7 @@
 
   /* FOOTER */
   .footer__text-link {
-    @apply text-base leading-6 text-black hover:underline;
+    @apply text-base leading-6 text-black hover:underline hover:text-orange-800;
   }
 }
 
@@ -52,6 +52,10 @@
 
 .text-shadow-pop-bl:hover {
   animation: text-shadow-pop-bl 0.6s both;
+}
+
+.card-shadow:hover {
+  box-shadow: -10px 10px 5px 0px rgba(254, 235, 200, 1);
 }
 
 @keyframes shadow-pop-bl {

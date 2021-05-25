@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from 'next/image'
+import Link from 'next/link'
 
 export default function ProductCard({
   _id,
@@ -12,7 +12,7 @@ export default function ProductCard({
   labels,
 }: any) {
   return (
-    <section className="flex flex-col overflow-hidden shadow-lg">
+    <section className="flex flex-col overflow-hidden shadow-lg card-shadow">
       <div className="relative flex-shrink-0">
         <Image
           className="object-cover w-full h-56"
@@ -22,12 +22,20 @@ export default function ProductCard({
           height={260}
           priority={true}
         />
-        <span className="absolute bottom-0 left-0 inline-flex items-center px-3 py-1 ml-4 -mb-3 text-xs font-medium leading-tight text-orange-800 bg-orange-200 border rounded-full">
-          stock: {stock}
+        <span className="absolute bottom-0 left-0 inline-flex items-center px-3 py-1 ml-6 -mb-3 text-xs font-medium leading-tight text-orange-800 bg-orange-200 border rounded-full">
+          stock:{' '}
+          <strong className="ml-1 text-base text-orange-800">{stock}</strong>
         </span>
-        <span className="absolute bottom-0 right-0 inline-flex items-center px-3 py-1 mr-4 -mb-3 text-xs font-medium leading-tight text-orange-800 bg-orange-200 border rounded-full">
-          Rp <strong className="mx-1 text-lg text-red-500">{price}</strong> /
-          pcs
+
+        <span className="absolute bottom-0 right-0 inline-flex items-center px-3 py-1 mr-6 -mb-3 text-xs font-medium leading-tight text-orange-800 bg-orange-200 border rounded-full">
+          Rp{' '}
+          <strong className="mx-1 text-lg text-orange-800">
+            {new Intl.NumberFormat('id-ID', {
+              maximumFractionDigits: 0,
+              minimumFractionDigits: 0,
+            }).format(price)}
+          </strong>{' '}
+          / pcs
         </span>
       </div>
 
@@ -35,12 +43,14 @@ export default function ProductCard({
         <div className="flex flex-col justify-between flex-1 p-6 bg-white">
           <div>
             <Link href={`/products/${encodeURIComponent(_id)}`}>
-              <a className="block text-xl font-semibold leading-7 text-gray-800 hover:underline italic">
+              <a className="block text-xl font-semibold leading-7 text-gray-800 hover:underline hover:text-orange-800">
                 {title}
               </a>
             </Link>
 
-            <p className="mt-3 text-base leading-6 text-gray-500">{desc}</p>
+            <p className="mt-3 text-base italic leading-6 text-gray-500">
+              {desc}
+            </p>
           </div>
 
           <p className="mt-3 text-sm font-medium leading-5">
@@ -57,11 +67,11 @@ export default function ProductCard({
 
         {/* button */}
         {/* <div className="flex items-center p-6 bg-gradient-to-t from-orange-200 to-white">
-          <button className="flex items-center mx-auto font-bold rounded-full py-4 px-8 shadow text-white bg-orange-800 hover:opacity-75">
-            <FaCartPlus className="text-white mr-2" /> Buy Now
+          <button className="flex items-center px-8 py-4 mx-auto font-bold text-white bg-orange-800 rounded-full shadow hover:opacity-75">
+            <FaCartPlus className="mr-2 text-white" /> Buy Now
           </button>
         </div> */}
       </div>
     </section>
-  );
+  )
 }

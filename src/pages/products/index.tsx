@@ -1,19 +1,21 @@
-import { GiCakeSlice } from 'react-icons/gi';
-import useSWR from 'swr';
+import { GiCakeSlice } from 'react-icons/gi'
+import useSWR from 'swr'
 // files
-import Nav from '../../components/Nav';
-import ProductCard from '../../components/ProductCard';
-import { Product } from '../../contexts/CartReducer';
+import { Product } from 'contexts/CartReducer'
+import Nav from 'components/Nav'
+import ProductCard from 'components/ProductCard'
+import Footer from 'components/Footer'
 
 export default function Products() {
   const { data, error } = useSWR<Product[] | []>('/admin/products', {
     refreshInterval: 10000,
-  });
+  })
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <Nav />
 
+      {/* main content */}
       <main className="py-20 bg-white lg:pt-28 lg:mt-3">
         <div className="container flex flex-col items-center justify-center px-4 pt-2 pb-8 mx-auto sm:px-6 lg:px-8">
           {/* title */}
@@ -28,25 +30,26 @@ export default function Products() {
 
           {/* content cards */}
           <article className="grid max-w-lg gap-10 mx-auto mt-12 md:grid-cols-2 lg:grid-cols-3 md:max-w-none">
-            {data &&
-              (data as Product[]).map((product) => (
-                <ProductCard
-                  key={product._id}
-                  _id={product._id}
-                  imageName={product.images[0].imageName}
-                  imageUrl={product.images[0].imageUrl}
-                  title={product.title}
-                  price={product.price}
-                  stock={product.stock}
-                  desc={product.desc}
-                  labels={product.labels}
-                />
-              ))}
+            {(data as Product[])?.map((product) => (
+              <ProductCard
+                key={product._id}
+                _id={product._id}
+                imageName={product.images[0].imageName}
+                imageUrl={product.images[0].imageUrl}
+                title={product.title}
+                price={product.price}
+                stock={product.stock}
+                desc={product.desc}
+                labels={product.labels}
+              />
+            ))}
 
             {error && 'Error...'}
           </article>
         </div>
       </main>
+
+      <Footer />
     </div>
-  );
+  )
 }
