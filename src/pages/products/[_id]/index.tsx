@@ -1,10 +1,10 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next'
 // files
-import Nav from '../../../components/Nav';
-import ProductDetail from '../../../components/ProductDetail';
-import { Product as Prod } from '../../../contexts/CartReducer';
-import Product from '../../../mongo/models/Product';
-import MongoConfig from '../../../mongo/config/MongoConfig';
+import Nav from 'components/Nav'
+import ProductDetail from 'components/ProductDetail'
+import Product from 'mongo/models/Product'
+import MongoConfig from 'mongo/config/MongoConfig'
+import { Product as Prod } from 'contexts/CartReducer'
 
 export default function ProductDetailPage({ product }: { product: Prod }) {
   return (
@@ -13,15 +13,21 @@ export default function ProductDetailPage({ product }: { product: Prod }) {
 
       <ProductDetail product={product} />
     </div>
-  );
+  )
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   // connect db
-  const conn = await MongoConfig.connectDB();
+  const conn = await MongoConfig.connectDB()
 
-  const _id = params?._id;
-  const productObj: Prod = await Product.findById(_id);
+  const _id = params?._id
+  const productObj = await Product.findById(_id)
+
+  if (!productObj) {
+    return {
+      notFound: true,
+    }
+  }
 
   const product = {
     _id: productObj._id.toString(),
@@ -34,34 +40,30 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     createdAt: productObj.createdAt.toString(),
     updatedAt: productObj.updatedAt.toString(),
     __v: productObj.__v,
-  };
-
-  if (!productObj) {
-    return {
-      notFound: true,
-    };
   }
 
-  await conn.disconnect();
+  await conn.disconnect()
 
   return {
     props: { product },
     revalidate: 3,
-  };
-};
+  }
+}
 
 export const getStaticPaths: GetStaticPaths = async () => {
   // connect db
-  const conn = await MongoConfig.connectDB();
+  const conn = await MongoConfig.connectDB()
 
-  const products: Prod[] = await Product.find();
+  const products = await Product.find()
 
   const paths = products.map((product) => ({
     params: { _id: product._id.toString() },
-  }));
+  }))
+
+  await conn.disconnect()
 
   return {
     paths,
     fallback: false, // means other routes should 404
-  };
-};
+  }
+}

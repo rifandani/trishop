@@ -33,7 +33,7 @@ const Contact = () => {
 
     try {
       // POST email form
-      const res = await axios.post('api/contact', data)
+      const res = await axios.post('/contact', data)
 
       toast.success(res.data.message)
       actions.setSubmitting(false) // finish formik cycle

@@ -1,4 +1,3 @@
-import Image from 'next/image'
 // files
 import Nav from './Nav'
 

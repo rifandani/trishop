@@ -1,6 +1,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+interface IProductCardProps {
+  _id: string
+  imageName: string
+  imageUrl: string
+  title: string
+  price: number
+  stock: number
+  desc: string
+  labels: string[]
+}
+
 export default function ProductCard({
   _id,
   imageName,
@@ -10,7 +21,7 @@ export default function ProductCard({
   stock,
   desc,
   labels,
-}: any) {
+}: IProductCardProps) {
   return (
     <section className="flex flex-col overflow-hidden shadow-lg card-shadow">
       <div className="relative flex-shrink-0">
@@ -54,14 +65,13 @@ export default function ProductCard({
           </div>
 
           <p className="mt-3 text-sm font-medium leading-5">
-            {labels &&
-              labels.map((label: string, i: number) => (
-                <a key={i} href="/" className="inline-block">
-                  <span className="inline-flex items-center px-3 py-1 mr-2 text-xs font-medium leading-tight text-blue-800 bg-blue-200 rounded-full hover:opacity-75">
-                    {label}
-                  </span>
-                </a>
-              ))}
+            {labels?.map((label: string, i: number) => (
+              <a key={i} href="/" className="inline-block">
+                <span className="inline-flex items-center px-3 py-1 mr-2 text-xs font-medium leading-tight text-blue-800 bg-blue-200 rounded-full hover:opacity-75">
+                  {label}
+                </span>
+              </a>
+            ))}
           </p>
         </div>
 

@@ -1,27 +1,26 @@
-import Axios from 'axios';
-import { useRouter } from 'next/router';
-import { FormEvent, useState } from 'react';
-import { toast } from 'react-toastify';
+import { useRouter } from 'next/router'
+import { FormEvent, useState } from 'react'
+import { toast } from 'react-toastify'
+import Axios from 'axios'
 
 export default function AddUser() {
-  const { push } = useRouter();
+  const { push } = useRouter()
 
-  const [name, setName] = useState<string>('');
-  const [role, setRole] = useState<string>('USER');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('')
+  const [role, setRole] = useState<string>('USER')
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
 
   async function onSubmit(e: FormEvent) {
-    e.preventDefault();
-    const url = '/admin/users';
+    e.preventDefault()
 
-    Axios.post(url, { name, role, email, password })
+    Axios.post('/admin/users', { name, role, email, password })
       .then(() => {
-        toast.success('User created 👍');
+        toast.success('User created 👍')
 
-        push('/admin/dashboard');
+        push('/admin/dashboard')
       })
-      .catch((err) => toast.error(err.message));
+      .catch((err) => toast.error(err.message))
   }
 
   return (
@@ -138,5 +137,5 @@ export default function AddUser() {
         </div>
       </section>
     </main>
-  );
+  )
 }
