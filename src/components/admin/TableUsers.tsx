@@ -1,29 +1,34 @@
-import { Grid } from 'gridjs-react';
-import { h } from 'gridjs';
-import Axios from 'axios';
-import { toast } from 'react-toastify';
-import { mutate } from 'swr';
-import { useRouter } from 'next/router';
+import { Grid } from 'gridjs-react'
+import { h } from 'gridjs'
+import Axios from 'axios'
+import { toast } from 'react-toastify'
+import { mutate } from 'swr'
+import { useRouter } from 'next/router'
 // files
-import useUsers from '../../hooks/useUsers';
+import useUsers from '../../hooks/useUsers'
 
-const url = '/admin/user';
+const API_URL = '/admin/users'
 
 export default function TableUsers() {
-  const { push } = useRouter();
-  const { users } = useUsers();
+  const { push } = useRouter()
+  const { users } = useUsers()
 
   async function editUser(id: string) {
-    await push(`/admin/user/${id}`);
+    // TODO: url should be /users/:id
+    await push(`/admin/user/${id}`)
   }
 
-  async function deleteUser(email: string) {
-    Axios.delete(`${url}s`, { data: { email } })
-      .then(() => toast.success('User deleted 👍'))
-      .catch((err) => toast.error(err.message));
+  async function deleteUser(id: string) {
+    try {
+      await Axios.delete(`${API_URL}?userId=${id}`)
 
-    // trigger a revalidation (refetch) to make sure our local data is correct
-    await mutate(`${url}s`);
+      toast.success('User deleted 👍')
+      // trigger a revalidation (refetch) to make sure our local data is correct
+      await mutate(`${API_URL}`)
+    } catch (err) {
+      toast.error(err.message)
+      console.error(err)
+    }
   }
 
   return (
@@ -54,8 +59,8 @@ export default function TableUsers() {
                         'py-2 px-4 border rounded-md text-white bg-orange-500 hover:bg-orange-600',
                       onClick: () => editUser(row?.cells[0]?.data as string),
                     },
-                    'Edit',
-                  );
+                    'Edit'
+                  )
                 },
               },
               {
@@ -69,10 +74,10 @@ export default function TableUsers() {
                     {
                       className:
                         'py-2 px-4 border rounded-md text-white bg-red-600 hover:bg-red-700',
-                      onClick: () => deleteUser(row?.cells[2]?.data as string),
+                      onClick: () => deleteUser(row?.cells[0]?.data as string), // cells[2] === email
                     },
-                    'Delete',
-                  );
+                    'Delete'
+                  )
                 },
               },
             ]}
@@ -86,5 +91,5 @@ export default function TableUsers() {
         </div>
       </div>
     </div>
-  );
+  )
 }
