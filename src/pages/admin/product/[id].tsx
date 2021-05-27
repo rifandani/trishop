@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 // files
 import Navbar from 'components/admin/Navbar'
 import EditProduct from 'components/admin/EditProduct'
-import Product from 'mongo/models/Product'
+import ProductModel from 'mongo/models/Product'
 import MongoConfig from 'mongo/config/MongoConfig'
 import { Product as Prod } from 'contexts/CartReducer'
 
@@ -19,7 +19,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const conn = await MongoConfig.connectDB()
 
   const id = params?.id
-  const productObj = await Product.findById(id)
+  const productObj = await ProductModel.findById(id)
 
   if (!productObj) {
     return {
@@ -48,7 +48,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   await MongoConfig.connectDB()
 
-  const products = await Product.find()
+  const products = await ProductModel.find()
 
   const paths = products.map((product) => ({
     params: { id: product._id.toString() },

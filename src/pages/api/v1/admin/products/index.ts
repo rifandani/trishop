@@ -1,47 +1,45 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { hashSync } from 'bcrypt'
 import { isValidObjectId } from 'mongoose'
 // files
+import ProductModel from 'mongo/models/Product'
 import getQueryAsString from 'utils/getQueryAsString'
-import UserModel from 'mongo/models/User'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
-import { userApiSchema } from 'yup/apiSchema'
+import { productApiSchema } from 'yup/apiSchema'
 
 // TODO: add authentication middleware for all ADMIN api's
 const handler = async function (req: NextApiRequest, res: NextApiResponse) {
   /* -------------------------------------------------------------------------- */
-  /*           GET req => /admin/users & /admin/users?userId={userId}           */
+  /*     GET req => /admin/products & /admin/products?productId={productId}     */
   /* -------------------------------------------------------------------------- */
   if (req.method === 'GET') {
     try {
-      // there is no query => GET /admin/users
+      // there is no query => GET /admin/products
       if (Object.keys(req.query).length === 0) {
-        const users = await UserModel.find()
+        const products = await ProductModel.find()
 
         // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        res.status(200).json({ error: false, users })
+        res.status(200).json({ error: false, products })
         return
       }
 
-      // there is query => GET /admin/users?userId={userId}
-      const userId = getQueryAsString(req.query.userId)
-
+      // there is query
       // check id validity
-      const userIdIsValid = isValidObjectId(userId)
-      if (!userIdIsValid) {
+      const productId = getQueryAsString(req.query.productId)
+      const productIdIsValid = isValidObjectId(productId)
+      if (!productIdIsValid) {
         // GET client error => Bad Request -----------------------------------------------------------------
         res
           .status(400)
-          .json({ error: true, message: 'userId is not a valid ObjectId' })
+          .json({ error: true, message: 'productId is not a valid ObjectId' })
         return
       }
 
-      // find user by id
-      const user = await UserModel.findById(userId)
+      // get product by productId
+      const product = await ProductModel.findById(productId)
 
       // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, user })
+      res.status(200).json({ error: false, product })
     } catch (err) {
       // GET server error => Internal Server Error -----------------------------------------------------------------
       res
@@ -49,20 +47,24 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         .json({ error: true, name: err.name, message: err.message })
     }
     /* -------------------------------------------------------------------------- */
-    /*                          POST req => /admin/users                          */
+    /*                         POST req => /admin/products                        */
     /* -------------------------------------------------------------------------- */
   } else if (req.method === 'POST') {
+    const { title, price, stock, desc, labels, images } = req.body
+
     try {
-      const { name, role, email, password } = req.body
-
-      // hash password with bcrypt
-      const hash = hashSync(password, 10)
-
-      // store hashed password in database
-      await UserModel.create({ name, role, email, password: hash })
+      // create new product to mongodb
+      await ProductModel.create({
+        title,
+        price,
+        stock,
+        desc,
+        labels,
+        images,
+      })
 
       // POST success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(201).json({ error: false, message: 'User created' })
+      res.status(201).json({ error: false, message: 'Product created' })
     } catch (err) {
       // POST server error => Internal Server Error -----------------------------------------------------------------
       res
@@ -70,47 +72,47 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         .json({ error: true, name: err.name, message: err.message })
     }
     /* -------------------------------------------------------------------------- */
-    /*                   PUT req => /admin/users?userId={userId}                  */
+    /*              PUT req => /admin/products?productId={productId}              */
     /* -------------------------------------------------------------------------- */
   } else if (req.method === 'PUT') {
-    const userId = getQueryAsString(req.query.userId)
-    const { name, role, email, password } = req.body
-
-    // check id validity
-    const userIdIsValid = isValidObjectId(userId)
-    if (!userIdIsValid) {
+    // check productId validity
+    const productId = getQueryAsString(req.query.productId)
+    const productIdIsValid = isValidObjectId(productId)
+    if (!productIdIsValid) {
       // PUT client error => Bad Request -----------------------------------------------------------------
       res
         .status(400)
-        .json({ error: true, message: 'userId is not a valid ObjectId' })
+        .json({ error: true, message: 'productId is not a valid ObjectId' })
       return
     }
 
+    const { title, price, stock, desc, labels, images } = req.body
+
     try {
-      // find existing user
-      const userIsExists = await UserModel.exists({ _id: userId })
-      if (!userIsExists) {
+      // find existing product
+      const productIsExists = await ProductModel.exists({ _id: productId })
+      if (!productIsExists) {
         // PUT client error => Bad Request -----------------------------------------------------------------
         res.status(400).json({
           error: true,
-          message: 'userId is a valid ObjectId, but can not find the user',
+          message:
+            'productId is a valid ObjectId, but can not find the product. Maybe it is already deleted',
         })
         return
       }
 
-      // hash new password with bcrypt
-      const newHash = hashSync(password, 10)
-
-      // update user
-      await UserModel.findByIdAndUpdate(userId, {
-        name,
-        role,
-        email,
-        password: newHash,
+      // update product
+      await ProductModel.findByIdAndUpdate(productId, {
+        title,
+        price,
+        stock,
+        desc,
+        labels,
+        images,
       })
 
       // PUT success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(201).json({ error: false, message: 'User updated' })
+      res.status(201).json({ error: false, message: 'Product updated' })
     } catch (err) {
       // PUT server error => Internal Server Error -----------------------------------------------------------------
       res
@@ -118,37 +120,38 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         .json({ error: true, name: err.name, message: err.message })
     }
     /* -------------------------------------------------------------------------- */
-    /*                 DELETE req => /admin/users?userId={userId}                 */
+    /*              DELETE req => /admin/products?productId={productId}              */
     /* -------------------------------------------------------------------------- */
   } else if (req.method === 'DELETE') {
-    // check id validity
-    const userId = getQueryAsString(req.query.userId)
-    const userIdIsValid = isValidObjectId(userId)
-    if (!userIdIsValid) {
-      // DELETE client error => Bad Request -----------------------------------------------------------------
+    // check productId validity
+    const productId = getQueryAsString(req.query.productId)
+    const productIdIsValid = isValidObjectId(productId)
+    if (!productIdIsValid) {
+      // PUT client error => Bad Request -----------------------------------------------------------------
       res
         .status(400)
-        .json({ error: true, message: 'userId is not a valid ObjectId' })
+        .json({ error: true, message: 'productId is not a valid ObjectId' })
       return
     }
 
     try {
-      // find existing user
-      const userIsExists = await UserModel.exists({ _id: userId })
-      if (!userIsExists) {
+      // find existing product
+      const productIsExists = await ProductModel.exists({ _id: productId })
+      if (!productIsExists) {
         // PUT client error => Bad Request -----------------------------------------------------------------
         res.status(400).json({
           error: true,
-          message: 'userId is a valid ObjectId, but can not find the user',
+          message:
+            'productId is a valid ObjectId, but can not find the product. Maybe it is already deleted',
         })
         return
       }
 
-      // delete user by id
-      await UserModel.findByIdAndDelete(userId)
+      // delete product
+      await ProductModel.findByIdAndDelete(productId)
 
       // DELETE success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, message: 'User deleted' })
+      res.status(200).json({ error: false, message: 'Product deleted' })
     } catch (err) {
       // server error => internal server error ----------------------------------------
       res.status(500).json({
@@ -161,9 +164,9 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
     // client error => METHOD NOT ALLOWED -----------------------------------------------------------------
     res.status(405).json({
       error: true,
-      message: 'Only supports GET, POST, PUT, DELETE methods',
+      message: 'Only supports GET, POST, PUT, DELETE method',
     })
   }
 }
 
-export default withYup(userApiSchema, connectMongo(handler))
+export default withYup(productApiSchema, connectMongo(handler))
