@@ -45,6 +45,7 @@
     "react-dropzone": "^11.3.2",
     "react-icons": "^4.2.0",
     "react-toastify": "^7.0.4",
+    "swiper": "^6.6.2",
     "swr": "^0.5.6",
     "tailwindcss": "^2.1.2",
     "yup": "^0.32.9"
@@ -63,6 +64,7 @@
     "@types/react-dom": "^17.0.5",
     "@types/react-dropzone": "^5.1.0",
     "@types/react-toastify": "^4.1.0",
+    "@types/swiper": "^5.4.2",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
     "eslint": "^7.27.0",
