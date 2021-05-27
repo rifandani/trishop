@@ -42,10 +42,10 @@ export default function Store({
           {address}
           <br /> {city}.
         </h2>
-        <p className="mt-3 text-base text-gray-600">{desc}</p>
+        <p className="mt-3 text-base text-gray-500">{desc}</p>
         <a
           href="/"
-          className="flex items-center mt-8 font-medium text-orange-300 transition duration-500 transform hover:underline hover:skew-x-12 hover:text-orange-800"
+          className="flex items-center mt-8 font-medium text-orange-500 transition duration-500 transform hover:underline hover:skew-x-12 hover:text-orange-800"
         >
           <span>View in Google Maps</span>
           <FaLocationArrow className="w-4 h-4 ml-3" />

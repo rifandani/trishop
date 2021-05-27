@@ -1,17 +1,26 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 // files
 import Nav from 'components/Nav'
-import ProductDetail from 'components/ProductDetail'
+import ProductDetail from 'components/products/product/ProductDetail'
+import Footer from 'components/Footer'
 import ProductModel from 'mongo/models/Product'
 import MongoConfig from 'mongo/config/MongoConfig'
 import { Product as Prod } from 'contexts/CartReducer'
 
-export default function ProductDetailPage({ product }: { product: Prod }) {
+interface IProductDetailPageProps {
+  product: Prod
+}
+
+export default function ProductDetailPage({
+  product,
+}: IProductDetailPageProps) {
   return (
     <div className="flex flex-col mt-3 space-y-12 lg:mt-5">
       <Nav />
 
       <ProductDetail product={product} />
+
+      <Footer />
     </div>
   )
 }
@@ -42,6 +51,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     __v: productObj.__v,
   }
 
+  // disconnect db
   await conn.disconnect()
 
   return {
@@ -60,6 +70,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     params: { _id: product._id.toString() },
   }))
 
+  // disconnect db
   await conn.disconnect()
 
   return {

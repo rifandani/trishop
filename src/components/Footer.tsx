@@ -20,7 +20,7 @@ const Footer = () => {
           {/* social links */}
           <div className="flex mt-8">
             <a
-              className="text-gray-500 hover:text-gray-500"
+              className=""
               href="https://www.linkedin.com/in/rifandani/"
               target="_blank"
               rel="noopener noreferrer"
@@ -30,7 +30,7 @@ const Footer = () => {
             </a>
 
             <a
-              className="ml-6 text-gray-500 hover:text-gray-500"
+              className="ml-6"
               href="https://www.instagram.com/3richkey"
               target="_blank"
               rel="noopener noreferrer"
@@ -40,13 +40,13 @@ const Footer = () => {
             </a>
 
             <a
-              className="ml-6 text-gray-500 hover:text-gray-500"
+              className="ml-6"
               href="https://github.com/rifandani"
               target="_blank"
               rel="noopener noreferrer"
             >
               <span className="sr-only">Github</span>
-              <FaGithub className="w-6 h-6 text-green-500 hover:text-green-700" />
+              <FaGithub className="w-6 h-6 text-gray-500 hover:text-gray-700" />
             </a>
           </div>
         </section>
@@ -71,7 +71,7 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li className="mt-4">
-                  <Link href="/checkout">
+                  <Link href="/cart/checkout">
                     <a className="footer__text-link">Checkout</a>
                   </Link>
                 </li>

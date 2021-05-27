@@ -1,13 +1,14 @@
 import { GiCakeSlice } from 'react-icons/gi'
 import useSWR from 'swr'
 // files
-import { Product } from 'contexts/CartReducer'
 import Nav from 'components/Nav'
-import ProductCard from 'components/ProductCard'
+import LoadingSpinner from 'components/LoadingSpinner'
+import ProductCard from 'components/products/ProductCard'
 import Footer from 'components/Footer'
+import { Product } from 'contexts/CartReducer'
 
-export default function Products() {
-  const { data, error } = useSWR<Product[] | []>('/admin/products', {
+export default function ProductsPage() {
+  const { data, error } = useSWR('/admin/products', {
     refreshInterval: 10000,
   })
 
@@ -23,28 +24,32 @@ export default function Products() {
             Get the best from us
           </p>
 
-          <h2 className="flex justify-center font-sans text-3xl font-bold leading-none tracking-tight text-center text-gray-900 b-6 sm:text-4xl md:mx-auto">
+          <h2 className="flex justify-center mb-12 font-sans text-3xl font-bold leading-none tracking-tight text-center text-gray-900 b-6 sm:text-4xl md:mx-auto">
             <GiCakeSlice className="w-8 h-8 mt-1 mr-3 text-orange-800" />
             <span className="relative">Our Featured Products</span>{' '}
           </h2>
 
-          {/* content cards */}
-          <article className="grid max-w-lg gap-10 mx-auto mt-12 md:grid-cols-2 lg:grid-cols-3 md:max-w-none">
-            {(data as Product[])?.map((product) => (
-              <ProductCard
-                key={product._id}
-                _id={product._id}
-                imageName={product.images[0].imageName}
-                imageUrl={product.images[0].imageUrl}
-                title={product.title}
-                price={product.price}
-                stock={product.stock}
-                desc={product.desc}
-                labels={product.labels}
-              />
-            ))}
+          {/* main content */}
+          {error && 'Error...'}
 
-            {error && 'Error...'}
+          {!data && <LoadingSpinner />}
+          {data && data.products.length === 0 && 'There is no data'}
+
+          <article className="grid max-w-lg gap-10 mx-auto md:grid-cols-2 lg:grid-cols-3 md:max-w-none">
+            {data &&
+              (data.products as Product[]).map((product) => (
+                <ProductCard
+                  key={product._id}
+                  _id={product._id}
+                  imageName={product.images[0].imageName}
+                  imageUrl={product.images[0].imageUrl}
+                  title={product.title}
+                  price={product.price}
+                  stock={product.stock}
+                  desc={product.desc}
+                  labels={product.labels}
+                />
+              ))}
           </article>
         </div>
       </main>

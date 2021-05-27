@@ -1,6 +1,6 @@
 export default function Custom404Page() {
   return (
-    <div className="relative h-screen overflow-hidden bg-indigo-900">
+    <main className="relative h-screen overflow-hidden bg-indigo-900">
       <img
         className="absolute object-cover w-full h-full"
         src="images/cover/404.svg"
@@ -20,6 +20,6 @@ export default function Custom404Page() {
           </p>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

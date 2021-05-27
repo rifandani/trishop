@@ -8,13 +8,13 @@ import { CartContext } from 'contexts/CartContext'
 import { Product } from 'contexts/CartReducer'
 
 export default function ProductDetail({ product }: { product: Product }) {
-  const [images] = useState(product.images || [])
+  const { title, price, stock, desc, labels, images } = product // destructure props
+
+  // hooks
+  const { push } = useRouter()
   const [imageIndex, setImageIndex] = useState<number>(0)
   const [quantity, setQuantity] = useState<string>('1')
-
   const { cart, dispatch } = useContext(CartContext)
-
-  const { push } = useRouter()
 
   async function addToCart() {
     const payload = {
@@ -38,7 +38,7 @@ export default function ProductDetail({ product }: { product: Product }) {
   }
 
   return (
-    <article className="py-6">
+    <article className="min-h-screen py-6">
       {/* Breadcrumbs */}
       <section className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-16">
         <div className="flex items-center space-x-2 text-sm text-gray-400">
@@ -94,7 +94,7 @@ export default function ProductDetail({ product }: { product: Product }) {
           <section className="px-4 mt-6 md:mt-0 md:flex-1">
             {/* product title */}
             <h2 className="mb-1 text-2xl font-bold leading-tight tracking-tight text-gray-800 md:text-3xl">
-              {product.title}
+              {title}
             </h2>
 
             {/* seller */}
@@ -123,10 +123,10 @@ export default function ProductDetail({ product }: { product: Product }) {
                 <div className="flex px-3 py-2 bg-gray-100 rounded-lg">
                   <span className="mt-1 mr-2 text-orange-400">Rp</span>
                   <span className="mr-2 text-3xl font-bold text-orange-800 line-through">
-                    {(product.price * 110) / 100}
+                    {(price * 110) / 100}
                   </span>
                   <span className="text-3xl font-bold text-orange-800">
-                    {product.price}
+                    {price}
                   </span>
                 </div>
               </div>
@@ -151,7 +151,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
                 >
-                  {Array(product.stock)
+                  {Array(stock)
                     .fill('whatever')
                     .map((_: any, i: number) => (
                       <option key={i} value={i + 1}>
@@ -167,11 +167,11 @@ export default function ProductDetail({ product }: { product: Product }) {
             </div>
 
             {/* desc */}
-            <p className="text-gray-500">{product.desc}</p>
+            <p className="text-gray-500">{desc}</p>
 
             {/* labels */}
             <div className="flex items-center py-4 space-x-4">
-              {product.labels.map((label: string, i: number) => (
+              {labels.map((label: string, i: number) => (
                 <button
                   className="inline-flex items-center px-3 py-1 mr-2 text-xs font-semibold tracking-wide text-blue-800 uppercase bg-blue-200 rounded-full cursor-pointer hover:opacity-50"
                   key={i}

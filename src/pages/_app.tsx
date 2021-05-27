@@ -34,7 +34,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>TriShop</title>
+        <title>TriShop - Custom cake shop</title>
         {/* meta */}
         <meta
           name="viewport"
@@ -43,10 +43,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <meta property="og:title" content="TriShop" key="title" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="favicon.ico" />
-        <meta
-          name="twitter:title"
-          content="TriShop | Creative custom cake shop"
-        />
+        <meta name="twitter:title" content="TriShop - Custom cake shop" />
         <meta
           name="twitter:card"
           content="Tell us your custom cake design. We make your dream cake becomes reality"

@@ -1,11 +1,17 @@
+import Head from 'next/head'
 import { FaStoreAlt } from 'react-icons/fa'
 // files
-import Nav from '../components/Nav'
-import Store from '../components/Store'
+import Nav from 'components/Nav'
+import Store from 'components/stores/Store'
+import Footer from 'components/Footer'
 
 export default function Stores() {
   return (
     <div className="flex flex-col">
+      <Head>
+        <title>TriShop - Stores</title>
+      </Head>
+
       <Nav />
 
       <main className="py-20 bg-white lg:pt-28 lg:mt-3">
@@ -40,6 +46,8 @@ export default function Stores() {
           />
         </div>
       </main>
+
+      <Footer />
     </div>
   )
 }

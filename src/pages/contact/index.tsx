@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { toast } from 'react-toastify'
 import {
   FaGithub,
@@ -11,7 +12,7 @@ import {
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import axios from 'axios'
 // files
-import Nav from '../components/Nav'
+import Nav from 'components/Nav'
 import { contactApiSchema, TContactApiSchema } from 'yup/apiSchema'
 
 const Contact = () => {
@@ -46,10 +47,14 @@ const Contact = () => {
 
   return (
     <>
+      <Head>
+        <title>TriShop - Contact Us</title>
+      </Head>
+
       <Nav />
 
       {/* contact */}
-      <article className="relative flex items-center justify-center min-h-screen mt-16 min-w-screen bg-gradient-to-r from-orange-800 via-orange-500 to-orange-200">
+      <main className="relative flex items-center justify-center min-h-screen mt-16 min-w-screen bg-gradient-to-r from-orange-800 via-orange-500 to-orange-200">
         <div className="container h-full max-w-5xl mx-auto overflow-hidden rounded-lg shadow">
           <div className="h-full sm:flex">
             {/* contact links */}
@@ -227,7 +232,7 @@ const Contact = () => {
             </section>
           </div>
         </div>
-      </article>
+      </main>
     </>
   )
 }
