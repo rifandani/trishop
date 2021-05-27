@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { GiCakeSlice } from 'react-icons/gi'
 import useSWR from 'swr'
 // files
@@ -14,6 +15,10 @@ export default function ProductsPage() {
 
   return (
     <div className="flex flex-col ">
+      <Head>
+        <title>Trishop - Products</title>
+      </Head>
+
       <Nav />
 
       {/* main content */}

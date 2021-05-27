@@ -1,18 +1,17 @@
 import { useRouter } from 'next/router'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useContext } from 'react'
 import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa'
 // files
 import { CartContext } from 'contexts/CartContext'
 import { Product } from 'contexts/CartReducer'
+import ImageSwiper from './ImageSwiper'
 
 export default function ProductDetail({ product }: { product: Product }) {
   const { title, price, stock, desc, labels, images } = product // destructure props
 
   // hooks
   const { push } = useRouter()
-  const [imageIndex, setImageIndex] = useState<number>(0)
   const [discount] = useState<number>(0.1)
   const [quantity, setQuantity] = useState<string>('1')
   const { cart, dispatch } = useContext(CartContext)
@@ -61,35 +60,8 @@ export default function ProductDetail({ product }: { product: Product }) {
 
       <section className="px-4 mx-auto mt-6 max-w-7xl sm:px-6 lg:px-16">
         <article className="flex flex-col -mx-4 md:flex-row">
-          <section className="px-4 md:flex-1">
-            {/* product images */}
-            <div className="mb-6 bg-gray-100 rounded-lg">
-              <Image
-                className="rounded-lg"
-                src={images[imageIndex].imageUrl}
-                alt={images[imageIndex].imageName}
-                height={300}
-                width={650}
-              />
-            </div>
-
-            {/* <div className="flex items-center w-full h-24 px-2 rounded-lg md:h-32 justify-evenly">
-                </div> */}
-            <div className="flex items-center px-2 -mx-2 space-x-3">
-              {images.map((image: any, i: number) => (
-                <div key={i}>
-                  <Image
-                    className="rounded-lg cursor-pointer hover:opacity-50"
-                    onClick={() => setImageIndex(i)}
-                    src={image.imageUrl}
-                    alt={image.imageName}
-                    height={100}
-                    width={120}
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
+          {/* product image swiper */}
+          <ImageSwiper images={images} />
 
           {/* isi product details */}
           <section className="px-4 mt-6 md:mt-0 md:flex-1">

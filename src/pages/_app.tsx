@@ -8,6 +8,10 @@ import 'nprogress/nprogress.css'
 import 'gridjs/dist/theme/mermaid.css'
 import axios from 'axios'
 import { SWRConfig } from 'swr'
+// Import Swiper styles
+import 'swiper/swiper.min.css'
+import 'swiper/components/navigation/navigation.min.css'
+import 'swiper/components/thumbs/thumbs.min.css'
 // files
 import '../styles/index.css'
 import { CartProvider } from 'contexts/CartContext'
