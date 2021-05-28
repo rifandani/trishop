@@ -28,6 +28,9 @@ module.exports = {
           900: '#7b341e',
         },
       },
+      lineClamp: {
+        10: '10',
+      },
     },
   },
   variants: {
@@ -36,7 +39,8 @@ module.exports = {
       // see more: https://tailwindcss.com/docs/just-in-time-mode
       // opacity: ['disabled'],
       // textColor: ['visited'],
+      lineClamp: ['responsive', 'hover'],
     },
   },
-  // plugins: [require('@tailwindcss/custom-forms')],
+  plugins: [require('@tailwindcss/line-clamp')],
 }

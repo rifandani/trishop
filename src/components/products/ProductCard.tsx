@@ -59,12 +59,12 @@ export default function ProductCard({
               </a>
             </Link>
 
-            <p className="mt-3 text-base italic leading-6 text-gray-500">
+            <p className="mt-3 text-base italic leading-6 text-gray-500 line-clamp-3 hover:line-clamp-none">
               {desc}
             </p>
           </div>
 
-          <p className="mt-3 text-sm font-medium leading-5">
+          <p className="mt-6 text-sm font-medium leading-5">
             {labels?.map((label: string, i: number) => (
               <a key={i} href="/" className="inline-block">
                 <span className="inline-flex items-center px-3 py-1 mr-2 text-xs font-medium leading-tight text-blue-800 bg-blue-200 rounded-full hover:opacity-75">
