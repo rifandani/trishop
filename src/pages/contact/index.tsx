@@ -107,7 +107,7 @@ const Contact = () => {
 
                   <div className="flex space-x-3 text-white text-md sm:text-gray-500">
                     <a
-                      className="text-gray-400 hover:text-red-500"
+                      className="text-red-500 hover:text-red-800"
                       href="https://www.instagram.com/3richkey"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -117,7 +117,7 @@ const Contact = () => {
                     </a>
 
                     <a
-                      className="text-gray-400 hover:text-blue-500"
+                      className="text-blue-500 hover:text-blue-800"
                       href="https://www.linkedin.com/in/rifandani/"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -127,7 +127,7 @@ const Contact = () => {
                     </a>
 
                     <a
-                      className="text-gray-400 hover:text-black"
+                      className="text-gray-500 hover:text-gray-800"
                       href="https://github.com/rifandani"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -157,7 +157,7 @@ const Contact = () => {
                       </label>
 
                       <Field
-                        className="w-full px-5 py-3 border border-gray-400 rounded-lg outline-none focus:shadow-outline"
+                        className=""
                         placeholder="elonmusk@gmail.com"
                         type="email"
                         name="email"
@@ -178,7 +178,7 @@ const Contact = () => {
                       </label>
 
                       <Field
-                        className="w-full px-5 py-3 border border-gray-400 rounded-lg outline-none focus:shadow-outline"
+                        className=""
                         placeholder="Subject - Trishop"
                         type="text"
                         name="subject"
@@ -198,7 +198,7 @@ const Contact = () => {
                       </label>
 
                       <Field
-                        className="w-full h-40 px-5 py-3 border border-gray-400 rounded-lg outline-none focus:shadow-outline"
+                        className=" focus:shadow-outline"
                         placeholder="Your message here..."
                         as="textarea"
                         name="message"

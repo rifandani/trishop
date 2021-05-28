@@ -74,7 +74,7 @@ export default function RegisterPage() {
                     </label>
 
                     <Field
-                      className="w-full px-3 py-2 mt-1 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                      className="mt-1"
                       name="name"
                       type="text"
                       placeholder="Elon Musk"
@@ -95,7 +95,7 @@ export default function RegisterPage() {
                     </label>
 
                     <Field
-                      className="w-full px-3 py-2 mt-1 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                      className="mt-1"
                       placeholder="elonmusk@gmail.com"
                       type="email"
                       name="email"
@@ -115,7 +115,7 @@ export default function RegisterPage() {
                     </label>
 
                     <Field
-                      className="w-full px-3 py-2 mt-1 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                      className="mt-1"
                       name="password"
                       type="password"
                       placeholder="******"
