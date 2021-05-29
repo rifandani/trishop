@@ -33,12 +33,11 @@ export default function ProductDetail({ product }: { product: Product }) {
     console.log('cart => ', cart)
   }
 
-  async function clickLabel(label: string) {
-    await push(`/products/categories?_label=${label}`)
-  }
+  const clickLabel = (label: string) =>
+    push(`/products/categories?_label=${label}`)
 
   return (
-    <main className="min-h-screen py-6">
+    <main className="py-6">
       {/* Breadcrumbs */}
       <section className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-16">
         <div className="flex items-center space-x-2 text-sm text-gray-400">
@@ -75,22 +74,27 @@ export default function ProductDetail({ product }: { product: Product }) {
               <p className="text-xs font-semibold tracking-wide text-gray-400">
                 By{' '}
                 <Link href="/">
-                  <a className="hover:underline hover:text-orange-800">
+                  <a className="text-gray-800 hover:underline hover:text-orange-800">
                     Trishop
                   </a>
                 </Link>
               </p>
 
+              {/* seller */}
+              <p className="text-xs font-semibold tracking-wide text-gray-400">
+                Terjual <span className="text-gray-800">421</span>
+              </p>
+
               {/* reviews */}
               <div className="flex items-center my-3 space-x-1">
-                {Array(5)
-                  .fill('whatever')
-                  .map((_, i) => (
-                    <FaStar key={i} className="w-4 h-4 text-orange-500" />
-                  ))}
+                <FaStar className="w-4 h-4 text-orange-500" />
 
-                <span className="pl-4 mt-1 text-xs font-semibold tracking-wide text-gray-400">
-                  147 Reviews
+                <span className="pl-2 mt-1 text-xs font-semibold tracking-wide text-gray-800">
+                  4.6
+                </span>
+
+                <span className="pl-2 mt-1 text-xs font-semibold tracking-wide text-gray-400">
+                  (147 reviews)
                 </span>
               </div>
             </section>
@@ -103,7 +107,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                 </label>
 
                 <select
-                  className="pl-4 pr-4 ml-2 border border-gray-200 appearance-none cursor-pointer focus:outline-none focus:ring focus:border-orange-300 rounded-xl h-15"
+                  className="h-10 ml-2 cursor-pointer"
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
                 >
@@ -164,7 +168,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             <section className="flex items-center my-4">
               {labels.map((label: string, i: number) => (
                 <button
-                  className="inline-flex items-center px-3 py-1 mr-2 text-xs font-semibold tracking-wide text-blue-800 bg-blue-200 rounded-full cursor-pointer hover:opacity-50"
+                  className="product-label-btn"
                   key={i}
                   onClick={() => clickLabel(label)}
                 >
@@ -176,11 +180,11 @@ export default function ProductDetail({ product }: { product: Product }) {
             {/* cart & wishlist */}
             <section className="flex items-center mt-6 space-x-4">
               <button
-                className="flex items-center h-10 px-6 py-2 font-semibold text-white bg-orange-800 rounded-full hover:underline"
+                className="flex items-center h-10 px-6 py-2 font-semibold text-white bg-orange-800 rounded-full hover:bg-orange-500"
                 onClick={addToCart}
               >
                 <FaCartPlus className="w-4 h-4 mr-2" />
-                <span className="text-xs font-semibold tracking-wide uppercase">
+                <span className="mt-1 text-xs font-semibold tracking-wide uppercase">
                   Add to Cart
                 </span>
               </button>

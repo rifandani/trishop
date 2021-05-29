@@ -29,10 +29,10 @@ export default function ProductsPage() {
             Get the best from us
           </p>
 
-          <h2 className="flex justify-center mb-12 font-sans text-3xl font-bold leading-none tracking-tight text-center text-gray-900 b-6 sm:text-4xl md:mx-auto">
+          <h1 className="flex justify-center mb-12 font-sans text-3xl font-bold leading-none tracking-tight text-center text-gray-900 b-6 sm:text-4xl md:mx-auto">
             <GiCakeSlice className="w-8 h-8 mt-1 mr-3 text-orange-800" />
             <span className="relative">Our Featured Products</span>{' '}
-          </h2>
+          </h1>
 
           {/* main content */}
           {error && 'Error...'}

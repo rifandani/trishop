@@ -1,8 +1,10 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
+import { FaComments } from 'react-icons/fa'
 // files
 import Nav from 'components/Nav'
 import ProductDetail from 'components/products/product/ProductDetail'
+import ProductReview from 'components/products/product/ProductReview'
 import Footer from 'components/Footer'
 import ProductModel from 'mongo/models/Product'
 import MongoConfig from 'mongo/config/MongoConfig'
@@ -25,6 +27,13 @@ export default function ProductDetailPage({
       <Nav />
 
       <ProductDetail product={product} />
+
+      <h1 className="flex items-center justify-center text-2xl font-bold leading-tight tracking-tight text-center text-gray-800 md:text-3xl">
+        <FaComments className="w-8 h-8 mb-2 mr-3 text-orange-800" />
+        <span className="relative">Reviews</span>{' '}
+      </h1>
+
+      <ProductReview />
 
       <Footer />
     </div>

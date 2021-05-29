@@ -13,6 +13,7 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import axios from 'axios'
 // files
 import Nav from 'components/Nav'
+import Footer from 'components/Footer'
 import { contactApiSchema, TContactApiSchema } from 'yup/apiSchema'
 
 const Contact = () => {
@@ -54,8 +55,8 @@ const Contact = () => {
       <Nav />
 
       {/* contact */}
-      <main className="relative flex items-center justify-center min-h-screen mt-16 min-w-screen bg-gradient-to-r from-orange-800 via-orange-500 to-orange-200">
-        <div className="container h-full max-w-5xl mx-auto overflow-hidden rounded-lg shadow">
+      <main className="relative flex items-center justify-center min-h-screen mt-16 bg-white min-w-screen">
+        <div className="container h-full max-w-5xl mx-auto overflow-hidden rounded-lg shadow-lg">
           <div className="h-full sm:flex">
             {/* contact links */}
             <aside className="w-full p-10 bg-orange-100 rounded-none md:w-1/3 sm:rounded">
@@ -233,6 +234,8 @@ const Contact = () => {
           </div>
         </div>
       </main>
+
+      <Footer />
     </>
   )
 }

@@ -27,6 +27,11 @@
   select {
     @apply w-full text-gray-700 border-gray-300 rounded shadow-sm focus:border-yellow-800 focus:ring-4 focus:ring-yellow-800 focus:ring-opacity-50 hover:shadow-lg;
   }
+
+  [type='checkbox'],
+  [type='radio'] {
+    @apply text-yellow-800 border-gray-300 rounded shadow-sm hover:shadow-lg focus:ring-yellow-500;
+  }
 }
 
 @layer components {
@@ -56,6 +61,10 @@
   /* FOOTER */
   .footer__text-link {
     @apply text-base leading-6 text-black hover:underline hover:text-orange-800;
+  }
+
+  .product-label-btn {
+    @apply inline-flex items-center px-3 py-1 mr-2 text-xs font-semibold tracking-wide text-blue-800 bg-blue-200 rounded-full cursor-pointer focus:outline-none hover:underline focus:ring-blue-800 focus:ring-opacity-50;
   }
 }
 

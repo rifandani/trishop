@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 interface IProductCardProps {
   _id: string
@@ -22,6 +23,12 @@ export default function ProductCard({
   desc,
   labels,
 }: IProductCardProps) {
+  // hooks
+  const { push } = useRouter()
+
+  const onClickLabel = (label: string) =>
+    push(`/products/categories?label=${label}`)
+
   return (
     <section className="flex flex-col overflow-hidden shadow-lg card-shadow">
       <div className="relative flex-shrink-0">
@@ -66,11 +73,13 @@ export default function ProductCard({
 
           <p className="mt-6 text-sm font-medium leading-5">
             {labels?.map((label: string, i: number) => (
-              <a key={i} href="/" className="inline-block">
-                <span className="inline-flex items-center px-3 py-1 mr-2 text-xs font-medium leading-tight text-blue-800 bg-blue-200 rounded-full hover:opacity-75">
-                  {label}
-                </span>
-              </a>
+              <button
+                className="product-label-btn"
+                key={i}
+                onClick={() => onClickLabel(label)}
+              >
+                {label}
+              </button>
             ))}
           </p>
         </div>
