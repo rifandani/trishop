@@ -28,7 +28,7 @@ export default function ImageSwiper({ images }: IImageSwiperProps) {
         className="my-image-swiper-big"
       >
         {images.map((image) => (
-          <SwiperSlide>
+          <SwiperSlide key={image.imageUrl}>
             <img
               className="cursor-pointer"
               src={image.imageUrl}
@@ -48,7 +48,7 @@ export default function ImageSwiper({ images }: IImageSwiperProps) {
         className="my-image-swiper-small"
       >
         {images.map((image) => (
-          <SwiperSlide>
+          <SwiperSlide key={image.imageUrl}>
             <img
               className="cursor-pointer"
               src={image.imageUrl}

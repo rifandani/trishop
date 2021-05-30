@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { useState, useContext } from 'react'
+import { useState, useContext, ChangeEvent } from 'react'
 import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa'
+import { toast } from 'react-toastify'
 // files
 import { CartContext } from 'contexts/CartContext'
 import { Product } from 'contexts/CartReducer'
@@ -12,9 +13,13 @@ export default function ProductDetail({ product }: { product: Product }) {
 
   // hooks
   const { push } = useRouter()
+  const { cart, dispatch } = useContext(CartContext)
   const [discount] = useState<number>(0.1)
   const [quantity, setQuantity] = useState<string>('1')
-  const { cart, dispatch } = useContext(CartContext)
+  const [error, setError] = useState<string>('')
+
+  const priceAfterDiscount = price - price * discount
+  const subtotal = Number(quantity) * priceAfterDiscount
 
   async function addToCart() {
     const payload = {
@@ -27,6 +32,20 @@ export default function ProductDetail({ product }: { product: Product }) {
       type: 'ADD_PRODUCT',
       payload,
     })
+
+    toast.success('Product added to the cart')
+  }
+
+  function onChangeQuantity(e: ChangeEvent<HTMLInputElement>) {
+    const input = e.target.value
+
+    if (Number(input) > stock) {
+      setError(`Cannot exceed more than ${stock}`)
+      return
+    }
+
+    setError('')
+    setQuantity(input)
   }
 
   async function addToWishlist() {
@@ -70,19 +89,14 @@ export default function ProductDetail({ product }: { product: Product }) {
             </h1>
 
             <section className="flex items-center justify-between mb-5 border-b">
-              {/* seller */}
+              {/* stock */}
               <p className="text-xs font-semibold tracking-wide text-gray-400">
-                By{' '}
-                <Link href="/">
-                  <a className="text-gray-800 hover:underline hover:text-orange-800">
-                    Trishop
-                  </a>
-                </Link>
+                Stock <span className="text-gray-800">{stock}</span>
               </p>
 
-              {/* seller */}
+              {/* sold */}
               <p className="text-xs font-semibold tracking-wide text-gray-400">
-                Terjual <span className="text-gray-800">421</span>
+                Sold <span className="text-gray-800">421</span>
               </p>
 
               {/* reviews */}
@@ -95,37 +109,6 @@ export default function ProductDetail({ product }: { product: Product }) {
 
                 <span className="pl-2 mt-1 text-xs font-semibold tracking-wide text-gray-400">
                   (147 reviews)
-                </span>
-              </div>
-            </section>
-
-            {/* stock */}
-            <section className="flex items-center my-3">
-              <div className="flex items-center">
-                <label className="text-xs font-semibold tracking-wide uppercase">
-                  Quantity:
-                </label>
-
-                <select
-                  className="h-10 ml-2 cursor-pointer"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                >
-                  {Array(stock)
-                    .fill('whatever')
-                    .map((_: any, i: number) => (
-                      <option key={i} value={i + 1}>
-                        {i + 1}
-                      </option>
-                    ))}
-                </select>
-
-                <span
-                  className={`${
-                    stock > 0 ? 'text-green-500' : 'text-red-500'
-                  } ml-3 text-xs font-bold tracking-wide`}
-                >
-                  {stock > 0 ? 'Available' : 'Not available'}
                 </span>
               </div>
             </section>
@@ -147,12 +130,12 @@ export default function ProductDetail({ product }: { product: Product }) {
                     {new Intl.NumberFormat('id-ID', {
                       maximumFractionDigits: 0,
                       minimumFractionDigits: 0,
-                    }).format(price - price * discount)}
+                    }).format(priceAfterDiscount)}
                   </span>
                 </div>
               </div>
               <div className="flex-1">
-                <p className="text-xl font-semibold text-green-500">
+                <p className="text-xl font-semibold text-blue-500">
                   Discount {discount * 100}%
                 </p>
                 <p className="text-sm text-gray-400">
@@ -175,6 +158,49 @@ export default function ProductDetail({ product }: { product: Product }) {
                   {label}
                 </button>
               ))}
+            </section>
+
+            <hr className="my-5" />
+
+            {/* quantity + subtotal */}
+            <section className="flex-col items-center mb-2">
+              {/* quantity */}
+              <div className="flex items-center">
+                <label className="text-xs font-semibold tracking-wide uppercase">
+                  Order
+                </label>
+
+                <input
+                  className="w-1/6 h-10 ml-8 cursor-pointer"
+                  type="number"
+                  value={quantity}
+                  onChange={onChangeQuantity}
+                  max={stock}
+                  min={stock === 0 ? 0 : 1}
+                />
+
+                {error && (
+                  <span className="ml-3 text-xs font-bold tracking-wide text-red-500">
+                    {error}
+                  </span>
+                )}
+              </div>
+
+              {/* subtotal */}
+              <div className="flex items-center mt-5">
+                <p className="text-xs font-semibold tracking-wide uppercase">
+                  Subtotal
+                </p>
+
+                <p className="ml-3 mr-2 text-orange-800">Rp</p>
+
+                <span className="text-3xl font-bold text-orange-800">
+                  {new Intl.NumberFormat('id-ID', {
+                    maximumFractionDigits: 0,
+                    minimumFractionDigits: 0,
+                  }).format(subtotal)}
+                </span>
+              </div>
             </section>
 
             {/* cart & wishlist */}

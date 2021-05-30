@@ -1,94 +1,92 @@
-import Axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
-import { IoMdClose, IoIosCard } from 'react-icons/io';
-import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri';
-import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
-import { Transition } from '@headlessui/react';
+import { useRouter } from 'next/router'
+import { useContext, useEffect, useState } from 'react'
+import { IoMdClose, IoIosCard } from 'react-icons/io'
+import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri'
+import { Transition } from '@headlessui/react'
+import { toast } from 'react-toastify'
+import Cookies from 'js-cookie'
+import Axios from 'axios'
 // files
-import { CartContext } from '../contexts/CartContext';
-import { Payload } from '../contexts/CartReducer';
-import { useRouter } from 'next/router';
+import { CartContext } from '../contexts/CartContext'
+import { Payload } from '../contexts/CartReducer'
 
 export default function Cart() {
-  const [coupon, setCoupon] = useState<string>('');
-  const [couponDiscount, setCouponDiscount] = useState<number>(0); // float
-  const [subtotal, setSubtotal] = useState<number>(0);
-  const [total, setTotal] = useState<number>(0);
-
-  const { push } = useRouter();
-  const { cart, dispatch } = useContext(CartContext); // cart context
+  // hooks
+  const { push } = useRouter()
+  const { cart, dispatch } = useContext(CartContext) // cart context
+  const [coupon, setCoupon] = useState<string>('')
+  const [couponDiscount, setCouponDiscount] = useState<number>(0) // float
+  const [subtotal, setSubtotal] = useState<number>(0)
+  const [total, setTotal] = useState<number>(0)
 
   useEffect(() => {
-    const initialValue = 0;
     const mySubtotal = (cart as Payload[]).reduce(
-      (accumulator, currentValue) => {
-        return accumulator + currentValue.price * currentValue.quantity;
-      },
-      initialValue,
-    );
-    setSubtotal(mySubtotal);
+      (accumulator, currentValue) =>
+        accumulator + currentValue.price * currentValue.quantity,
+      0
+    )
+    setSubtotal(mySubtotal)
 
-    const priceAfterDiscount = Math.floor(mySubtotal * couponDiscount);
+    const priceAfterDiscount = Math.floor(mySubtotal * couponDiscount)
 
-    setTotal(mySubtotal - priceAfterDiscount);
-  }, [cart, couponDiscount]);
+    setTotal(mySubtotal - priceAfterDiscount)
+  }, [cart, couponDiscount])
 
   function deleteProduct(product: Payload) {
     dispatch({
       type: 'DEL_PRODUCT',
       payload: product,
-    });
+    })
   }
 
   function onChangeQuantity() {
     // kalau ingin functionality ini, maka harus Call API untuk product tersebut, lalu ngecek jangan sampai quantity nya melebihi dari yg ada di database
     toast.warning(
-      'You cant change the quantity here. Please, delete the product in the cart first.',
-    );
+      'You cant change the quantity here. Please, delete the product in the cart first.'
+    )
   }
 
   async function applyCoupon() {
     const couponData = {
       coupon: coupon.toLowerCase(),
-    };
+    }
 
     // call coupon API
-    const res = await Axios.post('/coupon', couponData);
+    const res = await Axios.post('/coupon', couponData)
 
     // kalau error, return toast
     if (res?.data.error) {
-      return toast.error(res?.data.message);
+      return toast.error(res?.data.message)
     }
 
     // set value coupon
-    const discountValue = res?.data.discount;
-    setCouponDiscount(discountValue); // float
+    const discountValue = res?.data.discount
+    setCouponDiscount(discountValue) // float
 
-    toast.success('Coupon applied');
+    toast.success('Coupon applied')
   }
 
   function deleteCoupon() {
     // reset all coupon
-    setCoupon('');
-    setCouponDiscount(0);
+    setCoupon('')
+    setCouponDiscount(0)
 
-    toast.info('Coupon reset');
+    toast.info('Coupon reset')
   }
 
   async function checkout() {
-    const authCookie = Cookies.get('auth');
+    const authCookie = Cookies.get('auth')
 
     if (!authCookie) {
-      await push('/login');
-      return toast.warning('Please login first to proceed to checkout');
+      await push('/login')
+      return toast.warning('Please login first to proceed to checkout')
     } else if (cart.length === 0) {
       return toast.dark(
-        'Please add a product to cart before proceeding to checkout',
-      );
+        'Please add a product to cart before proceeding to checkout'
+      )
     }
 
-    await push('/cart/checkout');
+    await push('/cart/checkout')
   }
 
   return (
@@ -114,7 +112,6 @@ export default function Cart() {
 
             {/* isi product */}
             <tbody>
-              {/* gatau kenapa squigly di .map nya */}
               {cart &&
                 (cart as Payload[]).map((product) => (
                   <Transition
@@ -193,6 +190,7 @@ export default function Cart() {
                       onChange={(e) => setCoupon(e.target.value)}
                       value={coupon}
                     />
+
                     <button
                       onClick={applyCoupon}
                       className="flex items-center px-3 py-1 text-sm text-white bg-orange-800 rounded-full outline-none md:px-4 hover:opacity-50 focus:outline-none active:outline-none"
@@ -229,6 +227,7 @@ export default function Cart() {
                   Shipping and additionnal costs are calculated based on values
                   you have entered
                 </p>
+
                 <div className="flex justify-between border-b">
                   <div className="m-2 text-lg font-bold text-center text-gray-800 lg:px-4 lg:py-2 lg:text-xl">
                     Subtotal
@@ -237,6 +236,7 @@ export default function Cart() {
                     Rp {subtotal}
                   </div>
                 </div>
+
                 <div className="flex justify-between pt-4 border-b">
                   <div className="flex items-center m-2 text-lg font-bold text-gray-800 lg:px-4 lg:py-2 lg:text-xl">
                     <RiDeleteBin6Line
@@ -249,6 +249,7 @@ export default function Cart() {
                     - Rp {Math.floor(subtotal * couponDiscount)}
                   </div>
                 </div>
+
                 <div className="flex justify-between pt-4 border-b">
                   <div className="m-2 text-lg font-bold text-center lg:px-4 lg:py-2 lg:text-xl">
                     Total
@@ -272,5 +273,5 @@ export default function Cart() {
         </article>
       </div>
     </div>
-  );
+  )
 }

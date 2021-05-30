@@ -42,7 +42,7 @@
 
   /* NAV */
   .nav__link {
-    @apply inline-block px-4 py-2 font-bold text-orange-800 hover:text-white hover:underline;
+    @apply inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline;
   }
 
   .nav__login-btn {

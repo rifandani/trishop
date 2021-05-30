@@ -4,7 +4,7 @@ import { FaStar } from 'react-icons/fa'
 
 export default function CustomerReviewCard() {
   return (
-    <section className="flex-col w-full p-4 bg-orange-100 border-b-2 border-r-2 border-gray-200 rounded-lg shadow-lg">
+    <section className="flex-col w-full p-4 rounded-lg shadow-lg">
       <div className="flex flex-row">
         <img
           className="w-12 h-12 border-2 border-gray-300 rounded-full"

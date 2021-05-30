@@ -5,19 +5,17 @@ import { useContext, useState } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { FaShoppingCart } from 'react-icons/fa'
 import { toast } from 'react-toastify'
-import { Transition } from '@headlessui/react'
 import Cookies from 'js-cookie'
 // files
 import { CartContext } from '../contexts/CartContext'
 
 const Nav = () => {
+  // hooks
+  const { push } = useRouter()
+  const { cart } = useContext(CartContext) // cart context
   const [toggle, setToggle] = useState(true) // toggle hamburger menu
   const [cookie] = useState(Cookies.get('auth') || '') // cookie
 
-  const { push } = useRouter() // next router
-  const { cart } = useContext(CartContext) // cart context
-
-  // TODO: haruskah ganti fungsi cookies?
   async function logout() {
     Cookies.remove('auth') // remove auth cookie
 
@@ -63,16 +61,10 @@ const Nav = () => {
         </section>
 
         {/* nav content */}
-        <Transition
-          className="z-20 flex-grow w-full p-4 text-black lg:flex lg:items-center lg:w-auto lg:mt-0 lg:p-0 lg:bg-transparent"
-          as="section"
-          show={toggle}
-          enter="transition ease-in-out duration-300 transform"
-          enterFrom="-translate-x-full"
-          enterTo="translate-x-0"
-          leave="transition ease-in-out duration-300 transform"
-          leaveFrom="translate-x-0"
-          leaveTo="-translate-x-full"
+        <section
+          className={`${
+            toggle ? 'hidden' : 'flex-grow'
+          } z-20 w-full p-4 text-black lg:flex lg:items-center lg:w-auto lg:mt-0 lg:p-0 lg:bg-transparent`}
         >
           <ul className="items-center justify-end flex-1 list-reset lg:flex">
             <li className="mr-3">
@@ -89,10 +81,10 @@ const Nav = () => {
 
             <li className="mr-3">
               <Link href="/cart">
-                <a className="inline-block px-4 py-2 mt-1 lg:mr-2">
+                <a className="inline-block px-4 pt-4 pb-3 bg-white rounded-full lg:mr-2">
                   <div className="flex space-x-2">
                     <FaShoppingCart className="text-xl text-orange-800 transition duration-500 transform hover:scale-150 hover:text-orange-400" />
-                    <p className="text-white">{cart ? cart.length : 0}</p>
+                    <p className="text-orange-800">{cart ? cart.length : 0}</p>
                   </div>
                 </a>
               </Link>
@@ -108,35 +100,35 @@ const Nav = () => {
               <button className="nav__login-btn">Login</button>
             </Link>
           )}
-        </Transition>
+        </section>
       </article>
 
       {/* mobile content */}
       {/* {toggle ? (
         <article className="container flex-wrap items-center justify-center w-full pb-5 mx-auto mt-0">
           <section className="w-full ">
-            <Link href="/" >
+            <Link href="/">
               <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
                 Products
               </a>
             </Link>
           </section>
           <section className="w-full ">
-            <Link href="/" >
+            <Link href="/">
               <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
                 Stores
               </a>
             </Link>
           </section>
           <section className="w-full ">
-            <Link href="/" >
+            <Link href="/">
               <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
                 Marketplaces
               </a>
             </Link>
           </section>
           <section className="w-full ">
-            <Link href="/login" >
+            <Link href="/login">
               <button className="px-8 py-4 mx-auto mt-2 ml-4 font-bold text-orange-800 bg-white rounded-full shadow hover:underline">
                 Login
               </button>
