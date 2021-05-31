@@ -8,16 +8,25 @@ import { toast } from 'react-toastify'
 import Cookies from 'js-cookie'
 // files
 import { CartContext } from '../contexts/CartContext'
+import useLocalStorage from 'hooks/useLocalStorage'
 
 const Nav = () => {
   // hooks
   const { push } = useRouter()
   const { cart } = useContext(CartContext) // cart context
+  const [, setValue] = useLocalStorage('user', '') // local storage
   const [toggle, setToggle] = useState(true) // toggle hamburger menu
-  const [cookie] = useState(Cookies.get('auth') || '') // cookie
+  const [cookie, setCookie] = useState(Cookies.get('auth') || '') // cookie
+
+  function login() {
+    return push('/login')
+  }
 
   async function logout() {
-    Cookies.remove('auth') // remove auth cookie
+    // remove auth cookie & user local storage
+    Cookies.remove('auth')
+    setValue('')
+    setCookie('')
 
     // push back to home and toast
     await push('/')
@@ -96,9 +105,9 @@ const Nav = () => {
               Logout
             </button>
           ) : (
-            <Link href="/login">
-              <button className="nav__login-btn">Login</button>
-            </Link>
+            <button onClick={login} className="nav__login-btn">
+              Login
+            </button>
           )}
         </section>
       </article>

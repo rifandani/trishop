@@ -23,6 +23,11 @@ const productSchema = new Schema<IProduct>(
       required: [true, 'Stock must not be empty'],
       min: 1,
     },
+    sold: {
+      type: Number,
+      default: () => 0,
+      min: 0,
+    },
     desc: {
       type: String,
       required: [true, 'Description must not be empty'],

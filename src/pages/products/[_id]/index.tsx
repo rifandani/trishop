@@ -9,6 +9,7 @@ import Footer from 'components/Footer'
 import ProductModel from 'mongo/models/Product'
 import MongoConfig from 'mongo/config/MongoConfig'
 import { Product as Prod } from 'contexts/CartReducer'
+import getQueryAsString from 'utils/getQueryAsString'
 
 interface IProductDetailPageProps {
   product: Prod
@@ -21,7 +22,7 @@ export default function ProductDetailPage({
     <div className="flex flex-col mt-3 space-y-12 lg:mt-5">
       <Head>
         <title>Trishop - {product.title}</title>
-        <link rel="icon" href="favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Nav />
@@ -44,7 +45,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // connect db
   const conn = await MongoConfig.connectDB()
 
-  const _id = params?._id
+  const _id = getQueryAsString(params._id)
   const productObj = await ProductModel.findById(_id)
 
   if (!productObj) {
@@ -55,15 +56,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const product = {
     _id: productObj._id.toString(),
+    createdAt: productObj.createdAt.toString(),
+    updatedAt: productObj.updatedAt.toString(),
+    __v: productObj.__v,
     labels: productObj.labels,
     images: productObj.images,
     title: productObj.title,
     price: productObj.price,
     stock: productObj.stock,
     desc: productObj.desc,
-    createdAt: productObj.createdAt.toString(),
-    updatedAt: productObj.updatedAt.toString(),
-    __v: productObj.__v,
+    sold: productObj.sold,
   }
 
   // disconnect db

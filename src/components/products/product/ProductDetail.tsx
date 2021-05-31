@@ -9,7 +9,7 @@ import { Product } from 'contexts/CartReducer'
 import ImageSwiper from './ImageSwiper'
 
 export default function ProductDetail({ product }: { product: Product }) {
-  const { title, price, stock, desc, labels, images } = product // destructure props
+  const { title, price, stock, desc, labels, images, sold } = product // destructure props
 
   // hooks
   const { push } = useRouter()
@@ -41,6 +41,9 @@ export default function ProductDetail({ product }: { product: Product }) {
 
     if (Number(input) > stock) {
       setError(`Cannot exceed more than ${stock}`)
+      return
+    } else if (!input) {
+      setError('Input 1 or more')
       return
     }
 
@@ -96,7 +99,7 @@ export default function ProductDetail({ product }: { product: Product }) {
 
               {/* sold */}
               <p className="text-xs font-semibold tracking-wide text-gray-400">
-                Sold <span className="text-gray-800">421</span>
+                Sold <span className="text-gray-800">{sold}</span>
               </p>
 
               {/* reviews */}

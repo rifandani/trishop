@@ -7,30 +7,48 @@ import { toast } from 'react-toastify'
 import Cookies from 'js-cookie'
 import Axios from 'axios'
 // files
-import { CartContext } from '../contexts/CartContext'
-import { Payload } from '../contexts/CartReducer'
+import { CartContext } from 'contexts/CartContext'
+import { Payload } from 'contexts/CartReducer'
+import useLocalStorage from 'hooks/useLocalStorage'
+import { IOrder } from 'types/OrderLS'
 
-export default function Cart() {
+export default function CartComp() {
   // hooks
   const { push } = useRouter()
   const { cart, dispatch } = useContext(CartContext) // cart context
+  const [userId] = useLocalStorage<string>('user', '')
+  const [, setOrder] = useLocalStorage<IOrder>('order', null) // local storage
+
   const [coupon, setCoupon] = useState<string>('')
   const [couponDiscount, setCouponDiscount] = useState<number>(0) // float
   const [subtotal, setSubtotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
 
   useEffect(() => {
-    const mySubtotal = (cart as Payload[]).reduce(
+    // count subtotal
+    const mySubtotal = cart.reduce(
       (accumulator, currentValue) =>
         accumulator + currentValue.price * currentValue.quantity,
       0
     )
     setSubtotal(mySubtotal)
 
+    // count total price
     const priceAfterDiscount = Math.floor(mySubtotal * couponDiscount)
-
     setTotal(mySubtotal - priceAfterDiscount)
   }, [cart, couponDiscount])
+
+  // custom functions
+  function generateRupiah(amount: number) {
+    const rupiah = new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0,
+    }).format(amount)
+
+    return rupiah
+  }
 
   function deleteProduct(product: Payload) {
     dispatch({
@@ -39,31 +57,24 @@ export default function Cart() {
     })
   }
 
-  function onChangeQuantity() {
-    // kalau ingin functionality ini, maka harus Call API untuk product tersebut, lalu ngecek jangan sampai quantity nya melebihi dari yg ada di database
-    toast.warning(
-      'You cant change the quantity here. Please, delete the product in the cart first.'
-    )
-  }
-
   async function applyCoupon() {
     const couponData = {
       coupon: coupon.toLowerCase(),
     }
 
-    // call coupon API
-    const res = await Axios.post('/coupon', couponData)
+    try {
+      // call coupon API
+      const res = await Axios.post('/coupon', couponData)
 
-    // kalau error, return toast
-    if (res?.data.error) {
-      return toast.error(res?.data.message)
+      // set value coupon
+      const discountValue = res?.data.discount
+      setCouponDiscount(discountValue) // float
+
+      toast.success('Coupon applied')
+    } catch (err) {
+      toast.error(err.data.message)
+      console.error(err)
     }
-
-    // set value coupon
-    const discountValue = res?.data.discount
-    setCouponDiscount(discountValue) // float
-
-    toast.success('Coupon applied')
   }
 
   function deleteCoupon() {
@@ -75,18 +86,42 @@ export default function Cart() {
   }
 
   async function checkout() {
-    const authCookie = Cookies.get('auth')
-
-    if (!authCookie) {
-      await push('/login')
-      return toast.warning('Please login first to proceed to checkout')
-    } else if (cart.length === 0) {
+    // if there is no cart
+    if (cart.length === 0) {
       return toast.dark(
         'Please add a product to cart before proceeding to checkout'
       )
     }
 
-    await push('/cart/checkout')
+    try {
+      // validate auth cookie
+      const authCookieStr = Cookies.get('auth') // get authCookie string
+      if (!authCookieStr) {
+        await push('/login')
+        toast.warning('Please login first to proceed to checkout')
+        return
+      }
+
+      // after validation
+      const item_details = cart.map((prod) => ({
+        id: prod._id,
+        name: prod.title,
+        price: prod.price,
+        quantity: prod.quantity,
+      }))
+      const order = {
+        user_id: userId,
+        transaction_details: {
+          gross_amount: total,
+        },
+        item_details,
+      }
+      setOrder(order)
+      await push('/cart/checkout')
+    } catch (err) {
+      toast.error(err.message)
+      console.error(err)
+    }
   }
 
   return (
@@ -99,25 +134,25 @@ export default function Cart() {
               <tr className="h-12 uppercase">
                 <th className="hidden md:table-cell"></th>
                 <th className="text-left ">Product</th>
-                <th className="pl-5 text-left md:text-center lg:text-right lg:pl-0">
+                <th className="pl-5 text-right lg:pl-0">
                   <span className="lg:hidden" title="Quantity">
                     Qtd
                   </span>
                   <span className="hidden lg:inline ">Quantity</span>
                 </th>
                 <th className="hidden text-right md:table-cell">Unit price</th>
-                <th className="text-right text-red-600">Total price</th>
+                <th className="text-right text-orange-800">Total price</th>
               </tr>
             </thead>
 
             {/* isi product */}
             <tbody>
               {cart &&
-                (cart as Payload[]).map((product) => (
+                cart.map((prod, i) => (
                   <Transition
-                    key={product._id}
+                    key={prod._id}
                     as="tr"
-                    show={Boolean(cart)}
+                    show={Boolean(cart[i])}
                     className="transition duration-500 ease-in-out"
                     enter="transition ease-in-out duration-300 transform"
                     enterFrom="-translate-x-full"
@@ -129,34 +164,31 @@ export default function Cart() {
                     <td className="hidden pb-4 md:table-cell">
                       <img
                         className="w-20 rounded"
-                        src={product.images[0].imageUrl}
-                        alt={product.images[0].imageName}
+                        src={prod.images[0].imageUrl}
+                        alt={prod.images[0].imageName}
                       />
                     </td>
                     <td>
                       <p className="flex items-end justify-between mb-2">
-                        {product.title}
-                        <span onClick={() => deleteProduct(product)}>
+                        {prod.title}
+                        <span onClick={() => deleteProduct(prod)}>
                           <IoMdClose className="mr-3 text-red-500 transition duration-500 transform cursor-pointer hover:scale-150" />
                         </span>
                       </p>
                     </td>
-                    <td className="items-center justify-center md:justify-end md:flex">
-                      <input
-                        className="flex w-16 h-10 font-semibold text-center text-gray-700 bg-gray-200 outline-none md:mt-3 focus:outline-none hover:text-black focus:text-black"
-                        type="number"
-                        onChange={() => onChangeQuantity()}
-                        value={product.quantity.toString()}
-                      />
+                    <td className="text-right">
+                      <span className="text-sm font-medium lg:text-base">
+                        {prod.quantity}
+                      </span>
                     </td>
                     <td className="hidden text-right md:table-cell">
                       <span className="text-sm font-medium lg:text-base">
-                        Rp {product.price}
+                        {generateRupiah(prod.price)}
                       </span>
                     </td>
                     <td className="text-right">
                       <span className="text-sm font-medium lg:text-base">
-                        Rp {product.price * product.quantity}
+                        {generateRupiah(prod.price * prod.quantity)}
                       </span>
                     </td>
                   </Transition>
@@ -186,7 +218,7 @@ export default function Cart() {
                   <div className="flex items-center w-full pl-3 bg-gray-100 border rounded-full h-13">
                     <input
                       className="w-full bg-gray-100 outline-none appearance-none focus:outline-none active:outline-none focus:border-blue-500 border-1"
-                      placeholder="Apply coupon"
+                      placeholder="Your coupon code here..."
                       onChange={(e) => setCoupon(e.target.value)}
                       value={coupon}
                     />
@@ -233,7 +265,7 @@ export default function Cart() {
                     Subtotal
                   </div>
                   <div className="m-2 font-bold text-center text-gray-900 lg:px-4 lg:py-2 lg:text-lg">
-                    Rp {subtotal}
+                    {generateRupiah(subtotal)}
                   </div>
                 </div>
 
@@ -245,8 +277,8 @@ export default function Cart() {
                     />
                     <span>Coupon "{coupon}"</span>
                   </div>
-                  <div className="m-2 font-bold text-center text-green-500 lg:px-4 lg:py-2 lg:text-lg">
-                    - Rp {Math.floor(subtotal * couponDiscount)}
+                  <div className="m-2 font-bold text-center text-red-500 lg:px-4 lg:py-2 lg:text-lg">
+                    - {generateRupiah(Math.floor(subtotal * couponDiscount))}
                   </div>
                 </div>
 
@@ -254,8 +286,8 @@ export default function Cart() {
                   <div className="m-2 text-lg font-bold text-center lg:px-4 lg:py-2 lg:text-xl">
                     Total
                   </div>
-                  <div className="m-2 font-bold text-center text-red-600 lg:px-4 lg:py-2 lg:text-lg">
-                    Rp {total}
+                  <div className="m-2 font-bold text-center text-orange-800 lg:px-4 lg:py-2 lg:text-lg">
+                    {generateRupiah(total)}
                   </div>
                 </div>
 

@@ -13,6 +13,7 @@ export interface IProduct {
   price: number
   stock: number
   title: string
+  sold: number
   updatedAt?: number
 }
 

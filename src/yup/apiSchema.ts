@@ -73,3 +73,4 @@ export type TLoginApiSchema = TypeOf<typeof loginApiSchema>
 export type TRegisterApiSchema = TypeOf<typeof registerApiSchema>
 export type TContactApiSchema = TypeOf<typeof contactApiSchema>
 export type TUserApiSchema = TypeOf<typeof userApiSchema>
+export type TProductApiSchema = TypeOf<typeof productApiSchema>

@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import axios from 'axios'
 // files
 import { TRegisterApiSchema, registerApiSchema } from 'yup/apiSchema'
+import useLocalStorage from 'hooks/useLocalStorage'
 
 export default function RegisterPage() {
   const initialValues: TRegisterApiSchema = {
@@ -15,6 +16,7 @@ export default function RegisterPage() {
 
   // hooks
   const router = useRouter()
+  const [, setValue] = useLocalStorage('user', '')
 
   const onRegister = async (
     values: TRegisterApiSchema,
@@ -28,7 +30,10 @@ export default function RegisterPage() {
 
     try {
       // POST /auth/register
-      await axios.post('/auth/register', newUser)
+      const res = await axios.post('/auth/register', newUser)
+
+      // set to local storage
+      setValue(res.data.userId)
 
       // role === 'USER'
       await router.push('/products')

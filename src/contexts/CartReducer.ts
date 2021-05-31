@@ -16,6 +16,7 @@ export interface Product {
   stock: number
   title: string
   updatedAt: string
+  sold: number
   __v: number
   _id: string
 }

@@ -5,9 +5,11 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import axios from 'axios'
 // files
 import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
+import useLocalStorage from 'hooks/useLocalStorage'
 
 interface PostAuthLogin {
   error: boolean
+  userId: string
   role: 'ADMIN' | 'USER'
 }
 
@@ -19,6 +21,7 @@ export default function Login() {
 
   // hooks
   const { push } = useRouter()
+  const [, setValue] = useLocalStorage('user', '')
 
   const onLogin = async (
     values: TLoginApiSchema,
@@ -32,6 +35,9 @@ export default function Login() {
     try {
       // POST /auth/login
       const res = await axios.post<PostAuthLogin>('/auth/login', user)
+
+      // set to local storage
+      setValue(res.data.userId)
 
       // if role == 'ADMIN'
       if (res.data.role === 'ADMIN') {
