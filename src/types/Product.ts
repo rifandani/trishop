@@ -6,7 +6,6 @@ export type TImage = {
 }
 
 export interface IProduct {
-  createdAt?: number
   desc: string
   images: TImage[]
   labels: string[]
@@ -14,7 +13,8 @@ export interface IProduct {
   stock: number
   title: string
   sold: number
-  updatedAt?: number
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export type Products = IProduct[]

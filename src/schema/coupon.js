@@ -9,6 +9,8 @@ const coupon = {
   imageUrl:
     'https://firebasestorage.googleapis.com/v0/b/roompy-roompies.appspot.com/o/promotion%2F1024x600.jpg?alt=media&token=3c7e16de-030e-4cea-abbb-3b85902a065a',
   validUntil: '2020-11-06T09:21:15.364+00:00',
+  createdAt: '2020-11-06T09:21:15.364+00:00',
+  updatedAt: '2020-11-06T09:21:15.364+00:00',
 }
 
 export default coupon

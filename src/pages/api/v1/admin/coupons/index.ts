@@ -1,57 +1,57 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { isValidObjectId } from 'mongoose'
 // files
-import ProductModel from 'mongo/models/Product'
+import CouponModel from 'mongo/models/Coupon'
 import getQueryAsString from 'utils/getQueryAsString'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
-import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
+import { couponApiSchema, TCouponApiSchema } from 'yup/apiSchema'
 
 // TODO: add authentication middleware for all ADMIN api's
 const handler = async function (req: NextApiRequest, res: NextApiResponse) {
-  /* -------------------------------------------------------------------------- */
-  /*     GET req => /admin/products & /admin/products?productId={productId}     */
-  /* -------------------------------------------------------------------------- */
+  /* ------------------------------------------------------------------------------------------------------------------ */
+  /*                           GET req => /admin/coupons + /admin/coupons?couponId={couponId}                           */
+  /* ------------------------------------------------------------------------------------------------------------------ */
   if (req.method === 'GET') {
     try {
-      // there is no query => GET /admin/products
+      // there is no query => GET /admin/coupons
       if (Object.keys(req.query).length === 0) {
-        const products = await ProductModel.find()
+        const coupons = await CouponModel.find()
 
         // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        res.status(200).json({ error: false, products })
+        res.status(200).json({ error: false, coupons })
         return
       }
 
-      // there is query
+      // ther is query {couponId}
       // check id validity
-      const productId = getQueryAsString(req.query.productId)
-      const productIdIsValid = isValidObjectId(productId)
-      if (!productIdIsValid) {
+      const couponId = getQueryAsString(req.query.couponId)
+      const couponIdIsValid = isValidObjectId(couponId)
+      if (!couponIdIsValid) {
         // GET client error => Bad Request -----------------------------------------------------------------
         res
           .status(400)
-          .json({ error: true, message: 'productId is not a valid ObjectId' })
+          .json({ error: true, message: 'couponId is not a valid ObjectId' })
         return
       }
 
-      // find existing product
-      const productIsExists = await ProductModel.exists({ _id: productId })
-      if (!productIsExists) {
+      // find existing coupon
+      const couponIsExists = await CouponModel.exists({ _id: couponId })
+      if (!couponIsExists) {
         // PUT client error => Bad Request -----------------------------------------------------------------
         res.status(400).json({
           error: true,
           message:
-            'productId is a valid ObjectId, but can not find the product. Maybe it is already deleted',
+            'couponId is a valid ObjectId, but can not find the coupon. Maybe it is already deleted',
         })
         return
       }
 
-      // get product by productId
-      const product = await ProductModel.findById(productId)
+      // get coupon by couponId
+      const coupon = await CouponModel.findById(couponId)
 
       // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, product })
+      res.status(200).json({ error: false, coupon })
     } catch (err) {
       // GET server error => Internal Server Error -----------------------------------------------------------------
       res
@@ -59,25 +59,25 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         .json({ error: true, name: err.name, message: err.message })
     }
     /* -------------------------------------------------------------------------- */
-    /*                         POST req => /admin/products                        */
+    /*                         POST req => /admin/coupons                        */
     /* -------------------------------------------------------------------------- */
   } else if (req.method === 'POST') {
-    const { title, price, stock, desc, labels, images } =
-      req.body as TProductApiSchema
+    const { discount, minTransaction, code, desc, imageUrl, validUntil } =
+      req.body as TCouponApiSchema
 
     try {
-      // create new product to mongodb
-      await ProductModel.create({
-        title,
-        price,
-        stock,
+      // create new coupon to mongodb
+      const coupon = await CouponModel.create({
+        discount,
+        minTransaction,
+        code,
         desc,
-        labels,
-        images,
+        imageUrl,
+        validUntil,
       })
 
       // POST success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(201).json({ error: false, message: 'Product created' })
+      res.status(201).json({ error: false, couponId: coupon._id })
     } catch (err) {
       // POST server error => Internal Server Error -----------------------------------------------------------------
       res
@@ -85,48 +85,48 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         .json({ error: true, name: err.name, message: err.message })
     }
     /* -------------------------------------------------------------------------- */
-    /*              PUT req => /admin/products?productId={productId}              */
+    /*              PUT req => /admin/coupons?couponId={couponId}              */
     /* -------------------------------------------------------------------------- */
   } else if (req.method === 'PUT') {
-    // check productId validity
-    const productId = getQueryAsString(req.query.productId)
-    const productIdIsValid = isValidObjectId(productId)
-    if (!productIdIsValid) {
+    // check couponId validity
+    const couponId = getQueryAsString(req.query.couponId)
+    const couponIdIsValid = isValidObjectId(couponId)
+    if (!couponIdIsValid) {
       // PUT client error => Bad Request -----------------------------------------------------------------
       res
         .status(400)
-        .json({ error: true, message: 'productId is not a valid ObjectId' })
+        .json({ error: true, message: 'couponId is not a valid ObjectId' })
       return
     }
 
-    const { title, price, stock, desc, labels, images } =
-      req.body as TProductApiSchema
+    const { discount, minTransaction, code, desc, imageUrl, validUntil } =
+      req.body as TCouponApiSchema
 
     try {
-      // find existing product
-      const productIsExists = await ProductModel.exists({ _id: productId })
-      if (!productIsExists) {
+      // find existing coupon
+      const couponIsExists = await CouponModel.exists({ _id: couponId })
+      if (!couponIsExists) {
         // PUT client error => Bad Request -----------------------------------------------------------------
         res.status(400).json({
           error: true,
           message:
-            'productId is a valid ObjectId, but can not find the product. Maybe it is already deleted',
+            'couponId is a valid ObjectId, but can not find the coupon. Maybe it is already deleted',
         })
         return
       }
 
-      // update product
-      await ProductModel.findByIdAndUpdate(productId, {
-        title,
-        price,
-        stock,
+      // update coupon
+      await CouponModel.findByIdAndUpdate(couponId, {
+        discount,
+        minTransaction,
+        code,
         desc,
-        labels,
-        images,
+        imageUrl,
+        validUntil,
       })
 
       // PUT success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(201).json({ error: false, message: 'Product updated' })
+      res.status(201).json({ error: false, message: 'Coupon updated' })
     } catch (err) {
       // PUT server error => Internal Server Error -----------------------------------------------------------------
       res
@@ -134,38 +134,38 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         .json({ error: true, name: err.name, message: err.message })
     }
     /* -------------------------------------------------------------------------- */
-    /*              DELETE req => /admin/products?productId={productId}              */
+    /*              DELETE req => /admin/coupons?couponId={couponId}              */
     /* -------------------------------------------------------------------------- */
   } else if (req.method === 'DELETE') {
-    // check productId validity
-    const productId = getQueryAsString(req.query.productId)
-    const productIdIsValid = isValidObjectId(productId)
-    if (!productIdIsValid) {
+    // check couponId validity
+    const couponId = getQueryAsString(req.query.couponId)
+    const couponIdIsValid = isValidObjectId(couponId)
+    if (!couponIdIsValid) {
       // PUT client error => Bad Request -----------------------------------------------------------------
       res
         .status(400)
-        .json({ error: true, message: 'productId is not a valid ObjectId' })
+        .json({ error: true, message: 'couponId is not a valid ObjectId' })
       return
     }
 
     try {
-      // find existing product
-      const productIsExists = await ProductModel.exists({ _id: productId })
-      if (!productIsExists) {
+      // find existing coupon
+      const couponIsExists = await CouponModel.exists({ _id: couponId })
+      if (!couponIsExists) {
         // PUT client error => Bad Request -----------------------------------------------------------------
         res.status(400).json({
           error: true,
           message:
-            'productId is a valid ObjectId, but can not find the product. Maybe it is already deleted',
+            'couponId is a valid ObjectId, but can not find the coupon. Maybe it is already deleted',
         })
         return
       }
 
-      // delete product
-      await ProductModel.findByIdAndDelete(productId)
+      // delete coupon
+      await CouponModel.findByIdAndDelete(couponId)
 
       // DELETE success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, message: 'Product deleted' })
+      res.status(200).json({ error: false, message: 'Coupon deleted' })
     } catch (err) {
       // server error => internal server error ----------------------------------------
       res.status(500).json({
@@ -183,4 +183,4 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withYup(productApiSchema, connectMongo(handler))
+export default withYup(couponApiSchema, connectMongo(handler))

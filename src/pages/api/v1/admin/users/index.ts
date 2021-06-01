@@ -25,15 +25,26 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       }
 
       // there is query => GET /admin/users?userId={userId}
-      const userId = getQueryAsString(req.query.userId)
-
       // check id validity
+      const userId = getQueryAsString(req.query.userId)
       const userIdIsValid = isValidObjectId(userId)
       if (!userIdIsValid) {
         // GET client error => Bad Request -----------------------------------------------------------------
         res
           .status(400)
           .json({ error: true, message: 'userId is not a valid ObjectId' })
+        return
+      }
+
+      // find existing product
+      const userIsExists = await UserModel.exists({ _id: userId })
+      if (!userIsExists) {
+        // PUT client error => Bad Request -----------------------------------------------------------------
+        res.status(400).json({
+          error: true,
+          message:
+            'userId is a valid ObjectId, but can not find the user. Maybe it is already deleted',
+        })
         return
       }
 
@@ -52,9 +63,9 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
     /*                          POST req => /admin/users                          */
     /* -------------------------------------------------------------------------- */
   } else if (req.method === 'POST') {
-    try {
-      const { name, role, email, password } = req.body
+    const { name, role, email, password } = req.body
 
+    try {
       // hash password with bcrypt
       const hash = hashSync(password, 10)
 
@@ -73,10 +84,8 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
     /*                   PUT req => /admin/users?userId={userId}                  */
     /* -------------------------------------------------------------------------- */
   } else if (req.method === 'PUT') {
-    const userId = getQueryAsString(req.query.userId)
-    const { name, role, email, password } = req.body
-
     // check id validity
+    const userId = getQueryAsString(req.query.userId)
     const userIdIsValid = isValidObjectId(userId)
     if (!userIdIsValid) {
       // PUT client error => Bad Request -----------------------------------------------------------------
@@ -86,6 +95,8 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       return
     }
 
+    const { name, role, email, password } = req.body
+
     try {
       // find existing user
       const userIsExists = await UserModel.exists({ _id: userId })
@@ -93,7 +104,8 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         // PUT client error => Bad Request -----------------------------------------------------------------
         res.status(400).json({
           error: true,
-          message: 'userId is a valid ObjectId, but can not find the user',
+          message:
+            'userId is a valid ObjectId, but can not find the user. Maybe it is already deleted',
         })
         return
       }
@@ -139,7 +151,8 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         // PUT client error => Bad Request -----------------------------------------------------------------
         res.status(400).json({
           error: true,
-          message: 'userId is a valid ObjectId, but can not find the user',
+          message:
+            'userId is a valid ObjectId, but can not find the user. Maybe it is already deleted',
         })
         return
       }
