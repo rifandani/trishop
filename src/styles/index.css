@@ -66,6 +66,23 @@
   .product-label-btn {
     @apply inline-flex items-center px-3 py-1 mr-2 text-xs font-semibold tracking-wide text-blue-800 bg-blue-200 rounded-full cursor-pointer focus:outline-none hover:underline focus:ring-blue-800 focus:ring-opacity-50;
   }
+
+  /* checkout step */
+  .checkout__step-div-active {
+    @apply flex text-sm text-orange-800 focus:outline-none;
+  }
+
+  .checkout__step-span-active {
+    @apply flex items-center justify-center w-5 h-5 mr-2 text-white bg-orange-800 rounded-full;
+  }
+
+  .checkout__step-div-inactive {
+    @apply flex text-sm text-gray-700 focus:outline-none;
+  }
+
+  .checkout__step-span-inactive {
+    @apply flex items-center justify-center w-5 h-5 mr-2 border-2 border-gray-700 rounded-full;
+  }
 }
 
 .card-shadow:hover {

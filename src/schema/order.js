@@ -4,11 +4,13 @@ const order_id = '8-or4oq4FYkdM6gXRWNLGOqMKHA1H3-1619971999845'
 const order = {
   user_id: 'or4oq4FYkdM6gXRWNLGOqMKHA1H3',
   transaction_status: 'pending', // 'failure', 'success', ''
+  // customer contacts
   customer_details: {
     email: 'noreply@example.com',
     first_name: 'rifandnai',
     last_name: 'tri',
     phone: '+628224319933',
+    // shipping address
     shipping_address: {
       first_name: 'Budi',
       last_name: 'Susanto',
@@ -26,12 +28,9 @@ const order = {
       name: 'rosette cake',
       price: 100000,
       quantity: 2,
-    },
-    {
-      id: 'or4oq4FYkdM6gXRWNLGOqMKHA1H3',
-      name: 'macarons',
-      price: 86000,
-      quantity: 5,
+      brand: 'SuperCake',
+      category: 'buttercream', // product labels
+      merchant_name: 'TRISHOP' | 'trishop' | 'Trishop',
     },
   ],
   transaction_details: {

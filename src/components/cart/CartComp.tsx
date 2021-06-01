@@ -4,13 +4,13 @@ import { IoMdClose, IoIosCard } from 'react-icons/io'
 import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri'
 import { Transition } from '@headlessui/react'
 import { toast } from 'react-toastify'
-import Cookies from 'js-cookie'
 import Axios from 'axios'
 // files
 import { CartContext } from 'contexts/CartContext'
 import { Payload } from 'contexts/CartReducer'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { IOrder } from 'types/OrderLS'
+import generateRupiah from 'utils/generateRupiah'
 
 export default function CartComp() {
   // hooks
@@ -39,17 +39,6 @@ export default function CartComp() {
   }, [cart, couponDiscount])
 
   // custom functions
-  function generateRupiah(amount: number) {
-    const rupiah = new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      maximumFractionDigits: 0,
-      minimumFractionDigits: 0,
-    }).format(amount)
-
-    return rupiah
-  }
-
   function deleteProduct(product: Payload) {
     dispatch({
       type: 'DEL_PRODUCT',
@@ -88,35 +77,29 @@ export default function CartComp() {
   async function checkout() {
     // if there is no cart
     if (cart.length === 0) {
-      return toast.dark(
-        'Please add a product to cart before proceeding to checkout'
-      )
+      toast.dark('Please add a product to cart before proceeding to checkout')
+      return
+    }
+
+    const item_details = cart.map((prod) => ({
+      id: prod._id,
+      name: prod.title,
+      price: prod.price,
+      quantity: prod.quantity,
+      imageName: prod.images[0].imageName,
+      imageUrl: prod.images[0].imageUrl,
+    }))
+
+    const order = {
+      user_id: userId,
+      transaction_details: {
+        gross_amount: total,
+      },
+      item_details,
     }
 
     try {
-      // validate auth cookie
-      const authCookieStr = Cookies.get('auth') // get authCookie string
-      if (!authCookieStr) {
-        await push('/login')
-        toast.warning('Please login first to proceed to checkout')
-        return
-      }
-
-      // after validation
-      const item_details = cart.map((prod) => ({
-        id: prod._id,
-        name: prod.title,
-        price: prod.price,
-        quantity: prod.quantity,
-      }))
-      const order = {
-        user_id: userId,
-        transaction_details: {
-          gross_amount: total,
-        },
-        item_details,
-      }
-      setOrder(order)
+      setOrder(order) // set order to local storage
       await push('/cart/checkout')
     } catch (err) {
       toast.error(err.message)

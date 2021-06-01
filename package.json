@@ -50,7 +50,8 @@
     "swiper": "^6.6.2",
     "swr": "^0.5.6",
     "tailwindcss": "^2.1.2",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "yup-phone": "^1.2.19"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
