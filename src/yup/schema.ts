@@ -16,4 +16,13 @@ export const checkoutContactSchema = object({
     .required('Phone number required'),
 }) // .camelCase()
 
+export const checkoutShippingSchema = object({
+  address: string()
+    .required('Address required')
+    .min(5, 'Address must be 5 characters or more'),
+  city: string().required('City required'),
+  postalCode: string().required('Postal code required'),
+}) // .camelCase()
+
 export type TCheckoutContactSchema = TypeOf<typeof checkoutContactSchema>
+export type TCheckoutShippingSchema = TypeOf<typeof checkoutShippingSchema>

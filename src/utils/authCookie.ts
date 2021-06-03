@@ -6,10 +6,6 @@ class authCookie {
   // FIXME: throws an error because isValidObjectId is only available in the server env
   static validateClient(cookie: string): boolean {
     const decodedToken = decode(cookie)
-    console.log(
-      '🚀 ~ file: authCookie.ts ~ line 15 ~ authCookie ~ validateClient ~ decodedToken',
-      decodedToken
-    )
     return isValidObjectId(decodedToken.sub)
   }
 

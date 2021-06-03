@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react'
 import { HiArrowNarrowLeft, HiArrowNarrowRight } from 'react-icons/hi'
+import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import { CheckoutStep } from './CheckoutComp'
@@ -14,19 +15,26 @@ export interface StepProps {
 export default function CheckoutContactForm({ setStep }: StepProps) {
   // hooks
   const [order] = useLocalStorage<IOrder>('order', null)
-  const [, setCheckout] = useLocalStorage<ICheckout>('checkout', null)
+  const [checkout, setCheckout] = useLocalStorage<ICheckout>('checkout', null)
 
   const initialValues: TCheckoutContactSchema = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
+    firstName: checkout?.customer_details?.first_name || '',
+    lastName: checkout?.customer_details?.last_name || '',
+    email: checkout?.customer_details?.email || '',
+    phone: checkout?.customer_details?.phone || '',
   }
 
   function onClickShipping(
     values: TCheckoutContactSchema,
     actions: FormikHelpers<TCheckoutContactSchema>
   ) {
+    // if there is no cart
+    if (!order || order.item_details.length === 0) {
+      toast.dark('Please add a product to cart before proceeding to checkout')
+      actions.setSubmitting(false) // finish formik cycle
+      return
+    }
+
     const { email, phone, firstName, lastName } = values
 
     const item_details = order.item_details.map((prod) => ({
@@ -113,7 +121,7 @@ export default function CheckoutContactForm({ setStep }: StepProps) {
             <h4 className="text-sm font-medium text-gray-500">Email</h4>
 
             <div className="mt-6">
-              <label htmlFor="email" className="block w-1/2">
+              <label htmlFor="email" className="block">
                 <Field
                   className="block w-full mt-1 text-gray-700"
                   placeholder="Your email..."

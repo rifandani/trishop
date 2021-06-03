@@ -5,16 +5,13 @@ import CheckoutShippingForm from './CheckoutShippingForm'
 import CheckoutProduct from './CheckoutProduct'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { IOrder } from 'types/OrderLS'
+import generateRupiah from 'utils/generateRupiah'
 
 export type CheckoutStep = 'contacts' | 'shipping'
 
 const CheckoutComp = () => {
   // hooks
   const [order] = useLocalStorage<IOrder>('order', null)
-  console.log(
-    '🚀 ~ file: CheckoutComp.tsx ~ line 9 ~ CheckoutComp ~ order',
-    order
-  )
   const [step, setStep] = useState<CheckoutStep>('contacts')
 
   return (
@@ -80,9 +77,17 @@ const CheckoutComp = () => {
               <div className="w-full max-w-md px-4 py-3 border rounded-md">
                 <div className="flex items-center justify-between">
                   <h3 className="font-medium text-gray-700">
-                    Order total ({order ? order.item_details.length : 0})
+                    Order ({order ? order.item_details.length : 0})
                   </h3>
-                  {/* <span className="text-sm text-gray-600">Edit</span> */}
+
+                  <h3 className="font-medium text-gray-700">
+                    Total:{' '}
+                    <span className="text-orange-800">
+                      {order
+                        ? generateRupiah(order.transaction_details.gross_amount)
+                        : generateRupiah(0)}
+                    </span>
+                  </h3>
                 </div>
 
                 {/* order product list */}
@@ -91,7 +96,9 @@ const CheckoutComp = () => {
                     <CheckoutProduct key={product.id} product={product} />
                   ))
                 ) : (
-                  <h3 className="font-medium text-gray-700">No Product</h3>
+                  <h3 className="mt-2 font-medium text-orange-800">
+                    No Product
+                  </h3>
                 )}
               </div>
             </div>

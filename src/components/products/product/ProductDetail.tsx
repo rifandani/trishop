@@ -9,7 +9,7 @@ import { Product } from 'contexts/CartReducer'
 import ImageSwiper from './ImageSwiper'
 
 export default function ProductDetail({ product }: { product: Product }) {
-  const { title, price, stock, desc, labels, images, sold } = product // destructure props
+  const { title, price, stock, desc, labels, images, sold } = product // destructure product props
 
   // hooks
   const { push } = useRouter()
