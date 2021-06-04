@@ -15,7 +15,7 @@ const Footer = () => {
           />
           {/* description */}
           <p className="mt-4 text-base leading-6 text-black">
-            Created with 💖 and 🔥 by 🎂 lovers.
+            Created with 🔥 and 💖 by 🎂 lovers.
           </p>
           {/* social links */}
           <div className="flex mt-8">
