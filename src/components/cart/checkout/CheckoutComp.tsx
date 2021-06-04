@@ -4,7 +4,7 @@ import CheckoutContactForm from './CheckoutContactForm'
 import CheckoutShippingForm from './CheckoutShippingForm'
 import CheckoutProduct from './CheckoutProduct'
 import useLocalStorage from 'hooks/useLocalStorage'
-import { IOrder } from 'types/OrderLS'
+import { IOrder } from 'types/LocalStorage'
 import generateRupiah from 'utils/generateRupiah'
 
 export type CheckoutStep = 'contacts' | 'shipping'

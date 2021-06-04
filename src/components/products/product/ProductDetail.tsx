@@ -4,16 +4,19 @@ import { useState, useContext, ChangeEvent } from 'react'
 import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 // files
-import { CartContext } from 'contexts/CartContext'
-import { Product } from 'contexts/CartReducer'
 import ImageSwiper from './ImageSwiper'
+import { CartContext } from 'contexts/CartContext'
+import { WishlistContext } from 'contexts/WishlistContext'
+import { Product } from 'contexts/CartReducer'
 
 export default function ProductDetail({ product }: { product: Product }) {
-  const { title, price, stock, desc, labels, images, sold } = product // destructure product props
+  const { title, price, stock, desc, labels, images, sold, _id } = product // destructure product props
 
   // hooks
   const { push } = useRouter()
+
   const { cart, dispatch } = useContext(CartContext)
+  const { wishlist, dispatchWish } = useContext(WishlistContext)
   const [discount] = useState<number>(0.1)
   const [quantity, setQuantity] = useState<string>('1')
   const [error, setError] = useState<string>('')
@@ -21,7 +24,10 @@ export default function ProductDetail({ product }: { product: Product }) {
   const priceAfterDiscount = price - price * discount
   const subtotal = Number(quantity) * priceAfterDiscount
 
-  async function addToCart() {
+  // check if product already in wishlist
+  const productWishlisted = wishlist?.find((prod) => prod.id === _id)
+
+  async function addToCart(): Promise<void> {
     const payload = {
       ...product,
       quantity: parseInt(quantity),
@@ -36,7 +42,7 @@ export default function ProductDetail({ product }: { product: Product }) {
     toast.success('Product added to the cart')
   }
 
-  function onChangeQuantity(e: ChangeEvent<HTMLInputElement>) {
+  function onChangeQuantity(e: ChangeEvent<HTMLInputElement>): void {
     const input = e.target.value
 
     if (Number(input) > stock) {
@@ -51,11 +57,25 @@ export default function ProductDetail({ product }: { product: Product }) {
     setQuantity(input)
   }
 
-  async function addToWishlist() {
-    console.log('cart => ', cart)
+  function addToWishlist(): void {
+    const payload = {
+      price,
+      id: _id,
+      imageName: images[0].imageName,
+      imageUrl: images[0].imageUrl,
+      name: title,
+    }
+
+    // dispatch butuh waktu
+    dispatchWish({
+      type: 'ADD_WISHLIST',
+      payload,
+    })
+
+    toast.success('Product added to wishlist')
   }
 
-  const clickLabel = (label: string) =>
+  const clickLabel = (label: string): Promise<boolean> =>
     push(`/products/categories?_label=${label}`)
 
   return (
@@ -219,12 +239,15 @@ export default function ProductDetail({ product }: { product: Product }) {
               </button>
 
               <button
-                className="flex items-center h-10 px-6 py-2 text-gray-400 border border-gray-200 rounded-full"
+                className="flex items-center h-10 px-6 py-2 text-gray-400 border border-gray-200 rounded-full hover:border-orange-800 hover:bg-orange-200 disabled:border-orange-800 disabled:bg-orange-200 group"
                 onClick={addToWishlist}
+                disabled={Boolean(productWishlisted)}
               >
-                <FaHeart className="w-4 h-4 mr-2" />
-                <span className="text-xs font-semibold tracking-wide uppercase">
-                  Add to Wishlist
+                <FaHeart className="w-4 h-4 mr-2 group-hover:text-orange-800" />
+                <span className="text-xs font-semibold tracking-wide uppercase group-hover:text-orange-800">
+                  {Boolean(productWishlisted)
+                    ? 'Wishlisted'
+                    : 'Add to Wishlist'}
                 </span>
               </button>
             </section>

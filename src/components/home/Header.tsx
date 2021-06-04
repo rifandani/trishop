@@ -1,3 +1,4 @@
+import Link from 'next/link'
 // files
 import Nav from 'components/Nav'
 
@@ -22,7 +23,9 @@ const Header = () => {
               We make your dream 🎂 becomes reality
             </p>
 
-            <button className="header__order-now-btn">Order Now</button>
+            <Link href="/products">
+              <a className="header__order-now-btn">Order Now</a>
+            </Link>
           </div>
 
           {/* <!--Right Col--> */}

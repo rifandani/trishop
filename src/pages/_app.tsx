@@ -15,6 +15,7 @@ import 'swiper/components/thumbs/thumbs.min.css'
 // files
 import '../styles/index.css'
 import { CartProvider } from 'contexts/CartContext'
+import { WishlistProvider } from 'contexts/WishlistContext'
 
 // create a custom progress bar
 NProgress.configure({ showSpinner: false })
@@ -73,8 +74,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         }}
       >
         <CartProvider>
-          <Component {...pageProps} />
-          <ToastContainer />
+          <WishlistProvider>
+            <Component {...pageProps} />
+            <ToastContainer />
+          </WishlistProvider>
         </CartProvider>
       </SWRConfig>
     </>

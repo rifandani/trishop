@@ -6,7 +6,7 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import { CheckoutStep } from './CheckoutComp'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { TCheckoutContactSchema, checkoutContactSchema } from 'yup/schema'
-import { IOrder, ICheckout } from 'types/OrderLS'
+import { IOrder, ICheckout } from 'types/LocalStorage'
 
 export interface StepProps {
   setStep: Dispatch<SetStateAction<CheckoutStep>>

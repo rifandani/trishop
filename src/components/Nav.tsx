@@ -3,18 +3,21 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useContext, useState } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { FaShoppingCart } from 'react-icons/fa'
+import { FaShoppingCart, FaHeart } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import Cookies from 'js-cookie'
 // files
-import { CartContext } from '../contexts/CartContext'
 import useLocalStorage from 'hooks/useLocalStorage'
+import { CartContext } from 'contexts/CartContext'
+import { WishlistContext } from 'contexts/WishlistContext'
 
 const Nav = () => {
   // hooks
   const { push } = useRouter()
   const { cart } = useContext(CartContext) // cart context
+  const { wishlist } = useContext(WishlistContext) // cart context
   const [, setValue] = useLocalStorage('user', '') // local storage
+
   const [toggle, setToggle] = useState(true) // toggle hamburger menu
   const [cookie, setCookie] = useState(Cookies.get('auth') || '') // cookie
 
@@ -77,18 +80,6 @@ const Nav = () => {
         >
           <ul className="items-center justify-end flex-1 list-reset lg:flex">
             <li className="mr-3">
-              <Link href="/products">
-                <a className="nav__link">Products</a>
-              </Link>
-            </li>
-
-            <li className="mr-3">
-              <Link href="/stores">
-                <a className="nav__link">Stores</a>
-              </Link>
-            </li>
-
-            <li className="mr-3">
               <Link href="/cart">
                 <a className="inline-block px-4 pt-4 pb-3 bg-white rounded-full lg:mr-2">
                   <div className="flex space-x-2">
@@ -98,17 +89,27 @@ const Nav = () => {
                 </a>
               </Link>
             </li>
+
+            <li className="mt-2 mr-3 lg:mt-0">
+              <Link href="/wishlist">
+                <a className="inline-block px-4 pt-4 pb-3 bg-white rounded-full lg:mr-2">
+                  <div className="flex space-x-2">
+                    <FaHeart className="text-xl text-red-800 transition duration-500 transform hover:scale-150 hover:text-orange-400" />
+                    <p className="text-orange-800">
+                      {wishlist ? wishlist.length : 0}
+                    </p>
+                  </div>
+                </a>
+              </Link>
+            </li>
           </ul>
 
-          {cookie ? (
-            <button onClick={logout} className="nav__logout-btn">
-              Logout
-            </button>
-          ) : (
-            <button onClick={login} className="nav__login-btn">
-              Login
-            </button>
-          )}
+          <button
+            onClick={cookie ? logout : login}
+            className={cookie ? 'nav__logout-btn' : 'nav__login-btn'}
+          >
+            {cookie ? 'Logout' : 'Login'}
+          </button>
         </section>
       </article>
 

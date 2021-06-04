@@ -7,7 +7,7 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import { StepProps } from './CheckoutContactForm'
 import useDebounce from 'hooks/useDebounce'
 import useLocalStorage from 'hooks/useLocalStorage'
-import { ICheckout } from 'types/OrderLS'
+import { ICheckout } from 'types/LocalStorage'
 import { checkoutShippingSchema, TCheckoutShippingSchema } from 'yup/schema'
 
 export default function CheckoutShippingForm({ setStep }: StepProps) {

@@ -49,16 +49,16 @@
   }
 
   .nav__login-btn {
-    @apply px-8 py-4 mx-auto mt-4 font-bold text-orange-800 bg-white rounded-full shadow hover:underline lg:mx-0 lg:mt-0;
+    @apply px-8 py-4 mx-auto mt-4 font-bold text-white bg-orange-800 rounded-full shadow hover:underline lg:mx-0 lg:mt-0;
   }
 
   .nav__logout-btn {
-    @apply px-8 py-4 mx-auto mt-4 font-bold text-red-500 bg-white rounded-full shadow hover:underline lg:mx-0 lg:mt-0;
+    @apply px-8 py-4 mx-auto mt-4 font-bold text-white bg-red-600 rounded-full shadow hover:underline lg:mx-0 lg:mt-0;
   }
 
   /* HEADER */
   .header__order-now-btn {
-    @apply px-8 py-4 mx-auto my-6 font-bold text-orange-800 bg-white rounded-full shadow-lg lg:mx-0 hover:underline;
+    @apply px-8 py-4 mx-auto my-6 font-bold text-orange-800 bg-white rounded-full shadow-lg md:mx-0 hover:underline;
   }
 
   /* FOOTER */

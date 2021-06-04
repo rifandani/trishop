@@ -1,4 +1,4 @@
-import { IOrderItemDetails } from 'types/OrderLS'
+import { IOrderItemDetails } from 'types/LocalStorage'
 import generateRupiah from 'utils/generateRupiah'
 
 export default function CheckoutProduct({
