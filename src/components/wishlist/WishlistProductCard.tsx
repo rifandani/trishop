@@ -20,7 +20,7 @@ export default function WishlistProductCard({ product, dispatchWish }: Props) {
       payload: product,
     })
 
-    toast.info('Product deleted from the cart')
+    toast.info('Product deleted from the wishlist')
   }
 
   return (

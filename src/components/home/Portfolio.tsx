@@ -18,7 +18,7 @@ const Portfolio = () => {
               local flour. Our motivation for using these ingredients are love
               for great food and respect for the environment.
             </p>
-            <Link href="/">
+            <Link href="/products">
               <a className="flex items-center text-orange-300 hover:text-orange-500">
                 <div className="flex-initial">See all products</div>
                 <BsArrowRight className="flex-shrink w-4 ml-3" />

@@ -7,11 +7,12 @@ import { Transition } from '@headlessui/react'
 import { toast } from 'react-toastify'
 import Axios from 'axios'
 // files
+import useLocalStorage from 'hooks/useLocalStorage'
+import generateRupiah from 'utils/generateRupiah'
 import { CartContext } from 'contexts/CartContext'
 import { Payload } from 'contexts/CartReducer'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { IOrder } from 'types/LocalStorage'
-import generateRupiah from 'utils/generateRupiah'
+import { APIResponseCoupon } from 'types/Coupon'
 
 export default function CartComp() {
   // hooks
@@ -50,18 +51,23 @@ export default function CartComp() {
   }
 
   async function applyCoupon() {
-    const couponData = {
-      coupon: coupon.toLowerCase(),
+    const reqBody = {
+      userId,
+      code: coupon,
     }
 
     try {
-      // call coupon API
-      const res = await Axios.post('/coupon', couponData)
+      // call API /validate/coupon
+      const res = await Axios.post<APIResponseCoupon>(
+        '/validate/coupon',
+        reqBody
+      )
 
       // set value coupon
-      const discountValue = res?.data.discount
-      setCouponDiscount(discountValue) // float
+      const coupon = res.data.coupon
+      setCouponDiscount(coupon.discount) // float
 
+      console.info('coupon => ', coupon)
       toast.success('Coupon applied')
     } catch (err) {
       toast.error(err.data.message)
@@ -188,7 +194,7 @@ export default function CartComp() {
                           </span>
                         </td>
                         <td className="text-right">
-                          <span className="text-sm font-medium lg:text-base">
+                          <span className="text-sm font-medium text-orange-800 lg:text-base">
                             {generateRupiah(prod.price * prod.quantity)}
                           </span>
                         </td>
@@ -207,12 +213,14 @@ export default function CartComp() {
               <section className="my-4 mt-6 -mx-2 lg:flex">
                 <div className="lg:px-2 lg:w-1/2">
                   {/* coupon */}
-                  <div className="p-4 bg-gray-100 rounded-full">
-                    <h1 className="ml-2 font-bold uppercase">Coupon Code</h1>
+                  <div className="p-4 bg-orange-200 rounded-full">
+                    <h1 className="ml-2 font-bold text-orange-800 uppercase">
+                      Coupon Code
+                    </h1>
                   </div>
 
                   <div className="p-4">
-                    <p className="mb-4 italic">
+                    <p className="mb-4 italic font-thin text-gray-500">
                       If you have a coupon code, please enter it in the box
                       below
                     </p>
@@ -227,7 +235,7 @@ export default function CartComp() {
 
                         <button
                           onClick={applyCoupon}
-                          className="flex items-center px-3 py-1 text-sm text-white bg-orange-800 rounded-full outline-none md:px-4 hover:opacity-50 focus:outline-none active:outline-none"
+                          className="flex items-center px-3 py-1 text-sm text-white bg-orange-800 rounded-full outline-none md:px-4 hover:bg-orange-500 focus:outline-none active:outline-none"
                         >
                           <RiCoupon2Fill className="w-8 text-lg" />
                           <span className="font-medium">Apply</span>
@@ -236,14 +244,14 @@ export default function CartComp() {
                     </div>
                   </div>
 
-                  {/* seller instruction */}
-                  <div className="p-4 mt-6 bg-gray-100 rounded-full">
-                    <h1 className="ml-2 font-bold uppercase">
+                  {/* TODO: add seller instruction to ORDER */}
+                  <div className="p-4 mt-6 bg-orange-200 rounded-full">
+                    <h1 className="ml-2 font-bold text-orange-800 uppercase">
                       Instruction for seller
                     </h1>
                   </div>
                   <div className="p-4">
-                    <p className="mb-4 italic">
+                    <p className="mb-4 italic font-thin text-gray-500">
                       If you have some information for the seller you can leave
                       them in the box below
                     </p>
@@ -253,11 +261,13 @@ export default function CartComp() {
 
                 {/* order details */}
                 <div className="lg:px-2 lg:w-1/2">
-                  <div className="p-4 bg-gray-100 rounded-full">
-                    <h1 className="ml-2 font-bold uppercase">Order Details</h1>
+                  <div className="p-4 bg-orange-200 rounded-full">
+                    <h1 className="ml-2 font-bold text-orange-800 uppercase">
+                      Order Details
+                    </h1>
                   </div>
                   <div className="p-4">
-                    <p className="mb-6 italic">
+                    <p className="mb-6 italic font-thin text-gray-500">
                       Shipping and additionnal costs are calculated based on
                       values you have entered
                     </p>
@@ -297,7 +307,7 @@ export default function CartComp() {
                     {/* checkout button */}
                     <button
                       onClick={checkout}
-                      className="flex items-center justify-center w-full px-10 py-3 mt-6 font-medium text-white uppercase bg-orange-800 rounded-full shadow item-center hover:opacity-50 focus:shadow-outline focus:outline-none"
+                      className="flex items-center justify-center w-full px-10 py-3 mt-6 font-medium text-white uppercase bg-orange-800 rounded-full shadow item-center hover:bg-orange-500 focus:shadow-outline focus:outline-none"
                     >
                       <IoIosCard className="text-lg" />
                       <span className="ml-2">Proceed to checkout</span>

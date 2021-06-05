@@ -8,8 +8,14 @@ import ProductCard from 'components/products/ProductCard'
 import Footer from 'components/Footer'
 import { Product } from 'contexts/CartReducer'
 
+interface APIResponseProducts {
+  error: boolean
+  products: Product[]
+  count: number
+}
+
 export default function ProductsPage() {
-  const { data, error } = useSWR('/admin/products', {
+  const { data, error } = useSWR<APIResponseProducts>('/admin/products', {
     refreshInterval: 10000,
   })
 
@@ -38,11 +44,11 @@ export default function ProductsPage() {
           {error && 'Error...'}
 
           {!data && <LoadingSpinner />}
-          {data && data.products.length === 0 && 'There is no data'}
+          {data && data.count === 0 && 'There is no data'}
 
           <article className="grid max-w-lg gap-10 mx-auto md:grid-cols-2 lg:grid-cols-3 md:max-w-none">
             {data &&
-              (data.products as Product[]).map((product) => (
+              data.products.map((product) => (
                 <ProductCard
                   key={product._id}
                   _id={product._id}

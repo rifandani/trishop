@@ -7,11 +7,12 @@ import {
 import { useRouter } from 'next/router'
 // files
 import TableUsers from './TableUsers'
-import useUsers from '../../hooks/useUsers'
 import TableProducts from './TableProducts'
-import useProducts from '../../hooks/useProducts'
+import useUsers from 'hooks/useUsers'
+import useProducts from 'hooks/useProducts'
 
 export default function AdminDashboard() {
+  // hooks
   const { users, usersIsLoading, usersIsError } = useUsers()
   const { products, productsIsLoading, productsIsError } = useProducts()
   const { push } = useRouter()

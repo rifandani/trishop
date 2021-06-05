@@ -28,6 +28,12 @@ export default function ProductDetail({ product }: { product: Product }) {
   const productWishlisted = wishlist?.find((prod) => prod.id === _id)
 
   async function addToCart(): Promise<void> {
+    // if quantity < 1
+    if (+quantity < 1) {
+      setError('Input 1 or more')
+      return
+    }
+
     const payload = {
       ...product,
       quantity: parseInt(quantity),

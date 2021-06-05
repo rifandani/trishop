@@ -18,12 +18,12 @@ export default function Stores() {
         <div className="container flex flex-col items-center justify-center px-4 pt-2 pb-8 mx-auto sm:px-6 lg:px-8">
           {/* title */}
           <p className="inline-block px-3 py-1 mb-4 text-xs font-semibold leading-tight tracking-widest text-orange-800 uppercase bg-orange-200 rounded-full">
-            Get the best from us
+            Continuously growing outlets
           </p>
 
           <h2 className="flex justify-center text-3xl font-bold leading-none tracking-tight text-center text-gray-900 b-6 sm:text-4xl md:mx-auto">
             <FaStoreAlt className="w-8 h-8 mr-3 text-orange-800" />
-            <span className="relative">Our Stores</span>
+            <span className="relative">Visit Our Stores</span>
           </h2>
 
           {/* content */}

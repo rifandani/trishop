@@ -21,11 +21,9 @@ const Nav = () => {
   const [toggle, setToggle] = useState(true) // toggle hamburger menu
   const [cookie, setCookie] = useState(Cookies.get('auth') || '') // cookie
 
-  function login() {
-    return push('/login')
-  }
+  const login = (): Promise<boolean> => push('/login')
 
-  async function logout() {
+  const logout = async (): Promise<void> => {
     // remove auth cookie & user local storage
     Cookies.remove('auth')
     setValue('')
@@ -79,6 +77,7 @@ const Nav = () => {
           } z-20 w-full p-4 text-black lg:flex lg:items-center lg:w-auto lg:mt-0 lg:p-0 lg:bg-transparent`}
         >
           <ul className="items-center justify-end flex-1 list-reset lg:flex">
+            {/* TODO: buat link ke user/admin dashboard */}
             <li className="mr-3">
               <Link href="/cart">
                 <a className="inline-block px-4 pt-4 pb-3 bg-white rounded-full lg:mr-2">

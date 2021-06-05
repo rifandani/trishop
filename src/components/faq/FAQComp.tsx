@@ -54,7 +54,7 @@ export default function FAQComp() {
   return (
     <main className="w-full bg-white">
       {/* real content */}
-      <div className="grid w-full grid-cols-1 gap-6 p-2 mx-auto mt-6 rounded-2xl sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid w-full grid-cols-1 gap-6 p-2 mx-auto mt-6 rounded-2xl md:grid-cols-2">
         {faq.map((el) => (
           <Disclosure as="div" className="mt-0" key={el.id}>
             {({ open }) => (

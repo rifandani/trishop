@@ -41,7 +41,7 @@ const Footer = () => {
 
             <a
               className="ml-6"
-              href="https://github.com/rifandani"
+              href="https://github.com/rifandani/trishop"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -85,8 +85,8 @@ const Footer = () => {
               </h4>
               <ul className="mt-4">
                 <li>
-                  <Link href="/blog">
-                    <a className="footer__text-link">Blog</a>
+                  <Link href="/blogs">
+                    <a className="footer__text-link">Blogs</a>
                   </Link>
                 </li>
                 <li className="mt-4">
@@ -95,7 +95,7 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li className="mt-4">
-                  <Link href="/marketplace">
+                  <Link href="/marketplaces">
                     <a className="footer__text-link">Marketplaces</a>
                   </Link>
                 </li>
