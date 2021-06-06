@@ -18,8 +18,8 @@ export default function useUsers() {
   const users = data?.users?.map((user) => ({
     ...user,
     _id: user._id.toString(),
-    createdAt: new Date(user.createdAt).toDateString(),
-    updatedAt: new Date(user.updatedAt).toDateString(),
+    createdAt: new Date(user.createdAt).toLocaleString(),
+    updatedAt: new Date(user.updatedAt).toLocaleString(),
   }))
 
   return {

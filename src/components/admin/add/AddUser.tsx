@@ -4,16 +4,15 @@ import Axios from 'axios'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import { TUserApiSchema, userApiSchema } from 'yup/apiSchema'
-import { UserProps } from 'pages/admin/users/[_id]'
 
-export default function EditUser({ user }: UserProps) {
+export default function AddUser() {
   // hooks
-  const { push, query } = useRouter()
+  const { push } = useRouter()
 
   const initialValues: TUserApiSchema = {
-    name: user.name || '',
-    email: user.email || '',
-    role: user.role || '',
+    name: '',
+    email: '',
+    role: 'ROLE',
     password: '',
   }
 
@@ -29,37 +28,32 @@ export default function EditUser({ user }: UserProps) {
         password: values.password,
       }
 
-      // PUT /admin/users/:_id
-      await Axios.put(`/admin/users/${query._id}`, data) // bisa pake query._id atau dari user._id
+      // POST /admin/users
+      await Axios.post('/admin/users', data)
 
       // success
+      toast.success('User created')
       await push('/admin/dashboard')
-      toast.info('User updated')
       actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
       console.error(err)
-      toast.error(err.message)
+      toast.error(err.data.message)
       actions.setSubmitting(false) // finish formik cycle
     }
   }
 
   return (
     <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-      {/* Edit User */}
+      {/* Add New User */}
       <section className="p-6 mt-10 sm:mt-0">
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Edit User
+                Add New User
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
                 Choose the role between USER or ADMIN.
-              </p>
-              <p className="mt-3 text-sm leading-5 text-indigo-600">
-                Created At: {user.createdAt}
-                <br />
-                Updated At: {user.updatedAt}
               </p>
             </div>
           </div>
@@ -179,14 +173,13 @@ export default function EditUser({ user }: UserProps) {
                         type="submit"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? 'Loading' : 'Update'}
+                        {isSubmitting ? 'Loading' : 'Add New'}
                       </button>
                     </div>
                   </div>
                 </Form>
               )}
             </Formik>
-            {/* END FORM */}
           </div>
         </div>
       </section>

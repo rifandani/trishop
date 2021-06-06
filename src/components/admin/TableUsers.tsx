@@ -17,11 +17,12 @@ export default function TableUsers() {
 
   const deleteUser = async (_id: string): Promise<void> => {
     try {
-      await Axios.delete(`/admin/users/${_id}`) // delete user
+      // DELETE /admin/users/:_id
+      await Axios.delete(`/admin/users/${_id}`)
 
       // trigger a revalidation (refetch) to make sure our local data is correct
       await mutate('/admin/users')
-      toast.success('User deleted')
+      toast.info('User deleted')
     } catch (err) {
       console.error(err)
       toast.error(err.data.message)
@@ -29,11 +30,17 @@ export default function TableUsers() {
   }
 
   return (
-    <div className="flex flex-col mt-8">
+    <section className="flex flex-col mt-8">
       <div className="-my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="min-w-full overflow-hidden sm:rounded-lg ">
           <Grid
             data={users ? users : []}
+            search={true}
+            sort={true}
+            pagination={{
+              enabled: true,
+              limit: 3,
+            }}
             columns={[
               {
                 id: 'name',
@@ -81,7 +88,7 @@ export default function TableUsers() {
                       className:
                         'py-2 px-4 border rounded-md text-white bg-red-600 hover:bg-red-700',
                       onClick: () => {
-                        console.log('row.cells => ', row.cells)
+                        // console.log('row.cells => ', row.cells)
                         deleteUser(row?.cells[4]?.data.toString()) // cells[4] === user._id
                       },
                     },
@@ -90,15 +97,9 @@ export default function TableUsers() {
                 },
               },
             ]}
-            search={true}
-            sort={true}
-            pagination={{
-              enabled: true,
-              limit: 3,
-            }}
           />
         </div>
       </div>
-    </div>
+    </section>
   )
 }

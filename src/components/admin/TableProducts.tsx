@@ -1,65 +1,79 @@
-import { Grid } from 'gridjs-react';
-import { h } from 'gridjs';
-import Axios from 'axios';
-import { toast } from 'react-toastify';
-import { mutate } from 'swr';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
+import { Grid } from 'gridjs-react'
+import { h } from 'gridjs'
+import { mutate } from 'swr'
+import Axios from 'axios'
 // files
-import useProducts from '../../hooks/useProducts';
-import { storage } from '../../firebase/config';
-
-const url = '/admin/product';
+import useProducts from '../../hooks/useProducts'
+import { storage } from '../../firebase/config'
 
 export default function TableProducts() {
-  const { push } = useRouter();
-  const { products } = useProducts();
+  // hooks
+  const { push } = useRouter()
+  const { products } = useProducts()
 
-  async function editProduct(id: string) {
-    await push(`product/${id}`);
-  }
+  const editProduct = (_id: string): Promise<boolean> =>
+    push(`/admin/products/${_id}`)
 
+  // TODO: upload ke cloudinary
   async function deleteProduct(id: string) {
     try {
       // get specific product
-      const res = await Axios.get(`${url}?_id=${id}`);
-      const images = res?.data?.images;
+      const res = await Axios.get(`/admin/products/${id}`)
+      const images = res?.data?.images
 
       // ketika PROMISE dari AXIOS selesai, delete images lama in FIREBASE STORAGE
       images &&
         images.forEach(async (image: any, i: number) => {
-          await storage.ref(`images/products/${image.imageName}`).delete();
+          await storage.ref(`images/products/${image.imageName}`).delete()
 
           // delete product using API hanya ketika mencapai images yg terakhir
           if (i === images.length - 1) {
-            await Axios.delete(`${url}s`, { data: { id } });
+            await Axios.delete('/admin/products', { data: { id } })
 
-            await mutate(`${url}s`); // trigger a revalidation (refetch) to make sure our local data is correct
-
-            // toast success
-            toast.success('Product deleted ❌');
+            // trigger a revalidation (refetch) to make sure our local data is correct
+            await mutate('/admin/products')
+            toast.info('User deleted')
           }
-        });
+        })
     } catch (err) {
-      console.error(err);
-      toast.error(err.message);
+      console.error(err)
+      toast.error(err.message)
     }
   }
 
   return (
-    <div className="flex flex-col mt-8">
+    <section className="flex flex-col mt-8">
       <div className="-my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="min-w-full overflow-hidden sm:rounded-lg ">
           <Grid
             data={products ? products : []}
+            search={true}
+            sort={true}
+            pagination={{
+              enabled: true,
+              limit: 3,
+            }}
             columns={[
               {
-                name: 'ID',
-                hidden: true,
+                id: 'title',
+                name: 'Title',
               },
-              'Title',
-              'Stock',
-              'Updated At',
               {
+                id: 'price',
+                name: 'Price',
+              },
+              {
+                id: 'stock',
+                name: 'Stock',
+              },
+              {
+                id: 'sold',
+                name: 'Sold',
+              },
+              {
+                id: '_id',
                 name: 'Edit',
                 sort: {
                   enabled: false,
@@ -70,13 +84,17 @@ export default function TableProducts() {
                     {
                       className:
                         'py-2 px-4 border rounded-md text-white bg-orange-500 hover:bg-orange-600',
-                      onClick: () => editProduct(row.cells[0].data as string),
+                      onClick: () => {
+                        // console.log(row.cells)
+                        editProduct(row.cells[4].data.toString())
+                      },
                     },
-                    'Edit',
-                  );
+                    'Edit'
+                  )
                 },
               },
               {
+                id: '_id',
                 name: 'Delete',
                 sort: {
                   enabled: false,
@@ -87,22 +105,19 @@ export default function TableProducts() {
                     {
                       className:
                         'py-2 px-4 border rounded-md text-white bg-red-600 hover:bg-red-700',
-                      onClick: () => deleteProduct(row.cells[0].data as string),
+                      onClick: () => {
+                        // console.log(row.cells)
+                        deleteProduct(row.cells[5].data.toString())
+                      },
                     },
-                    'Delete',
-                  );
+                    'Delete'
+                  )
                 },
               },
             ]}
-            search={true}
-            sort={true}
-            pagination={{
-              enabled: true,
-              limit: 3,
-            }}
           />
         </div>
       </div>
-    </div>
-  );
+    </section>
+  )
 }

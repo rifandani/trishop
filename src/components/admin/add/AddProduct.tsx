@@ -1,44 +1,45 @@
-import Axios from 'axios';
-import { useRouter } from 'next/router';
-import { FormEvent, useState } from 'react';
-import { toast } from 'react-toastify';
+import Axios from 'axios'
+import { useRouter } from 'next/router'
+import { FormEvent, useState } from 'react'
+import { toast } from 'react-toastify'
 // files
-import Dropzone from './Dropzone';
-import { storage } from '../../firebase/config';
+import Dropzone from '../Dropzone'
+import { storage } from 'firebase/config'
 
 export default function AddProduct() {
-  const { push } = useRouter();
+  // hooks
+  const { push } = useRouter()
 
-  const [title, setTitle] = useState<string>('');
-  const [price, setPrice] = useState<string>('0'); // parse to INT later
-  const [stock, setStock] = useState<string>('1'); // parse to INT later
-  const [desc, setDesc] = useState<string>(''); // textarea
-  const [label1, setLabel1] = useState<string>('');
-  const [label2, setLabel2] = useState<string>('');
-  const [label3, setLabel3] = useState<string>('');
-  const [images, setImages] = useState<any>([]); // images FIRESTORAGE
+  const [title, setTitle] = useState<string>('')
+  const [price, setPrice] = useState<string>('0') // parse to INT later
+  const [stock, setStock] = useState<string>('1') // parse to INT later
+  const [desc, setDesc] = useState<string>('') // textarea
+  const [label1, setLabel1] = useState<string>('')
+  const [label2, setLabel2] = useState<string>('')
+  const [label3, setLabel3] = useState<string>('')
+  const [images, setImages] = useState<any>([]) // images FIRESTORAGE
 
   async function onSubmit(e: FormEvent) {
-    e.preventDefault();
+    e.preventDefault()
 
-    const labels = [label1, label2, label3].filter((label) => !!label); // labels cleaning
+    const labels = [label1, label2, label3].filter((label) => !!label) // labels cleaning
 
-    let imagesMongo: any = []; // images MONGODB
+    let imagesMongo: any = [] // images MONGODB
 
     for (let i = 0; i < images.length; i++) {
       // storage ref
-      const storageRef = storage.ref(`images/products/${images[i].name}`);
+      const storageRef = storage.ref(`images/products/${images[i].name}`)
 
       // save to STORAGE
-      await storageRef.put(images[i]);
+      await storageRef.put(images[i])
 
       // get imageUrl and save it to imagesMongo variable
-      const url = await storageRef.getDownloadURL();
+      const url = await storageRef.getDownloadURL()
       url &&
         imagesMongo.push({
           imageName: images[i].name,
           imageUrl: url,
-        });
+        })
 
       // save ke MONGODB, hanya ketika sudah upload semua image
       if (i === images.length - 1 && url) {
@@ -51,11 +52,11 @@ export default function AddProduct() {
           images: imagesMongo,
         })
           .then(() => {
-            toast.success('Product created 👍');
+            toast.success('Product created 👍')
 
-            push('/admin/dashboard');
+            push('/admin/dashboard')
           })
-          .catch((err) => toast.error(err.message));
+          .catch((err) => toast.error(err.message))
       }
     }
   }
@@ -92,6 +93,7 @@ export default function AddProduct() {
                       >
                         Title
                       </label>
+
                       <input
                         className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                         id="title"
@@ -110,6 +112,7 @@ export default function AddProduct() {
                       >
                         Price
                       </label>
+
                       <input
                         className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                         id="price"
@@ -129,6 +132,7 @@ export default function AddProduct() {
                       >
                         Stock
                       </label>
+
                       <input
                         className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                         id="stock"
@@ -148,6 +152,7 @@ export default function AddProduct() {
                       >
                         Description
                       </label>
+
                       <textarea
                         className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                         id="desc"
@@ -165,6 +170,7 @@ export default function AddProduct() {
                       >
                         Labels
                       </label>
+
                       <div className="flex space-x-1">
                         <input
                           className="w-1/3 px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
@@ -220,5 +226,5 @@ export default function AddProduct() {
         </div>
       </section>
     </main>
-  );
+  )
 }

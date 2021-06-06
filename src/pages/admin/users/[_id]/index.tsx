@@ -90,8 +90,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const data = {
       ...user,
       _id: user._id.toString(),
-      createdAt: user.createdAt.toISOString(),
-      updatedAt: user.updatedAt.toISOString(),
+      createdAt: user.createdAt.toLocaleString(),
+      updatedAt: user.updatedAt.toLocaleString(),
     }
 
     return {
