@@ -1,0 +1,194 @@
+import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
+import Axios from 'axios'
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
+// files
+import { TUserApiSchema, userApiSchema } from 'yup/apiSchema'
+import { UserProps } from 'pages/admin/users/[_id]'
+
+export default function EditUser({ user }: UserProps) {
+  // hooks
+  const { push, query } = useRouter()
+
+  const initialValues: TUserApiSchema = {
+    name: user.name || '',
+    email: user.email || '',
+    role: user.role || '',
+    password: '',
+  }
+
+  const onSubmit = async (
+    values: TUserApiSchema,
+    actions: FormikHelpers<TUserApiSchema>
+  ): Promise<void> => {
+    try {
+      const data = {
+        name: values.name,
+        role: values.role,
+        email: values.email,
+        password: values.password,
+      }
+
+      // PUT /admin/users/:_id
+      await Axios.put(`/admin/users/${query._id}`, data) // bisa pake query._id atau dari user._id
+
+      // success
+      await push('/admin/dashboard')
+      toast.success('User updated 👍')
+      actions.setSubmitting(false) // finish formik cycle
+    } catch (err) {
+      console.error(err)
+      toast.error(err.message)
+    }
+  }
+
+  return (
+    <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+      {/* Edit User */}
+      <section className="p-6 mt-10 sm:mt-0">
+        <div className="md:grid md:grid-cols-3 md:gap-6">
+          <div className="md:col-span-1">
+            <div className="px-4 sm:px-0">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Edit User
+              </h3>
+              <p className="mt-1 text-sm leading-5 text-gray-600">
+                Choose the role between USER or ADMIN.
+              </p>
+              <p className="mt-3 text-sm leading-5 text-indigo-600">
+                Created At: {user.createdAt}
+                <br />
+                Updated At: {user.updatedAt}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-5 md:mt-0 md:col-span-2">
+            {/* START FORM */}
+            <Formik
+              initialValues={initialValues}
+              validationSchema={userApiSchema}
+              onSubmit={onSubmit}
+            >
+              {({ isSubmitting }) => (
+                <Form className="">
+                  <div className="overflow-hidden shadow sm:rounded-md">
+                    <div className="px-4 py-5 bg-white sm:p-6">
+                      <div className="grid grid-cols-6 gap-6">
+                        {/* name */}
+                        <div className="col-span-6 sm:col-span-4">
+                          <label
+                            htmlFor="name"
+                            className="block text-sm font-medium leading-5 text-gray-700"
+                          >
+                            Name
+                          </label>
+
+                          <Field
+                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            placeholder="Your name..."
+                            type="text"
+                            name="name"
+                          />
+
+                          <ErrorMessage
+                            className="error-message"
+                            name="name"
+                            component="span"
+                          />
+                        </div>
+
+                        {/* role */}
+                        <div className="col-span-6 sm:col-span-4">
+                          <label
+                            htmlFor="role"
+                            className="block text-sm font-medium leading-5 text-gray-700"
+                          >
+                            Role
+                          </label>
+
+                          <Field
+                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            as="select"
+                            name="role"
+                          >
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                          </Field>
+
+                          <ErrorMessage
+                            className="error-message"
+                            name="role"
+                            component="span"
+                          />
+                        </div>
+
+                        {/* email */}
+                        <div className="col-span-6 sm:col-span-4">
+                          <label
+                            htmlFor="email"
+                            className="block text-sm font-medium leading-5 text-gray-700"
+                          >
+                            Email
+                          </label>
+
+                          <Field
+                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            placeholder="Your email..."
+                            type="email"
+                            name="email"
+                          />
+
+                          <ErrorMessage
+                            className="error-message"
+                            name="email"
+                            component="span"
+                          />
+                        </div>
+
+                        {/* password */}
+                        <div className="col-span-6 sm:col-span-4">
+                          <label
+                            htmlFor="password"
+                            className="block text-sm font-medium leading-5 text-gray-700"
+                          >
+                            Password
+                          </label>
+
+                          <Field
+                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            placeholder="******"
+                            type="password"
+                            name="password"
+                          />
+
+                          <ErrorMessage
+                            className="error-message"
+                            name="password"
+                            component="span"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* submit button */}
+                    <div className="px-4 py-3 text-right bg-green-100 sm:px-6">
+                      <button
+                        className="px-6 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-green-500 border border-transparent rounded-md shadow-sm disabled:opacity-50 hover:bg-green-600 focus:outline-none focus:shadow-outline-blue active:bg-green-600"
+                        type="submit"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? 'Loading' : 'Update'}
+                      </button>
+                    </div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+            {/* END FORM */}
+          </div>
+        </div>
+      </section>
+    </main>
+  )
+}

@@ -1,10 +1,10 @@
+import { useRouter } from 'next/router'
 import {
   FaUserFriends,
   FaShoppingCart,
   FaShoppingBag,
   FaMoneyBillWave,
 } from 'react-icons/fa'
-import { useRouter } from 'next/router'
 // files
 import TableUsers from './TableUsers'
 import TableProducts from './TableProducts'

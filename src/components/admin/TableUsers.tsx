@@ -1,33 +1,30 @@
+import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
+import { mutate } from 'swr'
 import { Grid } from 'gridjs-react'
 import { h } from 'gridjs'
 import Axios from 'axios'
-import { toast } from 'react-toastify'
-import { mutate } from 'swr'
-import { useRouter } from 'next/router'
 // files
 import useUsers from '../../hooks/useUsers'
 
-const API_URL = '/admin/users'
-
 export default function TableUsers() {
+  // hooks
   const { push } = useRouter()
   const { users } = useUsers()
 
-  async function editUser(id: string) {
-    // TODO: url should be /users/:id
-    await push(`/admin/user/${id}`)
-  }
+  const editUser = (_id: string): Promise<boolean> =>
+    push(`/admin/users/${_id}`)
 
-  async function deleteUser(id: string) {
+  const deleteUser = async (_id: string): Promise<void> => {
     try {
-      await Axios.delete(`${API_URL}?userId=${id}`)
+      await Axios.delete(`/admin/users/${_id}`) // delete user
 
-      toast.success('User deleted 👍')
       // trigger a revalidation (refetch) to make sure our local data is correct
-      await mutate(`${API_URL}`)
+      await mutate('/admin/users')
+      toast.success('User deleted')
     } catch (err) {
-      toast.error(err.message)
       console.error(err)
+      toast.error(err.data.message)
     }
   }
 
@@ -39,14 +36,19 @@ export default function TableUsers() {
             data={users ? users : []}
             columns={[
               {
-                name: 'ID',
-                hidden: true,
+                id: 'name',
+                name: 'Name',
               },
-              'Name',
-              'Email',
-              'Role',
-              'Updated At',
               {
+                id: 'email',
+                name: 'Email',
+              },
+              {
+                id: 'role',
+                name: 'Role',
+              },
+              {
+                id: '_id',
                 name: 'Edit',
                 sort: {
                   enabled: false,
@@ -57,13 +59,17 @@ export default function TableUsers() {
                     {
                       className:
                         'py-2 px-4 border rounded-md text-white bg-orange-500 hover:bg-orange-600',
-                      onClick: () => editUser(row?.cells[0]?.data as string),
+                      onClick: () => {
+                        // console.log('row.cells => ', row.cells)
+                        editUser(row?.cells[3]?.data.toString()) // cells[3] === user._id
+                      },
                     },
                     'Edit'
                   )
                 },
               },
               {
+                id: '_id',
                 name: 'Delete',
                 sort: {
                   enabled: false,
@@ -74,7 +80,10 @@ export default function TableUsers() {
                     {
                       className:
                         'py-2 px-4 border rounded-md text-white bg-red-600 hover:bg-red-700',
-                      onClick: () => deleteUser(row?.cells[0]?.data as string), // cells[2] === email
+                      onClick: () => {
+                        console.log('row.cells => ', row.cells)
+                        deleteUser(row?.cells[4]?.data.toString()) // cells[4] === user._id
+                      },
                     },
                     'Delete'
                   )

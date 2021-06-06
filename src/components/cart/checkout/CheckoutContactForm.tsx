@@ -3,8 +3,8 @@ import { HiArrowNarrowLeft, HiArrowNarrowRight } from 'react-icons/hi'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
-import { CheckoutStep } from './CheckoutComp'
 import useLocalStorage from 'hooks/useLocalStorage'
+import { CheckoutStep } from './CheckoutComp'
 import { TCheckoutContactSchema, checkoutContactSchema } from 'yup/schema'
 import { IOrder, ICheckout } from 'types/LocalStorage'
 

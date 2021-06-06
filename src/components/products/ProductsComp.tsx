@@ -7,7 +7,7 @@ import ProductCard from 'components/products/ProductCard'
 import ProductsPagination from 'components/common/pagination/ProductsPagination'
 import { Product } from 'contexts/CartReducer'
 
-interface APIResponseProducts {
+export interface APIResponseProducts {
   error: boolean
   products: Product[]
   count: number

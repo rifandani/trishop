@@ -27,7 +27,7 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         return
       }
 
-      // find existing product
+      // find existing user
       const userIsExists = await UserModel.exists({ _id: userId })
       if (!userIsExists) {
         // PUT client error => Bad Request -----------------------------------------------------------------

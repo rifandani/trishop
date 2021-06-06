@@ -10,6 +10,5 @@ export interface IUser {
 }
 
 export type TRole = 'ADMIN' | 'USER'
-export type Users = IUser[]
 export interface IUserDocument extends IUser, Document {}
 export interface IUserModel extends Model<IUserDocument> {}
