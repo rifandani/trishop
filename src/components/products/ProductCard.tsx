@@ -1,28 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+// files
+import { Product } from 'contexts/CartReducer'
 
-interface IProductCardProps {
-  _id: string
-  imageName: string
-  imageUrl: string
-  title: string
-  price: number
-  stock: number
-  desc: string
-  labels: string[]
+interface Props {
+  product: Product
 }
 
-export default function ProductCard({
-  _id,
-  imageName,
-  imageUrl,
-  title,
-  price,
-  stock,
-  desc,
-  labels,
-}: IProductCardProps) {
+export default function ProductCard({ product }: Props) {
+  const { images, stock, price, _id, title, desc, labels } = product
+
   // hooks
   const { push } = useRouter()
 
@@ -34,8 +22,8 @@ export default function ProductCard({
       <div className="relative flex-shrink-0">
         <Image
           className="object-cover w-full h-56"
-          src={imageUrl}
-          alt={`Cover for ${imageName}`}
+          src={images[0].imageUrl}
+          alt={`Cover for ${images[0].imageName}`}
           width={520}
           height={260}
           priority={true}

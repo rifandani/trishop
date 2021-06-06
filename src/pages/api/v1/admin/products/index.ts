@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+// import { parse } from 'querystring'
 // files
 import ProductModel from 'mongo/models/Product'
 import connectMongo from 'middlewares/connectMongo'
@@ -13,10 +14,16 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       /*                         GET req => /admin/products                         */
       /* -------------------------------------------------------------------------- */
 
-      const products = await ProductModel.find()
+      // there is no query for filtering & sorting
+      if (Object.keys(req.query).length === 0) {
+        const products = await ProductModel.find()
 
-      // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, products, count: products.length })
+        // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        res.status(200).json({ error: false, products, count: products.length })
+        return
+      }
+
+      const customQuery = req.query
     } else if (req.method === 'POST') {
       /* -------------------------------------------------------------------------- */
       /*                         POST req => /admin/products                        */

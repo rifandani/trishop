@@ -3,14 +3,13 @@ import { compare } from 'bcrypt'
 // files
 import UserModel from 'mongo/models/User'
 import setCookie from 'utils/setCookie'
-// middlewares
 import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
 import { loginApiSchema } from 'yup/apiSchema'
 
 const handler = async function (req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    try {
+  try {
+    if (req.method === 'POST') {
       // destructure request body form
       const { email, password } = req.body
 
@@ -35,17 +34,21 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         role: user.role,
         userId: user._id,
       })
-    } catch (err) {
-      // POST server error => Internal Server Error -----------------------------------------------------------------
-      res.status(500).json({
+    } else {
+      // client error => Method Not Allowed -----------------------------------------------------------------
+      res.status(405).json({
         error: true,
-        name: err.name,
-        message: err.message,
+        name: 'METHOD NOT ALLOWED',
+        message: 'Only support POST req',
       })
     }
-  } else {
-    // client error => Method Not Allowed -----------------------------------------------------------------
-    res.status(405).json({ error: true, message: 'Only support POST req' })
+  } catch (err) {
+    // server error => Internal Server Error -----------------------------------------------------------------
+    res.status(500).json({
+      error: true,
+      name: err.name,
+      message: err.message,
+    })
   }
 }
 

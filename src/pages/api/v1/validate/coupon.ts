@@ -9,11 +9,10 @@ import {
 } from 'yup/apiSchema'
 
 const handler = async function (req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    // destructure request body form
-    const { userId, code } = req.body as TValidateCouponApiSchema
+  try {
+    if (req.method === 'POST') {
+      const { userId, code } = req.body as TValidateCouponApiSchema // destructure request body form
 
-    try {
       // find existing coupon by {code}
       const couponIsExists = await CouponModel.exists({
         code: code.toUpperCase(),
@@ -57,15 +56,17 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
 
       // POST SUCCESS => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       res.status(201).json({ error: false, coupon: couponByCode })
-    } catch (err) {
-      // POST server error => Internal Server Error -----------------------------------------------------------------
-      res
-        .status(500)
-        .json({ error: true, name: err.name, message: err.message })
+    } else {
+      // client error => invalid req method -----------------------------------------------------------------
+      res.status(405).json({
+        error: true,
+        name: 'METHOD NOT ALLOWED',
+        message: 'Only support POST req',
+      })
     }
-  } else {
-    // client error => invalid req method -----------------------------------------------------------------
-    res.status(405).json({ error: true, message: 'Only support POST req' })
+  } catch (err) {
+    // server error => Internal Server Error -----------------------------------------------------------------
+    res.status(500).json({ error: true, name: err.name, message: err.message })
   }
 }
 
