@@ -38,7 +38,7 @@ export default function EditUser({ user }: UserProps) {
       actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
       console.error(err)
-      toast.error(err.message)
+      toast.error(err.data.message)
       actions.setSubmitting(false) // finish formik cycle
     }
   }

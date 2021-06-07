@@ -1,4 +1,4 @@
-import { object, string, TypeOf } from 'yup'
+import { object, string, array, number, TypeOf } from 'yup'
 import 'yup-phone'
 
 export const checkoutContactSchema = object({
@@ -24,5 +24,30 @@ export const checkoutShippingSchema = object({
   postalCode: string().required('Postal code required'),
 }) // .camelCase()
 
+export const addProductSchema = object({
+  title: string()
+    .min(3, 'title must be 3 characters or more')
+    .required('title required'),
+  price: number()
+    .positive('price must be positive number')
+    .required('price required'),
+  stock: number()
+    .positive('stock must be positive number')
+    .required('stock required'),
+  desc: string()
+    .min(10, 'desc must be 10 characters or more')
+    .required('desc required'),
+  labels: array()
+    .of(
+      string()
+        .min(3, 'label must be 3 characters or more')
+        .required('label required')
+    )
+    .min(1, 'labels must consists of 1 label string or more')
+    .max(3, 'labels must consists of 3 label string or less')
+    .required('labels required'),
+})
+
 export type TCheckoutContactSchema = TypeOf<typeof checkoutContactSchema>
 export type TCheckoutShippingSchema = TypeOf<typeof checkoutShippingSchema>
+export type TAddProductSchema = TypeOf<typeof addProductSchema>

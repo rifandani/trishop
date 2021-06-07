@@ -1,4 +1,6 @@
 import { object, string, TypeOf, array, number } from 'yup'
+// files
+import { addProductSchema } from './schema'
 
 export const loginApiSchema = object({
   email: string().email('email invalid').required('email required'),
@@ -34,39 +36,25 @@ export const userApiSchema = registerApiSchema.concat(
   })
 )
 
-export const productApiSchema = object({
-  title: string()
-    .min(3, 'title must be 3 characters or more')
-    .required('title required'),
-  price: number()
-    .positive('price must be positive number')
-    .required('price required'),
-  stock: number()
-    .positive('stock must be positive number')
-    .required('stock required'),
-  desc: string()
-    .min(10, 'desc must be 10 characters or more')
-    .required('desc required'),
-  labels: array()
-    .of(string().required('label required'))
-    .min(1, 'labels must consists of 1 label string or more')
-    .required('labels required'),
-  images: array()
-    .of(
-      object({
-        imageName: string()
-          .trim()
-          .min(3, 'imageName must be 3 characters or more')
-          .required('images[i].imageName required'),
-        imageUrl: string()
-          .trim()
-          .url('imageUrl invalid')
-          .required('images[i].imageUrl required'),
-      })
-    )
-    .min(1, 'images must consists of 1 image object or more')
-    .required('images required'),
-})
+export const productApiSchema = addProductSchema.concat(
+  object({
+    images: array()
+      .of(
+        object({
+          imageName: string()
+            .trim()
+            .min(3, 'imageName must be 3 characters or more')
+            .required('images[i].imageName required'),
+          imageUrl: string()
+            .trim()
+            .url('imageUrl invalid')
+            .required('images[i].imageUrl required'),
+        })
+      )
+      .min(1, 'images must consists of 1 image object or more')
+      .required('images required'),
+  })
+)
 
 export const couponApiSchema = object({
   discount: number()

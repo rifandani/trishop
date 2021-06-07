@@ -46,6 +46,33 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@cloudinary/base@^1.0.0-beta.3":
+  version "1.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@cloudinary/base/-/base-1.0.0-beta.3.tgz#f291132de460258388d4d4c5d7255226745d81ac"
+  integrity sha512-GfLyCbUeqEZpQeRB2LyxxCXYhIp4NBeM5LjamWgDio+dz5PckQwpePJscCieRkodpXX6cl879bQdXaALd0OtZg==
+  dependencies:
+    "@types/lodash.clonedeep" "^4.5.6"
+    lodash.clonedeep "^4.5.0"
+
+"@cloudinary/html@1.0.0-beta.2":
+  version "1.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@cloudinary/html/-/html-1.0.0-beta.2.tgz#3523aca7aa263cbc1f6459918c062d34a9700bd0"
+  integrity sha512-Leie6RQmiwC/Krz80p1eLfOv16BhtICSi1MFbMIC0JjigM0bQr8ZwxDEx1E7KIqedcC6+gTd1P6n+rlFxy1fWg==
+  dependencies:
+    "@types/lodash.clonedeep" "^4.5.6"
+    "@types/lodash.debounce" "^4.0.6"
+    "@types/node" "^14.14.10"
+    lodash.clonedeep "^4.5.0"
+    lodash.debounce "^4.0.8"
+    typescript "^4.1.2"
+
+"@cloudinary/react@^1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@cloudinary/react/-/react-1.0.0-beta.8.tgz#a136a39ac4389c44f78c9393653b037d8bc7bd3e"
+  integrity sha512-zxK8J6fOijKvb0UzGp7k6/9+Y1WBw4xrARoVgMEwUnk6kDgCTFxbJWiMg6a6/pwfYn/Ma6hc2XVq/tOZtuAi2g==
+  dependencies:
+    "@cloudinary/html" "1.0.0-beta.2"
+
 "@eslint/eslintrc@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.4.1.tgz#442763b88cecbe3ee0ec7ca6d6dd6168550cbf14"
@@ -724,7 +751,21 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash@^4.14.165":
+"@types/lodash.clonedeep@^4.5.6":
+  version "4.5.6"
+  resolved "https://registry.yarnpkg.com/@types/lodash.clonedeep/-/lodash.clonedeep-4.5.6.tgz#3b6c40a0affe0799a2ce823b440a6cf33571d32b"
+  integrity sha512-cE1jYr2dEg1wBImvXlNtp0xDoS79rfEdGozQVgliDZj1uERH4k+rmEMTudP9b4VQ8O6nRb5gPqft0QzEQGMQgA==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash.debounce@^4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@types/lodash.debounce/-/lodash.debounce-4.0.6.tgz#c5a2326cd3efc46566c47e4c0aa248dc0ee57d60"
+  integrity sha512-4WTmnnhCfDvvuLMaF3KV4Qfki93KebocUF45msxhYyjMttZDQYzHkO639ohhk8+oco2cluAFL3t5+Jn4mleylQ==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*", "@types/lodash@^4.14.165":
   version "4.14.170"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.170.tgz#0d67711d4bf7f4ca5147e9091b847479b87925d6"
   integrity sha512-bpcvu/MKHHeYX+qeEN8GE7DIravODWdACVA1ctevD8CN24RhPZIKMn9ntfAsrvLfSX3cR5RrBKAbYm9bGs0A+Q==
@@ -764,6 +805,11 @@
   version "13.13.34"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.34.tgz#c9300a1b6560d90817fb2bba650e250116a575f9"
   integrity sha512-g8D1HF2dMDKYSDl5+79izRwRgNPsSynmWMbj50mj7GZ0b7Lv4p8EmZjbo3h0h+6iLr6YmVz9VnF6XVZ3O6V1Ug==
+
+"@types/node@^14.14.10":
+  version "14.17.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.2.tgz#1e94476db57ec93a372c7f7d29aa5707cfb92339"
+  integrity sha512-sld7b/xmFum66AAKuz/rp/CUO8+98fMpyQ3SBfzzBNGMd/1iHBTAg9oyAvcYlAj46bpc74r91jSw2iFdnx29nw==
 
 "@types/node@^15.6.0":
   version "15.6.0"
@@ -3056,6 +3102,11 @@ lodash.clonedeep@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+
 lodash.includes@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.includes/-/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"
@@ -4875,6 +4926,11 @@ type-fest@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
+
+typescript@^4.1.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.2.tgz#399ab18aac45802d6f2498de5054fcbbe716a805"
+  integrity sha512-zZ4hShnmnoVnAHpVHWpTcxdv7dWP60S2FsydQLV8V5PbS3FifjWFFRiHSWpDJahly88PRyV5teTSLoq4eG7mKw==
 
 typescript@^4.2.4:
   version "4.2.4"
