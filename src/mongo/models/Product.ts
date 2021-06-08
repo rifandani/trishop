@@ -65,6 +65,14 @@ const productSchema = new Schema<IProduct>(
           message: (props: any) => `${props.value} is not a valid URL`,
         },
       },
+      publicId: {
+        type: String,
+        trim: true,
+      },
+      tags: {
+        type: [String],
+        trim: true,
+      },
     },
   },
   { timestamps: true }

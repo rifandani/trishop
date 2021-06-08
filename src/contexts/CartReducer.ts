@@ -5,6 +5,8 @@ import { InitialState } from './CartContext'
 export interface Image {
   imageName: string
   imageUrl: string
+  publicId: string
+  tags?: string
 }
 
 export interface Product {

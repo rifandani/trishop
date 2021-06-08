@@ -1,30 +1,31 @@
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
-import { verify } from 'jsonwebtoken'
 import { parse } from 'cookie'
+import { verify } from 'jsonwebtoken'
 // files
 import Navbar from 'components/admin/Navbar'
-import EditUser from 'components/admin/users/EditUser'
+import EditProduct from 'components/admin/products/EditProduct'
+import ProductModel from 'mongo/models/Product'
 import UserModel from 'mongo/models/User'
 import MongoConfig from 'mongo/config/MongoConfig'
 import getQueryAsString from 'utils/getQueryAsString'
 import { JWTPayload } from 'pages/admin/dashboard'
-import { IUser } from 'types/User'
+import { Product } from 'contexts/CartReducer'
 
-export interface UserProps {
-  user: IUser
+interface Props {
+  product: Product
 }
 
-export default function AdminUsersEditPage({ user }: UserProps) {
+export default function AdminProductEdit({ product }: Props) {
   return (
     <>
       <Head>
-        <title>Trishop - Edit User</title>
+        <title>Trishop - Edit Product</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Navbar>
-        <EditUser user={user} />
+        <EditProduct product={product} />
       </Navbar>
     </>
   )
@@ -70,28 +71,28 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     /* ------------------- after user is proved authenticated ------------------- */
 
-    // if User does not exists
-    const userIdParams = getQueryAsString(ctx.params._id)
-    const userIsExists = await UserModel.exists({ _id: userIdParams })
-    if (!userIsExists) {
+    // if product._id does not exists
+    const productIdParams = getQueryAsString(ctx.params._id)
+    const productIsExists = await ProductModel.exists({ _id: productIdParams })
+    if (!productIsExists) {
       return {
         notFound: true,
       }
     }
 
-    // find User by id
-    const user = (await UserModel.findById(userIdParams)).toJSON()
+    // find product by id
+    const product = (await ProductModel.findById(productIdParams)).toJSON()
 
     const data = {
-      ...user,
-      _id: user._id.toString(),
-      createdAt: user.createdAt.toLocaleString(),
-      updatedAt: user.updatedAt.toLocaleString(),
+      ...product,
+      _id: product._id.toString(),
+      createdAt: product.createdAt.toLocaleString(),
+      updatedAt: product.updatedAt.toLocaleString(),
     }
 
     return {
       props: {
-        user: data,
+        product: data,
       },
     }
   } catch (err) {

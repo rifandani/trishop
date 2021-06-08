@@ -3,6 +3,8 @@ import { Document, Model } from 'mongoose'
 export type TImage = {
   imageName: string
   imageUrl: string
+  publicId: string
+  tags?: string[]
 }
 
 export interface IProduct {

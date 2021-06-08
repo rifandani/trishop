@@ -17,6 +17,12 @@ export default function TableUsers() {
 
   const deleteUser = async (_id: string): Promise<void> => {
     try {
+      // ask for certainty
+      const agree = confirm('Are you sure you want to delete this?')
+      if (!agree) {
+        return
+      }
+
       // DELETE /admin/users/:_id
       await Axios.delete(`/admin/users/${_id}`)
 

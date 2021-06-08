@@ -43,35 +43,33 @@ export default function AddProductWithCloudinaryWidget() {
         return
       }
 
-      // delete preview in image
-      // const imagesWithNoPreview = images.map((image) => {
-      //   delete image.preview
-      //   return image
-      // })
-
       let newImages: TImage[] = []
 
       // upload images to cloudinary first
-      images.forEach(async (image, index) => {
+      for (let i = 0; i < images.length; i++) {
         // for unauthenticated requests
         const formData = new FormData()
-        formData.append('file', image)
+        formData.append('file', images[i])
         formData.append('upload_preset', 'unsigned_preset')
 
         // POST to cloudinary
         const res = await Axios.post(CLOUDINARY_URL, formData)
 
         // push to newImages array
+        const publicId: string = res.data.public_id
+        const tags: string[] = res.data.tags
         const secureUrl: string = res.data.secure_url
         const secureUrlArray = secureUrl.split('/')
         const imageName = secureUrlArray[secureUrlArray.length - 1]
         newImages.push({
           imageName,
+          publicId,
+          tags,
           imageUrl: secureUrl,
         })
 
         // save ke MONGODB, hanya ketika sudah upload semua image
-        if (index === images.length - 1 && res.data.secure_url) {
+        if (i === images.length - 1 && newImages.length === images.length) {
           const newProduct = {
             images: newImages, // data from cloudinary secure_url
             title: values.title,
@@ -89,7 +87,7 @@ export default function AddProductWithCloudinaryWidget() {
           await push('/admin/dashboard')
           actions.setSubmitting(false) // finish formik cycle
         }
-      })
+      }
     } catch (err) {
       console.error(err)
       toast.error(err.data.message)

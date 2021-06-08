@@ -1,40 +1,42 @@
-import { useState, useEffect } from 'react';
+import firebase from 'firebase'
+import { useState, useEffect } from 'react'
 // files
-import { storage } from '../firebase/config';
+import { storage } from 'firebase/config'
 
 export const useStorage = (file: any, prefix: string) => {
-  const [progress, setProgress] = useState(0);
-  const [error, setError] = useState<any>(null);
-  const [url, setUrl] = useState(null);
+  const [progress, setProgress] = useState<number>(0)
+  const [error, setError] =
+    useState<firebase.storage.FirebaseStorageError>(null)
+  const [url, setUrl] = useState(null)
 
   // runs every time the file value changes
   useEffect(() => {
     if (file) {
       // storage ref
-      const storageRef = storage.ref(`images/${prefix}/${file.name}`);
+      const storageRef = storage.ref(`images/${prefix}/${file.name}`)
 
       storageRef.put(file).on(
         'state_changed',
         (snap) => {
           // track the upload progress
           let percentage = Math.round(
-            (snap.bytesTransferred / snap.totalBytes) * 100,
-          );
-          setProgress(percentage);
+            (snap.bytesTransferred / snap.totalBytes) * 100
+          )
+          setProgress(percentage)
         },
         (err) => {
-          setError(err);
+          setError(err)
         },
         async () => {
           // get the public download img url
-          const downloadUrl = await storageRef.getDownloadURL();
+          const downloadUrl = await storageRef.getDownloadURL()
 
           // save the url to local state
-          setUrl(downloadUrl);
-        },
-      );
+          setUrl(downloadUrl)
+        }
+      )
     }
-  }, [file]);
+  }, [file])
 
-  return { progress, url, error };
-};
+  return { progress, url, error }
+}

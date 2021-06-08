@@ -5,8 +5,7 @@ import { h } from 'gridjs'
 import { mutate } from 'swr'
 import Axios from 'axios'
 // files
-import useProducts from '../../hooks/useProducts'
-import { storage } from '../../firebase/config'
+import useProducts from 'hooks/useProducts'
 
 export default function TableProducts() {
   // hooks
@@ -16,27 +15,28 @@ export default function TableProducts() {
   const editProduct = (_id: string): Promise<boolean> =>
     push(`/admin/products/${_id}`)
 
-  // TODO: upload ke cloudinary
-  async function deleteProduct(id: string) {
+  const deleteProduct = async (_id: string): Promise<void> => {
     try {
-      // get specific product
-      const res = await Axios.get(`/admin/products/${id}`)
-      const images = res?.data?.images
+      // ask for certainty
+      const agree = confirm('Are you sure you want to delete this?')
+      if (!agree) {
+        return
+      }
 
-      // ketika PROMISE dari AXIOS selesai, delete images lama in FIREBASE STORAGE
-      images &&
-        images.forEach(async (image: any, i: number) => {
-          await storage.ref(`images/products/${image.imageName}`).delete()
+      const selectedProduct = products.find((product) => product._id === _id)
+      const public_ids = selectedProduct.images.map((image) => image.publicId)
 
-          // delete product using API hanya ketika mencapai images yg terakhir
-          if (i === images.length - 1) {
-            await Axios.delete('/admin/products', { data: { id } })
+      // delete images resources in cloudinary
+      await Axios.delete(
+        `/admin/cloudinary/resources/image?public_ids=${public_ids.join(',')}`
+      )
 
-            // trigger a revalidation (refetch) to make sure our local data is correct
-            await mutate('/admin/products')
-            toast.info('User deleted')
-          }
-        })
+      // delete product in mongodb
+      await Axios.delete(`/admin/products/${_id}`)
+
+      // trigger a revalidation (refetch) to make sure our local data is correct
+      await mutate('/admin/products')
+      toast.info('Product deleted')
     } catch (err) {
       console.error(err)
       toast.error(err.message)

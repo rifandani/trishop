@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'react-toastify'
 import {
   Formik,
@@ -11,98 +11,105 @@ import {
   FieldArray,
 } from 'formik'
 // files
-import useScript from 'hooks/useScript'
-import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
+import Dropzone, { ImagePreview } from '../Dropzone'
+import { Product } from 'contexts/CartReducer'
+import { addProductSchema, TAddProductSchema } from 'yup/schema'
+import { TImage } from 'types/Product'
 
-export default function AddProductWithCloudinaryWidget() {
+interface Props {
+  product: Product
+}
+
+const CLOUDINARY_URL =
+  'https://api.cloudinary.com/v1_1/ipandani2505/image/upload'
+
+export default function EditProduct({ product }: Props) {
+  const {
+    _id,
+    title,
+    stock,
+    price,
+    desc,
+    labels,
+    createdAt,
+    updatedAt,
+    images,
+  } = product
   // hooks
   const { push } = useRouter()
-  const status = useScript('https://upload-widget.cloudinary.com/global/all.js') // call cloudinary widget
-  const [widget, setWidget] = useState<any>(null)
+  const [photos, setPhotos] = useState<ImagePreview[]>([])
 
-  const initialValues: TProductApiSchema = {
-    title: '',
-    price: 1,
-    stock: 1,
-    desc: '',
-    labels: [],
-    images: [],
+  const initialValues: TAddProductSchema = {
+    title: title || '',
+    price: price || 1,
+    stock: stock || 1,
+    desc: desc || '',
+    labels: labels || [],
   }
 
-  // useEffect(() => {
-  //   if (status === 'ready') {
-  //     // @ts-ignore
-  //     const myWidget = cloudinary.createUploadWidget()
-  //     setWidget(myWidget)
-  //   }
-
-  //   return () => {
-  //     // widget.destroy({ removeThumbnails: true })
-  //   }
-  // }, [status])
-
   const onSubmit = async (
-    values: TProductApiSchema,
-    actions: FormikHelpers<TProductApiSchema>
+    values: TAddProductSchema,
+    actions: FormikHelpers<TAddProductSchema>
   ): Promise<void> => {
     try {
-      const data = {
-        title: values.title,
-        stock: values.stock,
-        price: values.price,
-        desc: values.desc,
-        labels: values.labels,
-        images: values.images,
+      // if there is no uploaded photos
+      if (photos.length < 1) {
+        toast.warning('Please upload some images first')
+        actions.setSubmitting(false) // finish formik cycle
+        return
       }
-      console.log(
-        '🚀 ~ file: AddProduct.tsx ~ line 104 ~ AddProduct ~ data',
-        data
+
+      // delete all images in cloudinary first
+      const public_ids = product.images.map((image) => image.publicId)
+      await Axios.delete(
+        `/admin/cloudinary/resources/image?public_ids=${public_ids.join(',')}`
       )
 
-      // delete preview in image
-      // const imagesWithNoPreview = images.map((image) => {
-      //   delete image.preview
-      //   return image
-      // })
+      let newPhotos: TImage[] = []
 
-      // const labels = [label1, label2, label3].filter((label) => !!label) // labels cleaning
+      // TODO: upload photos to cloudinary first
+      for (let i = 0; i < photos.length; i++) {
+        // for unauthenticated requests
+        const formData = new FormData()
+        formData.append('file', photos[i])
+        formData.append('upload_preset', 'unsigned_preset')
 
-      // let imagesMongo: any = [] // images MONGODB
+        // POST image to cloudinary
+        const res = await Axios.post(CLOUDINARY_URL, formData)
 
-      // for (let i = 0; i < images.length; i++) {
-      //   // storage ref
-      //   const storageRef = storage.ref(`images/products/${images[i].name}`)
+        // push to newPhotos array
+        const publicId: string = res.data.public_id
+        const tags: string[] = res.data.tags
+        const secureUrl: string = res.data.secure_url
+        const secureUrlArray = secureUrl.split('/')
+        const imageName = secureUrlArray[secureUrlArray.length - 1]
+        newPhotos.push({
+          imageName,
+          publicId,
+          tags,
+          imageUrl: secureUrl,
+        })
 
-      //   // save to STORAGE
-      //   await storageRef.put(images[i])
+        // save ke MONGODB, hanya ketika sudah upload semua image
+        if (i === images.length - 1 && newPhotos.length === images.length) {
+          const newProduct = {
+            images: newPhotos, // data from cloudinary secure_url
+            title: values.title,
+            stock: values.stock,
+            price: values.price,
+            desc: values.desc,
+            labels: values.labels,
+          }
 
-      //   // get imageUrl and save it to imagesMongo variable
-      //   const url = await storageRef.getDownloadURL()
-      //   url &&
-      //     imagesMongo.push({
-      //       imageName: images[i].name,
-      //       imageUrl: url,
-      //     })
+          // PUT /admin/products
+          await Axios.put(`/admin/products/${_id}`, newProduct)
 
-      //   // save ke MONGODB, hanya ketika sudah upload semua image
-      //   if (i === images.length - 1 && url) {
-      //     Axios.post('/admin/products', {
-      //       title,
-      //       price,
-      //       stock,
-      //       desc,
-      //       labels,
-      //       images: imagesMongo,
-      //     })
-      //       .then(() => {
-      //         toast.success('Product created 👍')
-
-      //         push('/admin/dashboard')
-      //       })
-      //       .catch((err) => toast.error(err.message))
-      //   }
-      // }
-      actions.setSubmitting(false) // finish formik cycle
+          // success
+          toast.info('Product updated')
+          await push('/admin/dashboard')
+          actions.setSubmitting(false) // finish formik cycle
+        }
+      }
     } catch (err) {
       console.error(err)
       toast.error(err.data.message)
@@ -112,19 +119,37 @@ export default function AddProductWithCloudinaryWidget() {
 
   return (
     <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-      {/* Add New User */}
+      {/* Edit Product */}
       <section className="p-6 mt-10 sm:mt-0">
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Add New Product
+                Edit Product
               </h3>
+
               <p className="mt-1 text-sm leading-5 text-gray-600">
                 Choose min 1 and max 3 for labels and images.
                 <br />
                 Use a unique name for each image.
               </p>
+
+              <p className="mt-3 text-sm leading-5 text-indigo-600">
+                Created At: {createdAt}
+                <br />
+                Updated At: {updatedAt}
+              </p>
+
+              <div className="flex flex-wrap mt-3 space-x-3">
+                {images.map((image) => (
+                  <img
+                    className="object-cover w-20 h-20"
+                    key={image.imageUrl}
+                    src={image.imageUrl}
+                    alt={image.imageName}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
@@ -132,15 +157,15 @@ export default function AddProductWithCloudinaryWidget() {
             {/* START FORM */}
             <Formik
               initialValues={initialValues}
-              validationSchema={productApiSchema}
+              validationSchema={addProductSchema}
               onSubmit={onSubmit}
             >
-              {({ isSubmitting, values, setValues }) => (
+              {({ isSubmitting, values }) => (
                 <Form className="">
                   <div className="overflow-hidden shadow sm:rounded-md">
                     <div className="px-4 py-5 bg-white sm:p-6">
                       <div className="grid grid-cols-6 gap-6">
-                        {/* title */}
+                        {/* Title */}
                         <div className="col-span-6 sm:col-span-4">
                           <label
                             htmlFor="title"
@@ -154,6 +179,7 @@ export default function AddProductWithCloudinaryWidget() {
                             placeholder="Product title..."
                             name="title"
                             type="text"
+                            autoFocus
                           />
 
                           <ErrorMessage
@@ -301,99 +327,7 @@ export default function AddProductWithCloudinaryWidget() {
                             Images
                           </label>
 
-                          <button
-                            className="px-6 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-orange-500 border border-transparent rounded-md shadow-sm hover:bg-orange-600 focus:outline-none focus:border-white active:bg-orange-600"
-                            type="button"
-                            onClick={() =>
-                              // @ts-ignore
-                              cloudinary.openUploadWidget(
-                                {
-                                  cloudName: 'ipandani2505',
-                                  uploadPreset: 'unsigned_preset',
-                                  folder: 'trishop/images/products',
-                                  sources: ['local', 'url', 'camera'],
-                                  defaultSource: 'local',
-                                  resourceType: 'image',
-                                  showAdvancedOptions: true,
-                                  showCompletedButton: true,
-                                  cropping: false,
-                                  multiple: true,
-                                  maxFiles: 3,
-                                  maxImageFileSize: 2000000, // 2 MB
-                                  styles: {
-                                    palette: {
-                                      window: '#F5F5F5',
-                                      sourceBg: '#FFFFFF',
-                                      windowBorder: '#90a0b3',
-                                      tabIcon: '#0094c7',
-                                      inactiveTabIcon: '#69778A',
-                                      menuIcons: '#0094C7',
-                                      link: '#53ad9d',
-                                      action: '#8F5DA5',
-                                      inProgress: '#0194c7',
-                                      complete: '#53ad9d',
-                                      error: '#c43737',
-                                      textDark: '#000000',
-                                      textLight: '#FFFFFF',
-                                    },
-                                    fonts: {
-                                      default: null,
-                                      "'Poppins', sans-serif": {
-                                        url: 'https://fonts.googleapis.com/css?family=Poppins',
-                                        active: true,
-                                      },
-                                    },
-                                  },
-                                },
-                                (error: any, result: any) => {
-                                  if (error) {
-                                    console.error(error)
-                                  }
-                                  if (
-                                    !error &&
-                                    result &&
-                                    result.event === 'success'
-                                  ) {
-                                    console.log(
-                                      'Done! Here is the image info: ',
-                                      result.info
-                                    ) // .bytes, existing, original_filename, path, secure_url, tags
-
-                                    const pathArray = (
-                                      result.info.path as string
-                                    ).split('/')
-
-                                    const imageName =
-                                      pathArray[pathArray.length - 1]
-                                    setValues({
-                                      ...values,
-                                      images: [
-                                        ...values.images,
-                                        {
-                                          imageName,
-                                          imageUrl: result.info.secure_url,
-                                        },
-                                      ],
-                                    })
-                                  }
-                                  // if (!error && result && result.event === 'show-completed') {
-                                  //   result.info.items.forEach((item: any) => {
-                                  //     console.log('item => ', item) // .name , size
-                                  //     console.log('item => ', item) // .name , size
-                                  //     console.log(
-                                  //       `show completed for item with id: ${item.uploadInfo.public_id}`
-                                  //     )
-                                  //   })
-                                  // }
-                                  // if (!error && result && result.event === 'close') {
-                                  //   console.log('Closed! result =>: ', result)
-                                  // }
-                                }
-                              )
-                            }
-                          >
-                            Choose Images
-                          </button>
+                          <Dropzone images={photos} setImages={setPhotos} />
 
                           <ErrorMessage
                             className="error-message"
@@ -411,7 +345,7 @@ export default function AddProductWithCloudinaryWidget() {
                         type="submit"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? 'Loading' : 'Add New Product'}
+                        {isSubmitting ? 'Loading...' : 'Update Product'}
                       </button>
                     </div>
                   </div>

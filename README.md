@@ -30,12 +30,12 @@ Trishop adalah platform e-commerce untuk UMKM dengan fitur _role-based_ USER dan
 
 ## Services 📃
 
-|                         Service                          |            Description            |
-| :------------------------------------------------------: | :-------------------------------: |
-|              [vercel](https://vercel.com/)               |          Next.js hosting          |
-| [firebase](https://github.com/firebase/firebase-js-sdk/) |        All-In-One Solution        |
-|     [mongodb](https://www.mongodb.com/cloud/atlas/)      |        Best NoSQL Database        |
-|            [midtrans](https://midtrans.com/)             | Payment Gateway **(coming soon)** |
+|                     Service                     |            Description            |
+| :---------------------------------------------: | :-------------------------------: |
+|          [vercel](https://vercel.com/)          |          Next.js hosting          |
+|      [cloudinary](https://cloudinary.com)       |         Storage Solution          |
+| [mongodb](https://www.mongodb.com/cloud/atlas/) |        Best NoSQL Database        |
+|        [midtrans](https://midtrans.com/)        | Payment Gateway **(coming soon)** |
 
 ## Branches 🔱
 
