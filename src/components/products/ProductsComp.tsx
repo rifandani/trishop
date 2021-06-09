@@ -19,10 +19,11 @@ export default function ProductsComp() {
     refreshInterval: 10000,
   })
   const [currentPage, setCurrentPage] = useState<number>(0) // for pagination
-  const [limit, setLimit] = useState<number>(12) // for pagination
+  const [limit, setLimit] = useState<number>(9) // for pagination
 
   const offset = currentPage * limit
 
+  // map ProductCard component
   const currentProducts =
     data &&
     data.products

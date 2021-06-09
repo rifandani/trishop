@@ -1,11 +1,11 @@
 import { GetServerSideProps } from 'next'
 import useSWR from 'swr'
 // files
-import Categories from '../../../components/Categories'
-import Nav from '../../../components/Nav'
-import ProductModel from '../../../mongo/models/Product'
-import { Image } from '../../../contexts/CartReducer'
-import MongoConfig from '../../../mongo/config/MongoConfig'
+import Categories from 'components/Categories'
+import Nav from 'components/Nav'
+import ProductModel from 'mongo/models/Product'
+import dbConnect from 'mongo/config/dbConnect'
+import { Image } from 'contexts/CartReducer'
 
 export interface PRODUCT {
   createdAt: string
@@ -42,7 +42,7 @@ const CategoriesIndex = ({ queryProducts }: CategoryIndexProps) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // connect DB
-  const conn = await MongoConfig.connectDB()
+  await dbConnect()
 
   const _label = query?._label
 
@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   if (!_label) {
     const noLabels = await ProductModel.find()
 
-    await conn.disconnect()
+    // await conn.disconnect()
     return {
       props: {
         queryProducts: JSON.stringify(noLabels),
@@ -65,7 +65,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     .sort({ createdAt: -1 }) // desc
 
   // connect DB
-  await conn.disconnect()
+  // await conn.disconnect()
 
   return {
     props: { queryProducts: JSON.stringify(queryProducts) }, // harus di serialize ke JSON dlu

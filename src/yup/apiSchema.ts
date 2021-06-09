@@ -49,6 +49,8 @@ export const productApiSchema = addProductSchema.concat(
             .trim()
             .url('imageUrl invalid')
             .required('images[i].imageUrl required'),
+          publicId: string().trim().required('images[i].publicId required'),
+          tags: array().of(string().trim().required('images[i].tags required')),
         })
       )
       .min(1, 'images must consists of 1 image object or more')
@@ -87,6 +89,29 @@ export const validateCouponApiSchema = object({
     .required('code required'),
 })
 
+export const putReviewApiSchema = object({
+  reviewerName: string()
+    .trim()
+    .min(3, 'reviewerName must be 3 characters or more')
+    .required('reviewerName required'),
+  comment: string()
+    .trim()
+    .min(5, 'comment must be 5 characters or more')
+    .required('comment required'),
+  star: number()
+    .min(1, 'star must be 1 or more')
+    .max(5, 'star must be 5 or less')
+    .required('star required'),
+  // reviewerImage: object({}).optional(),
+})
+
+export const addReviewApiSchema = putReviewApiSchema.concat(
+  object({
+    productRef: string().trim().required('productRef required'),
+    reviewerId: string().trim().required('reviewerId required'),
+  })
+)
+
 // export interface IQrcode extends TypeOf<typeof createQrcodeSchema> {}
 export type TLoginApiSchema = TypeOf<typeof loginApiSchema>
 export type TRegisterApiSchema = TypeOf<typeof registerApiSchema>
@@ -95,3 +120,5 @@ export type TUserApiSchema = TypeOf<typeof userApiSchema>
 export type TProductApiSchema = TypeOf<typeof productApiSchema>
 export type TCouponApiSchema = TypeOf<typeof couponApiSchema>
 export type TValidateCouponApiSchema = TypeOf<typeof validateCouponApiSchema>
+export type TAddReviewApiSchema = TypeOf<typeof addReviewApiSchema>
+export type TPutReviewApiSchema = TypeOf<typeof putReviewApiSchema>

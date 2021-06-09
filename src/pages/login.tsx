@@ -125,7 +125,7 @@ export default function Login() {
                   </div>
 
                   <button
-                    className="p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer disabled:opacity-50 hover:underline"
+                    className="p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer focus:ring-2 focus:ring-orange-500 disabled:opacity-50 hover:underline"
                     type="submit"
                     disabled={isSubmitting}
                   >

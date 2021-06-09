@@ -9,20 +9,35 @@ import { CartContext } from 'contexts/CartContext'
 import { WishlistContext } from 'contexts/WishlistContext'
 import { Product } from 'contexts/CartReducer'
 
-export default function ProductDetail({ product }: { product: Product }) {
-  const { title, price, stock, desc, labels, images, sold, _id } = product // destructure product props
+interface ProductDetailProps {
+  product: Product
+}
+
+export default function ProductDetail({ product }: ProductDetailProps) {
+  const { title, price, stock, desc, labels, images, sold, _id, reviews } =
+    product // destructure product props
 
   // hooks
   const { push } = useRouter()
-
   const { cart, dispatch } = useContext(CartContext)
   const { wishlist, dispatchWish } = useContext(WishlistContext)
   const [discount] = useState<number>(0.1)
   const [quantity, setQuantity] = useState<string>('1')
   const [error, setError] = useState<string>('')
 
+  // prices
   const priceAfterDiscount = price - price * discount
   const subtotal = Number(quantity) * priceAfterDiscount
+  // reviews
+  const reviewsCount = reviews.length
+  const averageStars =
+    reviewsCount > 0
+      ? (
+          reviews
+            .map((review) => review.star)
+            .reduce((acc, curr) => acc + curr) / reviewsCount
+        ).toPrecision(2)
+      : 0
 
   // check if product already in wishlist
   const productWishlisted = wishlist?.find((prod) => prod.id === _id)
@@ -133,11 +148,11 @@ export default function ProductDetail({ product }: { product: Product }) {
                 <FaStar className="w-4 h-4 text-orange-500" />
 
                 <span className="pl-2 mt-1 text-xs font-semibold tracking-wide text-gray-800">
-                  4.6
+                  {averageStars}
                 </span>
 
                 <span className="pl-2 mt-1 text-xs font-semibold tracking-wide text-gray-400">
-                  (147 reviews)
+                  ({reviewsCount} reviews)
                 </span>
               </div>
             </section>

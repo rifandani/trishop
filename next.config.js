@@ -1,6 +1,6 @@
 module.exports = {
   images: {
-    domains: ['firebasestorage.googleapis.com'],
+    domains: ['res.cloudinary.com', 'images.unsplash.com'],
   },
   typescript: {
     // !! WARN !!
@@ -9,4 +9,4 @@ module.exports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
-};
+}

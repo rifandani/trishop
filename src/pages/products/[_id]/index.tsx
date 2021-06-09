@@ -1,15 +1,17 @@
-import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
-import { FaComments } from 'react-icons/fa'
+import { GetStaticPaths, GetStaticProps } from 'next'
+import { FaComments, FaPenSquare } from 'react-icons/fa'
 // files
 import Nav from 'components/Nav'
 import ProductDetail from 'components/products/product/ProductDetail'
 import ProductReview from 'components/products/product/ProductReview'
+import ReviewForm from 'components/products/product/ReviewForm'
 import Footer from 'components/Footer'
 import ProductModel from 'mongo/models/Product'
-import MongoConfig from 'mongo/config/MongoConfig'
-import { Product as Prod } from 'contexts/CartReducer'
+import ReviewModel from 'mongo/models/Review'
+import dbConnect from 'mongo/config/dbConnect'
 import getQueryAsString from 'utils/getQueryAsString'
+import { Product as Prod } from 'contexts/CartReducer'
 
 interface IProductDetailPageProps {
   product: Prod
@@ -34,7 +36,14 @@ export default function ProductDetailPage({
         <span className="relative">Reviews</span>{' '}
       </h1>
 
-      <ProductReview />
+      <ProductReview reviews={product.reviews} />
+
+      <h1 className="flex items-center justify-center mt-6 text-2xl font-bold leading-tight tracking-tight text-center text-gray-800 md:text-3xl">
+        <FaPenSquare className="w-8 h-8 mb-2 mr-3 text-orange-800" />
+        <span className="relative">Submit Your Review</span>{' '}
+      </h1>
+
+      <ReviewForm productRef={product._id} />
 
       <Footer />
     </div>
@@ -43,10 +52,15 @@ export default function ProductDetailPage({
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   // connect db
-  const conn = await MongoConfig.connectDB()
+  await dbConnect()
 
   const _id = getQueryAsString(params._id)
   const productObj = await ProductModel.findById(_id)
+    .populate({
+      path: 'reviews',
+      model: ReviewModel, // reference the model, or it will throw an Error
+    })
+    .exec()
 
   if (!productObj) {
     return {
@@ -54,32 +68,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   }
 
-  const product = {
-    _id: productObj._id.toString(),
-    createdAt: productObj.createdAt.toString(),
-    updatedAt: productObj.updatedAt.toString(),
-    __v: productObj.__v,
-    labels: productObj.labels,
-    images: productObj.images,
-    title: productObj.title,
-    price: productObj.price,
-    stock: productObj.stock,
-    desc: productObj.desc,
-    sold: productObj.sold,
-  }
-
   // disconnect db
-  await conn.disconnect()
+  // await conn.disconnect()
 
   return {
-    props: { product },
+    props: { product: JSON.parse(JSON.stringify(productObj)) },
     revalidate: 3,
   }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
   // connect db
-  const conn = await MongoConfig.connectDB()
+  await dbConnect()
 
   const products = await ProductModel.find()
 
@@ -88,7 +88,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }))
 
   // disconnect db
-  await conn.disconnect()
+  // await conn.disconnect()
 
   return {
     paths,

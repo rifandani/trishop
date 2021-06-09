@@ -1,4 +1,6 @@
 import { Document, Model } from 'mongoose'
+// files
+import { IReview } from './Review'
 
 export type TImage = {
   imageName: string
@@ -15,10 +17,10 @@ export interface IProduct {
   stock: number
   title: string
   sold: number
+  reviews?: IReview[]
   createdAt?: Date
   updatedAt?: Date
 }
 
-export type Products = IProduct[]
 export interface IProductDocument extends IProduct, Document {}
 export interface IProductModel extends Model<IProductDocument> {}

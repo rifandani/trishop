@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 import {
   FaReact,
   FaHome,
@@ -9,22 +9,22 @@ import {
   FaUserPlus,
   FaFolderPlus,
   FaCpanel,
-} from 'react-icons/fa';
-import Cookies from 'js-cookie';
-import { toast } from 'react-toastify';
+} from 'react-icons/fa'
+import Cookies from 'js-cookie'
+import { toast } from 'react-toastify'
 
 export default function Navbar({ children }: any) {
-  const { pathname, push } = useRouter();
+  const { pathname, push } = useRouter()
 
-  const [toggleSidebar, setToggleSidebar] = useState(false);
-  const [toggleDropdown, setToggleDropdown] = useState(false);
+  const [toggleSidebar, setToggleSidebar] = useState(false)
+  const [toggleDropdown, setToggleDropdown] = useState(false)
 
   async function logout() {
-    Cookies.remove('auth'); // remove auth cookie
+    Cookies.remove('auth') // remove auth cookie
 
     // push back to home and toast
-    await push('/');
-    toast.success('Logout success');
+    await push('/')
+    toast.info('Logout success')
   }
 
   return (
@@ -145,8 +145,8 @@ export default function Navbar({ children }: any) {
                   >
                     <img
                       className="object-cover w-full h-full"
-                      src="https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=296&amp;q=80"
-                      alt="Your avatar"
+                      src="/images/trishop.png"
+                      alt="admin image"
                     />
                   </button>
 
@@ -185,5 +185,5 @@ export default function Navbar({ children }: any) {
         </div>
       </div>
     </article>
-  );
+  )
 }

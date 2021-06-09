@@ -1,67 +1,70 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 // files
 import getQueryAsString from 'utils/getQueryAsString'
+import ReviewModel from 'mongo/models/Review'
 import ProductModel from 'mongo/models/Product'
+import connectMongo from 'middlewares/connectMongo'
 import checkObjectId from 'middlewares/checkObjectId'
 import withYup from 'middlewares/withYup'
-import connectMongo from 'middlewares/connectMongo'
-import { isValidObjectId } from 'mongoose'
-import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
+import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
 
 // TODO: add authentication middleware for all ADMIN api's
 const handler = async function (req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
-      /*                       GET req => /admin/products/:_id                      */
+      /*                       GET req => /admin/reviews/:_id                      */
       /* -------------------------------------------------------------------------- */
 
-      // get productId
-      const productId = getQueryAsString(req.query._id)
+      // get id
+      const reviewId = getQueryAsString(req.query._id)
 
-      // get product by productId & populate 'reviews'
-      const productDoc = await ProductModel.findById(productId)
-        .populate('reviews')
-        .exec()
+      // get review by reviewId
+      const reviewDoc = await ReviewModel.findById(reviewId) // .populate('productRef').exec()
 
       // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, product: productDoc })
+      res.status(200).json({ error: false, review: reviewDoc })
     } else if (req.method === 'PUT') {
       /* -------------------------------------------------------------------------- */
-      /*                       PUT req => /admin/products/:_id                      */
+      /*                       PUT req => /admin/reviews/:_id                      */
       /* -------------------------------------------------------------------------- */
 
-      // get productId
-      const productId = getQueryAsString(req.query._id)
+      // get reviewId
+      const reviewId = getQueryAsString(req.query._id)
 
-      const { title, price, stock, desc, labels, images } =
-        req.body as TProductApiSchema
+      const { reviewerName, comment, star } = req.body as TPutReviewApiSchema
 
-      // update product
-      await ProductModel.findByIdAndUpdate(productId, {
-        title,
-        price,
-        stock,
-        desc,
-        labels,
-        images,
+      // update review
+      await ReviewModel.findByIdAndUpdate(reviewId, {
+        reviewerName,
+        comment,
+        star,
       })
 
       // PUT success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(201).json({ error: false, message: 'Product updated' })
+      res.status(201).json({ error: false, message: 'Review updated' })
     } else if (req.method === 'DELETE') {
       /* -------------------------------------------------------------------------- */
-      /*                       DELETE req => /admin/products/:_id                   */
+      /*                        DELETE req => /admin/reviews/:_id                   */
       /* -------------------------------------------------------------------------- */
 
-      // get productId
-      const productId = getQueryAsString(req.query._id)
+      // get id
+      const reviewId = getQueryAsString(req.query._id)
 
-      // delete product
-      await ProductModel.findByIdAndDelete(productId)
+      // get review by reviewId
+      const reviewDoc = await ReviewModel.findById(reviewId)
+
+      // delete reviewRef in Product.reviews collection
+      // https://docs.mongodb.com/manual/reference/operator/update/pullAll/
+      await ProductModel.findByIdAndUpdate(reviewDoc.productRef, {
+        $pullAll: { reviews: [reviewId] },
+      })
+
+      // delete review by reviewId in Review collection
+      await ReviewModel.findByIdAndDelete(reviewId)
 
       // DELETE success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, message: 'Product deleted' })
+      res.status(200).json({ error: false, message: 'Review deleted' })
     } else {
       // client error => METHOD NOT ALLOWED -----------------------------------------------------------------
       res.status(405).json({
@@ -78,6 +81,6 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
 
 export default checkObjectId(
   // @ts-ignore
-  ProductModel,
-  withYup(productApiSchema, connectMongo(handler))
+  ReviewModel,
+  withYup(putReviewApiSchema, connectMongo(handler))
 )

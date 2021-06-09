@@ -67,7 +67,7 @@ export default function EditProduct({ product }: Props) {
 
       let newPhotos: TImage[] = []
 
-      // TODO: upload photos to cloudinary first
+      // upload photos to cloudinary first
       for (let i = 0; i < photos.length; i++) {
         // for unauthenticated requests
         const formData = new FormData()

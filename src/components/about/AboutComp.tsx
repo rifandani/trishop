@@ -23,7 +23,7 @@ const features = [
     id: 4,
     title: 'Unique',
     subtitle:
-      'Belgian chocolate tradition combined with the Javanese cultural heritage and the exceptional range of tastes and ingredients that we can find locally. This allows us to craft a true Indonesian premium chocolate. It is the fusion of different cultural aspects, where each one benefits from the other that creates something special and makes Monggo so unique.',
+      'Belgian chocolate tradition combined with the Javanese cultural heritage and the exceptional range of tastes and ingredients that we can find locally. This allows us to craft a true Indonesian premium chocolate. It is the fusion of different cultural aspects, where each one benefits from the other that creates something special and makes us so unique.',
   },
   {
     id: 5,

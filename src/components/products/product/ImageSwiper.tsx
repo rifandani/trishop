@@ -2,13 +2,13 @@ import { useState } from 'react'
 import SwiperCore, { Navigation, Thumbs } from 'swiper/core'
 import { Swiper, SwiperSlide } from 'swiper/react'
 // files
-import { TImage } from 'types/Product'
+import { Image } from 'contexts/CartReducer'
 
 // install Swiper modules
 SwiperCore.use([Navigation, Thumbs])
 
 interface IImageSwiperProps {
-  images: TImage[]
+  images: Image[]
 }
 
 export default function ImageSwiper({ images }: IImageSwiperProps) {

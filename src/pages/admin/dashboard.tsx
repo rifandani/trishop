@@ -6,7 +6,7 @@ import { parse } from 'cookie'
 import Navbar from 'components/admin/Navbar'
 import AdminDashboard from 'components/admin/AdminDashboard'
 import UserModel from 'mongo/models/User'
-import MongoConfig from 'mongo/config/MongoConfig'
+import dbConnect from 'mongo/config/dbConnect'
 
 export interface JWTPayload {
   sub: string
@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const userId = (decoded as JWTPayload).sub
 
     // connect to mongodb
-    await MongoConfig.connectDB()
+    await dbConnect()
 
     // // if user does not exists
     const userIsExists = await UserModel.exists({ _id: userId })

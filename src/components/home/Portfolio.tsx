@@ -28,7 +28,7 @@ const Portfolio = () => {
         </section>
 
         <section className="px-4 lg:w-1/2">
-          <div className="flex flex-wrap -m-2">
+          <div className="flex flex-wrap w-full h-full -m-2">
             <div className="w-1/2 p-2">
               <img
                 className="object-cover shadow-md shadow-pop-bl"
@@ -37,7 +37,7 @@ const Portfolio = () => {
               />
             </div>
 
-            <div className="w-1/2 p-2">
+            <div className="w-1/2 py-2 pl-2">
               <img
                 className="object-cover shadow-md shadow-pop-bl"
                 src="/images/show2.jpg"
@@ -47,15 +47,15 @@ const Portfolio = () => {
 
             <div className="w-1/2 p-2">
               <img
-                className="object-cover shadow-md shadow-pop-bl"
+                className="object-cover h-full shadow-md shadow-pop-bl"
                 src="/images/show3.jpg"
                 alt="show3"
               />
             </div>
 
-            <div className="w-1/2 p-2">
+            <div className="w-1/2 py-2 pl-2">
               <img
-                className="object-cover shadow-md shadow-pop-bl"
+                className="object-cover w-full shadow-md shadow-pop-bl"
                 src="/images/show4.jpg"
                 alt="show4"
               />

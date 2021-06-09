@@ -1,6 +1,5 @@
-// import { InitialState } from './CartContext';
-
 import { InitialState } from './CartContext'
+import { IReview } from 'types/Review'
 
 export interface Image {
   imageName: string
@@ -18,7 +17,8 @@ export interface Product {
   stock: number
   title: string
   updatedAt: string
-  sold: number
+  sold: number // new
+  reviews: IReview[] // new
   __v: number
   _id: string
 }

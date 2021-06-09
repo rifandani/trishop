@@ -1,12 +1,12 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 // files
-import MongoConfig from 'mongo/config/MongoConfig'
+import dbConnect from 'mongo/config/dbConnect'
 
 // connect mongodb middleware
 const connectMongo =
   (fn: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-      await MongoConfig.connectDB()
+      await dbConnect()
 
       // next()
       await fn(req, res)

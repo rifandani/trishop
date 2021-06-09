@@ -19,13 +19,18 @@ export default function ProductsPagination({
   const classNames =
     'bg-white text-orange-800 hover:bg-orange-200 px-2 py-1 border cursor-pointer rounded-md appearance-none focus:outline-none focus:ring focus:border-orange-300 list-none'
 
-  const pageCount = Math.ceil(products.length / limit)
+  const productCount = products.length
+  const firstShow = productCount > 0 ? limit * currentPage + 1 : 0
+  const secondShow =
+    productCount > limit * (currentPage + 1)
+      ? limit * (currentPage + 1)
+      : productCount
+  const pageCount = Math.ceil(productCount / limit)
 
   return (
     <div className="flex flex-col items-center mt-20">
       <article className="flex justify-center text-gray-500">
-        Showing {limit * currentPage + 1} - {limit * (currentPage + 1)} of{' '}
-        {products.length} Products
+        Showing {firstShow} - {secondShow} of {productCount} products
       </article>
 
       <ReactPaginate

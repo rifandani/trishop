@@ -33,6 +33,7 @@
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.26.0",
     "cookie": "^0.4.1",
+    "dayjs": "^1.10.5",
     "firebase": "^8.6.2",
     "formik": "^2.2.8",
     "gridjs": "^4.0.0",
