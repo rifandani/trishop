@@ -9,16 +9,16 @@ export interface Image {
 }
 
 export interface Product {
-  createdAt: string
   desc: string
   images: Image[]
   labels: string[]
   price: number
   stock: number
   title: string
-  updatedAt: string
   sold: number // new
   reviews: IReview[] // new
+  createdAt: string
+  updatedAt: string
   __v: number
   _id: string
 }

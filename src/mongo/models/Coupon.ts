@@ -2,9 +2,6 @@ import { Schema, model, models, Model } from 'mongoose'
 // files
 import { ICoupon } from 'types/Coupon'
 
-const urlRegex =
-  /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/
-
 const couponSchema = new Schema<ICoupon>(
   {
     discount: {
@@ -17,6 +14,23 @@ const couponSchema = new Schema<ICoupon>(
       required: [true, 'minTransaction must not be empty'],
       min: 0,
     },
+    code: {
+      type: String,
+      required: [true, 'code must not be empty'],
+      unique: [true, 'code must be unique'],
+      trim: true,
+      minlength: 3,
+    },
+    desc: {
+      type: String,
+      required: [true, 'desc must not be empty'],
+      trim: true,
+      minlength: 10,
+    },
+    validUntil: {
+      type: Number,
+      required: [true, 'validUntil must not be empty'],
+    },
     // fixed: E11000-duplicate-key-error-index-in-mongodb-mongoose
     usedBy: {
       type: [String],
@@ -25,32 +39,6 @@ const couponSchema = new Schema<ICoupon>(
       // index: true,
       // unique: true,
       // sparse: true,
-    },
-    code: {
-      type: String,
-      required: [true, 'code must not be empty'],
-      trim: true,
-      unique: [true, 'code must be unique'],
-      minlength: 3,
-    },
-    desc: {
-      type: String,
-      required: [true, 'desc must not be empty'],
-      minlength: 10,
-      trim: true,
-    },
-    imageUrl: {
-      type: String,
-      required: [true, 'imageUrl must not be empty'],
-      trim: true,
-      validate: {
-        validator: (url: string) => urlRegex.test(url),
-        message: (props: any) => `${props.value} is not a valid URL`,
-      },
-    },
-    validUntil: {
-      type: Number,
-      required: [true, 'validUntil must not be empty'],
     },
   },
   { timestamps: true }

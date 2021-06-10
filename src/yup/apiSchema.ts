@@ -74,10 +74,6 @@ export const couponApiSchema = object({
     .trim()
     .min(10, 'desc must be 10 characters or more')
     .required('desc required'),
-  imageUrl: string()
-    .trim()
-    .url('imageUrl invalid')
-    .required('imageUrl required'),
   validUntil: number().positive().required('validUntil required'),
 })
 

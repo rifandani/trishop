@@ -49,7 +49,7 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       res.status(405).json({
         error: true,
         name: 'METHOD NOT ALLOWED',
-        message: 'Only supports GET, POST, DELETE method',
+        message: 'Only supports GET, POST method',
       })
     }
   } catch (err) {

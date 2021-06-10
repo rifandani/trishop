@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { isValidObjectId } from 'mongoose'
 // files
 import CouponModel from 'mongo/models/Coupon'
 import getQueryAsString from 'utils/getQueryAsString'
+import checkObjectId from 'middlewares/checkObjectId'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
 import { couponApiSchema, TCouponApiSchema } from 'yup/apiSchema'
@@ -15,28 +15,8 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       /*                       GET req => /admin/coupons/:_id                       */
       /* -------------------------------------------------------------------------- */
 
-      // check id validity
+      // get id from query
       const couponId = getQueryAsString(req.query._id)
-      const couponIdIsValid = isValidObjectId(couponId)
-      if (!couponIdIsValid) {
-        // GET client error => Bad Request -----------------------------------------------------------------
-        res
-          .status(400)
-          .json({ error: true, message: 'couponId is not a valid ObjectId' })
-        return
-      }
-
-      // find existing coupon
-      const couponIsExists = await CouponModel.exists({ _id: couponId })
-      if (!couponIsExists) {
-        // PUT client error => Bad Request -----------------------------------------------------------------
-        res.status(400).json({
-          error: true,
-          message:
-            'couponId is a valid ObjectId, but can not find the coupon. Maybe it is already deleted',
-        })
-        return
-      }
 
       // get coupon by couponId
       const coupon = await CouponModel.findById(couponId)
@@ -48,31 +28,11 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       /*                       PUT req => /admin/coupons/:_id                       */
       /* -------------------------------------------------------------------------- */
 
-      // check couponId validity
+      // get id from query
       const couponId = getQueryAsString(req.query._id)
-      const couponIdIsValid = isValidObjectId(couponId)
-      if (!couponIdIsValid) {
-        // PUT client error => Bad Request -----------------------------------------------------------------
-        res
-          .status(400)
-          .json({ error: true, message: 'couponId is not a valid ObjectId' })
-        return
-      }
 
-      const { discount, minTransaction, code, desc, imageUrl, validUntil } =
+      const { discount, minTransaction, code, desc, validUntil } =
         req.body as TCouponApiSchema
-
-      // find existing coupon
-      const couponIsExists = await CouponModel.exists({ _id: couponId })
-      if (!couponIsExists) {
-        // PUT client error => Bad Request -----------------------------------------------------------------
-        res.status(400).json({
-          error: true,
-          message:
-            'couponId is a valid ObjectId, but can not find the coupon. Maybe it is already deleted',
-        })
-        return
-      }
 
       // update coupon
       await CouponModel.findByIdAndUpdate(couponId, {
@@ -80,7 +40,6 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         minTransaction,
         code,
         desc,
-        imageUrl,
         validUntil,
       })
 
@@ -91,28 +50,8 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       /*                      DELETE req => /admin/coupons/:_id                     */
       /* -------------------------------------------------------------------------- */
 
-      // check couponId validity
+      // get id from query
       const couponId = getQueryAsString(req.query._id)
-      const couponIdIsValid = isValidObjectId(couponId)
-      if (!couponIdIsValid) {
-        // PUT client error => Bad Request -----------------------------------------------------------------
-        res
-          .status(400)
-          .json({ error: true, message: 'couponId is not a valid ObjectId' })
-        return
-      }
-
-      // find existing coupon
-      const couponIsExists = await CouponModel.exists({ _id: couponId })
-      if (!couponIsExists) {
-        // PUT client error => Bad Request -----------------------------------------------------------------
-        res.status(400).json({
-          error: true,
-          message:
-            'couponId is a valid ObjectId, but can not find the coupon. Maybe it is already deleted',
-        })
-        return
-      }
 
       // delete coupon
       await CouponModel.findByIdAndDelete(couponId)
@@ -124,7 +63,7 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       res.status(405).json({
         error: true,
         name: 'METHOD NOT ALLOWED',
-        message: 'Only supports GET, POST, PUT, DELETE method',
+        message: 'Only supports GET, PUT, DELETE method',
       })
     }
   } catch (err) {
@@ -133,4 +72,8 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withYup(couponApiSchema, connectMongo(handler))
+export default checkObjectId(
+  // @ts-ignore
+  CouponModel,
+  withYup(couponApiSchema, connectMongo(handler))
+)

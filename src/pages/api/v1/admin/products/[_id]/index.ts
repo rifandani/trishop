@@ -5,7 +5,6 @@ import ProductModel from 'mongo/models/Product'
 import checkObjectId from 'middlewares/checkObjectId'
 import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
-import { isValidObjectId } from 'mongoose'
 import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
 
 // TODO: add authentication middleware for all ADMIN api's

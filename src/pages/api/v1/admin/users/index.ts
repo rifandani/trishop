@@ -14,10 +14,16 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       /*                           GET req => /admin/users                          */
       /* -------------------------------------------------------------------------- */
 
-      const users = await UserModel.find()
+      // there is no query for filtering & sorting
+      if (Object.keys(req.query).length === 0) {
+        const users = await UserModel.find()
 
-      // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, users, count: users.length })
+        // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        res.status(200).json({ error: false, users, count: users.length })
+        return
+      }
+
+      const customQuery = req.query
     } else if (req.method === 'POST') {
       /* -------------------------------------------------------------------------- */
       /*                          POST req => /admin/users                          */
@@ -43,7 +49,7 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       res.status(405).json({
         error: true,
         name: 'METHOD NOT ALLOWED',
-        message: 'Only supports GET, POST, PUT, DELETE methods',
+        message: 'Only supports GET, POST methods',
       })
     }
   } catch (err) {

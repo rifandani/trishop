@@ -16,8 +16,8 @@ export interface IProduct {
   price: number
   stock: number
   title: string
-  sold: number
-  reviews?: IReview[]
+  sold: number // new
+  reviews?: IReview[] // new
   createdAt?: Date
   updatedAt?: Date
 }

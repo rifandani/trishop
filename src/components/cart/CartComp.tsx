@@ -63,6 +63,12 @@ export default function CartComp() {
         reqBody
       )
 
+      // if there is 400 error
+      if (res.status === 400) {
+        toast.error(res.data.message)
+        return
+      }
+
       // set value coupon
       const coupon = res.data.coupon
       setCouponDiscount(coupon.discount) // float
@@ -70,8 +76,8 @@ export default function CartComp() {
       console.info('coupon => ', coupon)
       toast.success('Coupon applied')
     } catch (err) {
-      toast.error(err.data.message)
       console.error(err)
+      toast.error(err.message)
     }
   }
 

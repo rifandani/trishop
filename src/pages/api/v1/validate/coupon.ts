@@ -28,12 +28,12 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       }
 
       // find coupon by {code}
-      const couponByCode = await CouponModel.findOne({
+      const coupon = await CouponModel.findOne({
         code: code.toUpperCase(),
       })
 
       // check coupon {usedBy} with userId
-      const couponIsAlreadyUsed = couponByCode.usedBy.includes(userId)
+      const couponIsAlreadyUsed = coupon.usedBy.includes(userId)
       if (couponIsAlreadyUsed) {
         // client error => Bad request -----------------------------------------------------------------
         res.status(400).json({
@@ -43,8 +43,8 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         return
       }
 
-      // compare coupon {validUntil} - milliseconds - with today's Date
-      const couponIsStillValid = couponByCode.validUntil > Date.now()
+      // compare coupon {validUntil} with today's Date milliseconds
+      const couponIsStillValid = coupon.validUntil > Date.now()
       if (!couponIsStillValid) {
         // client error => Bad request -----------------------------------------------------------------
         res.status(400).json({
@@ -55,7 +55,7 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       }
 
       // POST SUCCESS => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(201).json({ error: false, coupon: couponByCode })
+      res.status(201).json({ error: false, coupon: coupon })
     } else {
       // client error => invalid req method -----------------------------------------------------------------
       res.status(405).json({

@@ -50,7 +50,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   if (!_label) {
     const noLabels = await ProductModel.find()
 
-    // await conn.disconnect()
     return {
       props: {
         queryProducts: JSON.stringify(noLabels),
@@ -63,9 +62,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   })
     .limit(10)
     .sort({ createdAt: -1 }) // desc
-
-  // connect DB
-  // await conn.disconnect()
 
   return {
     props: { queryProducts: JSON.stringify(queryProducts) }, // harus di serialize ke JSON dlu

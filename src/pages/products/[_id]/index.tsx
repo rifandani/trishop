@@ -68,9 +68,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   }
 
-  // disconnect db
-  // await conn.disconnect()
-
   return {
     props: { product: JSON.parse(JSON.stringify(productObj)) },
     revalidate: 3,
@@ -86,9 +83,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = products.map((product) => ({
     params: { _id: product._id.toString() },
   }))
-
-  // disconnect db
-  // await conn.disconnect()
 
   return {
     paths,

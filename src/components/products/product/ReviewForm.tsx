@@ -1,6 +1,5 @@
 import Axios from 'axios'
 import { toast } from 'react-toastify'
-import { FaStar } from 'react-icons/fa'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
