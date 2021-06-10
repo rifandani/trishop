@@ -4,12 +4,14 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
 import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
+import { IPostReviewResponse, IReview } from 'types/Review'
 
 interface ReviewFormProps {
   productRef: string
+  reviews: IReview[]
 }
 
-export default function ReviewForm({ productRef }: ReviewFormProps) {
+export default function ReviewForm({ productRef, reviews }: ReviewFormProps) {
   // hooks
   const [reviewerId] = useLocalStorage('user', '') // local storage
 
@@ -40,10 +42,20 @@ export default function ReviewForm({ productRef }: ReviewFormProps) {
       }
 
       // POST /admin/reviews
-      await Axios.post('/admin/reviews', newReview)
+      const res = await Axios.post<IPostReviewResponse>(
+        '/admin/reviews',
+        newReview
+      )
+
+      // client error
+      if (res.status === 400) {
+        toast.error(res.data.message)
+        return
+      }
 
       // success
-      toast.success('Review added. Wait 3 seconds to revalidate')
+      reviews.push(newReview) // push to reviews just for UI updates
+      toast.success('Review added. Wait 3 seconds and refresh to revalidate')
       actions.resetForm() // reset form
       actions.setSubmitting(false) // finish formik cycle
     } catch (err) {

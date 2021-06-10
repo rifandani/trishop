@@ -1,4 +1,3 @@
-import { Document, Model } from 'mongoose'
 // files
 import { IProduct } from './Product'
 
@@ -18,7 +17,40 @@ export interface IReview {
   // reviewerImage?: TImage
   createdAt?: Date
   updatedAt?: Date
+  _id?: string
 }
 
-export interface IProductDocument extends IReview, Document {}
-export interface IProductModel extends Model<IProductDocument> {}
+/* ------------------------------ API response ------------------------------ */
+
+export interface IGetReviewResponse {
+  error: boolean
+  review: IReview
+  message?: string
+}
+
+export interface IGetReviewsResponse {
+  error: boolean
+  reviews: IReview[]
+  count: number
+  message?: string
+}
+
+export interface IPostReviewResponse {
+  error: boolean
+  reviewId: string
+  message?: string
+}
+
+export interface IPutReviewResponse {
+  error: boolean
+  message: string
+}
+
+export interface IDeleteReviewResponse {
+  error: boolean
+  message: string
+}
+
+// import { Document, Model } from 'mongoose'
+// export interface IReviewDocument extends IReview, Document {}
+// export interface IReviewModel extends Model<IReviewDocument> {}

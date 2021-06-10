@@ -22,7 +22,7 @@ export default function CartComp() {
   const [, setOrder] = useLocalStorage<IOrder>('order', null) // local storage
 
   const [coupon, setCoupon] = useState<string>('')
-  const [couponDiscount, setCouponDiscount] = useState<number>(0) // float
+  const [couponDiscount, setCouponDiscount] = useState<number>(0) // float || number
   const [subtotal, setSubtotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
 
@@ -36,7 +36,10 @@ export default function CartComp() {
     setSubtotal(mySubtotal)
 
     // count total price
-    const priceAfterDiscount = Math.floor(mySubtotal * couponDiscount)
+    const priceAfterDiscount =
+      couponDiscount < 0
+        ? Math.floor(mySubtotal * couponDiscount)
+        : Math.floor(mySubtotal - couponDiscount)
     setTotal(mySubtotal - priceAfterDiscount)
   }, [cart, couponDiscount])
 
@@ -71,7 +74,7 @@ export default function CartComp() {
 
       // set value coupon
       const coupon = res.data.coupon
-      setCouponDiscount(coupon.discount) // float
+      setCouponDiscount(coupon.discount) // float || number
 
       console.info('coupon => ', coupon)
       toast.success('Coupon applied')
@@ -297,7 +300,11 @@ export default function CartComp() {
                       </div>
                       <div className="m-2 font-bold text-center text-red-500 lg:px-4 lg:py-2 lg:text-lg">
                         -{' '}
-                        {generateRupiah(Math.floor(subtotal * couponDiscount))}
+                        {generateRupiah(
+                          couponDiscount < 1
+                            ? Math.floor(subtotal * couponDiscount)
+                            : Math.floor(subtotal - couponDiscount)
+                        )}
                       </div>
                     </div>
 

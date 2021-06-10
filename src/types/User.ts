@@ -1,5 +1,3 @@
-import { Document, Model } from 'mongoose'
-
 export interface IUser {
   email: string
   name: string
@@ -9,6 +7,12 @@ export interface IUser {
   updatedAt?: Date
 }
 
+export interface IUserProps {
+  user: IUser
+}
+
 export type TRole = 'ADMIN' | 'USER'
-export interface IUserDocument extends IUser, Document {}
-export interface IUserModel extends Model<IUserDocument> {}
+
+// import { Document, Model } from 'mongoose'
+// export interface IUserDocument extends IUser, Document {}
+// export interface IUserModel extends Model<IUserDocument> {}

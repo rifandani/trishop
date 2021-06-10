@@ -4,23 +4,24 @@ import { verify } from 'jsonwebtoken'
 import { parse } from 'cookie'
 // files
 import Navbar from 'components/admin/Navbar'
-import EditUser from 'components/admin/users/EditUser'
+import EditCoupon from 'components/admin/coupons/EditCoupon'
 import UserModel from 'mongo/models/User'
+import CouponModel from 'mongo/models/Coupon'
 import dbConnect from 'mongo/config/dbConnect'
 import getQueryAsString from 'utils/getQueryAsString'
 import { JWTPayload } from 'pages/admin/dashboard'
-import { IUserProps } from 'types/User'
+import { ICouponProps } from 'types/Coupon'
 
-export default function AdminUsersEditPage({ user }: IUserProps) {
+export default function AdminCouponsEditPage({ coupon }: ICouponProps) {
   return (
     <>
       <Head>
-        <title>Trishop - Edit User</title>
+        <title>Trishop - Edit Coupon</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Navbar>
-        <EditUser user={user} />
+        <EditCoupon coupon={coupon} />
       </Navbar>
     </>
   )
@@ -66,28 +67,21 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     /* ------------------- after user is proved authenticated ------------------- */
 
-    // if User does not exists
-    const userIdParams = getQueryAsString(ctx.params._id)
-    const userIsExists = await UserModel.exists({ _id: userIdParams })
-    if (!userIsExists) {
+    // if coupon does not exists
+    const couponIdParams = getQueryAsString(ctx.params._id)
+    const couponIsExists = await CouponModel.exists({ _id: couponIdParams })
+    if (!couponIsExists) {
       return {
         notFound: true,
       }
     }
 
-    // find User by id
-    const user = (await UserModel.findById(userIdParams)).toJSON()
-
-    const data = {
-      ...user,
-      _id: user._id.toString(),
-      createdAt: user.createdAt.toLocaleString(),
-      updatedAt: user.updatedAt.toLocaleString(),
-    }
+    // find coupon by id
+    const couponDoc = await CouponModel.findById(couponIdParams)
 
     return {
       props: {
-        user: data,
+        coupon: JSON.parse(JSON.stringify(couponDoc)),
       },
     }
   } catch (err) {

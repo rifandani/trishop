@@ -96,6 +96,23 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     toast.success('Product added to wishlist')
   }
 
+  function deleteFromWishlist(): void {
+    const payload = {
+      price,
+      id: _id,
+      imageName: images[0].imageName,
+      imageUrl: images[0].imageUrl,
+      name: title,
+    }
+
+    dispatchWish({
+      type: 'DEL_WISHLIST',
+      payload,
+    })
+
+    toast.info('Product deleted from the wishlist')
+  }
+
   const clickLabel = (label: string): Promise<boolean> =>
     push(`/products/categories?_label=${label}`)
 
@@ -260,15 +277,18 @@ export default function ProductDetail({ product }: ProductDetailProps) {
               </button>
 
               <button
-                className="flex items-center h-10 px-6 py-2 text-gray-400 border border-gray-200 rounded-full hover:border-orange-800 hover:bg-orange-200 disabled:border-orange-800 disabled:bg-orange-200 group"
-                onClick={addToWishlist}
-                disabled={Boolean(productWishlisted)}
+                className="flex items-center h-10 px-6 py-2 text-gray-400 border border-gray-200 rounded-full hover:border-orange-800 hover:bg-orange-200 group"
+                onClick={
+                  Boolean(productWishlisted)
+                    ? deleteFromWishlist
+                    : addToWishlist
+                }
               >
                 <FaHeart className="w-4 h-4 mr-2 group-hover:text-orange-800" />
                 <span className="text-xs font-semibold tracking-wide uppercase group-hover:text-orange-800">
                   {Boolean(productWishlisted)
-                    ? 'Wishlisted'
-                    : 'Add to Wishlist'}
+                    ? 'Delete from wishlist'
+                    : 'Add to wishlist'}
                 </span>
               </button>
             </section>

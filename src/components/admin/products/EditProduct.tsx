@@ -134,7 +134,7 @@ export default function EditProduct({ product }: Props) {
                 Use a unique name for each image.
               </p>
 
-              <p className="mt-3 text-sm leading-5 text-indigo-600">
+              <p className="mt-3 text-sm leading-5 text-orange-800">
                 Created At: {createdAt}
                 <br />
                 Updated At: {updatedAt}

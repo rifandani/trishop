@@ -3,63 +3,65 @@ import { toast } from 'react-toastify'
 import Axios from 'axios'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
-import { TUserApiSchema, userApiSchema } from 'yup/apiSchema'
-import { IUserProps } from 'types/User'
+import DatePickerField from '../DatePickerField'
+import { couponApiSchema } from 'yup/apiSchema'
+import { IAddAndEditCoupon } from 'types/Coupon'
 
-export default function EditUser({ user }: IUserProps) {
+export default function AddCoupon() {
   // hooks
-  const { push, query } = useRouter()
+  const { push } = useRouter()
 
-  const initialValues: TUserApiSchema = {
-    name: user.name || '',
-    email: user.email || '',
-    role: user.role || '',
-    password: '',
+  const initialValues: IAddAndEditCoupon = {
+    code: '',
+    discount: 0,
+    minTransaction: 0,
+    desc: '',
+    validUntil: Date.now(),
   }
 
   const onSubmit = async (
-    values: TUserApiSchema,
-    actions: FormikHelpers<TUserApiSchema>
+    values: IAddAndEditCoupon,
+    actions: FormikHelpers<IAddAndEditCoupon>
   ): Promise<void> => {
     try {
       const data = {
-        name: values.name,
-        role: values.role,
-        email: values.email,
-        password: values.password,
+        code: values.code,
+        discount: values.discount,
+        minTransaction: values.minTransaction,
+        desc: values.desc,
+        validUntil: values.validUntil,
       }
 
-      // PUT /admin/users/:_id
-      await Axios.put(`/admin/users/${query._id}`, data) // bisa pake query._id atau dari user._id
+      // POST /admin/coupons
+      await Axios.post('/admin/coupons', data)
 
-      // success
+      // // success
+      toast.success('Coupon created')
       await push('/admin/dashboard')
-      toast.info('User updated')
       actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
       console.error(err)
-      toast.error(err.data.message)
+      toast.error(err.message)
       actions.setSubmitting(false) // finish formik cycle
     }
   }
 
   return (
     <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-      {/* Edit User */}
+      {/* Add New Coupon */}
       <section className="p-6 mt-10 sm:mt-0">
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Edit User
+                Add New Coupon
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
-                Choose the role between USER or ADMIN.
+                Use a unique coupon code.
               </p>
-              <p className="mt-3 text-sm leading-5 text-orange-800">
-                Created At: {user.createdAt}
-                <br />
-                Updated At: {user.updatedAt}
+              <p className="mt-1 text-sm leading-5 text-gray-600">
+                Coupon discount could be a float (0.25 = 25%) or discount in
+                number (50000).
               </p>
             </div>
           </div>
@@ -68,7 +70,7 @@ export default function EditUser({ user }: IUserProps) {
             {/* START FORM */}
             <Formik
               initialValues={initialValues}
-              validationSchema={userApiSchema}
+              validationSchema={couponApiSchema}
               onSubmit={onSubmit}
             >
               {({ isSubmitting }) => (
@@ -76,96 +78,115 @@ export default function EditUser({ user }: IUserProps) {
                   <div className="overflow-hidden shadow sm:rounded-md">
                     <div className="px-4 py-5 bg-white sm:p-6">
                       <div className="grid grid-cols-6 gap-6">
-                        {/* name */}
+                        {/* code */}
                         <div className="col-span-6 sm:col-span-4">
                           <label
-                            htmlFor="name"
+                            htmlFor="code"
                             className="block text-sm font-medium leading-5 text-gray-700"
                           >
-                            Name
+                            Code
                           </label>
 
                           <Field
                             className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
-                            placeholder="Your name..."
+                            placeholder="Unique coupon code..."
                             type="text"
-                            name="name"
+                            name="code"
                           />
 
                           <ErrorMessage
                             className="error-message"
-                            name="name"
+                            name="code"
                             component="span"
                           />
                         </div>
 
-                        {/* role */}
+                        {/* discount - float || number */}
                         <div className="col-span-6 sm:col-span-4">
                           <label
-                            htmlFor="role"
+                            htmlFor="discount"
                             className="block text-sm font-medium leading-5 text-gray-700"
                           >
-                            Role
+                            Discount
                           </label>
 
                           <Field
                             className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
-                            as="select"
-                            name="role"
-                          >
-                            <option value="USER">USER</option>
-                            <option value="ADMIN">ADMIN</option>
-                          </Field>
+                            placeholder="Coupon discount..."
+                            type="number"
+                            name="discount"
+                          />
 
                           <ErrorMessage
                             className="error-message"
-                            name="role"
+                            name="discount"
                             component="span"
                           />
                         </div>
 
-                        {/* email */}
+                        {/* minTransaction */}
                         <div className="col-span-6 sm:col-span-4">
                           <label
-                            htmlFor="email"
+                            htmlFor="minTransaction"
                             className="block text-sm font-medium leading-5 text-gray-700"
                           >
-                            Email
+                            Minimal Transaction
                           </label>
 
                           <Field
                             className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
-                            placeholder="Your email..."
-                            type="email"
-                            name="email"
+                            placeholder="Minimal transaction..."
+                            type="number"
+                            name="minTransaction"
                           />
 
                           <ErrorMessage
                             className="error-message"
-                            name="email"
+                            name="minTransaction"
                             component="span"
                           />
                         </div>
 
-                        {/* password */}
+                        {/* desc */}
                         <div className="col-span-6 sm:col-span-4">
                           <label
-                            htmlFor="password"
+                            htmlFor="desc"
                             className="block text-sm font-medium leading-5 text-gray-700"
                           >
-                            Password
+                            Description
                           </label>
 
                           <Field
                             className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
-                            placeholder="******"
-                            type="password"
-                            name="password"
+                            placeholder="Describe your coupon promotion..."
+                            as="textarea"
+                            name="desc"
                           />
 
                           <ErrorMessage
                             className="error-message"
-                            name="password"
+                            name="desc"
+                            component="span"
+                          />
+                        </div>
+
+                        {/* validUntil */}
+                        <div className="col-span-6 sm:col-span-4">
+                          <label
+                            htmlFor="validUntil"
+                            className="block text-sm font-medium leading-5 text-gray-700"
+                          >
+                            Valid Until
+                          </label>
+
+                          <DatePickerField
+                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            name="validUntil"
+                          />
+
+                          <ErrorMessage
+                            className="error-message"
+                            name="validUntil"
                             component="span"
                           />
                         </div>
@@ -179,14 +200,13 @@ export default function EditUser({ user }: IUserProps) {
                         type="submit"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? 'Loading' : 'Update'}
+                        {isSubmitting ? 'Loading' : 'Add New Coupon'}
                       </button>
                     </div>
                   </div>
                 </Form>
               )}
             </Formik>
-            {/* END FORM */}
           </div>
         </div>
       </section>

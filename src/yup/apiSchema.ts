@@ -65,7 +65,6 @@ export const couponApiSchema = object({
   minTransaction: number()
     .min(0, 'minTransaction must be 0 or more')
     .required('minTransaction required'),
-  usedBy: array().of(string().required('usedBy[userId] required')).optional(),
   code: string()
     .trim()
     .min(3, 'code must be 3 characters or more')
@@ -75,6 +74,7 @@ export const couponApiSchema = object({
     .min(10, 'desc must be 10 characters or more')
     .required('desc required'),
   validUntil: number().positive().required('validUntil required'),
+  usedBy: array().of(string().required('usedBy[userId] required')).optional(),
 })
 
 export const validateCouponApiSchema = object({
@@ -116,5 +116,5 @@ export type TUserApiSchema = TypeOf<typeof userApiSchema>
 export type TProductApiSchema = TypeOf<typeof productApiSchema>
 export type TCouponApiSchema = TypeOf<typeof couponApiSchema>
 export type TValidateCouponApiSchema = TypeOf<typeof validateCouponApiSchema>
-export type TAddReviewApiSchema = TypeOf<typeof addReviewApiSchema>
 export type TPutReviewApiSchema = TypeOf<typeof putReviewApiSchema>
+export type TAddReviewApiSchema = TypeOf<typeof addReviewApiSchema>

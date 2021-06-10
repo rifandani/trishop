@@ -3,7 +3,7 @@ export default function Custom404Page() {
     <main className="relative h-screen overflow-hidden bg-indigo-900">
       <img
         className="absolute object-cover w-full h-full"
-        src="images/cover/404.svg"
+        src="/images/cover/404.svg"
         alt="404 page cover"
       />
 

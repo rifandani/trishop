@@ -43,7 +43,7 @@ export default function ProductDetailPage({
         <span className="relative">Submit Your Review</span>{' '}
       </h1>
 
-      <ReviewForm productRef={product._id} />
+      <ReviewForm productRef={product._id} reviews={product.reviews} />
 
       <Footer />
     </div>

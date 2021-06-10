@@ -4,23 +4,21 @@ import { verify } from 'jsonwebtoken'
 import { parse } from 'cookie'
 // files
 import Navbar from 'components/admin/Navbar'
-import EditUser from 'components/admin/users/EditUser'
-import UserModel from 'mongo/models/User'
+import AddCoupon from 'components/admin/add/AddCoupon'
 import dbConnect from 'mongo/config/dbConnect'
-import getQueryAsString from 'utils/getQueryAsString'
+import UserModel from 'mongo/models/User'
 import { JWTPayload } from 'pages/admin/dashboard'
-import { IUserProps } from 'types/User'
 
-export default function AdminUsersEditPage({ user }: IUserProps) {
+export default function AddCouponPage() {
   return (
     <>
       <Head>
-        <title>Trishop - Edit User</title>
+        <title>Trishop - Add New Coupon</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Navbar>
-        <EditUser user={user} />
+        <AddCoupon />
       </Navbar>
     </>
   )
@@ -41,54 +39,31 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // verify auth cookie
     // decoded === payload { sub: user._id, iat: number, exp: number }
     const decoded = verify(authCookie!, process.env.MY_SECRET_KEY)
-    const authUserId = (decoded as JWTPayload).sub
+    const userId = (decoded as JWTPayload).sub
 
     // connect to mongodb
     await dbConnect()
 
-    // if authUser does not exists
-    const authUserIsExists = await UserModel.exists({ _id: authUserId })
-    if (!authUserIsExists) {
+    // // if user does not exists
+    const userIsExists = await UserModel.exists({ _id: userId })
+    if (!userIsExists) {
       return {
         redirect: { destination: '/login', permanent: false },
       }
     }
 
-    // find authUser by id
-    const authUser = await UserModel.findById(authUserId)
+    // find user by id
+    const user = await UserModel.findById(userId)
 
-    // if authUser.role === 'USER'
-    if (authUser.role === 'USER') {
+    // if user.role === 'USER'
+    if (user.role === 'USER') {
       return {
         redirect: { destination: '/dashboard', permanent: false },
       }
     }
 
-    /* ------------------- after user is proved authenticated ------------------- */
-
-    // if User does not exists
-    const userIdParams = getQueryAsString(ctx.params._id)
-    const userIsExists = await UserModel.exists({ _id: userIdParams })
-    if (!userIsExists) {
-      return {
-        notFound: true,
-      }
-    }
-
-    // find User by id
-    const user = (await UserModel.findById(userIdParams)).toJSON()
-
-    const data = {
-      ...user,
-      _id: user._id.toString(),
-      createdAt: user.createdAt.toLocaleString(),
-      updatedAt: user.updatedAt.toLocaleString(),
-    }
-
     return {
-      props: {
-        user: data,
-      },
+      props: {},
     }
   } catch (err) {
     // kalau jwt malformed  || auth cookie tidak valid

@@ -1,9 +1,13 @@
+import dayjs from 'dayjs'
+import Axios from 'axios'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { MdThumbUp, MdReportProblem } from 'react-icons/md'
 import { FaStar } from 'react-icons/fa'
 import { toast } from 'react-toastify'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
+import { useState } from 'react'
 // files
+import EditReviewModal from './EditReviewModal'
+import useLocalStorage from 'hooks/useLocalStorage'
 import { IReview } from 'types/Review'
 
 interface CustomerReviewCardProps {
@@ -15,7 +19,11 @@ dayjs.extend(relativeTime) // so that we can user relative formatting
 export default function CustomerReviewCard({
   review,
 }: CustomerReviewCardProps) {
-  const { reviewerName, comment, star, updatedAt } = review
+  const { reviewerName, comment, star, updatedAt, reviewerId, _id } = review
+
+  // hooks
+  const [user] = useLocalStorage('user', '')
+  const [isOpen, setIsOpen] = useState(false)
 
   // add like functionality to review document
   const onLike = () => {
@@ -25,6 +33,33 @@ export default function CustomerReviewCard({
   // TODO: add report functionality with database
   const onReport = () => {
     toast('This feature coming soon')
+  }
+
+  const onEditOpenModal = () => {
+    setIsOpen(true)
+  }
+
+  const onDelete = async (): Promise<void> => {
+    const isAgree = confirm('Are you sure?')
+    if (!isAgree) return
+
+    try {
+      const res = await Axios.delete(`/admin/reviews/${_id}`)
+
+      // client error
+      if (res.status === 400) {
+        toast.error(res.data.message)
+        return
+      }
+
+      // success
+      toast.info(
+        'Review deleted. Wait for 3 seconds and refresh to revalidate SWR'
+      )
+    } catch (err) {
+      console.error(err)
+      toast.error(err.message)
+    }
   }
 
   return (
@@ -63,24 +98,46 @@ export default function CustomerReviewCard({
       <div className="flex flex-row items-center justify-between">
         <p className="text-sm text-gray-500">Is this review helps?</p>
 
-        <div className="flex items-center">
-          <button
-            className="flex items-center group focus:outline-none"
-            onClick={onLike}
-          >
-            <MdThumbUp className="w-4 h-4 text-gray-500 group-hover:text-orange-500" />
-            <span className="ml-2 text-sm">4</span>
-          </button>
+        <div className="flex items-center space-x-2">
+          {/* TODO: if the owner of their review, show edit review */}
+          {user === reviewerId ? (
+            <button
+              className="flex items-center px-2 py-2 bg-orange-200 border rounded-md hover:border-orange-500 focus:outline-none"
+              onClick={onEditOpenModal}
+            >
+              <span className="text-sm">Edit</span>
+            </button>
+          ) : (
+            <button
+              className="flex items-center group focus:outline-none"
+              onClick={onLike}
+            >
+              <MdThumbUp className="w-4 h-4 text-gray-500 group-hover:text-orange-500" />
+              <span className="ml-2 text-sm">4</span>
+            </button>
+          )}
 
-          <button
-            className="flex items-center ml-2 group focus:outline-none"
-            onClick={onReport}
-          >
-            <MdReportProblem className="w-4 h-4 text-gray-500 group-hover:text-red-500" />
-            <span className="ml-2 text-sm">Report</span>
-          </button>
+          {/* if the owner of their review, show delete review */}
+          {user === reviewerId ? (
+            <button
+              className="flex items-center px-2 py-2 bg-red-200 border rounded-md hover:border-red-500 focus:outline-none"
+              onClick={onDelete}
+            >
+              <span className="text-sm">Delete</span>
+            </button>
+          ) : (
+            <button
+              className="flex items-center ml-2 group focus:outline-none"
+              onClick={onReport}
+            >
+              <MdReportProblem className="w-4 h-4 text-gray-500 group-hover:text-red-500" />
+              <span className="ml-2 text-sm">Report</span>
+            </button>
+          )}
         </div>
       </div>
+
+      <EditReviewModal isOpen={isOpen} setIsOpen={setIsOpen} review={review} />
     </section>
   )
 }

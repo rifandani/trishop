@@ -23,11 +23,6 @@ const productSchema = new Schema<IProduct>(
       required: [true, 'stock must not be empty'],
       min: 1,
     },
-    sold: {
-      type: Number,
-      default: () => 0,
-      min: 0,
-    },
     desc: {
       type: String,
       required: [true, 'desc must not be empty'],
@@ -39,6 +34,7 @@ const productSchema = new Schema<IProduct>(
       required: [true, 'labels must not be empty'],
       trim: true,
     },
+    // embedding style
     images: {
       type: [],
       required: [true, 'images must not be empty'],
@@ -67,6 +63,11 @@ const productSchema = new Schema<IProduct>(
         type: [String],
         trim: true,
       },
+    },
+    sold: {
+      type: Number,
+      default: () => 0,
+      min: 0,
     },
     reviews: [
       {
