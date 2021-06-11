@@ -1,70 +1,49 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 // files
 import getQueryAsString from 'utils/getQueryAsString'
-import ProductModel from 'mongo/models/Product'
+import ReportModel from 'mongo/models/Report'
 import ReviewModel from 'mongo/models/Review'
-import checkObjectId from 'middlewares/checkObjectId'
-import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
-import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
+import checkObjectId from 'middlewares/checkObjectId'
 
 // TODO: add authentication middleware for all ADMIN api's
 const handler = async function (req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
-      /*                       GET req => /admin/products/:_id                      */
+      /*                       GET req => /admin/reports/:_id                      */
       /* -------------------------------------------------------------------------- */
 
-      // get productId
-      const productId = getQueryAsString(req.query._id)
+      // get id
+      const reportId = getQueryAsString(req.query._id)
 
-      // get product by productId & populate 'reviews'
-      const productDoc = await ProductModel.findById(productId)
-        .populate({
-          path: 'reviews',
-          model: ReviewModel, // reference the model, or it will throw an Error
-        })
+      // get report
+      const reportDoc = await ReportModel.findById(reportId)
+        .populate({ path: 'reviewRef', model: ReviewModel })
         .exec()
 
       // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, product: productDoc })
+      res.status(200).json({ error: false, report: reportDoc })
     } else if (req.method === 'PUT') {
       /* -------------------------------------------------------------------------- */
-      /*                       PUT req => /admin/products/:_id                      */
+      /*                       PUT req => /admin/reports/:_id                      */
       /* -------------------------------------------------------------------------- */
-
-      // get productId
-      const productId = getQueryAsString(req.query._id)
-
-      const { title, price, stock, desc, labels, images } =
-        req.body as TProductApiSchema
-
-      // update product
-      await ProductModel.findByIdAndUpdate(productId, {
-        title,
-        price,
-        stock,
-        desc,
-        labels,
-        images,
-      })
 
       // PUT success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(201).json({ error: false, message: 'Product updated' })
+      res.status(501).json({ error: false, message: 'Not implemented' })
     } else if (req.method === 'DELETE') {
       /* -------------------------------------------------------------------------- */
-      /*                       DELETE req => /admin/products/:_id                   */
+      /*                        DELETE req => /admin/reports/:_id                   */
       /* -------------------------------------------------------------------------- */
 
-      // get productId
-      const productId = getQueryAsString(req.query._id)
+      // get id
+      const reportId = getQueryAsString(req.query._id)
 
-      // delete product
-      await ProductModel.findByIdAndDelete(productId)
+      // delete report
+      await ReportModel.findByIdAndDelete(reportId)
 
       // DELETE success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, message: 'Product deleted' })
+      res.status(200).json({ error: false, message: 'Review deleted' })
     } else {
       // client error => METHOD NOT ALLOWED -----------------------------------------------------------------
       res.status(405).json({
@@ -81,6 +60,6 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
 
 export default checkObjectId(
   // @ts-ignore
-  ProductModel,
-  withYup(productApiSchema, connectMongo(handler))
+  ReportModel,
+  connectMongo(handler)
 )

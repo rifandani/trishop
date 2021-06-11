@@ -54,7 +54,7 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       // get review by reviewId
       const reviewDoc = await ReviewModel.findById(reviewId)
 
-      // delete reviewRef in Product.reviews collection
+      // delete review reference in Product.reviews collection
       // https://docs.mongodb.com/manual/reference/operator/update/pullAll/
       await ProductModel.findByIdAndUpdate(reviewDoc.productRef, {
         $pullAll: { reviews: [reviewId] },

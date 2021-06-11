@@ -48,6 +48,17 @@ export const addProductSchema = object({
     .required('labels required'),
 })
 
+export const addReportSchema = object({
+  argument: string()
+    .trim()
+    .min(5, 'argument must be 5 characters or more')
+    .required('argument required'),
+  typeId: number()
+    .min(1, 'typeId must be 1 or more')
+    .required('typeId required'),
+})
+
 export type TCheckoutContactSchema = TypeOf<typeof checkoutContactSchema>
 export type TCheckoutShippingSchema = TypeOf<typeof checkoutShippingSchema>
 export type TAddProductSchema = TypeOf<typeof addProductSchema>
+export type TAddReportSchema = TypeOf<typeof addReportSchema>

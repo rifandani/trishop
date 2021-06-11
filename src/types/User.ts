@@ -11,6 +11,10 @@ export interface IUserProps {
   user: IUser
 }
 
+export interface IUsersProps {
+  users: IUser[]
+}
+
 export type TRole = 'ADMIN' | 'USER'
 
 // import { Document, Model } from 'mongoose'

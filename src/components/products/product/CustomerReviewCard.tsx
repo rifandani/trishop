@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { useState } from 'react'
 // files
 import EditReviewModal from './EditReviewModal'
+import ReportReviewModal from './ReportReviewModal'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { IReview } from 'types/Review'
 
@@ -22,17 +23,17 @@ export default function CustomerReviewCard({
   const { reviewerName, comment, star, updatedAt, reviewerId, _id } = review
 
   // hooks
-  const [user] = useLocalStorage('user', '')
-  const [isOpen, setIsOpen] = useState(false)
+  const [userId] = useLocalStorage('user', '')
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [reportIsOpen, setReportIsOpen] = useState<boolean>(false)
 
-  // add like functionality to review document
+  // TODO: add like functionality to review document
   const onLike = () => {
     toast('This feature coming soon')
   }
 
-  // TODO: add report functionality with database
   const onReport = () => {
-    toast('This feature coming soon')
+    setReportIsOpen(true)
   }
 
   const onEditOpenModal = () => {
@@ -98,7 +99,7 @@ export default function CustomerReviewCard({
 
         <div className="flex items-center space-x-2">
           {/* FIXME: styling did not works */}
-          {user !== reviewerId ? (
+          {userId !== reviewerId ? (
             <button
               className="flex items-center group focus:outline-none"
               onClick={onLike}
@@ -116,7 +117,7 @@ export default function CustomerReviewCard({
           )}
 
           {/* FIXME: styling did not works */}
-          {user !== reviewerId ? (
+          {userId !== reviewerId ? (
             <button
               className="flex items-center ml-2 group focus:outline-none"
               onClick={onReport}
@@ -136,6 +137,13 @@ export default function CustomerReviewCard({
       </div>
 
       <EditReviewModal isOpen={isOpen} setIsOpen={setIsOpen} review={review} />
+
+      <ReportReviewModal
+        reportIsOpen={reportIsOpen}
+        setReportIsOpen={setReportIsOpen}
+        review={review}
+        userId={userId}
+      />
     </section>
   )
 }

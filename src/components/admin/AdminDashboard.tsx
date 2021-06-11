@@ -6,19 +6,23 @@ import {
   FaMoneyBillWave,
   FaTicketAlt,
 } from 'react-icons/fa'
+import { MdReportProblem } from 'react-icons/md'
 // files
 import TableUsers from './TableUsers'
 import TableProducts from './TableProducts'
 import TableCoupons from './TableCoupons'
+import SwiperReports from './SwiperReports'
 import useUsers from 'hooks/useUsers'
 import useProducts from 'hooks/useProducts'
 import useGetCoupons from 'hooks/useGetCoupons'
+import useGetReports from 'hooks/useGetReports'
 
 export default function AdminDashboard() {
   // hooks
   const { users, usersIsLoading, usersIsError } = useUsers()
   const { products, productsIsLoading, productsIsError } = useProducts()
   const { coupons, couponsIsLoading, couponsIsError } = useGetCoupons()
+  const { reports, reportsIsLoading, reportsIsError } = useGetReports()
   const { push } = useRouter()
 
   return (
@@ -79,6 +83,24 @@ export default function AdminDashboard() {
                     {couponsIsError && 'Error'}
                   </h4>
                   <div className="text-gray-500">Total Coupons</div>
+                </div>
+              </div>
+            </section>
+
+            {/* Total Reports */}
+            <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3">
+              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
+                <div className="p-3 bg-red-500 bg-opacity-75 rounded-full">
+                  <MdReportProblem className="w-8 h-8 text-white" />
+                </div>
+
+                <div className="mx-5">
+                  <h4 className="text-2xl font-semibold text-gray-700">
+                    {reports && reports.length}
+                    {reportsIsLoading && 'Loading...'}
+                    {reportsIsError && 'Error'}
+                  </h4>
+                  <div className="text-gray-500">Total Reports</div>
                 </div>
               </div>
             </section>
@@ -162,6 +184,17 @@ export default function AdminDashboard() {
 
         {/* table using gridjs */}
         <TableCoupons />
+
+        <div className="mt-8"></div>
+
+        {/* Reports title */}
+        <div className="flex items-center justify-between">
+          <h3 className="text-3xl font-medium text-gray-700">Reports</h3>
+        </div>
+
+        {reportsIsLoading && 'Loading reports...'}
+        {reportsIsError && 'Error getting reports'}
+        {reports && <SwiperReports reports={reports} />}
       </div>
     </main>
   )

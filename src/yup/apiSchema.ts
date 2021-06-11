@@ -1,6 +1,6 @@
 import { object, string, TypeOf, array, number } from 'yup'
 // files
-import { addProductSchema } from './schema'
+import { addProductSchema, addReportSchema } from './schema'
 
 export const loginApiSchema = object({
   email: string().email('email invalid').required('email required'),
@@ -108,6 +108,13 @@ export const addReviewApiSchema = putReviewApiSchema.concat(
   })
 )
 
+export const addReportApiSchema = addReportSchema.concat(
+  object({
+    reviewRef: string().trim().required('reviewRef required'),
+    reporter: string().trim().required('reporter required'),
+  })
+)
+
 // export interface IQrcode extends TypeOf<typeof createQrcodeSchema> {}
 export type TLoginApiSchema = TypeOf<typeof loginApiSchema>
 export type TRegisterApiSchema = TypeOf<typeof registerApiSchema>
@@ -118,3 +125,4 @@ export type TCouponApiSchema = TypeOf<typeof couponApiSchema>
 export type TValidateCouponApiSchema = TypeOf<typeof validateCouponApiSchema>
 export type TPutReviewApiSchema = TypeOf<typeof putReviewApiSchema>
 export type TAddReviewApiSchema = TypeOf<typeof addReviewApiSchema>
+export type TAddReportApiSchema = TypeOf<typeof addReportApiSchema>

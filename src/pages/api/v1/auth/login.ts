@@ -5,19 +5,19 @@ import UserModel from 'mongo/models/User'
 import setCookie from 'utils/setCookie'
 import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
-import { loginApiSchema } from 'yup/apiSchema'
+import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
 
 const handler = async function (req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'POST') {
       // destructure request body form
-      const { email, password } = req.body
+      const { email, password } = req.body as TLoginApiSchema
 
       // find specific user
       const user = await UserModel.findOne({ email })
 
       // compare password
-      const isMatch = await compare(password, user.password)
+      const isMatch = await compare(password!, user.password)
 
       if (!isMatch) {
         // client error => password did not match -----------------------------------------------------------------

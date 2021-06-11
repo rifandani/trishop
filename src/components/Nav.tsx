@@ -103,8 +103,15 @@ const Nav = () => {
             </li>
           </ul>
 
+          <button
+            onClick={cookie ? logout : login}
+            className={cookie ? 'nav__logout-btn' : 'nav__login-btn'}
+          >
+            {cookie ? 'Logout' : 'Login'}
+          </button>
+
           {/* FIXME: Prop `className` did not match */}
-          {cookie && (
+          {/* {cookie && (
             <button onClick={logout} className="nav__logout-btn">
               Logout
             </button>
@@ -114,7 +121,7 @@ const Nav = () => {
             <button onClick={login} className="nav__login-btn">
               Login
             </button>
-          )}
+          )} */}
         </section>
       </article>
 

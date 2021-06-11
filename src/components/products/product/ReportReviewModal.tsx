@@ -4,34 +4,41 @@ import { Dialog, Transition } from '@headlessui/react'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
-import { IPutReviewResponse, IReview } from 'types/Review'
-import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
+import { IReview } from 'types/Review'
+import { IPostReportResponse } from 'types/Report'
+import { addReportSchema, TAddReportSchema } from 'yup/schema'
 
 interface Props {
-  isOpen: boolean
-  setIsOpen: Dispatch<SetStateAction<boolean>>
+  reportIsOpen: boolean
+  setReportIsOpen: Dispatch<SetStateAction<boolean>>
   review: IReview
+  userId: string
 }
 
-export default function EditReviewModal({ isOpen, setIsOpen, review }: Props) {
-  const initialValues: TPutReviewApiSchema = {
-    reviewerName: '',
-    star: 1,
-    comment: '',
+export default function ReportReviewModal({
+  reportIsOpen,
+  setReportIsOpen,
+  review,
+  userId,
+}: Props) {
+  const initialValues: TAddReportSchema = {
+    typeId: 1,
+    argument: '',
   }
 
   const onSubmit = async (
-    values: TPutReviewApiSchema,
-    actions: FormikHelpers<TPutReviewApiSchema>
+    values: TAddReportSchema,
+    actions: FormikHelpers<TAddReportSchema>
   ): Promise<void> => {
     try {
-      const res = await axios.put<IPutReviewResponse>(
-        `/admin/reviews/${review._id}`,
-        {
-          ...values,
-          star: +values.star,
-        }
-      )
+      const data = {
+        reviewRef: review._id,
+        reporter: userId,
+        argument: values.argument,
+        typeId: values.typeId,
+      }
+
+      const res = await axios.post<IPostReportResponse>('/admin/reports', data)
 
       // client error
       if (res.status === 400) {
@@ -40,8 +47,8 @@ export default function EditReviewModal({ isOpen, setIsOpen, review }: Props) {
       }
 
       // success
-      toast.success('Review updated. Wait 3 seconds and refresh to revalidate')
-      setIsOpen(false)
+      toast.success('Review reported')
+      setReportIsOpen(false)
       actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
       console.error(err)
@@ -51,11 +58,11 @@ export default function EditReviewModal({ isOpen, setIsOpen, review }: Props) {
   }
 
   return (
-    <Transition appear show={isOpen} as={Fragment}>
+    <Transition appear show={reportIsOpen} as={Fragment}>
       <Dialog
         className="fixed inset-0 z-30 overflow-y-auto"
         as="div"
-        onClose={() => setIsOpen(false)}
+        onClose={() => setReportIsOpen(false)}
       >
         <div className="min-h-screen px-4 text-center">
           <Transition.Child
@@ -91,13 +98,13 @@ export default function EditReviewModal({ isOpen, setIsOpen, review }: Props) {
                 className="mb-2 text-lg font-medium leading-6 text-center text-orange-800"
                 as="h3"
               >
-                Edit Review
+                Report Review
               </Dialog.Title>
 
               {/* START FORM */}
               <Formik
                 initialValues={initialValues}
-                validationSchema={putReviewApiSchema}
+                validationSchema={addReportSchema}
                 onSubmit={onSubmit}
               >
                 {({ isSubmitting }) => (
@@ -105,70 +112,51 @@ export default function EditReviewModal({ isOpen, setIsOpen, review }: Props) {
                     <div className="overflow-hidden shadow-lg sm:rounded-md">
                       <div className="px-4 py-5 bg-white sm:p-6">
                         <div className="grid grid-cols-6 gap-6">
-                          {/* name - text */}
+                          {/* typeId - select */}
                           <div className="col-span-6">
                             <label
-                              htmlFor="reviewerName"
+                              htmlFor="typeId"
                               className="block text-sm font-medium leading-5 text-gray-700"
                             >
-                              Name
-                            </label>
-
-                            <Field
-                              className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
-                              placeholder="Write your name..."
-                              name="reviewerName"
-                              type="text"
-                            />
-
-                            <ErrorMessage
-                              className="error-message"
-                              name="reviewerName"
-                              component="span"
-                            />
-                          </div>
-
-                          {/* stars - select */}
-                          <div className="col-span-6">
-                            <label
-                              htmlFor="star"
-                              className="block text-sm font-medium leading-5 text-gray-700"
-                            >
-                              Stars
+                              Type
                             </label>
 
                             <Field
                               className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
-                              name="star"
+                              name="typeId"
                               as="select"
                             >
-                              <option value={1}>⭐</option>
-                              <option value={2}>⭐⭐</option>
-                              <option value={3}>⭐⭐⭐</option>
-                              <option value={4}>⭐⭐⭐⭐</option>
-                              <option value={5}>⭐⭐⭐⭐⭐</option>
+                              <option value={1}>
+                                Bug or problem with the website
+                              </option>
+                              <option value={2}>
+                                Spam or commercial unrelated to Trishop
+                              </option>
+                              <option value={3}>
+                                Contains offensive or inappropriate content
+                              </option>
                             </Field>
 
                             <ErrorMessage
                               className="error-message"
-                              name="star"
+                              name="typeId"
                               component="span"
                             />
                           </div>
 
-                          {/* comment - textarea */}
+                          {/* argument - textarea */}
                           <div className="col-span-6">
                             <label
-                              htmlFor="comment"
+                              htmlFor="argument"
                               className="block text-sm font-medium leading-5 text-gray-700"
                             >
-                              Comment
+                              Argument
                             </label>
 
                             <Field
                               className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
-                              placeholder="Write your comment about this product..."
-                              name="comment"
+                              placeholder="Write your argument why you report it..."
+                              name="argument"
                               type="text"
                               as="textarea"
                               rows="3"
@@ -176,7 +164,7 @@ export default function EditReviewModal({ isOpen, setIsOpen, review }: Props) {
 
                             <ErrorMessage
                               className="error-message"
-                              name="comment"
+                              name="argument"
                               component="span"
                             />
                           </div>
@@ -201,16 +189,17 @@ export default function EditReviewModal({ isOpen, setIsOpen, review }: Props) {
                       type="submit"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? 'Loading...' : 'Update'}
+                      {isSubmitting ? 'Loading...' : 'Report'}
                     </button>
 
                     {/* back button */}
                     <button
                       className="inline-flex justify-center px-4 py-2 text-sm font-medium text-orange-800 border border-orange-800 rounded-md focus:ring-4 focus:ring-orange-500 hover:bg-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange-800"
                       type="button"
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => setReportIsOpen(false)}
+                      disabled={isSubmitting}
                     >
-                      Back
+                      {isSubmitting ? 'Loading...' : 'Back'}
                     </button>
                   </Form>
                 )}

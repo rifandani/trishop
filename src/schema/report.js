@@ -1,15 +1,15 @@
 // report typeId
-// typeId = 1 // 'Suspected scammer'
-// typeId = 2 // 'Contains incorrect information'
-// typeId = 3 // 'Bug or problem with the website'
-// typeId = 4 // 'Spam or commercial unrelated to roompy'
-// typeId = 5 // 'Contains offensive or inappropriate content'
+// typeId = 1 // 'Bug or problem with the website'
+// typeId = 2 // 'Spam or commercial unrelated to trishop'
+// typeId = 3 // 'Contains offensive or inappropriate content'
+
+import { Schema } from 'mongoose'
 
 const report = {
+  reviewRef: Schema.Types.ObjectId, // review
+  reporter: '@user-id', // reporter
+  argument: 'Comment ini mengandung sara',
   typeId: 2,
-  from: '@user-id', // reporter
-  to: '@review-comment-id', // review comment
-  desc: 'Saya kira budget dan nomor HP dari roompies ini sangat tidak masuk akal',
   createdAt: '2020-11-06T09:21:15.364+00:00',
 }
 
