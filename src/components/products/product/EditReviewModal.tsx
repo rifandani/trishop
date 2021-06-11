@@ -40,9 +40,7 @@ export default function EditReviewModal({ isOpen, setIsOpen, review }: Props) {
       }
 
       // success
-      toast.success(
-        'Review updated. Wait 3 seconds and refresh to revalidate SWR'
-      )
+      toast.success('Review updated. Wait 3 seconds and refresh to revalidate')
       setIsOpen(false)
       actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
@@ -193,7 +191,7 @@ export default function EditReviewModal({ isOpen, setIsOpen, review }: Props) {
 
                     {/* submit button */}
                     <button
-                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-orange-800 border border-transparent rounded-md disabled:opacity-50 hover:bg-orange-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange-500"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-orange-800 border border-transparent rounded-md focus:ring-4 focus:ring-orange-500 disabled:opacity-50 hover:bg-orange-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange-500"
                       type="submit"
                       disabled={isSubmitting}
                     >
@@ -202,7 +200,7 @@ export default function EditReviewModal({ isOpen, setIsOpen, review }: Props) {
 
                     {/* back button */}
                     <button
-                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-orange-800 border border-orange-800 rounded-md hover:bg-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange-800"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-orange-800 border border-orange-800 rounded-md focus:ring-4 focus:ring-orange-500 hover:bg-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange-800"
                       type="button"
                       onClick={() => setIsOpen(false)}
                     >

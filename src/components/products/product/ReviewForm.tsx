@@ -4,14 +4,15 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
 import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
-import { IPostReviewResponse, IReview } from 'types/Review'
+import { IPostReviewResponse } from 'types/Review'
 
 interface ReviewFormProps {
   productRef: string
-  reviews: IReview[]
 }
 
-export default function ReviewForm({ productRef, reviews }: ReviewFormProps) {
+export default function ReviewForm({
+  productRef,
+}: ReviewFormProps): JSX.Element {
   // hooks
   const [reviewerId] = useLocalStorage('user', '') // local storage
 
@@ -54,7 +55,6 @@ export default function ReviewForm({ productRef, reviews }: ReviewFormProps) {
       }
 
       // success
-      reviews.push(newReview) // push to reviews just for UI updates
       toast.success('Review added. Wait 3 seconds and refresh to revalidate')
       actions.resetForm() // reset form
       actions.setSubmitting(false) // finish formik cycle

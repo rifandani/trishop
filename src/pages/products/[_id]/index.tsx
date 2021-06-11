@@ -19,7 +19,7 @@ interface IProductDetailPageProps {
 
 export default function ProductDetailPage({
   product,
-}: IProductDetailPageProps) {
+}: IProductDetailPageProps): JSX.Element {
   return (
     <div className="flex flex-col mt-3 space-y-12 lg:mt-5">
       <Head>
@@ -43,7 +43,7 @@ export default function ProductDetailPage({
         <span className="relative">Submit Your Review</span>{' '}
       </h1>
 
-      <ReviewForm productRef={product._id} reviews={product.reviews} />
+      <ReviewForm productRef={product._id} />
 
       <Footer />
     </div>

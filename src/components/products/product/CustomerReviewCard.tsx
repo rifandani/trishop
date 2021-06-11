@@ -53,9 +53,7 @@ export default function CustomerReviewCard({
       }
 
       // success
-      toast.info(
-        'Review deleted. Wait for 3 seconds and refresh to revalidate SWR'
-      )
+      toast.info('Review deleted. Wait for 3 seconds and refresh to revalidate')
     } catch (err) {
       console.error(err)
       toast.error(err.message)
@@ -99,15 +97,8 @@ export default function CustomerReviewCard({
         <p className="text-sm text-gray-500">Is this review helps?</p>
 
         <div className="flex items-center space-x-2">
-          {/* TODO: if the owner of their review, show edit review */}
-          {user === reviewerId ? (
-            <button
-              className="flex items-center px-2 py-2 bg-orange-200 border rounded-md hover:border-orange-500 focus:outline-none"
-              onClick={onEditOpenModal}
-            >
-              <span className="text-sm">Edit</span>
-            </button>
-          ) : (
+          {/* FIXME: styling did not works */}
+          {user !== reviewerId ? (
             <button
               className="flex items-center group focus:outline-none"
               onClick={onLike}
@@ -115,23 +106,30 @@ export default function CustomerReviewCard({
               <MdThumbUp className="w-4 h-4 text-gray-500 group-hover:text-orange-500" />
               <span className="ml-2 text-sm">4</span>
             </button>
+          ) : (
+            <button
+              className="flex items-center px-2 py-2 bg-orange-200 border rounded-md hover:border-orange-500 focus:outline-none"
+              onClick={onEditOpenModal}
+            >
+              <span className="text-sm">Edit</span>
+            </button>
           )}
 
-          {/* if the owner of their review, show delete review */}
-          {user === reviewerId ? (
-            <button
-              className="flex items-center px-2 py-2 bg-red-200 border rounded-md hover:border-red-500 focus:outline-none"
-              onClick={onDelete}
-            >
-              <span className="text-sm">Delete</span>
-            </button>
-          ) : (
+          {/* FIXME: styling did not works */}
+          {user !== reviewerId ? (
             <button
               className="flex items-center ml-2 group focus:outline-none"
               onClick={onReport}
             >
               <MdReportProblem className="w-4 h-4 text-gray-500 group-hover:text-red-500" />
               <span className="ml-2 text-sm">Report</span>
+            </button>
+          ) : (
+            <button
+              className="flex items-center px-2 py-2 bg-red-200 border rounded-md hover:border-red-500 focus:outline-none"
+              onClick={onDelete}
+            >
+              <span className="text-sm">Delete</span>
             </button>
           )}
         </div>
