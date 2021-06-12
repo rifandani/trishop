@@ -1,11 +1,13 @@
+import axios from 'axios'
 import Link from 'next/link'
+import { useContext } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-import axios from 'axios'
 // files
 import { TRegisterApiSchema, registerApiSchema } from 'yup/apiSchema'
-import useLocalStorage from 'hooks/useLocalStorage'
+import { IAuthLoginRegister } from 'types/User'
+import { UserContext } from 'contexts/UserContext'
 
 export default function RegisterPage() {
   const initialValues: TRegisterApiSchema = {
@@ -16,32 +18,35 @@ export default function RegisterPage() {
 
   // hooks
   const router = useRouter()
-  const [, setValue] = useLocalStorage('user', '')
+  const { user, dispatchUser } = useContext(UserContext)
 
   const onRegister = async (
     values: TRegisterApiSchema,
     actions: FormikHelpers<TRegisterApiSchema>
   ) => {
-    const newUser = {
-      name: values.name,
-      email: values.email,
-      password: values.password,
-    }
-
     try {
       // POST /auth/register
-      const res = await axios.post('/auth/register', newUser)
+      const res = await axios.post<IAuthLoginRegister>('/auth/register', values)
 
-      // set to local storage
-      setValue(res.data.userId)
+      // client or server error
+      if (res.status === 400 || res.status === 500) {
+        toast.error(res.data.message)
+        return
+      }
+
+      // set user to UserContext
+      dispatchUser({
+        type: 'ADD_USER',
+        payload: res.data.data,
+      })
 
       // role === 'USER'
       await router.push('/products')
       toast.success('Register success')
       actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
+      console.error(err)
       toast.error(err.message)
-      console.error('onRegister error ⛔ =>', err)
       actions.setSubmitting(false) // finish formik cycle
     }
   }
@@ -80,9 +85,9 @@ export default function RegisterPage() {
 
                     <Field
                       className="mt-1"
+                      placeholder="Elon Musk"
                       name="name"
                       type="text"
-                      placeholder="Elon Musk"
                       autoFocus
                     />
 
@@ -121,9 +126,9 @@ export default function RegisterPage() {
 
                     <Field
                       className="mt-1"
+                      placeholder="******"
                       name="password"
                       type="password"
-                      placeholder="******"
                     />
 
                     <ErrorMessage
@@ -134,9 +139,7 @@ export default function RegisterPage() {
                   </div>
 
                   <button
-                    className={`${
-                      isSubmitting ? 'opacity-50' : 'opacity-100'
-                    } p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer hover:underline`}
+                    className="p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer hover:underline disabled:opacity-50 focus:ring-4 focus:ring-orange-500"
                     disabled={isSubmitting}
                     type="submit"
                   >

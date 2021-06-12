@@ -4,12 +4,12 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { MdThumbUp, MdReportProblem } from 'react-icons/md'
 import { FaStar } from 'react-icons/fa'
 import { toast } from 'react-toastify'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 // files
 import EditReviewModal from './EditReviewModal'
 import ReportReviewModal from './ReportReviewModal'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { IReview } from 'types/Review'
+import { UserContext } from 'contexts/UserContext'
 
 interface CustomerReviewCardProps {
   review: IReview
@@ -23,7 +23,7 @@ export default function CustomerReviewCard({
   const { reviewerName, comment, star, updatedAt, reviewerId, _id } = review
 
   // hooks
-  const [userId] = useLocalStorage('user', '')
+  const { user } = useContext(UserContext) // user context
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [reportIsOpen, setReportIsOpen] = useState<boolean>(false)
 
@@ -99,7 +99,7 @@ export default function CustomerReviewCard({
 
         <div className="flex items-center space-x-2">
           {/* FIXME: styling did not works */}
-          {userId !== reviewerId ? (
+          {user._id !== reviewerId ? (
             <button
               className="flex items-center group focus:outline-none"
               onClick={onLike}
@@ -117,7 +117,7 @@ export default function CustomerReviewCard({
           )}
 
           {/* FIXME: styling did not works */}
-          {userId !== reviewerId ? (
+          {user._id !== reviewerId ? (
             <button
               className="flex items-center ml-2 group focus:outline-none"
               onClick={onReport}
@@ -142,7 +142,7 @@ export default function CustomerReviewCard({
         reportIsOpen={reportIsOpen}
         setReportIsOpen={setReportIsOpen}
         review={review}
-        userId={userId}
+        userId={user._id}
       />
     </section>
   )

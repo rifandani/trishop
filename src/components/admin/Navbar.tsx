@@ -1,6 +1,7 @@
+import axios from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import {
   FaReact,
   FaHome,
@@ -9,22 +10,36 @@ import {
   FaUserPlus,
   FaFolderPlus,
   FaCpanel,
+  FaTicketAlt,
 } from 'react-icons/fa'
-import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
+// files
+import { UserContext } from 'contexts/UserContext'
 
-export default function Navbar({ children }: any) {
+export default function Navbar({ children }: any): JSX.Element {
+  // hooks
   const { pathname, push } = useRouter()
+  const { user, dispatchUser } = useContext(UserContext) // user context
+  const [toggleSidebar, setToggleSidebar] = useState<boolean>(false)
+  const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
 
-  const [toggleSidebar, setToggleSidebar] = useState(false)
-  const [toggleDropdown, setToggleDropdown] = useState(false)
+  async function logout(): Promise<void> {
+    try {
+      // call logout API
+      await axios.get('/auth/logout')
 
-  async function logout() {
-    Cookies.remove('auth') // remove auth cookie
+      // remove user context
+      dispatchUser({
+        type: 'DEL_USER',
+      })
 
-    // push back to home and toast
-    await push('/')
-    toast.info('Logout success')
+      // push back to home and toast
+      await push('/')
+      toast.info('Logout success')
+    } catch (err) {
+      toast.error(err.message)
+      console.error(err)
+    }
   }
 
   return (
@@ -107,6 +122,20 @@ export default function Navbar({ children }: any) {
                   <span className="mx-3">Add Product</span>
                 </a>
               </Link>
+
+              <Link href="/admin/add/coupon">
+                <a
+                  className={`flex items-center mt-4 py-2 px-6 ${
+                    pathname === '/admin/add/coupon'
+                      ? 'bg-gray-700 bg-opacity-25 text-gray-100'
+                      : 'text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'
+                  }`}
+                >
+                  <FaTicketAlt className="w-6 h-6" />
+
+                  <span className="mx-3">Add Coupon</span>
+                </a>
+              </Link>
             </nav>
           </div>
 
@@ -169,12 +198,14 @@ export default function Navbar({ children }: any) {
                         Profile
                       </a>
                     </Link>
-                    <span
+
+                    <button
+                      className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-red-500 hover:text-white"
+                      type="button"
                       onClick={logout}
-                      className="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-red-500 hover:text-white"
                     >
                       Logout
-                    </span>
+                    </button>
                   </div>
                 </div>
               </div>

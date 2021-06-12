@@ -6,7 +6,7 @@ import UserModel from 'mongo/models/User'
 import checkObjectId from 'middlewares/checkObjectId'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
-import { userApiSchema } from 'yup/apiSchema'
+import { userApiSchema, TUserApiSchema } from 'yup/apiSchema'
 
 // TODO: add authentication middleware for all ADMIN api's
 const handler = async function (req: NextApiRequest, res: NextApiResponse) {
@@ -32,10 +32,10 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       // check id validity
       const userId = getQueryAsString(req.query._id)
 
-      const { name, role, email, password } = req.body
+      const { name, role, email, password } = req.body as TUserApiSchema
 
       // hash new password with bcrypt
-      const newHash = hashSync(password, 10)
+      const newHash = hashSync(password!, 10)
 
       // update user
       await UserModel.findByIdAndUpdate(userId, {

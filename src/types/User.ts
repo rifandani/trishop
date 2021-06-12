@@ -1,8 +1,10 @@
+import { UserPayload } from 'contexts/UserReducer'
+
 export interface IUser {
   email: string
   name: string
   password: string
-  role: TRole
+  role: 'ADMIN' | 'USER'
   createdAt?: Date
   updatedAt?: Date
 }
@@ -15,7 +17,13 @@ export interface IUsersProps {
   users: IUser[]
 }
 
-export type TRole = 'ADMIN' | 'USER'
+/* ------------------------------ API Response ------------------------------ */
+
+export interface IAuthLoginRegister {
+  error: boolean
+  message: string
+  data?: UserPayload
+}
 
 // import { Document, Model } from 'mongoose'
 // export interface IUserDocument extends IUser, Document {}

@@ -14,10 +14,10 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       const { email, password } = req.body as TLoginApiSchema
 
       // find specific user
-      const user = await UserModel.findOne({ email })
+      const userDoc = await UserModel.findOne({ email })
 
       // compare password
-      const isMatch = await compare(password!, user.password)
+      const isMatch = await compare(password!, userDoc.password)
 
       if (!isMatch) {
         // client error => password did not match -----------------------------------------------------------------
@@ -26,13 +26,20 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       }
 
       // sign JWT and set it to cookie in header
-      setCookie({ sub: user._id }, res)
+      setCookie({ sub: userDoc._id, role: userDoc.role }, res)
 
       // login SUCCESS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       res.status(201).json({
         error: false,
-        role: user.role,
-        userId: user._id,
+        message: 'Login success',
+        data: {
+          _id: userDoc._id,
+          name: userDoc.name,
+          email: userDoc.email,
+          role: userDoc.role,
+          createdAt: userDoc.createdAt,
+          updatedAt: userDoc.updatedAt,
+        },
       })
     } else {
       // client error => Method Not Allowed -----------------------------------------------------------------

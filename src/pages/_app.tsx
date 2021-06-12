@@ -1,21 +1,23 @@
 import Head from 'next/head'
-import type { AppProps /*, AppContext */ } from 'next/app'
 import Router from 'next/router'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import axios from 'axios'
 import NProgress from 'nprogress'
+import { SWRConfig } from 'swr'
+import { ToastContainer, toast } from 'react-toastify'
+import type { AppProps /*, AppContext */ } from 'next/app'
+// Import styles
+import '../styles/index.css'
 import 'nprogress/nprogress.css'
 import 'gridjs/dist/theme/mermaid.css'
-import axios from 'axios'
-import { SWRConfig } from 'swr'
-// Import Swiper styles
+import 'react-toastify/dist/ReactToastify.css'
 import 'swiper/swiper.min.css'
 import 'swiper/components/navigation/navigation.min.css'
 import 'swiper/components/thumbs/thumbs.min.css'
+import 'swiper/components/pagination/pagination.min.css'
 // files
-import '../styles/index.css'
 import { CartProvider } from 'contexts/CartContext'
 import { WishlistProvider } from 'contexts/WishlistContext'
+import { UserProvider } from 'contexts/UserContext'
 
 // create a custom progress bar
 NProgress.configure({ showSpinner: false })
@@ -75,8 +77,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       >
         <CartProvider>
           <WishlistProvider>
-            <Component {...pageProps} />
-            <ToastContainer />
+            <UserProvider>
+              <Component {...pageProps} />
+              <ToastContainer />
+            </UserProvider>
           </WishlistProvider>
         </CartProvider>
       </SWRConfig>

@@ -9,8 +9,8 @@ import ProductModel from 'mongo/models/Product'
 import UserModel from 'mongo/models/User'
 import dbConnect from 'mongo/config/dbConnect'
 import getQueryAsString from 'utils/getQueryAsString'
-import { JWTPayload } from 'pages/admin/dashboard'
 import { Product } from 'contexts/CartReducer'
+import { JWTPayload } from 'utils/setCookie'
 
 interface Props {
   product: Product
@@ -60,10 +60,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     // find authUser by id
-    const authUser = await UserModel.findById(authUserId)
+    // const authUser = await UserModel.findById(authUserId)
 
     // if authUser.role === 'USER'
-    if (authUser.role === 'USER') {
+    if ((decoded as JWTPayload).role === 'USER') {
       return {
         redirect: { destination: '/dashboard', permanent: false },
       }

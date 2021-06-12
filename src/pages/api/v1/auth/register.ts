@@ -5,25 +5,36 @@ import UserModel from 'mongo/models/User'
 import setCookie from 'utils/setCookie'
 import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
-import { registerApiSchema } from 'yup/apiSchema'
+import { registerApiSchema, TRegisterApiSchema } from 'yup/apiSchema'
 
 const handler = async function (req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'POST') {
       // destructure request body form
-      const { name, email, password } = req.body
+      const { name, email, password } = req.body as TRegisterApiSchema
 
       // hash password with bcrypt
-      const hash = bcrypt.hashSync(password, 10)
+      const hash = bcrypt.hashSync(password!, 10)
 
       // store hashed password in database
-      const user = await UserModel.create({ name, email, password: hash })
+      const userDoc = await UserModel.create({ name, email, password: hash })
 
       // set JWT token to cookie in headers
-      setCookie({ sub: user._id }, res)
+      setCookie({ sub: userDoc._id, role: userDoc.role }, res)
 
       // register SUCCESS --------------------------
-      res.status(201).json({ error: false, userId: user._id })
+      res.status(201).json({
+        error: false,
+        message: 'Register success',
+        data: {
+          _id: userDoc._id,
+          name: userDoc.name,
+          email: userDoc.email,
+          role: userDoc.role,
+          createdAt: userDoc.createdAt,
+          updatedAt: userDoc.updatedAt,
+        },
+      })
     } else {
       // client error => Method Not Allowed -----------------------------------------------------------------
       res.status(405).json({

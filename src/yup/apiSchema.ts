@@ -1,4 +1,4 @@
-import { object, string, TypeOf, array, number } from 'yup'
+import { object, string, TypeOf, array, number, mixed } from 'yup'
 // files
 import { addProductSchema, addReportSchema } from './schema'
 
@@ -30,7 +30,7 @@ export const contactApiSchema = object({
 
 export const userApiSchema = registerApiSchema.concat(
   object({
-    role: string()
+    role: mixed()
       .oneOf(['USER', 'ADMIN'], 'role must be either USER or ADMIN')
       .required('role required'),
   })

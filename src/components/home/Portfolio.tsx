@@ -37,26 +37,26 @@ const Portfolio = () => {
               />
             </div>
 
-            <div className="w-1/2 py-2 pl-2">
+            <div className="w-1/2 p-2">
               <img
                 className="object-cover shadow-md shadow-pop-bl"
-                src="/images/show2.jpg"
+                src="/images/show1.jpg"
                 alt="show2"
               />
             </div>
 
             <div className="w-1/2 p-2">
               <img
-                className="object-cover h-full shadow-md shadow-pop-bl"
-                src="/images/show3.jpg"
+                className="object-cover shadow-md shadow-pop-bl"
+                src="/images/show2.jpg"
                 alt="show3"
               />
             </div>
 
-            <div className="w-1/2 py-2 pl-2">
+            <div className="w-1/2 p-2">
               <img
                 className="object-cover w-full shadow-md shadow-pop-bl"
-                src="/images/show4.jpg"
+                src="/images/show2.jpg"
                 alt="show4"
               />
             </div>

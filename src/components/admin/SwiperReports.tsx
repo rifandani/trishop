@@ -1,8 +1,5 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Autoplay, Pagination, Navigation } from 'swiper/core'
-import 'swiper/swiper.min.css'
-import 'swiper/components/pagination/pagination.min.css'
-import 'swiper/components/navigation/navigation.min.css'
 // files
 import ReportCard from './ReportCard'
 import { IReportsProps } from 'types/Report'
@@ -12,7 +9,7 @@ SwiperCore.use([Autoplay, Pagination, Navigation])
 
 export default function SwiperReports({ reports }: IReportsProps) {
   return (
-    <section className="w-full h-full mt-8">
+    <section className="w-full h-left-full">
       <Swiper
         className="rounded-md"
         style={{
@@ -34,7 +31,10 @@ export default function SwiperReports({ reports }: IReportsProps) {
         }}
       >
         {reports.map((report) => (
-          <SwiperSlide key={report._id}>
+          <SwiperSlide
+            style={{ backgroundColor: 'rgba(229,231,235)' }} // bg-gray-200
+            key={report._id}
+          >
             <ReportCard report={report} />
           </SwiperSlide>
         ))}

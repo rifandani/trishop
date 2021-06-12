@@ -12,13 +12,17 @@ const checkAuthCookie =
           // if access token expired
           res
             .status(401)
-            .json({ message: 'Unauthorized! Access Token was expired' })
+            .json({
+              error: true,
+              message: 'Unauthorized! Access Token was expired',
+            })
           return
         } else if (err && !decoded) {
           // if not authenticated
-          res
-            .status(401)
-            .json({ message: 'Unauthorized! You are Not Authenticated' })
+          res.status(401).json({
+            error: true,
+            message: 'Unauthorized! You are Not Authenticated',
+          })
           return
         }
 

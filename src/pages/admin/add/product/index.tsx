@@ -7,7 +7,7 @@ import Navbar from 'components/admin/Navbar'
 import AddProduct from 'components/admin/add/AddProduct'
 import dbConnect from 'mongo/config/dbConnect'
 import UserModel from 'mongo/models/User'
-import { JWTPayload } from 'pages/admin/dashboard'
+import { JWTPayload } from 'utils/setCookie'
 
 export default function AddProductPage() {
   return (
@@ -53,10 +53,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     // find user by id
-    const user = await UserModel.findById(userId)
+    // const user = await UserModel.findById(userId)
 
     // if user.role === 'USER'
-    if (user.role === 'USER') {
+    if ((decoded as JWTPayload).role === 'USER') {
       return {
         redirect: { destination: '/dashboard', permanent: false },
       }

@@ -43,19 +43,6 @@
     @apply block w-full px-4 py-2 mt-2 text-sm italic text-gray-700 bg-gray-200 rounded-md;
   }
 
-  /* NAV */
-  .nav__link {
-    @apply inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline;
-  }
-
-  .nav__login-btn {
-    @apply px-8 py-4 mx-auto mt-4 font-bold text-white bg-orange-800 rounded-full shadow hover:underline lg:mx-0 lg:mt-0;
-  }
-
-  .nav__logout-btn {
-    @apply px-8 py-4 mx-auto mt-4 font-bold text-white bg-red-600 rounded-full shadow hover:underline lg:mx-0 lg:mt-0;
-  }
-
   /* HEADER */
   .header__order-now-btn {
     @apply px-8 py-4 mx-auto my-6 font-bold text-orange-800 bg-white rounded-full shadow-lg md:mx-0 hover:underline;

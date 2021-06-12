@@ -1,17 +1,13 @@
+import axios from 'axios'
 import Link from 'next/link'
+import { useContext } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-import axios from 'axios'
 // files
 import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
-import useLocalStorage from 'hooks/useLocalStorage'
-
-interface PostAuthLogin {
-  error: boolean
-  userId: string
-  role: 'ADMIN' | 'USER'
-}
+import { IAuthLoginRegister } from 'types/User'
+import { UserContext } from 'contexts/UserContext'
 
 export default function Login() {
   const initialValues: TLoginApiSchema = {
@@ -21,26 +17,30 @@ export default function Login() {
 
   // hooks
   const { push } = useRouter()
-  const [, setValue] = useLocalStorage('user', '')
+  const { user, dispatchUser } = useContext(UserContext)
 
   const onLogin = async (
     values: TLoginApiSchema,
     actions: FormikHelpers<TLoginApiSchema>
   ) => {
-    const user = {
-      email: values.email,
-      password: values.password,
-    }
-
     try {
       // POST /auth/login
-      const res = await axios.post<PostAuthLogin>('/auth/login', user)
+      const res = await axios.post<IAuthLoginRegister>('/auth/login', values)
 
-      // set to local storage
-      setValue(res.data.userId)
+      // client or server error
+      if (res.status === (400 || 500)) {
+        toast.error(res.data.message)
+        return
+      }
+
+      // set user to UserContext
+      dispatchUser({
+        type: 'ADD_USER',
+        payload: res.data.data,
+      })
 
       // if role == 'ADMIN'
-      if (res.data.role === 'ADMIN') {
+      if (res.data.data.role === 'ADMIN') {
         await push('/admin/dashboard')
         toast.success('Welcome to admin dashboard')
         return
@@ -51,8 +51,8 @@ export default function Login() {
       toast.success('You are logged in')
       actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
-      console.error('⛔ =>', err)
-      toast.error(`${err.message}`)
+      console.error(err)
+      toast.error(err.message)
       actions.setSubmitting(false) // finish formik cycle
     }
   }
@@ -112,9 +112,9 @@ export default function Login() {
 
                     <Field
                       className="mt-1"
+                      placeholder="******"
                       name="password"
                       type="password"
-                      placeholder="******"
                     />
 
                     <ErrorMessage
@@ -125,11 +125,11 @@ export default function Login() {
                   </div>
 
                   <button
-                    className="p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer focus:ring-2 focus:ring-orange-500 disabled:opacity-50 hover:underline"
+                    className="p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer focus:ring-4 focus:ring-orange-500 disabled:opacity-50 hover:underline"
                     type="submit"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? 'Loading' : 'Login'}
+                    {isSubmitting ? 'Loading...' : 'Login'}
                   </button>
                 </Form>
               )}

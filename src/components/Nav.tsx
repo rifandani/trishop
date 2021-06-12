@@ -1,37 +1,44 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useContext, useState } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { FaShoppingCart, FaHeart } from 'react-icons/fa'
 import { toast } from 'react-toastify'
-import Cookies from 'js-cookie'
 // files
-import useLocalStorage from 'hooks/useLocalStorage'
 import { CartContext } from 'contexts/CartContext'
 import { WishlistContext } from 'contexts/WishlistContext'
+import { UserContext } from 'contexts/UserContext'
 
-const Nav = () => {
+export default function Nav(): JSX.Element {
   // hooks
   const { push } = useRouter()
   const { cart } = useContext(CartContext) // cart context
   const { wishlist } = useContext(WishlistContext) // cart context
-  const [, setValue] = useLocalStorage('user', '') // local storage
-
-  const [toggle, setToggle] = useState(true) // toggle hamburger menu
-  const [cookie, setCookie] = useState(Cookies.get('auth') || '') // cookie
+  const { user, dispatchUser } = useContext(UserContext) // user context
+  const [toggle, setToggle] = useState<boolean>(true) // toggle hamburger menu
+  const [toggleDropdown, setToggleDropdown] = useState<boolean>(false) // toggle dropdown menu
 
   const login = (): Promise<boolean> => push('/login')
 
   const logout = async (): Promise<void> => {
-    // remove auth cookie & user local storage
-    Cookies.remove('auth')
-    setValue('')
-    setCookie('')
+    try {
+      // call logout API
+      await axios.get('/auth/logout')
 
-    // push back to home and toast
-    await push('/')
-    toast.success('Logout success')
+      // remove user context
+      dispatchUser({
+        type: 'DEL_USER',
+      })
+
+      // push back to home and toast
+      await push('/')
+      toast.info('Logout success')
+    } catch (err) {
+      toast.error(err.message)
+      console.error(err)
+    }
   }
 
   return (
@@ -42,10 +49,10 @@ const Nav = () => {
           <Link href="/">
             <a className="flex items-center space-x-2 text-2xl font-bold text-white no-underline hover:no-underline lg:text-3xl">
               {/* <img
-                className="inline w-10 h-10 rounded"
-                src="/images/trishop.png"
-                alt="trishop logo image"
-              /> */}
+              className="inline w-10 h-10 rounded"
+              src="/images/trishop.png"
+              alt="trishop logo image"
+            /> */}
               <Image
                 className="inline w-10 h-10 rounded"
                 src="/images/trishop.png"
@@ -77,7 +84,6 @@ const Nav = () => {
           } z-20 w-full p-4 text-black lg:flex lg:items-center lg:w-auto lg:mt-0 lg:p-0 lg:bg-transparent`}
         >
           <ul className="items-center justify-end flex-1 list-reset lg:flex">
-            {/* TODO: buat link ke user/admin dashboard */}
             <li className="mr-3">
               <Link href="/cart">
                 <a className="inline-block px-4 pt-4 pb-3 bg-white rounded-full lg:mr-2">
@@ -103,65 +109,93 @@ const Nav = () => {
             </li>
           </ul>
 
-          <button
-            onClick={cookie ? logout : login}
-            className={cookie ? 'nav__logout-btn' : 'nav__login-btn'}
-          >
-            {cookie ? 'Logout' : 'Login'}
-          </button>
+          {/* profile image with dropdown */}
+          <div className="flex items-center">
+            {/* dropdown */}
+            <div className="relative">
+              <button
+                className="relative block w-12 h-12 mt-3 overflow-hidden transition duration-500 ease-in-out transform rounded-full shadow lg:mt-0 focus:outline-none hover:scale-125"
+                onClick={() => setToggleDropdown((prevState) => !prevState)}
+              >
+                <img
+                  className="object-cover w-full h-full"
+                  src="/images/trishop.png"
+                  alt="trishop image"
+                />
+              </button>
 
-          {/* FIXME: Prop `className` did not match */}
-          {/* {cookie && (
-            <button onClick={logout} className="nav__logout-btn">
-              Logout
-            </button>
-          )}
+              {/* div dgn onCLick, biar bisa keluar dari dropdown profile  */}
+              <div
+                className={`fixed inset-0 h-full w-full z-10 ${
+                  toggleDropdown ? '' : 'hidden'
+                }`}
+                onClick={() => setToggleDropdown((prevState) => !prevState)}
+              ></div>
 
-          {!cookie && (
-            <button onClick={login} className="nav__login-btn">
-              Login
-            </button>
-          )} */}
+              <div
+                className={`absolute left-0 right-auto lg:left-auto lg:right-0 mt-3 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10 ${
+                  toggleDropdown ? '' : 'hidden'
+                }`}
+              >
+                {/* TODO: buat user dashboard */}
+                {user ? (
+                  <Link href="/dashboard">
+                    <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-500 hover:text-white">
+                      Dashboard
+                    </a>
+                  </Link>
+                ) : null}
+
+                <button
+                  className={`${
+                    user ? 'hover:bg-red-500' : 'hover:bg-orange-500'
+                  } w-full px-4 py-2 text-sm text-left text-gray-700 hover:text-white`}
+                  type="button"
+                  onClick={user ? logout : login}
+                >
+                  {user ? 'Logout' : 'Login'}
+                </button>
+              </div>
+            </div>
+          </div>
         </section>
       </article>
 
       {/* mobile content */}
       {/* {toggle ? (
-        <article className="container flex-wrap items-center justify-center w-full pb-5 mx-auto mt-0">
-          <section className="w-full ">
-            <Link href="/">
-              <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
-                Products
-              </a>
-            </Link>
-          </section>
-          <section className="w-full ">
-            <Link href="/">
-              <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
-                Stores
-              </a>
-            </Link>
-          </section>
-          <section className="w-full ">
-            <Link href="/">
-              <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
-                Marketplaces
-              </a>
-            </Link>
-          </section>
-          <section className="w-full ">
-            <Link href="/login">
-              <button className="px-8 py-4 mx-auto mt-2 ml-4 font-bold text-orange-800 bg-white rounded-full shadow hover:underline">
-                Login
-              </button>
-            </Link>
-          </section>
-        </article>
-      ) : null} */}
+              <article className="container flex-wrap items-center justify-center w-full pb-5 mx-auto mt-0">
+                <section className="w-full ">
+                  <Link href="/">
+                    <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
+                      Products
+                    </a>
+                  </Link>
+                </section>
+                <section className="w-full ">
+                  <Link href="/">
+                    <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
+                      Stores
+                    </a>
+                  </Link>
+                </section>
+                <section className="w-full ">
+                  <Link href="/">
+                    <a className="inline-block px-4 py-2 font-bold text-white hover:text-orange-800 hover:underline">
+                      Marketplaces
+                    </a>
+                  </Link>
+                </section>
+                <section className="w-full ">
+                  <Link href="/login">
+                    <button className="px-8 py-4 mx-auto mt-2 ml-4 font-bold text-orange-800 bg-white rounded-full shadow hover:underline">
+                      Login
+                    </button>
+                  </Link>
+                </section>
+              </article>
+            ) : null} */}
 
       <hr className="py-0 my-0 border-b border-gray-100 opacity-25" />
     </nav>
   )
 }
-
-export default Nav

@@ -10,6 +10,7 @@ import Axios from 'axios'
 import useLocalStorage from 'hooks/useLocalStorage'
 import generateRupiah from 'utils/generateRupiah'
 import { CartContext } from 'contexts/CartContext'
+import { UserContext } from 'contexts/UserContext'
 import { Payload } from 'contexts/CartReducer'
 import { IOrder } from 'types/LocalStorage'
 import { APIResponseCoupon } from 'types/Coupon'
@@ -18,7 +19,7 @@ export default function CartComp() {
   // hooks
   const { push } = useRouter()
   const { cart, dispatch } = useContext(CartContext) // cart context
-  const [userId] = useLocalStorage<string>('user', '')
+  const { user } = useContext(UserContext) // user context
   const [, setOrder] = useLocalStorage<IOrder>('order', null) // local storage
 
   const [coupon, setCoupon] = useState<string>('')
@@ -55,7 +56,7 @@ export default function CartComp() {
 
   async function applyCoupon() {
     const reqBody = {
-      userId,
+      userId: user._id,
       code: coupon,
     }
 
@@ -109,7 +110,7 @@ export default function CartComp() {
     }))
 
     const order = {
-      user_id: userId,
+      user_id: user._id,
       transaction_details: {
         gross_amount: total,
       },
