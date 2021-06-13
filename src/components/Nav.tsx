@@ -6,31 +6,34 @@ import { useContext, useState } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { FaShoppingCart, FaHeart } from 'react-icons/fa'
 import { toast } from 'react-toastify'
+import { useCookies } from 'react-cookie'
 // files
 import { CartContext } from 'contexts/CartContext'
 import { WishlistContext } from 'contexts/WishlistContext'
-import { UserContext } from 'contexts/UserContext'
+import { JWTPayload } from 'utils/setCookie'
 
 export default function Nav(): JSX.Element {
   // hooks
+  const [cookies] = useCookies(['auth'])
   const { push } = useRouter()
   const { cart } = useContext(CartContext) // cart context
   const { wishlist } = useContext(WishlistContext) // cart context
-  const { user, dispatchUser } = useContext(UserContext) // user context
   const [toggle, setToggle] = useState<boolean>(true) // toggle hamburger menu
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false) // toggle dropdown menu
 
-  const login = (): Promise<boolean> => push('/login')
+  const authCookie = cookies?.auth as JWTPayload
 
+  const pushToAdminDashboard = (): Promise<boolean> => push('/admin/dashboard')
+  const pushToDashboard = (): Promise<boolean> => push('/dashboard')
+
+  const login = (): Promise<boolean> => push('/login')
   const logout = async (): Promise<void> => {
     try {
       // call logout API
       await axios.get('/auth/logout')
 
-      // remove user context
-      dispatchUser({
-        type: 'DEL_USER',
-      })
+      // remove user in local storage / cookie
+      // setUser(null)
 
       // push back to home and toast
       await push('/')
@@ -48,11 +51,6 @@ export default function Nav(): JSX.Element {
         <section className="flex items-center pl-3">
           <Link href="/">
             <a className="flex items-center space-x-2 text-2xl font-bold text-white no-underline hover:no-underline lg:text-3xl">
-              {/* <img
-              className="inline w-10 h-10 rounded"
-              src="/images/trishop.png"
-              alt="trishop logo image"
-            /> */}
               <Image
                 className="inline w-10 h-10 rounded"
                 src="/images/trishop.png"
@@ -138,22 +136,28 @@ export default function Nav(): JSX.Element {
                 }`}
               >
                 {/* TODO: buat user dashboard */}
-                {user ? (
-                  <Link href="/dashboard">
-                    <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-500 hover:text-white">
-                      Dashboard
-                    </a>
-                  </Link>
+                {authCookie ? (
+                  <button
+                    className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-orange-500 hover:text-white"
+                    type="button"
+                    onClick={
+                      authCookie.role === 'ADMIN'
+                        ? pushToAdminDashboard
+                        : pushToDashboard
+                    }
+                  >
+                    Dashboard
+                  </button>
                 ) : null}
 
                 <button
                   className={`${
-                    user ? 'hover:bg-red-500' : 'hover:bg-orange-500'
+                    authCookie ? 'hover:bg-red-500' : 'hover:bg-orange-500'
                   } w-full px-4 py-2 text-sm text-left text-gray-700 hover:text-white`}
                   type="button"
-                  onClick={user ? logout : login}
+                  onClick={authCookie ? logout : login}
                 >
-                  {user ? 'Logout' : 'Login'}
+                  {authCookie ? 'Logout' : 'Login'}
                 </button>
               </div>
             </div>

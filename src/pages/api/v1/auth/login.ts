@@ -29,7 +29,17 @@ const handler = async (
       }
 
       // sign JWT and set it to cookie in header
-      setCookie({ sub: userDoc._id, role: userDoc.role }, res)
+      setCookie(
+        {
+          sub: userDoc._id,
+          role: userDoc.role,
+          name: userDoc.name,
+          email: userDoc.email,
+          createdAt: userDoc.createdAt,
+          updatedAt: userDoc.updatedAt,
+        },
+        res
+      )
 
       // login SUCCESS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       res.status(201).json({

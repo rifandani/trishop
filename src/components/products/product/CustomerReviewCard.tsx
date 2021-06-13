@@ -4,28 +4,27 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { MdThumbUp, MdReportProblem } from 'react-icons/md'
 import { FaStar } from 'react-icons/fa'
 import { toast } from 'react-toastify'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
+import { useCookies } from 'react-cookie'
 // files
 import EditReviewModal from './EditReviewModal'
 import ReportReviewModal from './ReportReviewModal'
-import { IReview } from 'types/Review'
-import { UserContext } from 'contexts/UserContext'
-
-interface CustomerReviewCardProps {
-  review: IReview
-}
+import { IReviewProps } from 'types/Review'
+import { JWTPayload } from 'utils/setCookie'
 
 dayjs.extend(relativeTime) // so that we can user relative formatting
 
 export default function CustomerReviewCard({
   review,
-}: CustomerReviewCardProps): JSX.Element {
+}: IReviewProps): JSX.Element {
   const { reviewerName, comment, star, updatedAt, reviewerId, _id } = review
 
   // hooks
-  const { user } = useContext(UserContext) // user context
+  const [cookies] = useCookies(['auth'])
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [reportIsOpen, setReportIsOpen] = useState<boolean>(false)
+
+  const authCookie = cookies?.auth as JWTPayload
 
   // TODO: add like functionality to review document
   const onLike = () => {
@@ -33,6 +32,11 @@ export default function CustomerReviewCard({
   }
 
   const onReport = () => {
+    if (!authCookie) {
+      toast.warn('Please login first')
+      return
+    }
+
     setReportIsOpen(true)
   }
 
@@ -99,7 +103,7 @@ export default function CustomerReviewCard({
 
         <div className="flex items-center space-x-2">
           {/* FIXME: styling did not works */}
-          {user._id !== reviewerId ? (
+          {!authCookie || authCookie?.sub !== reviewerId ? (
             <button
               className="flex items-center group focus:outline-none"
               onClick={onLike}
@@ -117,7 +121,7 @@ export default function CustomerReviewCard({
           )}
 
           {/* FIXME: styling did not works */}
-          {user._id !== reviewerId ? (
+          {!authCookie || authCookie?.sub !== reviewerId ? (
             <button
               className="flex items-center ml-2 group focus:outline-none"
               onClick={onReport}
@@ -138,12 +142,14 @@ export default function CustomerReviewCard({
 
       <EditReviewModal isOpen={isOpen} setIsOpen={setIsOpen} review={review} />
 
-      <ReportReviewModal
-        reportIsOpen={reportIsOpen}
-        setReportIsOpen={setReportIsOpen}
-        review={review}
-        userId={user._id}
-      />
+      {authCookie && (
+        <ReportReviewModal
+          reportIsOpen={reportIsOpen}
+          setReportIsOpen={setReportIsOpen}
+          review={review}
+          userId={authCookie.sub}
+        />
+      )}
     </section>
   )
 }

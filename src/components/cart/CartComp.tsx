@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import { FaShoppingCart } from 'react-icons/fa'
@@ -5,21 +6,21 @@ import { IoMdClose, IoIosCard } from 'react-icons/io'
 import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri'
 import { Transition } from '@headlessui/react'
 import { toast } from 'react-toastify'
-import Axios from 'axios'
+import { useCookies } from 'react-cookie'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
 import generateRupiah from 'utils/generateRupiah'
 import { CartContext } from 'contexts/CartContext'
-import { UserContext } from 'contexts/UserContext'
 import { ProductPayload } from 'contexts/CartReducer'
-import { IOrder } from 'types/LocalStorage'
 import { APIResponseCoupon } from 'types/Coupon'
+import { IOrder } from 'types/LocalStorage'
+import { JWTPayload } from 'utils/setCookie'
 
 export default function CartComp(): JSX.Element {
   // hooks
+  const [cookies] = useCookies(['auth'])
   const { push } = useRouter()
   const { cart, dispatch } = useContext(CartContext) // cart context
-  const { user } = useContext(UserContext) // user context
   const [, setOrder] = useLocalStorage<IOrder>('order', null) // local storage
 
   const [coupon, setCoupon] = useState<string>('')
@@ -56,13 +57,13 @@ export default function CartComp(): JSX.Element {
 
   async function applyCoupon(): Promise<void> {
     const reqBody = {
-      userId: user._id,
+      userId: (cookies.auth as JWTPayload).sub,
       code: coupon,
     }
 
     try {
       // call API /validate/coupon
-      const res = await Axios.post<APIResponseCoupon>(
+      const res = await axios.post<APIResponseCoupon>(
         '/validate/coupon',
         reqBody
       )
@@ -110,7 +111,7 @@ export default function CartComp(): JSX.Element {
     }))
 
     const order = {
-      user_id: user._id,
+      user_id: (cookies.auth as JWTPayload).sub,
       transaction_details: {
         gross_amount: total,
       },

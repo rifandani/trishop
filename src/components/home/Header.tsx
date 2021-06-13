@@ -31,7 +31,7 @@ function Header(): JSX.Element {
           {/* <!--Right Col--> */}
           <div className="w-full py-6 text-center md:w-3/5">
             <img
-              className="z-50 w-full md:w-4/5"
+              className="z-50 w-full mx-auto md:w-4/5"
               src="images/cake.png"
               alt="cake illustration"
             />

@@ -1,13 +1,11 @@
 import axios from 'axios'
 import Link from 'next/link'
-import { useContext } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import { TRegisterApiSchema, registerApiSchema } from 'yup/apiSchema'
 import { IAuthLoginRegister } from 'types/User'
-import { UserContext } from 'contexts/UserContext'
 
 export default function RegisterPage(): JSX.Element {
   const initialValues: TRegisterApiSchema = {
@@ -18,7 +16,6 @@ export default function RegisterPage(): JSX.Element {
 
   // hooks
   const router = useRouter()
-  const { dispatchUser } = useContext(UserContext)
 
   const onRegister = async (
     values: TRegisterApiSchema,
@@ -33,12 +30,6 @@ export default function RegisterPage(): JSX.Element {
         toast.error(res.data.message)
         return
       }
-
-      // set user to UserContext
-      dispatchUser({
-        type: 'ADD_USER',
-        payload: res.data.data,
-      })
 
       // role === 'USER'
       await router.push('/products')

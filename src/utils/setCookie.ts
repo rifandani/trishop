@@ -4,9 +4,13 @@ import { serialize } from 'cookie'
 
 export interface JWTPayload {
   sub: string // subject, whom the token refers to
+  email: string
+  name: string
   role: 'USER' | 'ADMIN'
-  iat?: number
-  exp?: number
+  createdAt: Date
+  updatedAt: Date
+  iat?: number // issuedAt, seconds since Unix epoch
+  exp?: number // expiredAt, Date
 }
 
 export default function setCookie(
@@ -27,7 +31,7 @@ export default function setCookie(
     'Set-Cookie',
     // seperti JSON.stringify untuk cookies
     serialize('auth', jwt, {
-      httpOnly: true, // means client side javascript can NOT access our cookies
+      httpOnly: false, // means client side javascript can access our cookies
       secure: process.env.NODE_ENV !== 'development',
       sameSite: 'strict',
       maxAge: 60 * 60 * 3, // 3 hour

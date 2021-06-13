@@ -1,6 +1,3 @@
-import firebase from 'firebase'
-import { Dispatch, SetStateAction } from 'react'
-
 export interface ChildrenProps {
   children: React.ReactNode
 }
@@ -15,18 +12,3 @@ export interface IPhotoURL {
   type: string
   webkitRelativePath: string
 }
-
-export interface IUserContextState {
-  user: FireUser | null
-  setUser: firebase.User | Dispatch<SetStateAction<firebase.User>>
-}
-
-// firebase type
-export type DocRef = firebase.firestore.DocumentReference
-export type DocDataRef =
-  firebase.firestore.DocumentReference<firebase.firestore.DocumentData>
-export type Timestamp = firebase.firestore.Timestamp
-export type FireUser = firebase.User
-export type UserCredential = firebase.UserInfo
-export type UserCredential2 = firebase.auth.UserCredential
-export type FireError = firebase.FirebaseError

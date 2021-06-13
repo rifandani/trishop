@@ -25,14 +25,22 @@ export default function AddCoupon(): JSX.Element {
   ): Promise<void> => {
     try {
       // POST /admin/coupons
-      await Axios.post('/admin/coupons', values)
+      const res = await Axios.post('/admin/coupons', values, {
+        validateStatus: (status) => status < 500, // Resolve only if the status code is less than 500
+      })
 
-      // // success
+      // client error
+      if (res.status !== 201) {
+        toast.error(res.data.message)
+        return
+      }
+
+      // success
       toast.success('Coupon created')
       await push('/admin/dashboard')
       actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
-      console.error(err)
+      console.error(err.toJSON())
       toast.error(err.message)
       actions.setSubmitting(false) // finish formik cycle
     }

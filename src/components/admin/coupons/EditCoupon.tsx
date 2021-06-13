@@ -9,7 +9,7 @@ import { ICouponProps, IAddAndEditCoupon } from 'types/Coupon'
 
 export default function EditCoupon({ coupon }: ICouponProps): JSX.Element {
   // hooks
-  const { push, query } = useRouter()
+  const { push } = useRouter()
 
   const initialValues: IAddAndEditCoupon = {
     code: coupon.code,
@@ -24,16 +24,24 @@ export default function EditCoupon({ coupon }: ICouponProps): JSX.Element {
     actions: FormikHelpers<IAddAndEditCoupon>
   ): Promise<void> => {
     try {
-      // PUT /admin/coupons/:_id
-      await Axios.put(`/admin/coupons/${query._id}`, values) // bisa pake query._id atau dari coupon._id
+      // bisa pake query._id atau dari coupon._id
+      const res = await Axios.put(`/admin/coupons/${coupon._id}`, values, {
+        validateStatus: (status) => status < 500, // Resolve only if the status code is less than 500
+      })
+
+      // client error
+      if (res.status !== 201) {
+        toast.error(res.data.message)
+        return
+      }
 
       // success
       await push('/admin/dashboard')
       toast.info('Coupon updated')
       actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
-      console.error(err)
-      toast.error(err.data.message)
+      console.error(err.toJSON())
+      toast.error(err.message)
       actions.setSubmitting(false) // finish formik cycle
     }
   }

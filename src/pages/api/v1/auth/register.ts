@@ -23,9 +23,19 @@ const handler = async function (
       const userDoc = await UserModel.create({ name, email, password: hash })
 
       // set JWT token to cookie in headers
-      setCookie({ sub: userDoc._id, role: userDoc.role }, res)
+      setCookie(
+        {
+          sub: userDoc._id,
+          role: userDoc.role,
+          name: userDoc.name,
+          email: userDoc.email,
+          createdAt: userDoc.createdAt,
+          updatedAt: userDoc.updatedAt,
+        },
+        res
+      )
 
-      // register SUCCESS --------------------------
+      // register SUCCESS +++++++++++++++++++++++++++++++++++++++++++++++++++++++
       res.status(201).json({
         error: false,
         message: 'Register success',

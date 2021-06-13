@@ -159,7 +159,7 @@ function Footer(): JSX.Element {
       {/* bottom copyright */}
       <article className="pt-8 mt-12 border-t border-gray-200 dark:border-dark-900">
         <p className="text-base leading-6 text-gray-500 xl:text-center">
-          © {new Date().getFullYear()} Rifandani. All rights reserved.
+          © {new Date().getFullYear()} Trishop. All rights reserved.
         </p>
       </article>
     </footer>

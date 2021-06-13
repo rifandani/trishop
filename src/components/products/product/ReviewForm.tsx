@@ -1,10 +1,11 @@
 import Axios from 'axios'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
+import { useCookies } from 'react-cookie'
 // files
-import useLocalStorage from 'hooks/useLocalStorage'
 import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
 import { IPostReviewResponse } from 'types/Review'
+import { JWTPayload } from 'utils/setCookie'
 
 interface ReviewFormProps {
   productRef: string
@@ -14,7 +15,9 @@ export default function ReviewForm({
   productRef,
 }: ReviewFormProps): JSX.Element {
   // hooks
-  const [reviewerId] = useLocalStorage('user', '') // local storage
+  const [cookies] = useCookies(['auth'])
+
+  const authCookie = cookies?.auth as JWTPayload
 
   const initialValues: TPutReviewApiSchema = {
     reviewerName: '',
@@ -28,7 +31,7 @@ export default function ReviewForm({
   ): Promise<void> => {
     try {
       // if not logged in
-      if (!reviewerId) {
+      if (!authCookie) {
         toast.warn('Please login first')
         actions.setSubmitting(false) // finish formik cycle
         return
@@ -36,7 +39,7 @@ export default function ReviewForm({
 
       const newReview = {
         productRef,
-        reviewerId,
+        reviewerId: authCookie.sub,
         reviewerName: values.reviewerName,
         comment: values.comment,
         star: +values.star,

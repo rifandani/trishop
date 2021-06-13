@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import {
   FaReact,
   FaHome,
@@ -14,13 +14,11 @@ import {
 } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 // files
-import { UserContext } from 'contexts/UserContext'
 import { ChildrenProps } from 'types'
 
 export default function Navbar({ children }: ChildrenProps): JSX.Element {
   // hooks
   const { pathname, push } = useRouter()
-  const { dispatchUser } = useContext(UserContext) // user context
   const [toggleSidebar, setToggleSidebar] = useState<boolean>(false)
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
 
@@ -29,10 +27,8 @@ export default function Navbar({ children }: ChildrenProps): JSX.Element {
       // call logout API
       await axios.get('/auth/logout')
 
-      // remove user context
-      dispatchUser({
-        type: 'DEL_USER',
-      })
+      // remove user in local storage
+      // setUser(null)
 
       // push back to home and toast
       await push('/')
@@ -194,12 +190,6 @@ export default function Navbar({ children }: ChildrenProps): JSX.Element {
                       toggleDropdown ? '' : 'hidden'
                     }`}
                   >
-                    <Link href="/admin/profile">
-                      <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-500 hover:text-white">
-                        Profile
-                      </a>
-                    </Link>
-
                     <button
                       className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-red-500 hover:text-white"
                       type="button"

@@ -1,13 +1,11 @@
 import axios from 'axios'
 import Link from 'next/link'
-import { useContext } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
 import { IAuthLoginRegister } from 'types/User'
-import { UserContext } from 'contexts/UserContext'
 
 export default function Login(): JSX.Element {
   const initialValues: TLoginApiSchema = {
@@ -17,7 +15,6 @@ export default function Login(): JSX.Element {
 
   // hooks
   const { push } = useRouter()
-  const { dispatchUser } = useContext(UserContext)
 
   const onLogin = async (
     values: TLoginApiSchema,
@@ -32,12 +29,6 @@ export default function Login(): JSX.Element {
         toast.error(res.data.message)
         return
       }
-
-      // set user to UserContext
-      dispatchUser({
-        type: 'ADD_USER',
-        payload: res.data.data,
-      })
 
       // if role == 'ADMIN'
       if (res.data.data.role === 'ADMIN') {

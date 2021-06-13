@@ -20,6 +20,14 @@ export interface IReview {
   _id?: string
 }
 
+export interface IReviewProps {
+  review: IReview
+}
+
+export interface IReviewsProps {
+  reviews: IReview[]
+}
+
 /* ------------------------------ API response ------------------------------ */
 
 export interface IGetReviewResponse {

@@ -5,6 +5,11 @@ import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
 import { couponApiSchema, TCouponApiSchema } from 'yup/apiSchema'
 
+interface CouponCodes {
+  _id: string
+  code: string
+}
+
 // TODO: add authentication middleware for all ADMIN api's
 const handler = async function (
   req: NextApiRequest,
@@ -34,17 +39,35 @@ const handler = async function (
       const { discount, minTransaction, code, desc, validUntil } =
         req.body as TCouponApiSchema
 
+      // get all coupons code
+      const couponsDoc = await CouponModel.find().select('code') // { _id: string, code: string }[]
+      const coupons = JSON.parse(JSON.stringify(couponsDoc)) as CouponCodes[]
+      const codes = coupons.map((coupon) => coupon.code)
+      const codeAlreadyExists = codes.includes(code.toUpperCase())
+
+      if (codeAlreadyExists) {
+        // client error -----------------------------------------------------------------
+        res.status(400).json({
+          error: true,
+          message: 'Code already exists. Please use a unique code',
+        })
+        return
+      }
+
       // create new coupon to mongodb
-      const coupon = await CouponModel.create({
-        discount,
-        minTransaction,
-        code,
+      const couponDoc = await CouponModel.create({
         desc,
+        discount,
         validUntil,
+        minTransaction,
+        code: code.toUpperCase(),
       })
 
       // POST success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(201).json({ error: false, couponId: coupon._id })
+      res.status(201).json({
+        error: false,
+        couponId: couponDoc._id,
+      })
     } else {
       // client error => METHOD NOT ALLOWED -----------------------------------------------------------------
       res.status(405).json({
@@ -54,7 +77,16 @@ const handler = async function (
       })
     }
   } catch (err) {
-    // GET server error => Internal Server Error -----------------------------------------------------------------
+    if (err.message.includes('duplicate key')) {
+      // client error -----------------------------------------------------------------
+      res.status(400).json({
+        error: true,
+        message: 'Code already exists. Please use a unique code',
+      })
+      return
+    }
+
+    // server error => Internal Server Error -----------------------------------------------------------------
     res.status(500).json({ error: true, name: err.name, message: err.message })
   }
 }

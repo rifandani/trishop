@@ -144,7 +144,7 @@ export default function AdminDashboard(): JSX.Element {
           <h3 className="text-3xl font-medium text-gray-700">Users</h3>
           <button
             onClick={() => push('/admin/add/user')}
-            className="px-4 py-2 text-white bg-green-500 border rounded-md hover:bg-green-600"
+            className="px-4 py-2 text-white bg-green-500 border rounded-md focus:outline-none focus:ring-4 focus:ring-green-300 hover:bg-green-600"
           >
             Add New User
           </button>
@@ -160,7 +160,7 @@ export default function AdminDashboard(): JSX.Element {
           <h3 className="text-3xl font-medium text-gray-700">Products</h3>
           <button
             onClick={() => push('/admin/add/product')}
-            className="px-4 py-2 text-white bg-green-500 border rounded-md hover:bg-green-600"
+            className="px-4 py-2 text-white bg-green-500 border rounded-md focus:outline-none focus:ring-4 focus:ring-green-300 hover:bg-green-600"
           >
             Add New Product
           </button>
@@ -176,7 +176,7 @@ export default function AdminDashboard(): JSX.Element {
           <h3 className="text-3xl font-medium text-gray-700">Coupons</h3>
           <button
             onClick={() => push('/admin/add/coupon')}
-            className="px-4 py-2 text-white bg-green-500 border rounded-md hover:bg-green-600"
+            className="px-4 py-2 text-white bg-green-500 border rounded-md focus:outline-none focus:ring-4 focus:ring-green-300 hover:bg-green-600"
           >
             Add New Coupon
           </button>
