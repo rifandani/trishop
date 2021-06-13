@@ -94,6 +94,14 @@ Trishop web dibuka untuk kontribusi baik itu kontribusi untuk fungsionalitas pro
 7. Fix bugs atau implementasi new features
 8. Commit changes dengan message yang memiliki arti (at least make it pretty with [Emoji](https://gist.github.com/parmentf/035de27d6ed1dce0b36a)) 😎
 9. Pastikan tidak ada error ataupun warning ketika menjalankan perintah `yarn lint` ✔
-10. Push changes ke remote repo, dan buat pull request ke develop branch
-11. Tunggu review dan comment terhadap pull request yang telah kalian buat
-12. ~~Selalu tulis unit test (coming soon)~~
+10. Push changes ke remote repo, dan buat pull request ke `develop` branch
+11. Kalau memungkinkan gunakan [reference keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-issues/linking-a-pull-request-to-an-issue) di description untuk mereferensikan ke issues yang bersangkutan dengan pull request yang telah anda buat
+
+    ```json
+    changed transform prop of the modal so it can render text properly
+
+    fix #14 // reference ke issues #14
+    ```
+
+12. Tunggu review dan comment terhadap pull request yang telah kalian buat
+13. ~~Selalu tulis unit test (coming soon)~~
