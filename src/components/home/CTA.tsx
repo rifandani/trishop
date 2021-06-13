@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const CTA = () => {
+function CTA(): JSX.Element {
   return (
     <article className="bg-gradient-to-r from-orange-800 via-orange-400 to-orange-200">
       <div className="max-w-screen-xl px-4 py-12 mx-auto sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">

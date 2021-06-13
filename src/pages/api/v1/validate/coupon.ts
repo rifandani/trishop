@@ -8,7 +8,10 @@ import {
   TValidateCouponApiSchema,
 } from 'yup/apiSchema'
 
-const handler = async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async function (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
   try {
     if (req.method === 'POST') {
       const { userId, code } = req.body as TValidateCouponApiSchema // destructure request body form

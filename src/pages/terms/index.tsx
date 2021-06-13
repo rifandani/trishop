@@ -5,7 +5,7 @@ import Nav from 'components/Nav'
 import Footer from 'components/Footer'
 import TermsComp from 'components/terms/TermsComp'
 
-export default function TermsPage() {
+export default function TermsPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
       <Head>

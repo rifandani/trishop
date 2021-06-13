@@ -12,7 +12,21 @@ interface APIResponseUsers {
   count: number
 }
 
-export default function useUsers() {
+interface ReturnType {
+  users: {
+    _id: string
+    createdAt: string
+    updatedAt: string
+    email: string
+    name: string
+    password: string
+    role: 'ADMIN' | 'USER'
+  }[]
+  usersIsLoading: boolean
+  usersIsError: any
+}
+
+export default function useUsers(): ReturnType {
   const { data, error } = useSWR<APIResponseUsers>('/admin/users')
 
   const users = data?.users?.map((user) => ({

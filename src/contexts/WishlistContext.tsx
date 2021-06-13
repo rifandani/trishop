@@ -1,11 +1,7 @@
-import { createContext, useReducer, Dispatch } from 'react'
+import React, { createContext, useReducer } from 'react'
 // files
-import WishlistReducer, { Action, WishlistPayload } from './WishlistReducer'
-
-export interface InitialState {
-  wishlist: WishlistPayload[] // context initial state type
-  dispatchWish: Dispatch<Action>
-}
+import WishlistReducer, { InitialState } from './WishlistReducer'
+import { ChildrenProps } from 'types'
 
 // context initial state
 const initialState = {
@@ -17,7 +13,7 @@ const initialState = {
 export const WishlistContext = createContext<InitialState>(initialState)
 
 // Wishlist Context Provider
-export const WishlistProvider = ({ children }: any) => {
+export const WishlistProvider = ({ children }: ChildrenProps): JSX.Element => {
   const [state, dispatchWish] = useReducer(WishlistReducer, initialState) // useReducer hanyalah upgraded version of useState
 
   return (

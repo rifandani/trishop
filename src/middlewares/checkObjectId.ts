@@ -1,12 +1,15 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
-import { isValidObjectId, Model, SchemaType } from 'mongoose'
+import { isValidObjectId, Model } from 'mongoose'
 // files
 import getQueryAsString from 'utils/getQueryAsString'
 
 // yup middleware
 const checkObjectId =
-  (model: Model<SchemaType, {}, {}>, handler: NextApiHandler) =>
-  async (req: NextApiRequest, res: NextApiResponse) => {
+  (
+    model: Model<any, Record<string, unknown>, Record<string, unknown>>,
+    handler: NextApiHandler
+  ) =>
+  async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     // supported request method
     const isSupportedMethod = ['PUT', 'DELETE'].includes(req.method)
     const isGetRequestWithQueryId =

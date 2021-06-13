@@ -31,7 +31,7 @@ const teams = [
   },
 ]
 
-export default function AboutTeam() {
+export default function AboutTeam(): JSX.Element {
   return (
     <section className="w-full bg-white">
       {/* real content */}

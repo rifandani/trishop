@@ -5,7 +5,7 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import { TUserApiSchema, userApiSchema } from 'yup/apiSchema'
 
-export default function AddUser() {
+export default function AddUser(): JSX.Element {
   // hooks
   const { push } = useRouter()
 
@@ -21,15 +21,8 @@ export default function AddUser() {
     actions: FormikHelpers<TUserApiSchema>
   ): Promise<void> => {
     try {
-      const data = {
-        name: values.name,
-        role: values.role,
-        email: values.email,
-        password: values.password,
-      }
-
       // POST /admin/users
-      await Axios.post('/admin/users', data)
+      await Axios.post('/admin/users', values)
 
       // success
       toast.success('User created')

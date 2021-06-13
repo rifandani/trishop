@@ -4,7 +4,7 @@ import { FaHeart } from 'react-icons/fa'
 import WishlistProductCard from './WishlistProductCard'
 import { WishlistContext } from 'contexts/WishlistContext'
 
-export default function WishlistComp() {
+export default function WishlistComp(): JSX.Element {
   // hooks
   const { wishlist, dispatchWish } = useContext(WishlistContext) // local storage
 

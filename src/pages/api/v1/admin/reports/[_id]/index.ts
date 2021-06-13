@@ -7,7 +7,10 @@ import connectMongo from 'middlewares/connectMongo'
 import checkObjectId from 'middlewares/checkObjectId'
 
 // TODO: add authentication middleware for all ADMIN api's
-const handler = async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async function (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
   try {
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
@@ -58,8 +61,4 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default checkObjectId(
-  // @ts-ignore
-  ReportModel,
-  connectMongo(handler)
-)
+export default checkObjectId(ReportModel, connectMongo(handler))

@@ -50,7 +50,7 @@ const faq = [
   },
 ]
 
-export default function FAQComp() {
+export default function FAQComp(): JSX.Element {
   return (
     <main className="w-full bg-white">
       {/* real content */}

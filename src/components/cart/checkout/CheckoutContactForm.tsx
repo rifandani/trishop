@@ -12,7 +12,9 @@ export interface StepProps {
   setStep: Dispatch<SetStateAction<CheckoutStep>>
 }
 
-export default function CheckoutContactForm({ setStep }: StepProps) {
+export default function CheckoutContactForm({
+  setStep,
+}: StepProps): JSX.Element {
   // hooks
   const [order] = useLocalStorage<IOrder>('order', null)
   const [checkout, setCheckout] = useLocalStorage<ICheckout>('checkout', null)

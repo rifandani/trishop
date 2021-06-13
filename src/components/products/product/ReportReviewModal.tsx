@@ -20,7 +20,7 @@ export default function ReportReviewModal({
   setReportIsOpen,
   review,
   userId,
-}: Props) {
+}: Props): JSX.Element {
   const initialValues: TAddReportSchema = {
     typeId: 1,
     argument: '',

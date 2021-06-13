@@ -7,7 +7,10 @@ interface DatePickerFieldProps {
   className: string
 }
 
-const DatePickerField = ({ name, className }: DatePickerFieldProps) => {
+const DatePickerField = ({
+  name,
+  className,
+}: DatePickerFieldProps): JSX.Element => {
   const { setFieldValue } = useFormikContext()
   const [fieldInputProps] = useField({ name })
 

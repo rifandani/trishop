@@ -5,7 +5,7 @@ import Nav from 'components/Nav'
 import Store from 'components/stores/Store'
 import Footer from 'components/Footer'
 
-export default function Stores() {
+export default function Stores(): JSX.Element {
   return (
     <div className="flex flex-col">
       <Head>

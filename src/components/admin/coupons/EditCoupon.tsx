@@ -7,7 +7,7 @@ import DatePickerField from '../DatePickerField'
 import { couponApiSchema } from 'yup/apiSchema'
 import { ICouponProps, IAddAndEditCoupon } from 'types/Coupon'
 
-export default function EditCoupon({ coupon }: ICouponProps) {
+export default function EditCoupon({ coupon }: ICouponProps): JSX.Element {
   // hooks
   const { push, query } = useRouter()
 

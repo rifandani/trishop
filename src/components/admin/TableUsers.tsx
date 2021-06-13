@@ -7,7 +7,7 @@ import Axios from 'axios'
 // files
 import useUsers from '../../hooks/useUsers'
 
-export default function TableUsers() {
+export default function TableUsers(): JSX.Element {
   // hooks
   const { push } = useRouter()
   const { users } = useUsers()

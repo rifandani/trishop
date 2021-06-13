@@ -11,7 +11,7 @@ interface Props {
   }
 }
 
-export default function AboutTeamCard({ team }: Props) {
+export default function AboutTeamCard({ team }: Props): JSX.Element {
   const { name, job, desc, imageUrl } = team
 
   return (

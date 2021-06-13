@@ -5,7 +5,7 @@ import Nav from 'components/Nav'
 import Footer from 'components/Footer'
 import PrivacyComp from 'components/privacy/PrivacyComp'
 
-export default function PrivacyPage() {
+export default function PrivacyPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
       <Head>

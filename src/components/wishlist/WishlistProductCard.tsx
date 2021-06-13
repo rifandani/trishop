@@ -11,13 +11,16 @@ interface Props {
   dispatchWish: Dispatch<Action>
 }
 
-export default function WishlistProductCard({ product, dispatchWish }: Props) {
+export default function WishlistProductCard({
+  product,
+  dispatchWish,
+}: Props): JSX.Element {
   const { id, imageUrl, name, price } = product
 
   function onDeleteWishlist() {
     dispatchWish({
       type: 'DEL_WISHLIST',
-      payload: product,
+      payload: product.id,
     })
 
     toast.info('Product deleted from the wishlist')

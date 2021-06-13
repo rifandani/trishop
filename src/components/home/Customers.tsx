@@ -1,4 +1,4 @@
-const Customers = () => {
+function Customers(): JSX.Element {
   return (
     <article className="py-4 border-b bg-gradient-to-r from-orange-200 via-orange-500 to-orange-800">
       <div className="container flex flex-wrap items-center justify-between mx-auto">

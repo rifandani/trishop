@@ -39,7 +39,7 @@ const features = [
   },
 ]
 
-export default function AboutComp() {
+export default function AboutComp(): JSX.Element {
   return (
     <section className="w-full bg-white">
       {/* real content */}

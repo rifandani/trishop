@@ -9,7 +9,7 @@ import { TRegisterApiSchema, registerApiSchema } from 'yup/apiSchema'
 import { IAuthLoginRegister } from 'types/User'
 import { UserContext } from 'contexts/UserContext'
 
-export default function RegisterPage() {
+export default function RegisterPage(): JSX.Element {
   const initialValues: TRegisterApiSchema = {
     name: '',
     email: '',
@@ -18,7 +18,7 @@ export default function RegisterPage() {
 
   // hooks
   const router = useRouter()
-  const { user, dispatchUser } = useContext(UserContext)
+  const { dispatchUser } = useContext(UserContext)
 
   const onRegister = async (
     values: TRegisterApiSchema,

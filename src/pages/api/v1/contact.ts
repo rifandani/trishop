@@ -4,7 +4,10 @@ import { createTransport } from 'nodemailer'
 // files
 import { contactApiSchema } from 'yup/apiSchema'
 
-const handler = async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> => {
   try {
     if (req.method === 'POST') {
       // destructure request body form
@@ -28,7 +31,7 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       }
 
       // send email
-      transporter.sendMail(mailOptions, (error, info) => {
+      transporter.sendMail(mailOptions, (error) => {
         if (error) {
           console.error(error)
 
@@ -39,8 +42,6 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
           })
           return
         } else {
-          console.log('Email sent: ' + info.response)
-
           // POST SUCCESS => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
           res.status(201).json({ error: false, message: 'Email sent' })
         }

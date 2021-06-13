@@ -1,11 +1,11 @@
 import { IOrderItemDetails } from 'types/LocalStorage'
 import generateRupiah from 'utils/generateRupiah'
 
-export default function CheckoutProduct({
-  product,
-}: {
+interface Props {
   product: IOrderItemDetails
-}) {
+}
+
+export default function CheckoutProduct({ product }: Props): JSX.Element {
   return (
     <main className="flex justify-between mt-6">
       <div className="flex">

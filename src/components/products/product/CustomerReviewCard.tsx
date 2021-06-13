@@ -19,7 +19,7 @@ dayjs.extend(relativeTime) // so that we can user relative formatting
 
 export default function CustomerReviewCard({
   review,
-}: CustomerReviewCardProps) {
+}: CustomerReviewCardProps): JSX.Element {
   const { reviewerName, comment, star, updatedAt, reviewerId, _id } = review
 
   // hooks

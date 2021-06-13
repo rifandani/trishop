@@ -16,7 +16,7 @@ interface Props {
   product: Product
 }
 
-export default function AdminProductEdit({ product }: Props) {
+export default function AdminProductEdit({ product }: Props): JSX.Element {
   return (
     <>
       <Head>
@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     // verify auth cookie
     // decoded === payload { sub: user._id, iat: number, exp: number }
-    const decoded = verify(authCookie!, process.env.MY_SECRET_KEY)
+    const decoded = verify(authCookie, process.env.MY_SECRET_KEY)
     const authUserId = (decoded as JWTPayload).sub
 
     // connect to mongodb

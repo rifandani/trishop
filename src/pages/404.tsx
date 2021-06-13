@@ -1,4 +1,4 @@
-export default function Custom404Page() {
+export default function Custom404Page(): JSX.Element {
   return (
     <main className="relative h-screen overflow-hidden bg-indigo-900">
       <img

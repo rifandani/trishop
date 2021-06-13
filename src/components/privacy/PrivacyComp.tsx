@@ -1,4 +1,4 @@
-export default function PrivacyComp() {
+export default function PrivacyComp(): JSX.Element {
   return (
     <main className="w-full text-lg text-justify text-gray-700 bg-white">
       <h1 className="mb-5">

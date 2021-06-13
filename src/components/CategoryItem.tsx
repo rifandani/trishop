@@ -1,33 +1,35 @@
-import React from 'react';
-import { useRouter } from 'next/router';
+import React from 'react'
+import { useRouter } from 'next/router'
 // files
-import { PRODUCT } from '../pages/products/categories';
+import { PRODUCT } from '../pages/products/categories'
 
 interface CategoryItemProps {
-  product: PRODUCT;
+  product: PRODUCT
 }
 
-export default function CategoryItem({ product }: CategoryItemProps) {
-  const { push } = useRouter();
+export default function CategoryItem({
+  product,
+}: CategoryItemProps): JSX.Element {
+  const { push } = useRouter()
 
   async function toProductDetail() {
-    await push(`/products/${product._id}`);
+    await push(`/products/${product._id}`)
   }
 
   return (
-    <div className="w-full max-w-sm mx-auto rounded-lg shadow-lg overflow-hidden">
+    <div className="w-full max-w-sm mx-auto overflow-hidden rounded-lg shadow-lg">
       <div
-        className="flex items-end justify-end h-56 w-full bg-cover"
+        className="flex items-end justify-end w-full h-56 bg-cover"
         style={{
           backgroundImage: `url(${product.images[0].imageUrl})`,
         }}
       >
         <button
           onClick={toProductDetail}
-          className="p-2 transition transform duration-500 hover:scale-125 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+          className="p-2 mx-5 -mb-4 text-white transition duration-500 transform bg-blue-600 rounded-full hover:scale-125 hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
         >
           <svg
-            className="h-5 w-5"
+            className="w-5 h-5"
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -40,9 +42,9 @@ export default function CategoryItem({ product }: CategoryItemProps) {
         </button>
       </div>
       <div className="px-5 py-3">
-        <h3 className="text-gray-700 uppercase font-bold">{product.title}</h3>
-        <span className="text-gray-500 mt-2">Rp {product.price}</span>
+        <h3 className="font-bold text-gray-700 uppercase">{product.title}</h3>
+        <span className="mt-2 text-gray-500">Rp {product.price}</span>
       </div>
     </div>
-  );
+  )
 }

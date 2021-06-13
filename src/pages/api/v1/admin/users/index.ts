@@ -7,7 +7,10 @@ import withYup from 'middlewares/withYup'
 import { userApiSchema } from 'yup/apiSchema'
 
 // TODO: add authentication middleware for all ADMIN api's
-const handler = async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> => {
   try {
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
@@ -23,7 +26,7 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
         return
       }
 
-      const customQuery = req.query
+      // const customQuery = req.query
     } else if (req.method === 'POST') {
       /* -------------------------------------------------------------------------- */
       /*                          POST req => /admin/users                          */

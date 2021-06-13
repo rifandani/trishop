@@ -1,9 +1,10 @@
-import { Schema, Model, model, models } from 'mongoose';
+import { Schema, Model, model, models } from 'mongoose'
+import { string } from 'yup'
 // types
-import { IUser } from 'types/User';
+import { IUser } from 'types/User'
 
-const emailRegex =
-  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+// const emailRegex =
+//   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 const userSchema = new Schema<IUser>(
   {
@@ -18,8 +19,12 @@ const userSchema = new Schema<IUser>(
       trim: true,
       unique: true,
       validate: {
-        validator: (email: string) => emailRegex.test(email),
-        message: (props: any) => `${props.value} is not a valid email`,
+        validator: (email: string): boolean => {
+          // emailRegex.test(email)
+          const emailSchema = string().email()
+          return emailSchema.isValidSync(email)
+        },
+        message: (props: any): string => `${props.value} is not a valid email`,
       },
     },
     password: {
@@ -31,11 +36,11 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: true,
       enum: ['USER', 'ADMIN'],
-      default: () => 'USER',
+      default: (): string => 'USER',
     },
   },
-  { timestamps: true },
-);
+  { timestamps: true }
+)
 
 // Document middlewares
 // UserSchema.pre('save', (doc: IUserDocument) => {
@@ -46,9 +51,13 @@ const userSchema = new Schema<IUser>(
 //   }
 // });
 
-const UserModel = models.User || model<IUser>('User', userSchema);
+const UserModel = models.User || model<IUser>('User', userSchema)
 
-export default UserModel as Model<IUser, {}, {}>;
+export default UserModel as Model<
+  IUser,
+  Record<string, unknown>,
+  Record<string, unknown>
+>
 
 /* -------------------------------------------------------------------------- */
 /*                               second version                               */

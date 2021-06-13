@@ -9,7 +9,7 @@ import generateRupiah from 'utils/generateRupiah'
 
 export type CheckoutStep = 'contacts' | 'shipping'
 
-const CheckoutComp = () => {
+function CheckoutComp(): JSX.Element {
   // hooks
   const [order] = useLocalStorage<IOrder>('order', null)
   const [step, setStep] = useState<CheckoutStep>('contacts')

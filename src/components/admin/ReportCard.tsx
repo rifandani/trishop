@@ -8,7 +8,7 @@ import { mutate } from 'swr'
 import { IReportProps } from 'types/Report'
 import { IReview } from 'types/Review'
 
-export default function ReportCard({ report }: IReportProps) {
+export default function ReportCard({ report }: IReportProps): JSX.Element {
   const { argument, reviewRef, typeId, _id } = report
 
   // typeId = 1 // 'Bug or problem with the website'

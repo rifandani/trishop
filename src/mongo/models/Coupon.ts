@@ -46,4 +46,8 @@ const couponSchema = new Schema<ICoupon>(
 
 const CouponModel = models.Coupon || model<ICoupon>('Coupon', couponSchema)
 
-export default CouponModel as Model<ICoupon, {}, {}>
+export default CouponModel as Model<
+  ICoupon,
+  Record<string, unknown>,
+  Record<string, unknown>
+>

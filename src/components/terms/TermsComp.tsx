@@ -1,4 +1,4 @@
-export default function TermsComp() {
+export default function TermsComp(): JSX.Element {
   return (
     <main className="w-full text-lg text-justify text-gray-700 bg-white">
       <h2 className="mb-10">

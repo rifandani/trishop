@@ -15,11 +15,12 @@ import {
 import { toast } from 'react-toastify'
 // files
 import { UserContext } from 'contexts/UserContext'
+import { ChildrenProps } from 'types'
 
-export default function Navbar({ children }: any): JSX.Element {
+export default function Navbar({ children }: ChildrenProps): JSX.Element {
   // hooks
   const { pathname, push } = useRouter()
-  const { user, dispatchUser } = useContext(UserContext) // user context
+  const { dispatchUser } = useContext(UserContext) // user context
   const [toggleSidebar, setToggleSidebar] = useState<boolean>(false)
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
 

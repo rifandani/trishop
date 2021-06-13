@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa'
 
-const Footer = () => {
+function Footer(): JSX.Element {
   return (
     <footer className="container px-4 py-12 mx-auto bg-white max-w-7xl sm:px-6 lg:py-10 lg:px-8 xl:px-10 dark:bg-dark-900 rounded-t-xl">
       <article className="xl:grid xl:grid-cols-3 xl:gap-8">

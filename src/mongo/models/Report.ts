@@ -26,10 +26,14 @@ const reportSchema = new Schema<IReport>({
   },
   createdAt: {
     type: Date,
-    default: () => new Date(),
+    default: (): Date => new Date(),
   },
 })
 
 const ReportModel = models.Report || model<IReport>('Report', reportSchema)
 
-export default ReportModel as Model<IReport, {}, {}>
+export default ReportModel as Model<
+  IReport,
+  Record<string, unknown>,
+  Record<string, unknown>
+>

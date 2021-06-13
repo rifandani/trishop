@@ -13,7 +13,11 @@ interface Props {
   review: IReview
 }
 
-export default function EditReviewModal({ isOpen, setIsOpen, review }: Props) {
+export default function EditReviewModal({
+  isOpen,
+  setIsOpen,
+  review,
+}: Props): JSX.Element {
   const initialValues: TPutReviewApiSchema = {
     reviewerName: '',
     star: 1,

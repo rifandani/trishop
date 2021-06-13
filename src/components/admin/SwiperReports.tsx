@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Autoplay, Pagination, Navigation } from 'swiper/core'
 // files
@@ -7,7 +8,7 @@ import { IReportsProps } from 'types/Report'
 // install Swiper modules
 SwiperCore.use([Autoplay, Pagination, Navigation])
 
-export default function SwiperReports({ reports }: IReportsProps) {
+export default function SwiperReports({ reports }: IReportsProps): JSX.Element {
   return (
     <section className="w-full h-left-full">
       <Swiper

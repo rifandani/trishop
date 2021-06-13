@@ -15,7 +15,7 @@ export default function ProductsPagination({
   limit,
   currentPage,
   setCurrentPage,
-}: Props) {
+}: Props): JSX.Element {
   const classNames =
     'bg-white text-orange-800 hover:bg-orange-200 px-2 py-1 border cursor-pointer rounded-md appearance-none focus:outline-none focus:ring focus:border-orange-300 list-none'
 

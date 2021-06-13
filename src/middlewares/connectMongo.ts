@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 // files
 import dbConnect from 'mongo/config/dbConnect'

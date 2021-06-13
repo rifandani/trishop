@@ -4,7 +4,7 @@ import CartComp from 'components/cart/CartComp'
 import Nav from 'components/Nav'
 import Footer from 'components/Footer'
 
-export default function CartPage() {
+export default function CartPage(): JSX.Element {
   return (
     <>
       <Head>

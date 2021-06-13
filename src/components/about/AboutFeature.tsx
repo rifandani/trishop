@@ -9,7 +9,7 @@ interface Props {
   }
 }
 
-export default function AboutFeature({ feature }: Props) {
+export default function AboutFeature({ feature }: Props): JSX.Element {
   const { title, subtitle } = feature
 
   return (

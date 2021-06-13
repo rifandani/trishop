@@ -16,7 +16,7 @@ export default function Store({
   address,
   city,
   desc,
-}: StoreProps) {
+}: StoreProps): JSX.Element {
   return (
     <div className="flex px-8 mx-auto mt-12 bg-white min-w-screen">
       {/* image */}

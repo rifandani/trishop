@@ -7,7 +7,7 @@ import DatePickerField from '../DatePickerField'
 import { couponApiSchema } from 'yup/apiSchema'
 import { IAddAndEditCoupon } from 'types/Coupon'
 
-export default function AddCoupon() {
+export default function AddCoupon(): JSX.Element {
   // hooks
   const { push } = useRouter()
 
@@ -24,16 +24,8 @@ export default function AddCoupon() {
     actions: FormikHelpers<IAddAndEditCoupon>
   ): Promise<void> => {
     try {
-      const data = {
-        code: values.code,
-        discount: values.discount,
-        minTransaction: values.minTransaction,
-        desc: values.desc,
-        validUntil: values.validUntil,
-      }
-
       // POST /admin/coupons
-      await Axios.post('/admin/coupons', data)
+      await Axios.post('/admin/coupons', values)
 
       // // success
       toast.success('Coupon created')

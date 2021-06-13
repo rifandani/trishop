@@ -7,14 +7,17 @@ import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
 import { registerApiSchema, TRegisterApiSchema } from 'yup/apiSchema'
 
-const handler = async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async function (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
   try {
     if (req.method === 'POST') {
       // destructure request body form
       const { name, email, password } = req.body as TRegisterApiSchema
 
       // hash password with bcrypt
-      const hash = bcrypt.hashSync(password!, 10)
+      const hash = bcrypt.hashSync(password, 10)
 
       // store hashed password in database
       const userDoc = await UserModel.create({ name, email, password: hash })

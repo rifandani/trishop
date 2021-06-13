@@ -5,7 +5,7 @@ import Nav from 'components/Nav'
 import Footer from 'components/Footer'
 import MarketplaceComp from 'components/marketplaces/MarketplaceComp'
 
-export default function MarketplacesPage() {
+export default function MarketplacesPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
       <Head>

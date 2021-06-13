@@ -8,7 +8,7 @@ import Axios from 'axios'
 import useProducts from 'hooks/useProducts'
 import generateRupiah from 'utils/generateRupiah'
 
-export default function TableProducts() {
+export default function TableProducts(): JSX.Element {
   // hooks
   const { push } = useRouter()
   const { products } = useProducts()

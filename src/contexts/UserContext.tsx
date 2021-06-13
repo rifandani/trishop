@@ -1,6 +1,7 @@
 import { createContext, useReducer } from 'react'
 // files
 import UserReducer, { InitialState } from './UserReducer'
+import { ChildrenProps } from 'types'
 
 // context initial state
 const initialState = {
@@ -12,7 +13,7 @@ const initialState = {
 export const UserContext = createContext<InitialState>(initialState)
 
 // User Context Provider
-export const UserProvider = ({ children }: any) => {
+export const UserProvider = ({ children }: ChildrenProps): JSX.Element => {
   const [state, dispatchUser] = useReducer(UserReducer, initialState)
 
   return (

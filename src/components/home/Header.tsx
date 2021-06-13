@@ -2,7 +2,7 @@ import Link from 'next/link'
 // files
 import Nav from 'components/Nav'
 
-const Header = () => {
+function Header(): JSX.Element {
   return (
     <header className="leading-normal tracking-normal text-white bg-gradient-to-r from-orange-800 via-orange-400 to-orange-200">
       {/* nav */}

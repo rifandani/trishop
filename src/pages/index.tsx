@@ -7,7 +7,7 @@ import Stores from 'components/home/Stores'
 import CTA from 'components/home/CTA'
 import Footer from 'components/Footer'
 
-export default function HomePage() {
+export default function HomePage(): JSX.Element {
   return (
     <div className="bg-white">
       <Head>

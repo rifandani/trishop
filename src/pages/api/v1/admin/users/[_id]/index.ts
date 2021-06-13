@@ -9,7 +9,10 @@ import withYup from 'middlewares/withYup'
 import { userApiSchema, TUserApiSchema } from 'yup/apiSchema'
 
 // TODO: add authentication middleware for all ADMIN api's
-const handler = async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async function (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
   try {
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
@@ -35,7 +38,7 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       const { name, role, email, password } = req.body as TUserApiSchema
 
       // hash new password with bcrypt
-      const newHash = hashSync(password!, 10)
+      const newHash = hashSync(password, 10)
 
       // update user
       await UserModel.findByIdAndUpdate(userId, {
@@ -79,7 +82,6 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
 }
 
 export default checkObjectId(
-  // @ts-ignore
   UserModel,
   withYup(userApiSchema, connectMongo(handler))
 )

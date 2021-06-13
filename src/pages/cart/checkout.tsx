@@ -7,7 +7,7 @@ import Nav from 'components/Nav'
 import CheckoutComp from 'components/cart/checkout/CheckoutComp'
 import Footer from 'components/Footer'
 
-const CheckoutPage = () => {
+function CheckoutPage(): JSX.Element {
   return (
     <div className="">
       <Head>
@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     // verify the authCookie
     // decoded === payload { sub: user._id }
-    verify(authCookie!, process.env.MY_SECRET_KEY)
+    verify(authCookie, process.env.MY_SECRET_KEY)
 
     return {
       props: {},

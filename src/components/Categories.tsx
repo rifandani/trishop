@@ -1,22 +1,25 @@
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 // files
-import CategoryItem from './CategoryItem';
-import { PRODUCT } from '../pages/products/categories';
+import CategoryItem from './CategoryItem'
+import { PRODUCT } from '../pages/products/categories'
 
 interface CategoriesProps {
-  labels: string[];
-  queryProducts: PRODUCT[];
+  labels: string[]
+  queryProducts: PRODUCT[]
 }
 
-export default function Categories({ labels, queryProducts }: CategoriesProps) {
-  const [selected, setSelected] = useState<string>('All');
-  const { push } = useRouter();
+export default function Categories({
+  labels,
+  queryProducts,
+}: CategoriesProps): JSX.Element {
+  const [selected, setSelected] = useState<string>('All')
+  const { push } = useRouter()
 
   async function querying(label: string) {
-    await push(`?_label=${label}`);
+    await push(`?_label=${label}`)
 
-    setSelected(label);
+    setSelected(label)
   }
 
   return (
@@ -88,5 +91,5 @@ export default function Categories({ labels, queryProducts }: CategoriesProps) {
         </div>
       </main>
     </div>
-  );
+  )
 }

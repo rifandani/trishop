@@ -1,6 +1,10 @@
 import firebase from 'firebase'
 import { Dispatch, SetStateAction } from 'react'
 
+export interface ChildrenProps {
+  children: React.ReactNode
+}
+
 export interface IPhotoURL {
   lastModified: number
   lastModifiedDate: Date

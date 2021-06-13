@@ -7,7 +7,10 @@ import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
 import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
 
-const handler = async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> => {
   try {
     if (req.method === 'POST') {
       // destructure request body form
@@ -17,7 +20,7 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       const userDoc = await UserModel.findOne({ email })
 
       // compare password
-      const isMatch = await compare(password!, userDoc.password)
+      const isMatch = await compare(password, userDoc.password)
 
       if (!isMatch) {
         // client error => password did not match -----------------------------------------------------------------

@@ -1,4 +1,9 @@
-import { InitialState } from './WishlistContext'
+import { Dispatch } from 'react'
+
+export interface InitialState {
+  wishlist: WishlistPayload[] // context initial state type
+  dispatchWish: Dispatch<Action>
+}
 
 export interface WishlistPayload {
   id: string
@@ -8,24 +13,31 @@ export interface WishlistPayload {
   imageUrl: string
 }
 
-export interface Action {
-  type: string
-  payload: WishlistPayload
-}
+export type Action =
+  | {
+      type: 'ADD_WISHLIST'
+      payload: WishlistPayload
+    }
+  | {
+      type: 'DEL_WISHLIST'
+      payload: string
+    }
 
 export default function WishlistReducer(
   state: InitialState,
-  { type, payload }: Action
-) {
-  switch (type) {
-    case 'ADD_WISHLIST':
+  action: Action
+): InitialState {
+  switch (action.type) {
+    case 'ADD_WISHLIST': {
       // cek kalo sudah ada barang yg sama di wishlist list
-      const prevPayload = state.wishlist.find((el) => el.id === payload.id)
+      const prevPayload = state.wishlist.find(
+        (el) => el.id === action.payload.id
+      )
       // cari index nya
       const prevPayloadIndex = state.wishlist.findIndex(
-        (el) => el.id === payload.id
+        (el) => el.id === action.payload.id
       )
-      let newWishlist = [...state.wishlist]
+      const newWishlist = [...state.wishlist]
 
       // kalo ada, hanya ganti quantity dari payload tersebut
       if (prevPayload !== undefined || prevPayloadIndex !== -1) {
@@ -33,23 +45,22 @@ export default function WishlistReducer(
 
         return {
           ...state,
-          wishlist: [...newWishlist, payload],
+          wishlist: [...newWishlist, action.payload],
         }
       }
 
       return {
         ...state,
-        wishlist: [...state.wishlist, payload],
+        wishlist: [...state.wishlist, action.payload],
       }
+    }
 
     case 'DEL_WISHLIST':
-      const filteredWishlist = state.wishlist.filter(
-        (product) => product.id !== payload.id
-      )
-
       return {
         ...state,
-        wishlist: filteredWishlist,
+        wishlist: state.wishlist.filter(
+          (product) => product.id !== action.payload
+        ),
       }
 
     default:

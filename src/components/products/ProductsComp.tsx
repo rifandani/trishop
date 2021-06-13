@@ -13,13 +13,13 @@ export interface APIResponseProducts {
   count: number
 }
 
-export default function ProductsComp() {
+export default function ProductsComp(): JSX.Element {
   // hooks
   const { data, error } = useSWR<APIResponseProducts>('/admin/products', {
     refreshInterval: 10000,
   })
   const [currentPage, setCurrentPage] = useState<number>(0) // for pagination
-  const [limit, setLimit] = useState<number>(9) // for pagination
+  const [limit] = useState<number>(9) // for pagination
 
   const offset = currentPage * limit
 

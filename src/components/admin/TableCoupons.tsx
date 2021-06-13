@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 import useGetCoupons from 'hooks/useGetCoupons'
 import generateRupiah from 'utils/generateRupiah'
 
-export default function TableCoupons() {
+export default function TableCoupons(): JSX.Element {
   // hooks
   const { push } = useRouter()
   const { coupons } = useGetCoupons()

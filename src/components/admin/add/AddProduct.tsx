@@ -18,7 +18,7 @@ import { TImage } from 'types/Product'
 const CLOUDINARY_URL =
   'https://api.cloudinary.com/v1_1/ipandani2505/image/upload'
 
-export default function AddProductWithCloudinaryWidget() {
+export default function AddProductWithCloudinaryWidget(): JSX.Element {
   // hooks
   const { push } = useRouter()
   const [images, setImages] = useState<ImagePreview[]>([])
@@ -43,7 +43,7 @@ export default function AddProductWithCloudinaryWidget() {
         return
       }
 
-      let newImages: TImage[] = []
+      const newImages: TImage[] = []
 
       // upload images to cloudinary first
       for (let i = 0; i < images.length; i++) {

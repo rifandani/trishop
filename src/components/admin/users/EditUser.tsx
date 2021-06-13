@@ -6,7 +6,7 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import { TUserApiSchema, userApiSchema } from 'yup/apiSchema'
 import { IUserProps } from 'types/User'
 
-export default function EditUser({ user }: IUserProps) {
+export default function EditUser({ user }: IUserProps): JSX.Element {
   // hooks
   const { push, query } = useRouter()
 
@@ -22,15 +22,8 @@ export default function EditUser({ user }: IUserProps) {
     actions: FormikHelpers<TUserApiSchema>
   ): Promise<void> => {
     try {
-      const data = {
-        name: values.name,
-        role: values.role,
-        email: values.email,
-        password: values.password,
-      }
-
       // PUT /admin/users/:_id
-      await Axios.put(`/admin/users/${query._id}`, data) // bisa pake query._id atau dari user._id
+      await Axios.put(`/admin/users/${query._id}`, values) // bisa pake query._id atau dari user._id
 
       // success
       await push('/admin/dashboard')

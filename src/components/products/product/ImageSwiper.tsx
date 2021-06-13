@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useState } from 'react'
 import SwiperCore, { Navigation, Thumbs } from 'swiper/core'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -11,7 +12,9 @@ interface IImageSwiperProps {
   images: Image[]
 }
 
-export default function ImageSwiper({ images }: IImageSwiperProps) {
+export default function ImageSwiper({
+  images,
+}: IImageSwiperProps): JSX.Element {
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
 
   return (

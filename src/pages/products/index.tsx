@@ -4,7 +4,7 @@ import Nav from 'components/Nav'
 import Footer from 'components/Footer'
 import ProductsComp from 'components/products/ProductsComp'
 
-export default function ProductsPage() {
+export default function ProductsPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
       <Head>

@@ -9,7 +9,7 @@ import UserModel from 'mongo/models/User'
 import dbConnect from 'mongo/config/dbConnect'
 import { JWTPayload } from 'utils/setCookie'
 
-export default function AdminDashboardPage() {
+export default function AdminDashboardPage(): JSX.Element {
   return (
     <>
       <Head>
@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     // verify auth cookie
-    const decoded = verify(authCookie!, process.env.MY_SECRET_KEY)
+    const decoded = verify(authCookie, process.env.MY_SECRET_KEY)
     const userId = (decoded as JWTPayload).sub
 
     // connect to mongodb

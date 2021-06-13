@@ -9,7 +9,10 @@ export interface JWTPayload {
   exp?: number
 }
 
-export default function setCookie(payload: JWTPayload, res: NextApiResponse) {
+export default function setCookie(
+  payload: JWTPayload,
+  res: NextApiResponse
+): void {
   // sign JWT token
   // const payload = {
   // sub: user._id, // reserved word sub == subject
@@ -17,7 +20,7 @@ export default function setCookie(payload: JWTPayload, res: NextApiResponse) {
   // iat: Math.floor(Date.now() / 1000), // reserved word iat == issuedAt
   // };
 
-  const jwt = sign(payload, process.env.MY_SECRET_KEY!, { expiresIn: '3h' })
+  const jwt = sign(payload, process.env.MY_SECRET_KEY, { expiresIn: '3h' })
 
   // set cookie to response header
   res.setHeader(

@@ -26,7 +26,10 @@ export type Action =
       payload?: never
     }
 
-export default function UserReducer(state: InitialState, action: Action) {
+export default function UserReducer(
+  state: InitialState,
+  action: Action
+): InitialState {
   switch (action.type) {
     case 'ADD_USER':
       return {

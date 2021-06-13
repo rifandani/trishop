@@ -10,9 +10,11 @@ import { StepProps } from './CheckoutContactForm'
 import { ICheckout } from 'types/LocalStorage'
 import { checkoutShippingSchema, TCheckoutShippingSchema } from 'yup/schema'
 
-export default function CheckoutShippingForm({ setStep }: StepProps) {
+export default function CheckoutShippingForm({
+  setStep,
+}: StepProps): JSX.Element {
   // hooks
-  const [checkout, setCheckout] = useLocalStorage<ICheckout>('checkout', null)
+  const [checkout] = useLocalStorage<ICheckout>('checkout', null) // setCheckout
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [results, setResults] = useState<any[]>([])
   const [isSearching, setIsSearching] = useState<boolean>(false)
@@ -64,7 +66,9 @@ export default function CheckoutShippingForm({ setStep }: StepProps) {
     actions: FormikHelpers<TCheckoutShippingSchema>
   ): Promise<void> {
     try {
-      console.log('values => ', values)
+      // success
+      toast(values.city)
+      toast.success('We will implement payment gateway soon')
       actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
       toast.error(err.message)

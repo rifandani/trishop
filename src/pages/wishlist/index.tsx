@@ -4,7 +4,7 @@ import WishlistComp from 'components/wishlist/WishlistComp'
 import Nav from 'components/Nav'
 import Footer from 'components/Footer'
 
-export default function WishlistPage() {
+export default function WishlistPage(): JSX.Element {
   return (
     <>
       <Head>

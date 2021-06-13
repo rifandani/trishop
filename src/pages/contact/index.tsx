@@ -16,7 +16,7 @@ import Nav from 'components/Nav'
 import Footer from 'components/Footer'
 import { contactApiSchema, TContactApiSchema } from 'yup/apiSchema'
 
-const Contact = () => {
+function Contact(): JSX.Element {
   const initialValues: TContactApiSchema = {
     email: '',
     subject: '',

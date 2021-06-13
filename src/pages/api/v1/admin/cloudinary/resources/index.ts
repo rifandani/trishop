@@ -4,7 +4,10 @@ import { parse } from 'querystring'
 // files
 
 // TODO: add authentication middleware for all ADMIN api's
-const handler = async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async function (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
   try {
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
@@ -41,10 +44,7 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
       /* -------------------------------------------------------------------------- */
 
       // get query params
-      console.log('req.url => ', req.url)
-      console.log('req.query => ', req.query)
       const params = parse(req.url)
-      console.log('🚀 ~ file: index.ts ~ line 30 ~ handler ~ params', params)
 
       // delete uploaded resources
       // const response = await cld.api.delete_resources([''], { type: 'upload' })

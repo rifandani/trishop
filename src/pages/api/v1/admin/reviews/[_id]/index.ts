@@ -9,7 +9,10 @@ import withYup from 'middlewares/withYup'
 import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
 
 // TODO: add authentication middleware for all ADMIN api's
-const handler = async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async function (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
   try {
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
@@ -80,7 +83,6 @@ const handler = async function (req: NextApiRequest, res: NextApiResponse) {
 }
 
 export default checkObjectId(
-  // @ts-ignore
   ReviewModel,
   withYup(putReviewApiSchema, connectMongo(handler))
 )

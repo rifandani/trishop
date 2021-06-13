@@ -1,8 +1,29 @@
 import useSWR from 'swr'
 // files
 import { APIResponseProducts } from 'components/products/ProductsComp'
+import { Image } from 'contexts/CartReducer'
+import { IReview } from 'types/Review'
 
-export default function useProducts() {
+interface ReturnType {
+  products: {
+    createdAt: string
+    updatedAt: string
+    desc: string
+    images: Image[]
+    labels: string[]
+    price: number
+    stock: number
+    title: string
+    sold: number
+    reviews: IReview[]
+    __v: number
+    _id: string
+  }[]
+  productsIsLoading: boolean
+  productsIsError: any
+}
+
+export default function useProducts(): ReturnType {
   const { data, error } = useSWR<APIResponseProducts>('/admin/products')
 
   const products = data?.products?.map((product) => ({

@@ -37,7 +37,7 @@ axios.defaults.baseURL =
     ? 'http://localhost:3000/api/v1'
     : 'https://trishop.vercel.app/api/v1'
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <>
       <Head>

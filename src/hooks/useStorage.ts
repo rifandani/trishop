@@ -3,11 +3,17 @@ import { useState, useEffect } from 'react'
 // files
 import { storage } from 'firebase/config'
 
-export const useStorage = (file: any, prefix: string) => {
+interface IUseStorage {
+  progress: number
+  url: string
+  error: firebase.storage.FirebaseStorageError
+}
+
+export const useStorage = (file: File, prefix: string): IUseStorage => {
   const [progress, setProgress] = useState<number>(0)
   const [error, setError] =
     useState<firebase.storage.FirebaseStorageError>(null)
-  const [url, setUrl] = useState(null)
+  const [url, setUrl] = useState<string>('')
 
   // runs every time the file value changes
   useEffect(() => {
@@ -19,7 +25,7 @@ export const useStorage = (file: any, prefix: string) => {
         'state_changed',
         (snap) => {
           // track the upload progress
-          let percentage = Math.round(
+          const percentage = Math.round(
             (snap.bytesTransferred / snap.totalBytes) * 100
           )
           setProgress(percentage)
@@ -28,11 +34,15 @@ export const useStorage = (file: any, prefix: string) => {
           setError(err)
         },
         async () => {
-          // get the public download img url
-          const downloadUrl = await storageRef.getDownloadURL()
+          try {
+            // get the public download img url
+            const downloadUrl = await storageRef.getDownloadURL()
 
-          // save the url to local state
-          setUrl(downloadUrl)
+            // save the url to local state
+            setUrl(downloadUrl as string)
+          } catch (err) {
+            console.error(err)
+          }
         }
       )
     }

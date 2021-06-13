@@ -9,7 +9,7 @@ import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
 import { IAuthLoginRegister } from 'types/User'
 import { UserContext } from 'contexts/UserContext'
 
-export default function Login() {
+export default function Login(): JSX.Element {
   const initialValues: TLoginApiSchema = {
     email: '',
     password: '',
@@ -17,7 +17,7 @@ export default function Login() {
 
   // hooks
   const { push } = useRouter()
-  const { user, dispatchUser } = useContext(UserContext)
+  const { dispatchUser } = useContext(UserContext)
 
   const onLogin = async (
     values: TLoginApiSchema,
@@ -138,7 +138,7 @@ export default function Login() {
 
             <div className="pt-12 pb-12 text-center">
               <p>
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link href="/register">
                   <a className="font-semibold underline cursor-pointer hover:text-orange-800">
                     Register here.

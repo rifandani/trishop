@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -372,6 +373,8 @@ export default function AddProductWithCloudinaryWidget() {
                                         {
                                           imageName,
                                           imageUrl: result.info.secure_url,
+                                          publicId: result.info.public_id,
+                                          tags: result.info.tags,
                                         },
                                       ],
                                     })

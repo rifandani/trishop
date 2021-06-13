@@ -8,7 +8,7 @@ interface Props {
   product: Product
 }
 
-export default function ProductCard({ product }: Props) {
+export default function ProductCard({ product }: Props): JSX.Element {
   const { images, stock, price, _id, title, desc, labels } = product
 
   // hooks

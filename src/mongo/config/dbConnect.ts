@@ -1,6 +1,6 @@
 import { connect } from 'mongoose'
 
-const MONGO_HOST = process.env.MONGO_HOST!
+const MONGO_HOST = process.env.MONGO_HOST
 
 if (!MONGO_HOST) {
   throw new Error(

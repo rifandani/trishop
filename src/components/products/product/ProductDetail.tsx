@@ -13,13 +13,15 @@ interface ProductDetailProps {
   product: Product
 }
 
-export default function ProductDetail({ product }: ProductDetailProps) {
+export default function ProductDetail({
+  product,
+}: ProductDetailProps): JSX.Element {
   const { title, price, stock, desc, labels, images, sold, _id, reviews } =
     product // destructure product props
 
   // hooks
   const { push } = useRouter()
-  const { cart, dispatch } = useContext(CartContext)
+  const { dispatch } = useContext(CartContext)
   const { wishlist, dispatchWish } = useContext(WishlistContext)
   const [discount] = useState<number>(0.1)
   const [quantity, setQuantity] = useState<string>('1')
@@ -107,7 +109,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
     dispatchWish({
       type: 'DEL_WISHLIST',
-      payload,
+      payload: payload.id,
     })
 
     toast.info('Product deleted from the wishlist')
@@ -278,15 +280,11 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
               <button
                 className="flex items-center h-10 px-6 py-2 text-gray-400 border border-gray-200 rounded-full hover:border-orange-800 hover:bg-orange-200 group"
-                onClick={
-                  Boolean(productWishlisted)
-                    ? deleteFromWishlist
-                    : addToWishlist
-                }
+                onClick={productWishlisted ? deleteFromWishlist : addToWishlist}
               >
                 <FaHeart className="w-4 h-4 mr-2 group-hover:text-orange-800" />
                 <span className="text-xs font-semibold tracking-wide uppercase group-hover:text-orange-800">
-                  {Boolean(productWishlisted)
+                  {productWishlisted
                     ? 'Delete from wishlist'
                     : 'Add to wishlist'}
                 </span>

@@ -17,7 +17,7 @@ import useProducts from 'hooks/useProducts'
 import useGetCoupons from 'hooks/useGetCoupons'
 import useGetReports from 'hooks/useGetReports'
 
-export default function AdminDashboard() {
+export default function AdminDashboard(): JSX.Element {
   // hooks
   const { users, usersIsLoading, usersIsError } = useUsers()
   const { products, productsIsLoading, productsIsError } = useProducts()

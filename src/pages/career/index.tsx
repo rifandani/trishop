@@ -5,7 +5,7 @@ import Nav from 'components/Nav'
 import Footer from 'components/Footer'
 import CareerComp from 'components/career/CareerComp'
 
-export default function CareerPage() {
+export default function CareerPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
       <Head>

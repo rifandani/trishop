@@ -1,5 +1,11 @@
-import { InitialState } from './CartContext'
+import { Dispatch } from 'react'
+// files
 import { IReview } from 'types/Review'
+
+export interface InitialState {
+  cart: ProductPayload[] // context initial state type
+  dispatch: Dispatch<Action>
+}
 
 export interface Image {
   imageName: string
@@ -24,28 +30,33 @@ export interface Product {
 }
 
 // keseluruhan object product + quantity
-export interface Payload extends Product {
+export interface ProductPayload extends Product {
   quantity: number
 }
 
-export interface Action {
-  type: string
-  payload: Payload
-}
+export type Action =
+  | {
+      type: 'ADD_PRODUCT'
+      payload: ProductPayload
+    }
+  | {
+      type: 'DEL_PRODUCT'
+      payload: string
+    }
 
 export default function CartReducer(
   state: InitialState,
-  { type, payload }: Action
-) {
-  switch (type) {
-    case 'ADD_PRODUCT':
+  action: Action
+): InitialState {
+  switch (action.type) {
+    case 'ADD_PRODUCT': {
       // cek kalo sudah ada barang yg sama di cart list
-      const prevPayload = state.cart.find((el) => el._id === payload._id)
+      const prevPayload = state.cart.find((el) => el._id === action.payload._id)
       // cari index nya
       const prevPayloadIndex = state.cart.findIndex(
-        (el) => el._id === payload._id
+        (el) => el._id === action.payload._id
       )
-      let newCart = [...state.cart]
+      const newCart = [...state.cart]
 
       // kalo ada, hanya ganti quantity dari payload tersebut
       if (prevPayload !== undefined || prevPayloadIndex !== -1) {
@@ -53,23 +64,20 @@ export default function CartReducer(
 
         return {
           ...state,
-          cart: [...newCart, payload],
+          cart: [...newCart, action.payload],
         }
       }
 
       return {
         ...state,
-        cart: [...state.cart, payload],
+        cart: [...state.cart, action.payload],
       }
+    }
 
     case 'DEL_PRODUCT':
-      const filteredCart = state.cart.filter(
-        (product) => product._id !== payload._id
-      )
-
       return {
         ...state,
-        cart: filteredCart,
+        cart: state.cart.filter((product) => product._id !== action.payload),
       }
 
     default:

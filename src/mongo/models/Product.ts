@@ -50,8 +50,8 @@ const productSchema = new Schema<IProduct>(
         required: [true, 'imageUrl must not be empty'],
         trim: true,
         validate: {
-          validator: (url: string) => urlRegex.test(url),
-          message: (props: any) => `${props.value} is not a valid URL`,
+          validator: (url: string): boolean => urlRegex.test(url),
+          message: (props: any): string => `${props.value} is not a valid URL`,
         },
       },
       publicId: {
@@ -66,7 +66,7 @@ const productSchema = new Schema<IProduct>(
     },
     sold: {
       type: Number,
-      default: () => 0,
+      default: (): number => 0,
       min: 0,
     },
     reviews: [
@@ -90,4 +90,8 @@ const productSchema = new Schema<IProduct>(
 
 const ProductModel = models.Product || model<IProduct>('Product', productSchema)
 
-export default ProductModel as Model<IProduct, {}, {}>
+export default ProductModel as Model<
+  IProduct,
+  Record<string, unknown>,
+  Record<string, unknown>
+>

@@ -10,7 +10,7 @@ interface Props {
   setImages: Dispatch<SetStateAction<ImagePreview[]>>
 }
 
-export default function Dropzone({ images, setImages }: Props) {
+export default function Dropzone({ images, setImages }: Props): JSX.Element {
   const [errors, setErrors] = useState<FileError[]>([])
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -82,7 +82,7 @@ export default function Dropzone({ images, setImages }: Props) {
       >
         <input {...getInputProps()} />
         <p className="text-sm italic font-bold text-center text-orange-800">
-          Drag 'n' drop some images here, or
+          Drag and drop some images here, or
         </p>
         <p className="text-sm italic font-bold text-center text-orange-800">
           Click to select images

@@ -6,7 +6,7 @@ import Footer from 'components/Footer'
 import AboutComp from 'components/about/AboutComp'
 import AboutTeam from 'components/about/AboutTeam'
 
-export default function AboutPage() {
+export default function AboutPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
       <Head>

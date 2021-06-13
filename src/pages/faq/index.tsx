@@ -5,7 +5,7 @@ import Nav from 'components/Nav'
 import Footer from 'components/Footer'
 import FAQComp from 'components/faq/FAQComp'
 
-export default function FAQPage() {
+export default function FAQPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
       <Head>

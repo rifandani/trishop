@@ -23,7 +23,7 @@ interface Props {
 const CLOUDINARY_URL =
   'https://api.cloudinary.com/v1_1/ipandani2505/image/upload'
 
-export default function EditProduct({ product }: Props) {
+export default function EditProduct({ product }: Props): JSX.Element {
   const {
     _id,
     title,
@@ -65,7 +65,7 @@ export default function EditProduct({ product }: Props) {
         `/admin/cloudinary/resources/image?public_ids=${public_ids.join(',')}`
       )
 
-      let newPhotos: TImage[] = []
+      const newPhotos: TImage[] = []
 
       // upload photos to cloudinary first
       for (let i = 0; i < photos.length; i++) {

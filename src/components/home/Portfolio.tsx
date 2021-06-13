@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { BsArrowRight } from 'react-icons/bs'
 
-const Portfolio = () => {
+const Portfolio = (): JSX.Element => {
   return (
     <article className="container py-16 mx-auto">
       <div className="flex flex-wrap">

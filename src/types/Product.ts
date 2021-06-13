@@ -1,4 +1,3 @@
-import { Document, Model } from 'mongoose'
 // files
 import { IReview } from './Review'
 
@@ -22,5 +21,6 @@ export interface IProduct {
   updatedAt?: Date
 }
 
-export interface IProductDocument extends IProduct, Document {}
-export interface IProductModel extends Model<IProductDocument> {}
+// import { Document, Model } from 'mongoose'
+// export interface IProductDocument extends IProduct, Document {}
+// export interface IProductModel extends Model<IProductDocument> {}

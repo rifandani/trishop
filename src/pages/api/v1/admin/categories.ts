@@ -3,13 +3,16 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import ProductModel from 'mongo/models/Product'
 import connectMongo from 'middlewares/connectMongo'
 
-const handler = async function (req: NextApiRequest, res: NextApiResponse) {
+const handler = async function (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
   if (req.method === 'GET') {
     try {
       // get all products
       const products = await ProductModel.find()
 
-      let x: string[] = []
+      const x: string[] = []
 
       const labels = products.map((product) => product.labels)
       labels.forEach((label: string[]) => {

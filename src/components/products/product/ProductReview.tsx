@@ -7,7 +7,9 @@ interface ProductReviewProps {
   reviews: IReview[]
 }
 
-export default function ProductReview({ reviews }: ProductReviewProps) {
+export default function ProductReview({
+  reviews,
+}: ProductReviewProps): JSX.Element {
   const reviewsCount = reviews.length
   const averageStars =
     reviewsCount > 0

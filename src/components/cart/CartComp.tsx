@@ -11,11 +11,11 @@ import useLocalStorage from 'hooks/useLocalStorage'
 import generateRupiah from 'utils/generateRupiah'
 import { CartContext } from 'contexts/CartContext'
 import { UserContext } from 'contexts/UserContext'
-import { Payload } from 'contexts/CartReducer'
+import { ProductPayload } from 'contexts/CartReducer'
 import { IOrder } from 'types/LocalStorage'
 import { APIResponseCoupon } from 'types/Coupon'
 
-export default function CartComp() {
+export default function CartComp(): JSX.Element {
   // hooks
   const { push } = useRouter()
   const { cart, dispatch } = useContext(CartContext) // cart context
@@ -45,16 +45,16 @@ export default function CartComp() {
   }, [cart, couponDiscount])
 
   // custom functions
-  function deleteProduct(product: Payload) {
+  function deleteProduct(product: ProductPayload): void {
     dispatch({
       type: 'DEL_PRODUCT',
-      payload: product,
+      payload: product._id,
     })
 
     toast.info('Product deleted from the cart')
   }
 
-  async function applyCoupon() {
+  async function applyCoupon(): Promise<void> {
     const reqBody = {
       userId: user._id,
       code: coupon,
@@ -77,7 +77,7 @@ export default function CartComp() {
       const coupon = res.data.coupon
       setCouponDiscount(coupon.discount) // float || number
 
-      console.info('coupon => ', coupon)
+      // success
       toast.success('Coupon applied')
     } catch (err) {
       console.error(err)
@@ -85,7 +85,7 @@ export default function CartComp() {
     }
   }
 
-  function deleteCoupon() {
+  function deleteCoupon(): void {
     // reset all coupon
     setCoupon('')
     setCouponDiscount(0)
@@ -93,7 +93,7 @@ export default function CartComp() {
     toast.info('Coupon reset')
   }
 
-  async function checkout() {
+  async function checkout(): Promise<void> {
     // if there is no cart
     if (cart.length === 0) {
       toast.dark('Please add a product to cart before proceeding to checkout')
@@ -297,7 +297,7 @@ export default function CartComp() {
                           onClick={deleteCoupon}
                           className="w-4 mr-2 text-red-600 transition duration-500 transform cursor-pointer hover:scale-125"
                         />
-                        <span>Coupon "{coupon}"</span>
+                        <span>Coupon &quot;{coupon}&quot;</span>
                       </div>
                       <div className="m-2 font-bold text-center text-red-500 lg:px-4 lg:py-2 lg:text-lg">
                         -{' '}
