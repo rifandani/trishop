@@ -114,6 +114,14 @@ Trishop web dibuka untuk kontribusi baik itu kontribusi untuk fungsionalitas pro
 12. Tunggu review dan comment terhadap pull request yang telah kalian buat
 13. ~~Selalu tulis unit test (coming soon)~~
 
-## Code of Conduct
+## Code of Conduct 📐
 
-Please read [CODE_OF_CONDUCT.md](https://github.com/rifandani/trishop/blob/main/CODE_OF_CONDUCT.md) for details on our code of conduct.
+Dibuat dengan tujuan agar semua partisipan atau contributors di project ini terbebas dari segala macam bentuk diskriminasi, penghinaan, ancaman, kekerasan, ataupun yang sejenisnya.
+
+Silahkan baca [CODE_OF_CONDUCT.md](https://github.com/rifandani/trishop/blob/develop/CODE_OF_CONDUCT.md) untuk mengetahui lebih detailnya.
+
+## Change Log 📜
+
+Digunakan untuk tracking major update dan breaking changes terhadap project.
+
+Silahkan baca [CHANGELOG.md](https://github.com/rifandani/trishop/blob/develop/CHANGELOG.md) untuk mengetahui lebih detailnya.
