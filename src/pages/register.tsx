@@ -4,8 +4,10 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
+import useLocalStorage from 'hooks/useLocalStorage'
 import { TRegisterApiSchema, registerApiSchema } from 'yup/apiSchema'
 import { IAuthLoginRegister } from 'types/User'
+import { UserPayload } from 'contexts/UserReducer'
 
 export default function RegisterPage(): JSX.Element {
   const initialValues: TRegisterApiSchema = {
@@ -16,6 +18,7 @@ export default function RegisterPage(): JSX.Element {
 
   // hooks
   const router = useRouter()
+  const [, setUser] = useLocalStorage<UserPayload>('user', null)
 
   const onRegister = async (
     values: TRegisterApiSchema,
@@ -25,19 +28,23 @@ export default function RegisterPage(): JSX.Element {
       // POST /auth/register
       const res = await axios.post<IAuthLoginRegister>('/auth/register', values)
 
-      // client or server error
-      if (res.status === 400 || res.status === 500) {
+      // client error
+      if (res.status !== 201) {
         toast.error(res.data.message)
         return
       }
 
+      // set data user to local storage
+      setUser(res.data.data)
+
       // role === 'USER'
       await router.push('/products')
       toast.success('Register success')
-      actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
+      // 500 - server error
       console.error(err)
       toast.error(err.message)
+    } finally {
       actions.setSubmitting(false) // finish formik cycle
     }
   }

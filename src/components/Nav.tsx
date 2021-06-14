@@ -6,34 +6,33 @@ import { useContext, useState } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { FaShoppingCart, FaHeart } from 'react-icons/fa'
 import { toast } from 'react-toastify'
-import { useCookies } from 'react-cookie'
 // files
+import useLocalStorage from 'hooks/useLocalStorage'
 import { CartContext } from 'contexts/CartContext'
 import { WishlistContext } from 'contexts/WishlistContext'
-import { JWTPayload } from 'utils/setCookie'
+import { UserPayload } from 'contexts/UserReducer'
 
 export default function Nav(): JSX.Element {
   // hooks
-  const [cookies] = useCookies(['auth'])
   const { push } = useRouter()
+  const [user, setUser] = useLocalStorage<UserPayload>('user', null)
   const { cart } = useContext(CartContext) // cart context
   const { wishlist } = useContext(WishlistContext) // cart context
   const [toggle, setToggle] = useState<boolean>(true) // toggle hamburger menu
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false) // toggle dropdown menu
 
-  const authCookie = cookies?.auth as JWTPayload
-
   const pushToAdminDashboard = (): Promise<boolean> => push('/admin/dashboard')
   const pushToDashboard = (): Promise<boolean> => push('/dashboard')
 
   const login = (): Promise<boolean> => push('/login')
+
   const logout = async (): Promise<void> => {
     try {
       // call logout API
       await axios.get('/auth/logout')
 
-      // remove user in local storage / cookie
-      // setUser(null)
+      // remove user in local storage
+      setUser(null)
 
       // push back to home and toast
       await push('/')
@@ -136,12 +135,12 @@ export default function Nav(): JSX.Element {
                 }`}
               >
                 {/* TODO: buat user dashboard */}
-                {authCookie ? (
+                {user ? (
                   <button
                     className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-orange-500 hover:text-white"
                     type="button"
                     onClick={
-                      authCookie.role === 'ADMIN'
+                      user.role === 'ADMIN'
                         ? pushToAdminDashboard
                         : pushToDashboard
                     }
@@ -152,12 +151,12 @@ export default function Nav(): JSX.Element {
 
                 <button
                   className={`${
-                    authCookie ? 'hover:bg-red-500' : 'hover:bg-orange-500'
+                    user ? 'hover:bg-red-500' : 'hover:bg-orange-500'
                   } w-full px-4 py-2 text-sm text-left text-gray-700 hover:text-white`}
                   type="button"
-                  onClick={authCookie ? logout : login}
+                  onClick={user ? logout : login}
                 >
-                  {authCookie ? 'Logout' : 'Login'}
+                  {user ? 'Logout' : 'Login'}
                 </button>
               </div>
             </div>

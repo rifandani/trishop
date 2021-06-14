@@ -25,9 +25,7 @@ export default function AddCoupon(): JSX.Element {
   ): Promise<void> => {
     try {
       // POST /admin/coupons
-      const res = await Axios.post('/admin/coupons', values, {
-        validateStatus: (status) => status < 500, // Resolve only if the status code is less than 500
-      })
+      const res = await Axios.post('/admin/coupons', values)
 
       // client error
       if (res.status !== 201) {

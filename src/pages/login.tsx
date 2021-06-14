@@ -4,8 +4,10 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
+import useLocalStorage from 'hooks/useLocalStorage'
 import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
 import { IAuthLoginRegister } from 'types/User'
+import { UserPayload } from 'contexts/UserReducer'
 
 export default function Login(): JSX.Element {
   const initialValues: TLoginApiSchema = {
@@ -15,6 +17,7 @@ export default function Login(): JSX.Element {
 
   // hooks
   const { push } = useRouter()
+  const [, setUser] = useLocalStorage<UserPayload>('user', null)
 
   const onLogin = async (
     values: TLoginApiSchema,
@@ -24,11 +27,14 @@ export default function Login(): JSX.Element {
       // POST /auth/login
       const res = await axios.post<IAuthLoginRegister>('/auth/login', values)
 
-      // client or server error
-      if (res.status === (400 || 500)) {
+      // client error
+      if (res.status !== 201) {
         toast.error(res.data.message)
         return
       }
+
+      // set data user to local storage
+      setUser(res.data.data)
 
       // if role == 'ADMIN'
       if (res.data.data.role === 'ADMIN') {
@@ -40,10 +46,11 @@ export default function Login(): JSX.Element {
       // if role == 'USER'
       await push('/products')
       toast.success('You are logged in')
-      actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
+      // 500 - server error
       console.error(err)
       toast.error(err.message)
+    } finally {
       actions.setSubmitting(false) // finish formik cycle
     }
   }

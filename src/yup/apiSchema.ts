@@ -13,7 +13,7 @@ export const registerApiSchema = loginApiSchema.concat(
   object({
     name: string()
       .min(3, 'name must be 3 characters or more')
-      .max(60, 'name must be 50 characters or less')
+      .max(50, 'name must be 50 characters or less')
       .required('name required'),
   })
 )
@@ -22,6 +22,7 @@ export const contactApiSchema = object({
   email: string().email('email invalid').required('email required'),
   subject: string()
     .min(3, 'subject must be 3 characters or more')
+    .max(50, 'subject must be 50 characters or less')
     .required('subject required'),
   message: string()
     .min(10, 'message must be 10 characters or more')
@@ -68,6 +69,7 @@ export const couponApiSchema = object({
   code: string()
     .trim()
     .min(3, 'code must be 3 characters or more')
+    .max(30, 'code must be 30 characters or less')
     .required('code required'),
   desc: string()
     .trim()
@@ -82,6 +84,7 @@ export const validateCouponApiSchema = object({
   code: string()
     .trim()
     .min(3, 'code must be 3 characters or more')
+    .max(30, 'code must be 30 characters or less')
     .required('code required'),
 })
 
@@ -89,10 +92,12 @@ export const putReviewApiSchema = object({
   reviewerName: string()
     .trim()
     .min(3, 'reviewerName must be 3 characters or more')
+    .max(30, 'reviewerName must be 30 characters or less')
     .required('reviewerName required'),
   comment: string()
     .trim()
     .min(5, 'comment must be 5 characters or more')
+    .max(50, 'comment must be 50 characters or less')
     .required('comment required'),
   star: number()
     .min(1, 'star must be 1 or more')

@@ -16,7 +16,8 @@ const reportSchema = new Schema<IReport>({
   argument: {
     type: String,
     required: [true, 'argument must not be empty'],
-    minlength: 5,
+    minLength: 5,
+    maxLength: 50,
     trim: true,
   },
   typeId: {

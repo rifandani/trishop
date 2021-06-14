@@ -31,7 +31,7 @@ export default function setCookie(
     'Set-Cookie',
     // seperti JSON.stringify untuk cookies
     serialize('auth', jwt, {
-      httpOnly: false, // means client side javascript can access our cookies
+      httpOnly: true, // means client side javascript can access our cookies
       secure: process.env.NODE_ENV !== 'development',
       sameSite: 'strict',
       maxAge: 60 * 60 * 3, // 3 hour

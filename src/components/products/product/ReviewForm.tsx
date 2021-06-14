@@ -1,11 +1,11 @@
-import Axios from 'axios'
+import axios from 'axios'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-import { useCookies } from 'react-cookie'
 // files
+import useLocalStorage from 'hooks/useLocalStorage'
 import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
 import { IPostReviewResponse } from 'types/Review'
-import { JWTPayload } from 'utils/setCookie'
+import { UserPayload } from 'contexts/UserReducer'
 
 interface ReviewFormProps {
   productRef: string
@@ -15,9 +15,7 @@ export default function ReviewForm({
   productRef,
 }: ReviewFormProps): JSX.Element {
   // hooks
-  const [cookies] = useCookies(['auth'])
-
-  const authCookie = cookies?.auth as JWTPayload
+  const [user] = useLocalStorage<UserPayload>('user', null) // local storage
 
   const initialValues: TPutReviewApiSchema = {
     reviewerName: '',
@@ -31,7 +29,7 @@ export default function ReviewForm({
   ): Promise<void> => {
     try {
       // if not logged in
-      if (!authCookie) {
+      if (!user) {
         toast.warn('Please login first')
         actions.setSubmitting(false) // finish formik cycle
         return
@@ -39,31 +37,30 @@ export default function ReviewForm({
 
       const newReview = {
         productRef,
-        reviewerId: authCookie.sub,
+        reviewerId: user._id, // logged in user _id
         reviewerName: values.reviewerName,
         comment: values.comment,
         star: +values.star,
       }
 
       // POST /admin/reviews
-      const res = await Axios.post<IPostReviewResponse>(
+      const res = await axios.post<IPostReviewResponse>(
         '/admin/reviews',
         newReview
       )
 
       // client error
-      if (res.status === 400) {
+      if (res.status !== 201) {
         toast.error(res.data.message)
         return
       }
 
       // success
-      toast.success('Review added. Wait 3 seconds and refresh to revalidate')
-      actions.resetForm() // reset form
-      actions.setSubmitting(false) // finish formik cycle
+      toast.success('Review added. Refresh to revalidate')
     } catch (err) {
       console.error(err)
       toast.error(err.message)
+    } finally {
       actions.resetForm() // reset form
       actions.setSubmitting(false) // finish formik cycle
     }

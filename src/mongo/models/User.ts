@@ -12,6 +12,8 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: [true, 'Name must not be empty'],
       trim: true,
+      minLength: 3,
+      maxLength: 50,
     },
     email: {
       type: String,

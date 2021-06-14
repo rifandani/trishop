@@ -25,9 +25,7 @@ export default function EditCoupon({ coupon }: ICouponProps): JSX.Element {
   ): Promise<void> => {
     try {
       // bisa pake query._id atau dari coupon._id
-      const res = await Axios.put(`/admin/coupons/${coupon._id}`, values, {
-        validateStatus: (status) => status < 500, // Resolve only if the status code is less than 500
-      })
+      const res = await Axios.put(`/admin/coupons/${coupon._id}`, values)
 
       // client error
       if (res.status !== 201) {

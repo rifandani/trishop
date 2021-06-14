@@ -46,7 +46,7 @@ const handler = async function (
       await ReportModel.findByIdAndDelete(reportId)
 
       // DELETE success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, message: 'Review deleted' })
+      res.status(200).json({ error: false, message: 'Report deleted' })
     } else {
       // client error => METHOD NOT ALLOWED -----------------------------------------------------------------
       res.status(405).json({
