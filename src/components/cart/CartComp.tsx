@@ -6,7 +6,6 @@ import { IoMdClose, IoIosCard } from 'react-icons/io'
 import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri'
 import { Transition } from '@headlessui/react'
 import { toast } from 'react-toastify'
-import { useCookies } from 'react-cookie'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
 import generateRupiah from 'utils/generateRupiah'
@@ -14,14 +13,14 @@ import { CartContext } from 'contexts/CartContext'
 import { ProductPayload } from 'contexts/CartReducer'
 import { APIResponseCoupon } from 'types/Coupon'
 import { IOrder } from 'types/LocalStorage'
-import { JWTPayload } from 'utils/setCookie'
+import { UserPayload } from 'contexts/UserReducer'
 
 export default function CartComp(): JSX.Element {
   // hooks
-  const [cookies] = useCookies(['auth'])
   const { push } = useRouter()
   const { cart, dispatch } = useContext(CartContext) // cart context
   const [, setOrder] = useLocalStorage<IOrder>('order', null) // local storage
+  const [user] = useLocalStorage<UserPayload>('user', null) // local storage
 
   const [coupon, setCoupon] = useState<string>('')
   const [couponDiscount, setCouponDiscount] = useState<number>(0) // float || number
@@ -45,7 +44,6 @@ export default function CartComp(): JSX.Element {
     setTotal(mySubtotal - priceAfterDiscount)
   }, [cart, couponDiscount])
 
-  // custom functions
   function deleteProduct(product: ProductPayload): void {
     dispatch({
       type: 'DEL_PRODUCT',
@@ -57,7 +55,7 @@ export default function CartComp(): JSX.Element {
 
   async function applyCoupon(): Promise<void> {
     const reqBody = {
-      userId: (cookies.auth as JWTPayload).sub,
+      userId: user._id, // user _id
       code: coupon,
     }
 
@@ -68,8 +66,8 @@ export default function CartComp(): JSX.Element {
         reqBody
       )
 
-      // if there is 400 error
-      if (res.status === 400) {
+      // if there client error
+      if (res.status !== 201) {
         toast.error(res.data.message)
         return
       }
@@ -91,7 +89,7 @@ export default function CartComp(): JSX.Element {
     setCoupon('')
     setCouponDiscount(0)
 
-    toast.info('Coupon reset')
+    toast('Coupon reset')
   }
 
   async function checkout(): Promise<void> {
@@ -111,7 +109,7 @@ export default function CartComp(): JSX.Element {
     }))
 
     const order = {
-      user_id: (cookies.auth as JWTPayload).sub,
+      user_id: user._id, // user _id
       transaction_details: {
         gross_amount: total,
       },

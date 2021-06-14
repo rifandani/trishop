@@ -10,7 +10,8 @@ const productSchema = new Schema<IProduct>(
     title: {
       type: String,
       required: [true, 'title must not be empty'],
-      minlength: 3,
+      minLength: 3,
+      maxlength: 30,
       trim: true,
     },
     price: {
@@ -26,7 +27,7 @@ const productSchema = new Schema<IProduct>(
     desc: {
       type: String,
       required: [true, 'desc must not be empty'],
-      minlength: 10,
+      minLength: 10,
       trim: true,
     },
     labels: {
@@ -42,7 +43,7 @@ const productSchema = new Schema<IProduct>(
         type: String,
         required: [true, 'imageName must not be empty'],
         trim: true,
-        minlength: 3,
+        minLength: 3,
         unique: [true, 'imageName must be unique'],
       },
       imageUrl: {

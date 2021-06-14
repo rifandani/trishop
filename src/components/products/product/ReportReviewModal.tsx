@@ -35,13 +35,13 @@ export default function ReportReviewModal({
         reviewRef: review._id,
         reporter: userId,
         argument: values.argument,
-        typeId: values.typeId,
+        typeId: +values.typeId, // number
       }
 
       const res = await axios.post<IPostReportResponse>('/admin/reports', data)
 
       // client error
-      if (res.status === 400) {
+      if (res.status !== 201) {
         toast.error(res.data.message)
         return
       }
@@ -49,10 +49,10 @@ export default function ReportReviewModal({
       // success
       toast.success('Review reported')
       setReportIsOpen(false)
-      actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
       console.error(err)
       toast.error(err.message)
+    } finally {
       actions.setSubmitting(false) // finish formik cycle
     }
   }
@@ -170,17 +170,6 @@ export default function ReportReviewModal({
                           </div>
                         </div>
                       </div>
-
-                      {/* submit button */}
-                      {/* <div className="px-4 py-3 text-right bg-gray-50 sm:px-6">
-                        <button
-                          className="px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-orange-800 border border-transparent rounded-md shadow-sm hover:bg-orange-500 focus:outline-none focus:shadow-outline-blue active:bg-orange-800"
-                          type="submit"
-                          disabled={isSubmitting}
-                        >
-                          {isSubmitting ? 'Loading...' : 'Submit'}
-                        </button>
-                      </div> */}
                     </div>
 
                     {/* submit button */}

@@ -1,16 +1,16 @@
 import dayjs from 'dayjs'
-import Axios from 'axios'
+import axios from 'axios'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { MdThumbUp, MdReportProblem } from 'react-icons/md'
 import { FaStar } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import { useState } from 'react'
-import { useCookies } from 'react-cookie'
 // files
 import EditReviewModal from './EditReviewModal'
 import ReportReviewModal from './ReportReviewModal'
 import { IReviewProps } from 'types/Review'
-import { JWTPayload } from 'utils/setCookie'
+import { UserPayload } from 'contexts/UserReducer'
+import useLocalStorage from 'hooks/useLocalStorage'
 
 dayjs.extend(relativeTime) // so that we can user relative formatting
 
@@ -20,11 +20,9 @@ export default function CustomerReviewCard({
   const { reviewerName, comment, star, updatedAt, reviewerId, _id } = review
 
   // hooks
-  const [cookies] = useCookies(['auth'])
+  const [user] = useLocalStorage<UserPayload>('user', null) // local storage
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [reportIsOpen, setReportIsOpen] = useState<boolean>(false)
-
-  const authCookie = cookies?.auth as JWTPayload
 
   // TODO: add like functionality to review document
   const onLike = () => {
@@ -32,7 +30,7 @@ export default function CustomerReviewCard({
   }
 
   const onReport = () => {
-    if (!authCookie) {
+    if (!user) {
       toast.warn('Please login first')
       return
     }
@@ -49,16 +47,16 @@ export default function CustomerReviewCard({
     if (!isAgree) return
 
     try {
-      const res = await Axios.delete(`/admin/reviews/${_id}`)
+      const res = await axios.delete(`/admin/reviews/${_id}`) // delete review
 
       // client error
-      if (res.status === 400) {
+      if (res.status !== 200) {
         toast.error(res.data.message)
         return
       }
 
       // success
-      toast.info('Review deleted. Wait for 3 seconds and refresh to revalidate')
+      toast.info('Review deleted. Refresh to revalidate')
     } catch (err) {
       console.error(err)
       toast.error(err.message)
@@ -103,7 +101,7 @@ export default function CustomerReviewCard({
 
         <div className="flex items-center space-x-2">
           {/* FIXME: styling did not works */}
-          {!authCookie || authCookie?.sub !== reviewerId ? (
+          {!user || user._id !== reviewerId ? (
             <button
               className="flex items-center group focus:outline-none"
               onClick={onLike}
@@ -121,7 +119,7 @@ export default function CustomerReviewCard({
           )}
 
           {/* FIXME: styling did not works */}
-          {!authCookie || authCookie?.sub !== reviewerId ? (
+          {!user || user._id !== reviewerId ? (
             <button
               className="flex items-center ml-2 group focus:outline-none"
               onClick={onReport}
@@ -142,12 +140,12 @@ export default function CustomerReviewCard({
 
       <EditReviewModal isOpen={isOpen} setIsOpen={setIsOpen} review={review} />
 
-      {authCookie && (
+      {user && (
         <ReportReviewModal
           reportIsOpen={reportIsOpen}
           setReportIsOpen={setReportIsOpen}
           review={review}
-          userId={authCookie.sub}
+          userId={user._id}
         />
       )}
     </section>

@@ -19,9 +19,9 @@ export default function EditReviewModal({
   review,
 }: Props): JSX.Element {
   const initialValues: TPutReviewApiSchema = {
-    reviewerName: '',
-    star: 1,
-    comment: '',
+    reviewerName: review.reviewerName,
+    star: review.star,
+    comment: review.comment,
   }
 
   const onSubmit = async (
@@ -38,18 +38,18 @@ export default function EditReviewModal({
       )
 
       // client error
-      if (res.status === 400) {
+      if (res.status !== 201) {
         toast.error(res.data.message)
         return
       }
 
       // success
-      toast.success('Review updated. Wait 3 seconds and refresh to revalidate')
+      toast.success('Review updated. Refresh to revalidate')
       setIsOpen(false)
-      actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
       console.error(err)
       toast.error(err.message)
+    } finally {
       actions.setSubmitting(false) // finish formik cycle
     }
   }
@@ -186,17 +186,6 @@ export default function EditReviewModal({
                           </div>
                         </div>
                       </div>
-
-                      {/* submit button */}
-                      {/* <div className="px-4 py-3 text-right bg-gray-50 sm:px-6">
-                        <button
-                          className="px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-orange-800 border border-transparent rounded-md shadow-sm hover:bg-orange-500 focus:outline-none focus:shadow-outline-blue active:bg-orange-800"
-                          type="submit"
-                          disabled={isSubmitting}
-                        >
-                          {isSubmitting ? 'Loading...' : 'Submit'}
-                        </button>
-                      </div> */}
                     </div>
 
                     {/* submit button */}

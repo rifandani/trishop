@@ -5,7 +5,6 @@ import NProgress from 'nprogress'
 import { SWRConfig } from 'swr'
 import { ToastContainer, toast } from 'react-toastify'
 import type { AppProps /*, AppContext */ } from 'next/app'
-import { CookiesProvider } from 'react-cookie'
 // Import styles
 import '../styles/index.css'
 import 'nprogress/nprogress.css'
@@ -32,11 +31,15 @@ Router.events.on('routeChangeError', () => {
   NProgress.done()
 })
 
-// axios BASE URL
+// axios default baseUrl
 axios.defaults.baseURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000/api/v1'
     : 'https://trishop.vercel.app/api/v1'
+
+// axios default validateStatus
+axios.defaults.validateStatus = (status) =>
+  (status >= 200 && status < 300) || (status >= 400 && status < 500) // Resolve only if the status code is 200 more and less than 500
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
@@ -76,16 +79,14 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           onError: (err) => toast.error(err.message),
         }}
       >
-        <CookiesProvider>
-          <CartProvider>
-            <WishlistProvider>
-              <UserProvider>
-                <Component {...pageProps} />
-                <ToastContainer />
-              </UserProvider>
-            </WishlistProvider>
-          </CartProvider>
-        </CookiesProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <UserProvider>
+              <Component {...pageProps} />
+              <ToastContainer />
+            </UserProvider>
+          </WishlistProvider>
+        </CartProvider>
       </SWRConfig>
     </>
   )

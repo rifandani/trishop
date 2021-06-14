@@ -1,3 +1,5 @@
+/* ---------------------------------- order --------------------------------- */
+
 export interface IOrderItemDetails {
   id: string
   name: string
@@ -14,6 +16,8 @@ export interface IOrder {
   }
   item_details: IOrderItemDetails[]
 }
+
+/* -------------------------------- checkout -------------------------------- */
 
 export interface ICheckoutItemDetails {
   id: string
@@ -45,3 +49,14 @@ export interface ICheckout {
   }
   item_details: ICheckoutItemDetails[]
 }
+
+/* ---------------------------------- user ---------------------------------- */
+
+// export interface IUserLS {
+//   _id: string
+//   name: string
+//   email: string
+//   role: 'ADMIN' | 'USER'
+//   createdAt: Date
+//   updatedAt: Date
+// }

@@ -19,13 +19,14 @@ const couponSchema = new Schema<ICoupon>(
       required: [true, 'code must not be empty'],
       unique: [true, 'code must be unique'], // kalau pake nanti nambah index, kalau ada code yg sama throw MongoError
       trim: true,
-      minlength: 3,
+      minLength: 3,
+      maxLength: 30,
     },
     desc: {
       type: String,
       required: [true, 'desc must not be empty'],
       trim: true,
-      minlength: 10,
+      minLength: 10,
     },
     validUntil: {
       type: Number,

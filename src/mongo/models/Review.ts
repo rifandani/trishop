@@ -17,13 +17,15 @@ const reviewSchema = new Schema<IReview>(
     reviewerName: {
       type: String,
       required: [true, 'reviewerName must not be empty'],
-      minlength: 3,
       trim: true,
+      minLength: 3,
+      maxLength: 30,
     },
     comment: {
       type: String,
       required: [true, 'comment must not be empty'],
-      minlength: 5,
+      minLength: 5,
+      maxLength: 50,
       trim: true,
     },
     star: {

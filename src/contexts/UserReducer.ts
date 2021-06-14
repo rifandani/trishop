@@ -7,13 +7,13 @@ export interface InitialState {
 }
 
 export type UserPayload = {
-  email: string
+  _id: string
   name: string
+  email: string
   // password: string
   role: 'ADMIN' | 'USER'
   createdAt: string
   updatedAt: string
-  _id: string
 }
 
 export type Action =
