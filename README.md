@@ -13,6 +13,10 @@
 </p>
 
 <p align="center">
+  <a href="https://discord.gg/W9gPJ6kUPY">
+    <img src="https://img.shields.io/discord/483598191074213888?style=for-the-badge" alt="roompy - discord chat by serverId" />
+  </a>
+
   <a href="https://trishop.vercel.app">
     <img src="https://img.shields.io/badge/Status-Active-green.svg?style=for-the-badge" alt="trishop - status active" />
   </a>
@@ -21,6 +25,10 @@
     <img src="https://img.shields.io/apm/l/atomic-design-ui.svg?style=for-the-badge&color=000" alt="trishop - license mit" />
   </a>
 </p>
+
+<h3 align="center">
+  <a href="https://discord.gg/W9gPJ6kUPY">📢 Discord Contributors Community 📢</a>
+</h3>
 
 ---
 
@@ -32,7 +40,7 @@ Trishop adalah platform e-commerce gratis dan open-source untuk unit usaha yang 
 
 Trishop dilengkapi dengan fitur:
 
-1. Full typed Next.js dengan Typescript + Eslint + Prettier ⚡
+1. 90% typed Next.js dengan Typescript + Eslint + Prettier ⚡
 2. Peyimpanan database dengan Mongodb dan Mongoose ODM 🍃
 3. Penyimpanan file storage dengan Cloudinary 💾
 4. Autentikasi JWT dalam cookie 🔑
@@ -60,12 +68,12 @@ Trishop dilengkapi dengan fitur:
 
 ## Branches 🔱
 
-- [develop](https://github.com/rifandani/trishop/tree/develop) -> PR branch ini untuk kontribusi
+- [develop](https://github.com/rifandani/trishop/tree/develop) -> **Pull Request** branch ini untuk kontribusi
 - [main](https://github.com/rifandani/trishop) -> Jangan disentuh, branch ini untuk production
 
 ## Contributions 🧩
 
-Trishop web dibuka untuk kontribusi baik itu kontribusi untuk fungsionalitas project ataupun berupa dokumentasi seperti CONTRIBUTING GUIDE, DESIGN GUIDELINES, CODE OF CONDUCT, dll. Saya merekomendasikan kalian membuat issue baru atau membalas dalam bentuk saran/komentar agar saya dapat mengetahui terlebih dahulu apa yang kalian ingin tambahkan/kerjakan. Dengan itu apa yang kita kerjakan tidak akan saling bertabrakan.
+Trishop web dibuka untuk kontribusi baik itu kontribusi untuk fungsionalitas project ataupun berupa dokumentasi seperti CONTRIBUTING GUIDE, DESIGN GUIDELINES, dll. Saya merekomendasikan kalian membuat issue baru atau ikut bergabung dalam komunitas Discord agar saya dapat mengetahui terlebih dahulu apa yang kalian ingin tambahkan/kerjakan. Dengan itu apa yang kita kerjakan tidak akan saling bertabrakan.
 
 1. [Submit new issue](https://github.com/rifandani/trishop/issues)
 2. Fork repository ini
@@ -105,3 +113,7 @@ Trishop web dibuka untuk kontribusi baik itu kontribusi untuk fungsionalitas pro
 
 12. Tunggu review dan comment terhadap pull request yang telah kalian buat
 13. ~~Selalu tulis unit test (coming soon)~~
+
+## Code of Conduct
+
+Please read [CODE_OF_CONDUCT.md](https://github.com/rifandani/trishop/blob/main/CODE_OF_CONDUCT.md) for details on our code of conduct.
