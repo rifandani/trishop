@@ -7,7 +7,7 @@ import Navbar from 'components/admin/Navbar'
 import AdminDashboard from 'components/admin/AdminDashboard'
 import UserModel from 'mongo/models/User'
 import dbConnect from 'mongo/config/dbConnect'
-import { JWTPayload } from 'utils/setCookie'
+import { AuthCookiePayload } from 'types'
 
 export default function AdminDashboardPage(): JSX.Element {
   return (
@@ -37,8 +37,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     // verify auth cookie
-    const decoded = verify(authCookie, process.env.MY_SECRET_KEY)
-    const userId = (decoded as JWTPayload).sub
+    const decoded = verify(
+      authCookie,
+      process.env.MY_SECRET_KEY
+    ) as AuthCookiePayload
+    const userId = decoded.sub
 
     // connect to mongodb
     await dbConnect()
@@ -55,7 +58,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // const user = await UserModel.findById(userId)
 
     // if user.role === 'USER'
-    if ((decoded as JWTPayload).role === 'USER') {
+    if (decoded.role === 'USER') {
       return {
         redirect: { destination: '/dashboard', permanent: false },
       }

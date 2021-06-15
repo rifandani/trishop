@@ -4,9 +4,9 @@ import { hashSync } from 'bcrypt'
 import UserModel from 'mongo/models/User'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
+import checkAuthCookie from 'middlewares/checkAuthCookie'
 import { userApiSchema } from 'yup/apiSchema'
 
-// TODO: add authentication middleware for all ADMIN api's
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
@@ -65,4 +65,4 @@ const handler = async (
   }
 }
 
-export default withYup(userApiSchema, connectMongo(handler))
+export default checkAuthCookie(withYup(userApiSchema, connectMongo(handler)))

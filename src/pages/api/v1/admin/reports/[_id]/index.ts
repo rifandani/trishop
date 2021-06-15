@@ -5,8 +5,8 @@ import ReportModel from 'mongo/models/Report'
 import ReviewModel from 'mongo/models/Review'
 import connectMongo from 'middlewares/connectMongo'
 import checkObjectId from 'middlewares/checkObjectId'
+import checkAuthCookie from 'middlewares/checkAuthCookie'
 
-// TODO: add authentication middleware for all ADMIN api's
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
@@ -61,4 +61,6 @@ const handler = async function (
   }
 }
 
-export default checkObjectId(ReportModel, connectMongo(handler))
+export default checkAuthCookie(
+  checkObjectId(ReportModel, connectMongo(handler))
+)

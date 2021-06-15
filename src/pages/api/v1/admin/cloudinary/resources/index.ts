@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { v2 as cld } from 'cloudinary'
 import { parse } from 'querystring'
 // files
+import checkAuthCookie from 'middlewares/checkAuthCookie'
 
-// TODO: add authentication middleware for all ADMIN api's
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
@@ -65,4 +65,4 @@ const handler = async function (
   }
 }
 
-export default handler
+export default checkAuthCookie(handler)
