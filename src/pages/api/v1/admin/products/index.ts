@@ -1,12 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-// import { parse } from 'querystring'
 // files
 import ProductModel from 'mongo/models/Product'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
+import checkAuthCookie from 'middlewares/checkAuthCookie'
 import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
 
-// TODO: add authentication middleware for all ADMIN api's
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
@@ -61,4 +60,4 @@ const handler = async function (
   }
 }
 
-export default withYup(productApiSchema, connectMongo(handler))
+export default checkAuthCookie(withYup(productApiSchema, connectMongo(handler)))

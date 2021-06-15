@@ -2,9 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import bcrypt from 'bcrypt'
 // files
 import UserModel from 'mongo/models/User'
-import setCookie from 'utils/setCookie'
 import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
+import { setAuthCookie } from 'utils/setCookie'
 import { registerApiSchema, TRegisterApiSchema } from 'yup/apiSchema'
 
 const handler = async function (
@@ -23,7 +23,7 @@ const handler = async function (
       const userDoc = await UserModel.create({ name, email, password: hash })
 
       // set JWT token to cookie in headers
-      setCookie(
+      setAuthCookie(
         {
           sub: userDoc._id,
           role: userDoc.role,

@@ -10,7 +10,7 @@ import UserModel from 'mongo/models/User'
 import dbConnect from 'mongo/config/dbConnect'
 import getQueryAsString from 'utils/getQueryAsString'
 import { Product } from 'contexts/CartReducer'
-import { JWTPayload } from 'utils/setCookie'
+import { AuthCookiePayload } from 'types'
 
 interface Props {
   product: Product
@@ -44,9 +44,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     // verify auth cookie
-    // decoded === payload { sub: user._id, iat: number, exp: number }
-    const decoded = verify(authCookie, process.env.MY_SECRET_KEY)
-    const authUserId = (decoded as JWTPayload).sub
+    const decoded = verify(
+      authCookie,
+      process.env.MY_SECRET_KEY
+    ) as AuthCookiePayload
+    const authUserId = decoded.sub
 
     // connect to mongodb
     await dbConnect()
@@ -63,7 +65,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // const authUser = await UserModel.findById(authUserId)
 
     // if authUser.role === 'USER'
-    if ((decoded as JWTPayload).role === 'USER') {
+    if (decoded.role === 'USER') {
       return {
         redirect: { destination: '/dashboard', permanent: false },
       }

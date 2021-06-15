@@ -4,9 +4,9 @@ import ReportModel from 'mongo/models/Report'
 import ReviewModel from 'mongo/models/Review'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
+import checkAuthCookie from 'middlewares/checkAuthCookie'
 import { addReportApiSchema, TAddReportApiSchema } from 'yup/apiSchema'
 
-// TODO: add authentication middleware for all ADMIN api's
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
@@ -64,4 +64,6 @@ const handler = async function (
   }
 }
 
-export default withYup(addReportApiSchema, connectMongo(handler))
+export default checkAuthCookie(
+  withYup(addReportApiSchema, connectMongo(handler))
+)

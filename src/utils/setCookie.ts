@@ -1,41 +1,51 @@
 import { NextApiResponse } from 'next'
 import { sign } from 'jsonwebtoken'
 import { serialize } from 'cookie'
+// files
+import { AuthCookiePayload, RefreshTokenCookiePayload } from 'types'
 
-export interface JWTPayload {
-  sub: string // subject, whom the token refers to
-  email: string
-  name: string
-  role: 'USER' | 'ADMIN'
-  createdAt: Date
-  updatedAt: Date
-  iat?: number // issuedAt, seconds since Unix epoch
-  exp?: number // expiredAt, Date
-}
-
-export default function setCookie(
-  payload: JWTPayload,
+export const setAuthCookie = function (
+  authCookiePayload: AuthCookiePayload,
   res: NextApiResponse
 ): void {
   // sign JWT token
-  // const payload = {
-  // sub: user._id, // reserved word sub == subject
-  // userEmail: user.email,
-  // iat: Math.floor(Date.now() / 1000), // reserved word iat == issuedAt
-  // };
-
-  const jwt = sign(payload, process.env.MY_SECRET_KEY, { expiresIn: '3h' })
+  const jwt = sign(authCookiePayload, process.env.MY_SECRET_KEY, {
+    expiresIn: '1h',
+  })
 
   // set cookie to response header
   res.setHeader(
     'Set-Cookie',
     // seperti JSON.stringify untuk cookies
     serialize('auth', jwt, {
-      httpOnly: true, // means client side javascript can access our cookies
+      httpOnly: true, // means client side javascript can NOT access our cookies
       secure: process.env.NODE_ENV !== 'development',
       sameSite: 'strict',
-      maxAge: 60 * 60 * 3, // 3 hour
-      path: '/', // make it available everywhere, not only in /api
+      maxAge: 60 * 60 * 1, // 1 hour
+      path: '/', // make it available everywhere, not only in routes that call this setAuthCookie function
+    })
+  )
+}
+
+export const setRefreshTokenCookie = function (
+  refreshTokenCookiePayload: RefreshTokenCookiePayload,
+  res: NextApiResponse
+): void {
+  // sign JWT token
+  const jwt = sign(refreshTokenCookiePayload, process.env.MY_SECRET_KEY, {
+    expiresIn: '24h',
+  })
+
+  // set cookie to response header
+  res.setHeader(
+    'Set-Cookie',
+    // seperti JSON.stringify untuk cookies
+    serialize('refreshtoken', jwt, {
+      httpOnly: true, // means client side javascript can NOT access our cookies
+      secure: process.env.NODE_ENV !== 'development',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24, // 24 hour
+      path: '/', // make it available everywhere, not only in routes that call this setAuthCookie function
     })
   )
 }

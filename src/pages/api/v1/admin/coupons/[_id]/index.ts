@@ -5,6 +5,7 @@ import getQueryAsString from 'utils/getQueryAsString'
 import checkObjectId from 'middlewares/checkObjectId'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
+import checkAuthCookie from 'middlewares/checkAuthCookie'
 import { couponApiSchema, TCouponApiSchema } from 'yup/apiSchema'
 
 interface CouponCodes {
@@ -12,7 +13,6 @@ interface CouponCodes {
   code: string
 }
 
-// TODO: add authentication middleware for all ADMIN api's
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
@@ -95,7 +95,6 @@ const handler = async function (
   }
 }
 
-export default checkObjectId(
-  CouponModel,
-  withYup(couponApiSchema, connectMongo(handler))
+export default checkAuthCookie(
+  checkObjectId(CouponModel, withYup(couponApiSchema, connectMongo(handler)))
 )
