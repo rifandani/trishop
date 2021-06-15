@@ -1,7 +1,8 @@
 import axios from 'axios'
-import { Dispatch, Fragment, SetStateAction } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
+import { Dialog, Transition } from '@headlessui/react'
+import { Dispatch, Fragment, SetStateAction } from 'react'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import { IPutReviewResponse, IReview } from 'types/Review'
@@ -18,6 +19,9 @@ export default function EditReviewModal({
   setIsOpen,
   review,
 }: Props): JSX.Element {
+  // hooks
+  const { push } = useRouter()
+
   const initialValues: TPutReviewApiSchema = {
     reviewerName: review.reviewerName,
     star: review.star,
@@ -38,7 +42,11 @@ export default function EditReviewModal({
       )
 
       // client error
-      if (res.status !== 201) {
+      if (res.status === 401) {
+        toast.error(res.data.message)
+        await push('/login')
+        return
+      } else if (res.status !== 201) {
         toast.error(res.data.message)
         return
       }

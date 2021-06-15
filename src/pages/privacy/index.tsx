@@ -1,5 +1,5 @@
-import Head from 'next/head'
 import { FaLock } from 'react-icons/fa'
+import { NextSeo } from 'next-seo'
 // files
 import Nav from 'components/Nav'
 import Footer from 'components/Footer'
@@ -8,9 +8,10 @@ import PrivacyComp from 'components/privacy/PrivacyComp'
 export default function PrivacyPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
-      <Head>
-        <title>Trishop - Privacy Policy</title>
-      </Head>
+      <NextSeo
+        title="Privacy Policy"
+        description="We take the protection of your personal information very seriously. This policy is intended to help you understand how we collect, use and safeguard the information you provide on our website."
+      />
 
       <Nav />
 

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -16,6 +17,7 @@ export default function ReviewForm({
 }: ReviewFormProps): JSX.Element {
   // hooks
   const [user] = useLocalStorage<UserPayload>('user', null) // local storage
+  const { push } = useRouter()
 
   const initialValues: TPutReviewApiSchema = {
     reviewerName: '',
@@ -50,7 +52,11 @@ export default function ReviewForm({
       )
 
       // client error
-      if (res.status !== 201) {
+      if (res.status === 401) {
+        toast.error(res.data.message)
+        await push('/login')
+        return
+      } else if (res.status !== 201) {
         toast.error(res.data.message)
         return
       }

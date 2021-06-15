@@ -5,12 +5,12 @@ export default function TermsComp(): JSX.Element {
         The Terms and Conditions listed below spell out your rights and
         obligations in connection with the use of the{' '}
         <span className="text-orange-800">Trishop</span> website,
-        <span className="text-orange-800">www.trishop.vercel.app</span>. Trishop
-        provides the content and services available on{' '}
+        <span className="text-orange-800"> www.trishop.vercel.app</span>.
+        Trishop provides the content and services available on{' '}
         <span className="text-orange-800">www.trishop.vercel.app</span> to you,
         subject to the following terms and conditions. By accessing or
         purchasing from
-        <span className="text-orange-800">www.trishop.vercel.app</span> you are
+        <span className="text-orange-800"> www.trishop.vercel.app</span> you are
         acknowledging that you have read, understand, and agree, without
         limitation or qualification, to be bound by these Terms and Conditions,
         which include our Privacy Policy. These Terms and Conditions are dated{' '}

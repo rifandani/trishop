@@ -1,7 +1,7 @@
-import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { verify } from 'jsonwebtoken'
 import { parse } from 'cookie'
+import { NextSeo } from 'next-seo'
 // files
 import Navbar from 'components/admin/Navbar'
 import EditCoupon from 'components/admin/coupons/EditCoupon'
@@ -17,10 +17,7 @@ export default function AdminCouponsEditPage({
 }: ICouponProps): JSX.Element {
   return (
     <>
-      <Head>
-        <title>Trishop - Edit Coupon</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <NextSeo title="Edit Coupon" />
 
       <Navbar>
         <EditCoupon coupon={coupon} />

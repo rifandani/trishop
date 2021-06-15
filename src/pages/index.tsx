@@ -1,4 +1,3 @@
-import Head from 'next/head'
 // files
 import Header from 'components/home/Header'
 import Portfolio from 'components/home/Portfolio'
@@ -10,10 +9,6 @@ import Footer from 'components/Footer'
 export default function HomePage(): JSX.Element {
   return (
     <div className="bg-white">
-      <Head>
-        <title>TriShop - Cake Shop</title>
-      </Head>
-
       <Header />
 
       <Portfolio />

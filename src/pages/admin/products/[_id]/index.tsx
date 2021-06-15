@@ -1,7 +1,7 @@
-import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { parse } from 'cookie'
 import { verify } from 'jsonwebtoken'
+import { NextSeo } from 'next-seo'
 // files
 import Navbar from 'components/admin/Navbar'
 import EditProduct from 'components/admin/products/EditProduct'
@@ -19,10 +19,7 @@ interface Props {
 export default function AdminProductEdit({ product }: Props): JSX.Element {
   return (
     <>
-      <Head>
-        <title>Trishop - Edit Product</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <NextSeo title="Edit Product" />
 
       <Navbar>
         <EditProduct product={product} />

@@ -1,10 +1,10 @@
-import Head from 'next/head'
 import Router from 'next/router'
 import axios from 'axios'
 import NProgress from 'nprogress'
 import { SWRConfig } from 'swr'
 import { ToastContainer, toast } from 'react-toastify'
 import type { AppProps /*, AppContext */ } from 'next/app'
+import { DefaultSeo } from 'next-seo'
 // Import styles
 import '../styles/index.css'
 import 'nprogress/nprogress.css'
@@ -18,6 +18,7 @@ import 'swiper/components/pagination/pagination.min.css'
 import { CartProvider } from 'contexts/CartContext'
 import { WishlistProvider } from 'contexts/WishlistContext'
 import { UserProvider } from 'contexts/UserContext'
+import SEO from 'config/seo'
 
 // create a custom progress bar
 NProgress.configure({ showSpinner: false })
@@ -44,33 +45,7 @@ axios.defaults.validateStatus = (status) =>
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <>
-      <Head>
-        <title>TriShop - Cake shop</title>
-        {/* meta */}
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-        <meta property="og:title" content="TriShop" key="title" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="favicon.ico" />
-        <meta name="twitter:title" content="TriShop - Cake shop" />
-        <meta
-          name="twitter:card"
-          content="Tell us your custom cake design. We make your dream cake becomes reality"
-        />
-        <meta
-          name="description"
-          content="We make your dream cake becomes reality"
-        />
-        <meta name="twitter:image" content="favicon.ico" />
-        <link rel="icon" href="favicon.ico" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
+      <DefaultSeo {...SEO} />
 
       <SWRConfig
         value={{

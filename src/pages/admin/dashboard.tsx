@@ -1,7 +1,7 @@
-import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { verify } from 'jsonwebtoken'
 import { parse } from 'cookie'
+import { NextSeo } from 'next-seo'
 // files
 import Navbar from 'components/admin/Navbar'
 import AdminDashboard from 'components/admin/AdminDashboard'
@@ -12,10 +12,7 @@ import { AuthCookiePayload } from 'types'
 export default function AdminDashboardPage(): JSX.Element {
   return (
     <>
-      <Head>
-        <title>Trishop - Admin Dashboard</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <NextSeo title="Admin Dashboard" />
 
       <Navbar>
         <AdminDashboard />

@@ -1,7 +1,7 @@
-import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { verify } from 'jsonwebtoken'
 import { parse } from 'cookie'
+import { NextSeo } from 'next-seo'
 // files
 import Navbar from 'components/admin/Navbar'
 import EditUser from 'components/admin/users/EditUser'
@@ -14,10 +14,7 @@ import { AuthCookiePayload } from 'types'
 export default function AdminUsersEditPage({ user }: IUserProps): JSX.Element {
   return (
     <>
-      <Head>
-        <title>Trishop - Edit User</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <NextSeo title="Edit User" />
 
       <Navbar>
         <EditUser user={user} />

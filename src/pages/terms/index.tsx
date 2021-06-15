@@ -1,5 +1,5 @@
-import Head from 'next/head'
 import { FaLock } from 'react-icons/fa'
+import { NextSeo } from 'next-seo'
 // files
 import Nav from 'components/Nav'
 import Footer from 'components/Footer'
@@ -8,9 +8,10 @@ import TermsComp from 'components/terms/TermsComp'
 export default function TermsPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
-      <Head>
-        <title>Trishop - Terms and Conditions</title>
-      </Head>
+      <NextSeo
+        title="Terms and Conditions"
+        description="Our Terms and Conditions listed below spell out your rights and obligations in connection with the use of the Trishop website."
+      />
 
       <Nav />
 

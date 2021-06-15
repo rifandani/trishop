@@ -1,5 +1,5 @@
-import Head from 'next/head'
 import { FaShoppingBag } from 'react-icons/fa'
+import { NextSeo } from 'next-seo'
 // files
 import Nav from 'components/Nav'
 import Footer from 'components/Footer'
@@ -8,9 +8,10 @@ import MarketplaceComp from 'components/marketplaces/MarketplaceComp'
 export default function MarketplacesPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
-      <Head>
-        <title>Trishop - Marketplaces</title>
-      </Head>
+      <NextSeo
+        title="Marketplaces"
+        description="Trishop not bound only to this website. It also spreads to the other popular E-commerce platform such as Tokopedia, Shopee, and Lazada."
+      />
 
       <Nav />
 
