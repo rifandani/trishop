@@ -15,7 +15,7 @@ export interface APIResponseProducts {
 
 export default function ProductsComp(): JSX.Element {
   // hooks
-  const { data, error } = useSWR<APIResponseProducts>('/admin/products', {
+  const { data, error } = useSWR<APIResponseProducts>('/public/products', {
     refreshInterval: 10000,
   })
   const [currentPage, setCurrentPage] = useState<number>(0) // for pagination

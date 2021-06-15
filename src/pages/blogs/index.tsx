@@ -1,5 +1,5 @@
-import Head from 'next/head'
 import { ImBooks } from 'react-icons/im'
+import { NextSeo } from 'next-seo'
 // files
 import Nav from 'components/Nav'
 import Footer from 'components/Footer'
@@ -8,9 +8,10 @@ import BlogComp from 'components/blogs/BlogComp'
 export default function BlogsPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
-      <Head>
-        <title>Trishop - Blogs</title>
-      </Head>
+      <NextSeo
+        title="Blog"
+        description="Stay up to date with the latest updates from Trishop. Products, announcements, and articles about cake, chocolates, and baking in general."
+      />
 
       <Nav />
 

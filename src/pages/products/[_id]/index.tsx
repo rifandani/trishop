@@ -1,6 +1,6 @@
-import Head from 'next/head'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { FaComments, FaPenSquare } from 'react-icons/fa'
+import { NextSeo } from 'next-seo'
 // files
 import Nav from 'components/Nav'
 import ProductDetail from 'components/products/product/ProductDetail'
@@ -22,10 +22,7 @@ export default function ProductDetailPage({
 }: IProductDetailPageProps): JSX.Element {
   return (
     <div className="flex flex-col mt-3 space-y-12 lg:mt-5">
-      <Head>
-        <title>Trishop - {product.title}</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <NextSeo title={product.title} description={product.desc} />
 
       <Nav />
 

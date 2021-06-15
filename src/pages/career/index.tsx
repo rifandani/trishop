@@ -1,5 +1,5 @@
-import Head from 'next/head'
 import { MdWork } from 'react-icons/md'
+import { NextSeo } from 'next-seo'
 // files
 import Nav from 'components/Nav'
 import Footer from 'components/Footer'
@@ -8,9 +8,10 @@ import CareerComp from 'components/career/CareerComp'
 export default function CareerPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
-      <Head>
-        <title>Trishop - Career</title>
-      </Head>
+      <NextSeo
+        title="Career"
+        description="Stay up to date with the latest updates from Trishop. Products, announcements, and articles about cake, chocolates, and baking in general."
+      />
 
       <Nav />
 

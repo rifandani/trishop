@@ -1,7 +1,8 @@
 import axios from 'axios'
-import { Dispatch, Fragment, SetStateAction } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
+import { Dialog, Transition } from '@headlessui/react'
+import { Dispatch, Fragment, SetStateAction } from 'react'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import { IReview } from 'types/Review'
@@ -21,6 +22,9 @@ export default function ReportReviewModal({
   review,
   userId,
 }: Props): JSX.Element {
+  // hooks
+  const { push } = useRouter()
+
   const initialValues: TAddReportSchema = {
     typeId: 1,
     argument: '',
@@ -41,7 +45,11 @@ export default function ReportReviewModal({
       const res = await axios.post<IPostReportResponse>('/admin/reports', data)
 
       // client error
-      if (res.status !== 201) {
+      if (res.status === 401) {
+        toast.error(res.data.message)
+        await push('/login')
+        return
+      } else if (res.status !== 201) {
         toast.error(res.data.message)
         return
       }

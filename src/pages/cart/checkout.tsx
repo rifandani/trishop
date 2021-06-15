@@ -1,7 +1,7 @@
-import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { parse } from 'cookie'
 import { verify } from 'jsonwebtoken'
+import { NextSeo } from 'next-seo'
 // files
 import Nav from 'components/Nav'
 import CheckoutComp from 'components/cart/checkout/CheckoutComp'
@@ -10,10 +10,10 @@ import Footer from 'components/Footer'
 function CheckoutPage(): JSX.Element {
   return (
     <div className="">
-      <Head>
-        <title>Trishop - Checkout</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <NextSeo
+        title="Checkout"
+        description="Acting as an online store's process series of steps a customer must follow to purchase items in their online shopping cart."
+      />
 
       <Nav />
 
@@ -41,7 +41,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     // verify the authCookie
-    // decoded === payload { sub: user._id }
     verify(authCookie, process.env.MY_SECRET_KEY)
 
     return {

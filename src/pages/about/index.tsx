@@ -1,4 +1,4 @@
-import Head from 'next/head'
+import { NextSeo } from 'next-seo'
 import { FaCode, FaUsers } from 'react-icons/fa'
 // files
 import Nav from 'components/Nav'
@@ -9,9 +9,10 @@ import AboutTeam from 'components/about/AboutTeam'
 export default function AboutPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
-      <Head>
-        <title>Trishop - About Us</title>
-      </Head>
+      <NextSeo
+        title="About Us"
+        description="Trishop is an online cake shop. We love cake, bakery and chocolates - so do our customers. We constantly obsess over sourcing the highest quality ingredients for our products. Our motivation for using these ingredients are love for great food and respect for the environment."
+      />
 
       <Nav />
 

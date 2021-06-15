@@ -1,4 +1,5 @@
-import Head from 'next/head'
+import axios from 'axios'
+import { NextSeo } from 'next-seo'
 import { toast } from 'react-toastify'
 import {
   FaGithub,
@@ -10,7 +11,6 @@ import {
   FaEnvelope,
 } from 'react-icons/fa'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-import axios from 'axios'
 // files
 import Nav from 'components/Nav'
 import Footer from 'components/Footer'
@@ -35,22 +35,30 @@ function Contact(): JSX.Element {
 
     try {
       // POST email form
-      const res = await axios.post('/contact', data)
+      const res = await axios.post('/public/contact', data)
 
+      // client error
+      if (res.status !== 201) {
+        toast.error(res.data.message)
+        return
+      }
+
+      // success
       toast.success(res.data.message)
-      actions.setSubmitting(false) // finish formik cycle
     } catch (err) {
       toast.error(err.message)
       console.error(err)
+    } finally {
       actions.setSubmitting(false) // finish formik cycle
     }
   }
 
   return (
     <>
-      <Head>
-        <title>TriShop - Contact Us</title>
-      </Head>
+      <NextSeo
+        title="Contact"
+        description="Our shop contact service gives customers the support they need when shopping online. Whether by phone, chat, or even email, we make sure that everything responded professionally."
+      />
 
       <Nav />
 

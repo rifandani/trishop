@@ -1,5 +1,5 @@
-import Head from 'next/head'
 import { FaQuestionCircle } from 'react-icons/fa'
+import { NextSeo } from 'next-seo'
 // files
 import Nav from 'components/Nav'
 import Footer from 'components/Footer'
@@ -8,9 +8,10 @@ import FAQComp from 'components/faq/FAQComp'
 export default function FAQPage(): JSX.Element {
   return (
     <div className="flex flex-col ">
-      <Head>
-        <title>Trishop - FAQ</title>
-      </Head>
+      <NextSeo
+        title="FAQ"
+        description="If you're new to Trishop, this guide will help you learn more about the platform and all of its features."
+      />
 
       <Nav />
 

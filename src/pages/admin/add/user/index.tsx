@@ -1,7 +1,7 @@
-import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { verify } from 'jsonwebtoken'
 import { parse } from 'cookie'
+import { NextSeo } from 'next-seo'
 // files
 import Navbar from 'components/admin/Navbar'
 import AddUser from 'components/admin/add/AddUser'
@@ -12,10 +12,7 @@ import { AuthCookiePayload } from 'types'
 export default function AddUserPage(): JSX.Element {
   return (
     <>
-      <Head>
-        <title>Trishop - Add New User</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <NextSeo title="Add New User" />
 
       <Navbar>
         <AddUser />

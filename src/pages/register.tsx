@@ -1,5 +1,7 @@
 import axios from 'axios'
 import Link from 'next/link'
+import { parse } from 'cookie'
+import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
@@ -172,4 +174,20 @@ export default function RegisterPage(): JSX.Element {
       </div>
     </main>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = parse(ctx.req.headers?.cookie ?? '')
+  const authCookie = cookies.auth
+
+  // kalau auth cookie sudah ada
+  if (authCookie) {
+    return {
+      redirect: { destination: '/', permanent: false },
+    }
+  }
+
+  return {
+    props: {},
+  }
 }

@@ -5,12 +5,13 @@ import { MdThumbUp, MdReportProblem } from 'react-icons/md'
 import { FaStar } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 // files
 import EditReviewModal from './EditReviewModal'
 import ReportReviewModal from './ReportReviewModal'
+import useLocalStorage from 'hooks/useLocalStorage'
 import { IReviewProps } from 'types/Review'
 import { UserPayload } from 'contexts/UserReducer'
-import useLocalStorage from 'hooks/useLocalStorage'
 
 dayjs.extend(relativeTime) // so that we can user relative formatting
 
@@ -20,6 +21,7 @@ export default function CustomerReviewCard({
   const { reviewerName, comment, star, updatedAt, reviewerId, _id } = review
 
   // hooks
+  const { push } = useRouter()
   const [user] = useLocalStorage<UserPayload>('user', null) // local storage
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [reportIsOpen, setReportIsOpen] = useState<boolean>(false)
@@ -50,7 +52,11 @@ export default function CustomerReviewCard({
       const res = await axios.delete(`/admin/reviews/${_id}`) // delete review
 
       // client error
-      if (res.status !== 200) {
+      if (res.status === 401) {
+        toast.error(res.data.message)
+        await push('/login')
+        return
+      } else if (res.status !== 201) {
         toast.error(res.data.message)
         return
       }

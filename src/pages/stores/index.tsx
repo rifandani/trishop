@@ -1,5 +1,5 @@
-import Head from 'next/head'
 import { FaStoreAlt } from 'react-icons/fa'
+import { NextSeo } from 'next-seo'
 // files
 import Nav from 'components/Nav'
 import Store from 'components/stores/Store'
@@ -8,9 +8,10 @@ import Footer from 'components/Footer'
 export default function Stores(): JSX.Element {
   return (
     <div className="flex flex-col">
-      <Head>
-        <title>TriShop - Stores</title>
-      </Head>
+      <NextSeo
+        title="Stores"
+        description="Trishop have been continuously growing since past years. We have branched out to many cities to expand our stores."
+      />
 
       <Nav />
 
@@ -28,18 +29,18 @@ export default function Stores(): JSX.Element {
 
           {/* content */}
           <Store
-            imgSrc="images/store1.jpg"
-            imgAlt="Store #1"
-            rank="#1"
+            imgSrc="images/store2.jpg"
+            imgAlt="Store #2"
+            rank="#2"
             address="Jl Gejayan,"
             city="Yogyakarta"
             desc="Our first store is opened in Jalan Gejayan Gang Sambu 1C. We open this store with a hope that we can be the best custom cake business."
           />
 
           <Store
-            imgSrc="images/store2.jpg"
-            imgAlt="Store #2"
-            rank="#2"
+            imgSrc="images/store3.jpg"
+            imgAlt="Store #3"
+            rank="#3"
             address="Jl Prapatan,"
             city="Balikpapan"
             desc="Our second store is opened in Jalan Prapatan RT 10 No 35. We open this store with a hope that we can expand more our business network."
