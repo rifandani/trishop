@@ -30,7 +30,7 @@ const order = {
       quantity: 2,
       brand: 'SuperCake',
       category: 'buttercream', // product labels
-      merchant_name: 'TRISHOP' | 'trishop' | 'Trishop',
+      merchant_name: 'TRISHOP' || 'trishop' || 'Trishop',
     },
   ],
   transaction_details: {

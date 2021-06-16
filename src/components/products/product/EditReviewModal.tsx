@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { mutate } from 'swr'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import { Dialog, Transition } from '@headlessui/react'
@@ -12,12 +13,14 @@ interface Props {
   isOpen: boolean
   setIsOpen: Dispatch<SetStateAction<boolean>>
   review: IReview
+  productRef: string
 }
 
 export default function EditReviewModal({
   isOpen,
   setIsOpen,
   review,
+  productRef,
 }: Props): JSX.Element {
   // hooks
   const { push } = useRouter()
@@ -43,8 +46,8 @@ export default function EditReviewModal({
 
       // client error
       if (res.status === 401) {
-        toast.error(res.data.message)
         await push('/login')
+        toast.error(res.data.message)
         return
       } else if (res.status !== 201) {
         toast.error(res.data.message)
@@ -52,8 +55,9 @@ export default function EditReviewModal({
       }
 
       // success
-      toast.success('Review updated. Refresh to revalidate')
+      toast.success('Review updated')
       setIsOpen(false)
+      await mutate(`/public/products/${productRef}`)
     } catch (err) {
       console.error(err)
       toast.error(err.message)

@@ -1,8 +1,8 @@
 import useSWR from 'swr'
 // files
-import { APIResponseProducts } from 'components/products/ProductsComp'
 import { Image } from 'contexts/CartReducer'
 import { IReview } from 'types/Review'
+import { APIResponseProducts } from 'types/Product'
 
 interface ReturnType {
   products: {

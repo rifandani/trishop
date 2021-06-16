@@ -6,6 +6,7 @@ import { FaStar } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { mutate } from 'swr'
 // files
 import EditReviewModal from './EditReviewModal'
 import ReportReviewModal from './ReportReviewModal'
@@ -15,9 +16,14 @@ import { UserPayload } from 'contexts/UserReducer'
 
 dayjs.extend(relativeTime) // so that we can user relative formatting
 
+interface Props extends IReviewProps {
+  productRef: string
+}
+
 export default function CustomerReviewCard({
   review,
-}: IReviewProps): JSX.Element {
+  productRef,
+}: Props): JSX.Element {
   const { reviewerName, comment, star, updatedAt, reviewerId, _id } = review
 
   // hooks
@@ -53,8 +59,8 @@ export default function CustomerReviewCard({
 
       // client error
       if (res.status === 401) {
-        toast.error(res.data.message)
         await push('/login')
+        toast.error(res.data.message)
         return
       } else if (res.status !== 201) {
         toast.error(res.data.message)
@@ -62,7 +68,8 @@ export default function CustomerReviewCard({
       }
 
       // success
-      toast.info('Review deleted. Refresh to revalidate')
+      toast.info('Review deleted')
+      await mutate(`/public/products/${productRef}`)
     } catch (err) {
       console.error(err)
       toast.error(err.message)
@@ -144,7 +151,12 @@ export default function CustomerReviewCard({
         </div>
       </div>
 
-      <EditReviewModal isOpen={isOpen} setIsOpen={setIsOpen} review={review} />
+      <EditReviewModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        review={review}
+        productRef={productRef}
+      />
 
       {user && (
         <ReportReviewModal

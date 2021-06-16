@@ -5,10 +5,12 @@ import { IReview } from 'types/Review'
 
 interface ProductReviewProps {
   reviews: IReview[]
+  productRef: string
 }
 
 export default function ProductReview({
   reviews,
+  productRef,
 }: ProductReviewProps): JSX.Element {
   const reviewsCount = reviews.length
   const averageStars =
@@ -103,7 +105,11 @@ export default function ProductReview({
         <div className="flex flex-col w-full px-4 mt-6 space-y-3 md:w-1/2 md:mt-0 sm:px-6 lg:px-16">
           {reviewsCount > 0 ? (
             reviews.map((review, i) => (
-              <CustomerReviewCard key={i} review={review} />
+              <CustomerReviewCard
+                key={i}
+                review={review}
+                productRef={productRef}
+              />
             ))
           ) : (
             <span className="px-4 py-2">There is no reviews</span>
