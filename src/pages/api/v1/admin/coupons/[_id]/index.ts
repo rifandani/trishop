@@ -1,3 +1,4 @@
+import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 // files
 import CouponModel from 'mongo/models/Coupon'
@@ -6,6 +7,7 @@ import checkObjectId from 'middlewares/checkObjectId'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
 import checkAuthCookie from 'middlewares/checkAuthCookie'
+import initMiddleware from 'middlewares/initMiddleware'
 import { couponApiSchema, TCouponApiSchema } from 'yup/apiSchema'
 
 interface CouponCodes {
@@ -13,11 +15,19 @@ interface CouponCodes {
   code: string
 }
 
+const cors = initMiddleware(
+  Cors({
+    methods: ['GET', 'PUT', 'DELETE'],
+  })
+)
+
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   try {
+    await cors(req, res) // Run cors
+
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
       /*                       GET req => /admin/coupons/:_id                       */

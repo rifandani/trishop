@@ -60,9 +60,8 @@ export default function CartComp(): JSX.Element {
     }
 
     try {
-      // call API /validate/coupon
       const res = await axios.post<APIResponseCoupon>(
-        '/validate/coupon',
+        '/public/validate/coupon',
         reqBody
       )
 

@@ -1,17 +1,27 @@
+import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { compare } from 'bcrypt'
 // files
 import UserModel from 'mongo/models/User'
 import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
+import initMiddleware from 'middlewares/initMiddleware'
 import { setAuthCookie } from 'utils/setCookie'
 import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
+
+const cors = initMiddleware(
+  Cors({
+    methods: ['POST'],
+  })
+)
 
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
   try {
+    await cors(req, res) // Run cors
+
     if (req.method === 'POST') {
       // destructure request body form
       const { email, password } = req.body as TLoginApiSchema

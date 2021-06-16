@@ -1,11 +1,22 @@
+import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { serialize } from 'cookie'
+// files
+import initMiddleware from 'middlewares/initMiddleware'
+
+const cors = initMiddleware(
+  Cors({
+    methods: ['GET'],
+  })
+)
 
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   try {
+    await cors(req, res) // Run cors
+
     if (req.method === 'GET') {
       // remove cookies from request header by setting it to 0
       res.setHeader(

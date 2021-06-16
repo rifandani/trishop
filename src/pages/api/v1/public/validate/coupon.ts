@@ -1,5 +1,7 @@
+import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 // files
+import initMiddleware from 'middlewares/initMiddleware'
 import CouponModel from 'mongo/models/Coupon'
 import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
@@ -8,11 +10,19 @@ import {
   TValidateCouponApiSchema,
 } from 'yup/apiSchema'
 
+const cors = initMiddleware(
+  Cors({
+    methods: ['POST'],
+  })
+)
+
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   try {
+    await cors(req, res) // Run cors
+
     if (req.method === 'POST') {
       const { userId, code } = req.body as TValidateCouponApiSchema // destructure request body form
 

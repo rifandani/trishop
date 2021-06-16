@@ -1,16 +1,26 @@
+import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 // files
 import ProductModel from 'mongo/models/Product'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
 import checkAuthCookie from 'middlewares/checkAuthCookie'
+import initMiddleware from 'middlewares/initMiddleware'
 import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
+
+const cors = initMiddleware(
+  Cors({
+    methods: ['GET', 'POST'],
+  })
+)
 
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   try {
+    await cors(req, res) // Run cors
+
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
       /*                         GET req => /admin/products                         */

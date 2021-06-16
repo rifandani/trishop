@@ -1,14 +1,24 @@
+import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { v2 as cld } from 'cloudinary'
 import { parse } from 'querystring'
 // files
 import checkAuthCookie from 'middlewares/checkAuthCookie'
+import initMiddleware from 'middlewares/initMiddleware'
+
+const cors = initMiddleware(
+  Cors({
+    methods: ['GET', 'POST', 'DELETE'],
+  })
+)
 
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   try {
+    await cors(req, res) // Run cors
+
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
       /*                         GET req => /admin/cloudinary/images                */
@@ -37,7 +47,7 @@ const handler = async function (
       // const image = await cld.uploader.upload()
 
       // POST success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(201).json({ error: false })
+      res.status(501).json({ error: false, message: 'Not yet implemented' })
     } else if (req.method === 'DELETE') {
       /* -------------------------------------------------------------------------- */
       /*               DELETE req => /admin/cloudinary/images?ids                       */
@@ -50,7 +60,9 @@ const handler = async function (
       // const response = await cld.api.delete_resources([''], { type: 'upload' })
 
       // DELETE success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, params })
+      res
+        .status(501)
+        .json({ error: true, params, message: 'Not yet implemented' })
     } else {
       // client error => METHOD NOT ALLOWED -----------------------------------------------------------------
       res.status(405).json({

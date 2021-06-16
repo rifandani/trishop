@@ -1,3 +1,4 @@
+import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 // files
 import getQueryAsString from 'utils/getQueryAsString'
@@ -6,12 +7,21 @@ import ReviewModel from 'mongo/models/Review'
 import connectMongo from 'middlewares/connectMongo'
 import checkObjectId from 'middlewares/checkObjectId'
 import checkAuthCookie from 'middlewares/checkAuthCookie'
+import initMiddleware from 'middlewares/initMiddleware'
+
+const cors = initMiddleware(
+  Cors({
+    methods: ['GET', 'PUT', 'DELETE'],
+  })
+)
 
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   try {
+    await cors(req, res) // Run cors
+
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
       /*                       GET req => /admin/reports/:_id                      */
