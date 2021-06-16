@@ -57,7 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // if user.role === 'USER'
     if (decoded.role === 'USER') {
       return {
-        redirect: { destination: '/dashboard', permanent: false },
+        redirect: { destination: '/user/dashboard', permanent: false },
       }
     }
 

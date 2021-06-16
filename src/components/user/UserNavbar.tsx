@@ -1,24 +1,15 @@
 import axios from 'axios'
 import Link from 'next/link'
-import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { toast } from 'react-toastify'
-import {
-  FaReact,
-  FaHome,
-  FaSearch,
-  FaBars,
-  FaUserPlus,
-  FaFolderPlus,
-  FaCpanel,
-  FaTicketAlt,
-} from 'react-icons/fa'
+import { FaReact, FaHome, FaSearch, FaBars, FaCpanel } from 'react-icons/fa'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
 import { UserPayload } from 'contexts/UserReducer'
 import { ChildrenProps } from 'types'
 
-export default function Navbar({ children }: ChildrenProps): JSX.Element {
+export default function UserNavbar({ children }: ChildrenProps): JSX.Element {
   // hooks
   const { pathname, push } = useRouter()
   const [, setUser] = useLocalStorage<UserPayload>('user', null) // local storage
@@ -80,10 +71,10 @@ export default function Navbar({ children }: ChildrenProps): JSX.Element {
                 </a>
               </Link>
 
-              <Link href="/admin/dashboard">
+              <Link href="/user/dashboard">
                 <a
                   className={`flex items-center mt-4 py-2 px-6 ${
-                    pathname === '/admin/dashboard'
+                    pathname === '/user/dashboard'
                       ? 'bg-gray-700 bg-opacity-25 text-gray-100'
                       : 'text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'
                   }`}
@@ -91,48 +82,6 @@ export default function Navbar({ children }: ChildrenProps): JSX.Element {
                   <FaCpanel className="w-6 h-6" />
 
                   <span className="mx-3">Dashboard</span>
-                </a>
-              </Link>
-
-              <Link href="/admin/add/user">
-                <a
-                  className={`flex items-center mt-4 py-2 px-6 ${
-                    pathname === '/admin/add/user'
-                      ? 'bg-gray-700 bg-opacity-25 text-gray-100'
-                      : 'text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'
-                  }`}
-                >
-                  <FaUserPlus className="w-6 h-6" />
-
-                  <span className="mx-3">Add User</span>
-                </a>
-              </Link>
-
-              <Link href="/admin/add/product">
-                <a
-                  className={`flex items-center mt-4 py-2 px-6 ${
-                    pathname === '/admin/add/product'
-                      ? 'bg-gray-700 bg-opacity-25 text-gray-100'
-                      : 'text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'
-                  }`}
-                >
-                  <FaFolderPlus className="w-6 h-6" />
-
-                  <span className="mx-3">Add Product</span>
-                </a>
-              </Link>
-
-              <Link href="/admin/add/coupon">
-                <a
-                  className={`flex items-center mt-4 py-2 px-6 ${
-                    pathname === '/admin/add/coupon'
-                      ? 'bg-gray-700 bg-opacity-25 text-gray-100'
-                      : 'text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'
-                  }`}
-                >
-                  <FaTicketAlt className="w-6 h-6" />
-
-                  <span className="mx-3">Add Coupon</span>
                 </a>
               </Link>
             </nav>

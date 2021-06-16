@@ -53,5 +53,3 @@ export default function ProductDetailPage(): JSX.Element {
     </div>
   )
 }
-
-// TODO: use SWR instead getStaticProps for better UX

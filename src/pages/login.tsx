@@ -41,13 +41,13 @@ export default function Login(): JSX.Element {
       // if role == 'ADMIN'
       if (res.data.data.role === 'ADMIN') {
         await push('/admin/dashboard')
-        toast.success('Welcome to admin dashboard')
+        toast.success(`Welcome, ${res.data.data.name}`)
         return
       }
 
       // if role == 'USER'
-      await push('/products')
-      toast.success('You are logged in')
+      await push('/user/dashboard')
+      toast.success(`Welcome, ${res.data.data.name}`)
     } catch (err) {
       // 500 - server error
       console.error(err)
@@ -169,7 +169,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // kalau auth cookie sudah ada
   if (authCookie) {
     return {
-      redirect: { destination: '/', permanent: false },
+      redirect: { destination: '/user/dashboard', permanent: false },
     }
   }
 

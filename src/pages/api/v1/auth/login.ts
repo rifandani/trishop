@@ -19,7 +19,6 @@ const handler = async (
       // find specific user
       const userDoc = await UserModel.findOne({ email })
 
-      // compare password
       const isMatch = await compare(password, userDoc.password)
 
       if (!isMatch) {
