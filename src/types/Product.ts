@@ -1,5 +1,6 @@
 // files
 import { IReview } from './Review'
+import { Product } from 'contexts/CartReducer'
 
 export type TImage = {
   imageName: string
@@ -19,6 +20,21 @@ export interface IProduct {
   reviews?: IReview[] // new
   createdAt?: Date
   updatedAt?: Date
+}
+
+/* --------------------------------- client --------------------------------- */
+
+export interface APIResponseProducts {
+  error: boolean
+  products: Product[]
+  count: number
+  message?: string
+}
+
+export interface APIResponseProduct {
+  error: boolean
+  product: Product
+  message?: string
 }
 
 // import { Document, Model } from 'mongoose'

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { mutate } from 'swr'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
@@ -53,8 +54,8 @@ export default function ReviewForm({
 
       // client error
       if (res.status === 401) {
-        toast.error(res.data.message)
         await push('/login')
+        toast.error(res.data.message)
         return
       } else if (res.status !== 201) {
         toast.error(res.data.message)
@@ -62,7 +63,8 @@ export default function ReviewForm({
       }
 
       // success
-      toast.success('Review added. Refresh to revalidate')
+      toast.success('Review added')
+      await mutate(`/public/products/${productRef}`)
     } catch (err) {
       console.error(err)
       toast.error(err.message)

@@ -5,13 +5,7 @@ import useSWR from 'swr'
 import LoadingSpinner from 'components/LoadingSpinner'
 import ProductCard from 'components/products/ProductCard'
 import ProductsPagination from 'components/common/pagination/ProductsPagination'
-import { Product } from 'contexts/CartReducer'
-
-export interface APIResponseProducts {
-  error: boolean
-  products: Product[]
-  count: number
-}
+import { APIResponseProducts } from 'types/Product'
 
 export default function ProductsComp(): JSX.Element {
   // hooks
@@ -57,7 +51,7 @@ export default function ProductsComp(): JSX.Element {
         {/* pagination */}
         {data && (
           <ProductsPagination
-            products={data?.products}
+            products={data.products}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             limit={limit}
