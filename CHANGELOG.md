@@ -4,10 +4,14 @@
 
 - Refactor code di page `/products/:id` menggunakan `useSWR` daripada `getStaticProps`
 - Menambahkan component untuk user dashboard di page `/user/dashboard`
+- Implementasi cors dengan deps `cors` agar API bisa diakses di deployment _Preview_ mode
+
+## 15 Juni 2021
+
+- Implementasi SEO dengan deps `next-seo`
 
 ## 14 Juni 2021
 
-- Mengupdate `README.md`
 - Menambahkan `CHANGELOG.md`
 - Menambahkan `CODE_OF_CONDUCT.md`
 - Membuat grup komunitas Roompy di [Discord](https://discord.gg/W9gPJ6kUPY)

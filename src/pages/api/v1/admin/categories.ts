@@ -1,14 +1,24 @@
+import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 // files
 import ProductModel from 'mongo/models/Product'
 import connectMongo from 'middlewares/connectMongo'
+import initMiddleware from 'middlewares/initMiddleware'
+
+const cors = initMiddleware(
+  Cors({
+    methods: ['GET'],
+  })
+)
 
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  if (req.method === 'GET') {
-    try {
+  try {
+    await cors(req, res) // Run cors
+
+    if (req.method === 'GET') {
       // get all products
       const products = await ProductModel.find()
 
@@ -23,15 +33,20 @@ const handler = async function (
 
       // JSON response => [category] ---------------------------------------- OK
       return res.status(200).json(categories)
-    } catch (err) {
-      // error 400 => BAD REQUEST
-      return res.status(400).json({ error: true, message: 'Bad request' })
+    } else {
+      // client error => METHOD NOT ALLOWED -----------------------------------------------------------------
+      res.status(405).json({
+        error: true,
+        name: 'METHOD NOT ALLOWED',
+        message: 'Only supports GET methods',
+      })
     }
-  } else {
-    // error 405 => METHOD NOT ALLOWED
-    return res.status(405).json({
+  } catch (err) {
+    // server error => internal server error ----------------------------------------
+    res.status(500).json({
       error: true,
-      message: 'Only supports GET',
+      name: err.name,
+      message: err.message,
     })
   }
 }

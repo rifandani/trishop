@@ -1,14 +1,24 @@
-import withYup from 'middlewares/withYup'
+import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport } from 'nodemailer'
 // files
+import withYup from 'middlewares/withYup'
+import initMiddleware from 'middlewares/initMiddleware'
 import { contactApiSchema } from 'yup/apiSchema'
+
+const cors = initMiddleware(
+  Cors({
+    methods: ['POST'],
+  })
+)
 
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
   try {
+    await cors(req, res) // Run cors
+
     if (req.method === 'POST') {
       // destructure request body form
       const { email, subject, message } = req.body
@@ -17,15 +27,15 @@ const handler = async (
       const transporter = createTransport({
         service: 'gmail',
         auth: {
-          user: 'tri.rifandani@gmail.com',
-          pass: 'rifandani098765Aa@',
+          user: process.env.CONTACT_EMAIL,
+          pass: process.env.CONTACT_PASS,
         },
       })
 
       // mail options
       const mailOptions = {
         from: email,
-        to: 'tri.rifandani@gmail.com',
+        to: process.env.CONTACT_EMAIL,
         subject: `TriShop Contact - ${subject}`,
         text: `Email from: ${email}. Message: ${message}`,
       }

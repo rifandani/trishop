@@ -45,6 +45,7 @@
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.26.0",
     "cookie": "^0.4.1",
+    "cors": "^2.8.5",
     "dayjs": "^1.10.5",
     "formik": "^2.2.8",
     "gridjs": "^4.0.0",
@@ -73,6 +74,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/cookie": "^0.4.0",
+    "@types/cors": "^2.8.10",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/mongoose": "^5.10.5",
     "@types/node": "^15.6.0",

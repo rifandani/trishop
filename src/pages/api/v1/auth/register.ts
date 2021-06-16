@@ -1,23 +1,33 @@
+import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
-import bcrypt from 'bcrypt'
+import { hashSync } from 'bcrypt'
 // files
 import UserModel from 'mongo/models/User'
 import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
+import initMiddleware from 'middlewares/initMiddleware'
 import { setAuthCookie } from 'utils/setCookie'
 import { registerApiSchema, TRegisterApiSchema } from 'yup/apiSchema'
+
+const cors = initMiddleware(
+  Cors({
+    methods: ['POST'],
+  })
+)
 
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   try {
+    await cors(req, res) // Run cors
+
     if (req.method === 'POST') {
       // destructure request body form
       const { name, email, password } = req.body as TRegisterApiSchema
 
       // hash password with bcrypt
-      const hash = bcrypt.hashSync(password, 10)
+      const hash = hashSync(password, 10)
 
       // store hashed password in database
       const userDoc = await UserModel.create({ name, email, password: hash })
