@@ -1,5 +1,10 @@
 # Changelog
 
+## 16 Juni 2021
+
+- Refactor code di page `/products/:id` menggunakan `useSWR` daripada `getStaticProps`
+- Menambahkan component untuk user dashboard di page `/user/dashboard`
+
 ## 14 Juni 2021
 
 - Mengupdate `README.md`
