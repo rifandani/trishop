@@ -53,7 +53,7 @@ Trishop dilengkapi dengan fitur:
 11. Report review yang terindikasi spam / mengandung SARA 🚫
 12. Memakai coupon code ketika di cart bagi customer yang memilikinya 👩‍💻
 13. Admin dashboard untuk fungsi CRUD user, product, coupons, reports, dan memantau status order product _(coming soon)_ 💎
-14. Customer dashboard untuk memantau order product yang telah dibeli 🕵️‍♀️ _(coming soon)_
+14. Customer dashboard untuk memantau order product yang telah dibeli 🕵️‍♀️
 15. dll...
 
 ## Services 📃
