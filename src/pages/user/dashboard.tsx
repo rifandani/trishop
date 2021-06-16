@@ -3,20 +3,20 @@ import { verify } from 'jsonwebtoken'
 import { parse } from 'cookie'
 import { NextSeo } from 'next-seo'
 // files
-import Navbar from 'components/admin/Navbar'
-import AddCoupon from 'components/admin/add/AddCoupon'
-import dbConnect from 'mongo/config/dbConnect'
+import UserNavbar from 'components/user/UserNavbar'
+import UserDashboard from 'components/user/UserDashboard'
 import UserModel from 'mongo/models/User'
+import dbConnect from 'mongo/config/dbConnect'
 import { AuthCookiePayload } from 'types'
 
-export default function AddCouponPage(): JSX.Element {
+export default function UserDashboardPage(): JSX.Element {
   return (
     <>
-      <NextSeo title="Add New Coupon" />
+      <NextSeo title="User Dashboard" />
 
-      <Navbar>
-        <AddCoupon />
-      </Navbar>
+      <UserNavbar>
+        <UserDashboard />
+      </UserNavbar>
     </>
   )
 }
@@ -54,10 +54,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // find user by id
     // const user = await UserModel.findById(userId)
 
-    // if user.role === 'USER'
-    if (decoded.role === 'USER') {
+    // if user.role === 'ADMIN'
+    if (decoded.role === 'ADMIN') {
       return {
-        redirect: { destination: '/user/dashboard', permanent: false },
+        redirect: { destination: '/admin/dashboard', permanent: false },
       }
     }
 

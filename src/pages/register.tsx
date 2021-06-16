@@ -19,7 +19,7 @@ export default function RegisterPage(): JSX.Element {
   }
 
   // hooks
-  const router = useRouter()
+  const { push } = useRouter()
   const [, setUser] = useLocalStorage<UserPayload>('user', null)
 
   const onRegister = async (
@@ -39,9 +39,9 @@ export default function RegisterPage(): JSX.Element {
       // set data user to local storage
       setUser(res.data.data)
 
-      // role === 'USER'
-      await router.push('/products')
-      toast.success('Register success')
+      // if role == 'USER'
+      await push('/user/dashboard')
+      toast.success(`Welcome, ${res.data.data.name}`)
     } catch (err) {
       // 500 - server error
       console.error(err)
@@ -183,7 +183,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // kalau auth cookie sudah ada
   if (authCookie) {
     return {
-      redirect: { destination: '/', permanent: false },
+      redirect: { destination: '/user/dashboard', permanent: false },
     }
   }
 

@@ -22,7 +22,7 @@ export default function Nav(): JSX.Element {
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false) // toggle dropdown menu
 
   const pushToAdminDashboard = (): Promise<boolean> => push('/admin/dashboard')
-  const pushToDashboard = (): Promise<boolean> => push('/dashboard')
+  const pushToUserDashboard = (): Promise<boolean> => push('/user/dashboard')
 
   const login = (): Promise<boolean> => push('/login')
 
@@ -134,7 +134,6 @@ export default function Nav(): JSX.Element {
                   toggleDropdown ? '' : 'hidden'
                 }`}
               >
-                {/* TODO: buat user dashboard */}
                 {user ? (
                   <button
                     className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-orange-500 hover:text-white"
@@ -142,7 +141,7 @@ export default function Nav(): JSX.Element {
                     onClick={
                       user.role === 'ADMIN'
                         ? pushToAdminDashboard
-                        : pushToDashboard
+                        : pushToUserDashboard
                     }
                   >
                     Dashboard
