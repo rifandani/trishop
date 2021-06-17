@@ -3,6 +3,8 @@
 ## 17 Juni 2021
 
 - Update semua deps terutama `nextjs v11.0.0`
+- Implementasi middleware `checkAuthCookieAsAdmin` untuk API routes prefix `/admin`
+- Implementasi middleware `checkAuthCookie` untuk API routes prefix `/user`
 
 ## 16 Juni 2021
 
