@@ -1,5 +1,9 @@
 # Changelog
 
+## 17 Juni 2021
+
+- Update semua deps terutama `nextjs v11.0.0`
+
 ## 16 Juni 2021
 
 - Refactor code di page `/products/:id` menggunakan `useSWR` daripada `getStaticProps`
