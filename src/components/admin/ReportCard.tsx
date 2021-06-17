@@ -9,7 +9,8 @@ import { IReportProps } from 'types/Report'
 import { IReview } from 'types/Review'
 
 export default function ReportCard({ report }: IReportProps): JSX.Element {
-  const { argument, reviewRef, typeId, _id } = report
+  const { argument, typeId, _id } = report
+  const reviewRef = report.reviewRef as IReview
 
   // typeId = 1 // 'Bug or problem with the website'
   // typeId = 2 // 'Spam or commercial unrelated to trishop'
@@ -45,7 +46,7 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
       setIsDeleting(true)
 
       await axios.delete(`/admin/reports/${_id}`) // delete report
-      await axios.delete(`/admin/reviews/${reviewRef}`) // delete review
+      await axios.delete(`/admin/reviews/${reviewRef._id}`) // delete review
 
       // success
       toast.info('Report and review deleted')
@@ -61,15 +62,13 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
   return (
     <section className="px-8 py-4 mx-auto bg-white rounded-lg shadow-md">
       <div className="mt-2">
-        <Link
-          href={`/products/${(reviewRef as IReview).productRef.toString()}`}
-        >
+        <Link href={`/products/${reviewRef.productRef.toString()}`}>
           <a className="block text-2xl font-bold text-gray-900 hover:text-orange-800 hover:underline">
-            {(reviewRef as IReview).reviewerName}
+            {reviewRef.reviewerName}
           </a>
         </Link>
 
-        {Array((reviewRef as IReview).star)
+        {Array(reviewRef.star)
           .fill('whatever')
           .map((_, i) => (
             <div
@@ -80,7 +79,7 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
             </div>
           ))}
 
-        <p className="text-gray-600">{(reviewRef as IReview).comment}</p>
+        <p className="text-gray-600">{reviewRef.comment}</p>
 
         <hr className="my-4 text-gray-400" />
       </div>

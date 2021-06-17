@@ -24,12 +24,12 @@ const handler = async function (
 
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
-      /*                         GET req => /admin/reviews                         */
+      /*                         GET req => /user/reviews                         */
       /* -------------------------------------------------------------------------- */
 
       // there is no query for filtering & sorting
       if (Object.keys(req.query).length === 0) {
-        const reviewsDoc = await ReviewModel.find() // .populate('productRef', 'reviewerName -_id').select('productRef reviewerId') cuma ambil reviewerName, trus hilangin _id dari response
+        const reviewsDoc = await ReviewModel.find() // .populate('productRef', 'reviewerName -__v').select('productRef reviewerId')
 
         // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         res
@@ -41,7 +41,7 @@ const handler = async function (
       // const customQuery = req.query
     } else if (req.method === 'POST') {
       /* -------------------------------------------------------------------------- */
-      /*                         POST req => /admin/reviews                         */
+      /*                         POST req => /user/reviews                         */
       /* -------------------------------------------------------------------------- */
 
       const { productRef, reviewerId, reviewerName, comment, star } =

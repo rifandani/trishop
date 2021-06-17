@@ -42,7 +42,7 @@ export default function ReportReviewModal({
         typeId: +values.typeId, // number
       }
 
-      const res = await axios.post<IPostReportResponse>('/admin/reports', data)
+      const res = await axios.post<IPostReportResponse>('/user/reports', data)
 
       // client error
       if (res.status === 401) {
