@@ -55,7 +55,7 @@ export default function CustomerReviewCard({
     if (!isAgree) return
 
     try {
-      const res = await axios.delete(`/admin/reviews/${_id}`) // delete review
+      const res = await axios.delete(`/user/reviews/${_id}`) // delete review
 
       // client error
       if (res.status === 401) {

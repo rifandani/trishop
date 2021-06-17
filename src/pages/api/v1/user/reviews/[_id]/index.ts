@@ -6,12 +6,14 @@ import ReviewModel from 'mongo/models/Review'
 import ProductModel from 'mongo/models/Product'
 import connectMongo from 'middlewares/connectMongo'
 import checkObjectId from 'middlewares/checkObjectId'
+import withYup from 'middlewares/withYup'
+import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
-import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
+import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
 
 const cors = initMiddleware(
   Cors({
-    methods: ['DELETE'],
+    methods: ['PUT', 'DELETE'],
   })
 )
 
@@ -22,9 +24,28 @@ const handler = async function (
   try {
     await cors(req, res) // Run cors
 
-    if (req.method === 'DELETE') {
+    if (req.method === 'PUT') {
       /* -------------------------------------------------------------------------- */
-      /*                        DELETE req => /admin/reviews/:_id                   */
+      /*                       PUT req => /user/reviews/:_id                      */
+      /* -------------------------------------------------------------------------- */
+
+      // get reviewId
+      const reviewId = getQueryAsString(req.query._id)
+
+      const { reviewerName, comment, star } = req.body as TPutReviewApiSchema
+
+      // update review
+      await ReviewModel.findByIdAndUpdate(reviewId, {
+        reviewerName,
+        comment,
+        star,
+      })
+
+      // PUT success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      res.status(201).json({ error: false, message: 'Review updated' })
+    } else if (req.method === 'DELETE') {
+      /* -------------------------------------------------------------------------- */
+      /*                        DELETE req => /user/reviews/:_id                   */
       /* -------------------------------------------------------------------------- */
 
       // get id
@@ -49,7 +70,7 @@ const handler = async function (
       res.status(405).json({
         error: true,
         name: 'METHOD NOT ALLOWED',
-        message: 'Only supports GET, PUT, DELETE method',
+        message: 'Only supports PUT, DELETE method',
       })
     }
   } catch (err) {
@@ -58,6 +79,6 @@ const handler = async function (
   }
 }
 
-export default checkAuthCookieAsAdmin(
-  checkObjectId(ReviewModel, connectMongo(handler))
+export default checkAuthCookie(
+  checkObjectId(ReviewModel, withYup(putReviewApiSchema, connectMongo(handler)))
 )

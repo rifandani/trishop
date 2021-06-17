@@ -4,8 +4,8 @@ import { v2 as cld } from 'cloudinary'
 // files
 import getQueryAsString from 'utils/getQueryAsString'
 import getQueryStringAsArray from 'utils/getQueryStringAsArray'
-import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
+import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 
 const cors = initMiddleware(
   Cors({
@@ -66,4 +66,4 @@ const handler = async function (
   }
 }
 
-export default checkAuthCookie(handler)
+export default checkAuthCookieAsAdmin(handler)

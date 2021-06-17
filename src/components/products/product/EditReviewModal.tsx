@@ -37,7 +37,7 @@ export default function EditReviewModal({
   ): Promise<void> => {
     try {
       const res = await axios.put<IPutReviewResponse>(
-        `/admin/reviews/${review._id}`,
+        `/user/reviews/${review._id}`,
         {
           ...values,
           star: +values.star,

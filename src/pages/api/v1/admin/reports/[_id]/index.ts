@@ -6,12 +6,12 @@ import ReportModel from 'mongo/models/Report'
 import ReviewModel from 'mongo/models/Review'
 import connectMongo from 'middlewares/connectMongo'
 import checkObjectId from 'middlewares/checkObjectId'
-import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
+import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 
 const cors = initMiddleware(
   Cors({
-    methods: ['GET', 'PUT', 'DELETE'],
+    methods: ['GET', 'DELETE'],
   })
 )
 
@@ -37,22 +37,14 @@ const handler = async function (
 
       // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       res.status(200).json({ error: false, report: reportDoc })
-    } else if (req.method === 'PUT') {
-      /* -------------------------------------------------------------------------- */
-      /*                       PUT req => /admin/reports/:_id                      */
-      /* -------------------------------------------------------------------------- */
-
-      // PUT success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(501).json({ error: false, message: 'Not implemented' })
     } else if (req.method === 'DELETE') {
       /* -------------------------------------------------------------------------- */
-      /*                        DELETE req => /admin/reports/:_id                   */
+      /*        DELETE req => /admin/reports/:_id?withreview=true                   */
       /* -------------------------------------------------------------------------- */
 
-      // get id
       const reportId = getQueryAsString(req.query._id)
 
-      // delete report
+      // just delete one report
       await ReportModel.findByIdAndDelete(reportId)
 
       // DELETE success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -62,7 +54,7 @@ const handler = async function (
       res.status(405).json({
         error: true,
         name: 'METHOD NOT ALLOWED',
-        message: 'Only supports GET, PUT, DELETE method',
+        message: 'Only supports GET, DELETE method',
       })
     }
   } catch (err) {
@@ -71,6 +63,6 @@ const handler = async function (
   }
 }
 
-export default checkAuthCookie(
+export default checkAuthCookieAsAdmin(
   checkObjectId(ReportModel, connectMongo(handler))
 )

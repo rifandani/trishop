@@ -46,9 +46,8 @@ export default function ReviewForm({
         star: +values.star,
       }
 
-      // POST /admin/reviews
       const res = await axios.post<IPostReviewResponse>(
-        '/admin/reviews',
+        '/user/reviews',
         newReview
       )
 

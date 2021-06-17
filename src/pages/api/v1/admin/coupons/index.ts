@@ -4,8 +4,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import CouponModel from 'mongo/models/Coupon'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
-import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
+import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 import { couponApiSchema, TCouponApiSchema } from 'yup/apiSchema'
 
 interface CouponCodes {
@@ -101,4 +101,6 @@ const handler = async function (
   }
 }
 
-export default checkAuthCookie(withYup(couponApiSchema, connectMongo(handler)))
+export default checkAuthCookieAsAdmin(
+  withYup(couponApiSchema, connectMongo(handler))
+)

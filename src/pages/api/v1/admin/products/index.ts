@@ -4,8 +4,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import ProductModel from 'mongo/models/Product'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
-import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
+import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
 
 const cors = initMiddleware(
@@ -70,4 +70,6 @@ const handler = async function (
   }
 }
 
-export default checkAuthCookie(withYup(productApiSchema, connectMongo(handler)))
+export default checkAuthCookieAsAdmin(
+  withYup(productApiSchema, connectMongo(handler))
+)

@@ -25,7 +25,7 @@ interface CategoryIndexProps {
 }
 
 function CategoriesIndex({ queryProducts }: CategoryIndexProps): JSX.Element {
-  const { data, error } = useSWR<string[]>('/admin/categories')
+  const { data, error } = useSWR<string[]>('/public/categories')
 
   return (
     <>

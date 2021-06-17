@@ -7,8 +7,8 @@ import UserModel from 'mongo/models/User'
 import checkObjectId from 'middlewares/checkObjectId'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
-import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
+import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 import { userApiSchema, TUserApiSchema } from 'yup/apiSchema'
 
 const cors = initMiddleware(
@@ -91,6 +91,6 @@ const handler = async function (
   }
 }
 
-export default checkAuthCookie(
+export default checkAuthCookieAsAdmin(
   checkObjectId(UserModel, withYup(userApiSchema, connectMongo(handler)))
 )
