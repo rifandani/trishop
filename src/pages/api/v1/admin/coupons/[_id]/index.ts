@@ -6,8 +6,8 @@ import getQueryAsString from 'utils/getQueryAsString'
 import checkObjectId from 'middlewares/checkObjectId'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
-import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
+import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 import { couponApiSchema, TCouponApiSchema } from 'yup/apiSchema'
 
 interface CouponCodes {
@@ -105,6 +105,6 @@ const handler = async function (
   }
 }
 
-export default checkAuthCookie(
+export default checkAuthCookieAsAdmin(
   checkObjectId(CouponModel, withYup(couponApiSchema, connectMongo(handler)))
 )

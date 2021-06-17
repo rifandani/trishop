@@ -6,8 +6,8 @@ import ReportModel from 'mongo/models/Report'
 import ReviewModel from 'mongo/models/Review'
 import connectMongo from 'middlewares/connectMongo'
 import checkObjectId from 'middlewares/checkObjectId'
-import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
+import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 
 const cors = initMiddleware(
   Cors({
@@ -63,6 +63,6 @@ const handler = async function (
   }
 }
 
-export default checkAuthCookie(
+export default checkAuthCookieAsAdmin(
   checkObjectId(ReportModel, connectMongo(handler))
 )

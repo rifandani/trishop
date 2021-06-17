@@ -7,8 +7,8 @@ import ReviewModel from 'mongo/models/Review'
 import checkObjectId from 'middlewares/checkObjectId'
 import withYup from 'middlewares/withYup'
 import connectMongo from 'middlewares/connectMongo'
-import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
+import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
 
 const cors = initMiddleware(
@@ -92,6 +92,6 @@ const handler = async function (
   }
 }
 
-export default checkAuthCookie(
+export default checkAuthCookieAsAdmin(
   checkObjectId(ProductModel, withYup(productApiSchema, connectMongo(handler)))
 )

@@ -5,8 +5,8 @@ import ReportModel from 'mongo/models/Report'
 import ReviewModel from 'mongo/models/Review'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
-import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
+import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 import { addReportApiSchema, TAddReportApiSchema } from 'yup/apiSchema'
 
 const cors = initMiddleware(
@@ -74,6 +74,6 @@ const handler = async function (
   }
 }
 
-export default checkAuthCookie(
+export default checkAuthCookieAsAdmin(
   withYup(addReportApiSchema, connectMongo(handler))
 )

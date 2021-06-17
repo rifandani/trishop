@@ -5,8 +5,8 @@ import { hashSync } from 'bcrypt'
 import UserModel from 'mongo/models/User'
 import connectMongo from 'middlewares/connectMongo'
 import withYup from 'middlewares/withYup'
-import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
+import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 import { userApiSchema } from 'yup/apiSchema'
 
 const cors = initMiddleware(
@@ -75,4 +75,6 @@ const handler = async (
   }
 }
 
-export default checkAuthCookie(withYup(userApiSchema, connectMongo(handler)))
+export default checkAuthCookieAsAdmin(
+  withYup(userApiSchema, connectMongo(handler))
+)

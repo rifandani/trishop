@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 import { verify, TokenExpiredError } from 'jsonwebtoken'
+// files
+import { AuthCookiePayload } from 'types'
 
-const checkAuthCookie =
+const checkAuthCookieAsAdmin =
   (fn: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
     verify(
       req.cookies.auth,
@@ -25,10 +27,22 @@ const checkAuthCookie =
           return
         }
 
+        const decodedToken = decoded as AuthCookiePayload
+
+        // if not admin
+        if (decodedToken.role !== 'ADMIN') {
+          res.status(401).json({
+            error: true,
+            name: 'NotAdmin',
+            message: 'Unauthorized! You are not admin',
+          })
+          return
+        }
+
         // next()
         return await fn(req, res)
       }
     )
   }
 
-export default checkAuthCookie
+export default checkAuthCookieAsAdmin

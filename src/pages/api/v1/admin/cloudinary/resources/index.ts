@@ -3,8 +3,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { v2 as cld } from 'cloudinary'
 import { parse } from 'querystring'
 // files
-import checkAuthCookie from 'middlewares/checkAuthCookie'
 import initMiddleware from 'middlewares/initMiddleware'
+import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 
 const cors = initMiddleware(
   Cors({
@@ -77,4 +77,4 @@ const handler = async function (
   }
 }
 
-export default checkAuthCookie(handler)
+export default checkAuthCookieAsAdmin(handler)
