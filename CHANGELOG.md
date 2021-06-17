@@ -5,6 +5,7 @@
 - Update semua deps terutama `nextjs v11.0.0`
 - Implementasi middleware `checkAuthCookieAsAdmin` untuk API routes prefix `/admin`
 - Implementasi middleware `checkAuthCookie` untuk API routes prefix `/user`
+- Implementasi `storybook` untuk dokumentasi UI component
 
 ## 16 Juni 2021
 

@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* @import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities'; */
 
 @layer base {
   html,
@@ -72,6 +75,27 @@
 
   .checkout__step-span-inactive {
     @apply flex items-center justify-center w-5 h-5 mr-2 border-2 border-gray-700 rounded-full;
+  }
+
+  /* button storybook */
+  .storybook-button--primary {
+    @apply inline-flex justify-center text-sm font-medium text-white bg-orange-800 border border-transparent rounded-md focus:ring-4 focus:ring-orange-800 disabled:opacity-50 hover:bg-orange-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange-800;
+  }
+
+  .storybook-button--secondary {
+    @apply inline-flex justify-center text-sm font-medium text-orange-800 bg-white border border-orange-800 rounded-md focus:ring-4 focus:ring-orange-800 disabled:opacity-50 hover:bg-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange-800;
+  }
+
+  .storybook-button--large {
+    @apply px-16 py-8;
+  }
+
+  .storybook-button--medium {
+    @apply px-8 py-4;
+  }
+
+  .storybook-button--small {
+    @apply px-4 py-2;
   }
 }
 
