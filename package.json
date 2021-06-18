@@ -30,7 +30,11 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "cm": "cz",
-    "cm:signed": "cz -S"
+    "cm:signed": "cz -S",
+    "release": "standard-version",
+    "release:patch": "standard-version --release-as patch",
+    "release:minor": "standard-version --release-as minor",
+    "release:major": "standard-version --release-as major"
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
@@ -112,6 +116,7 @@
     "lint-staged": "^11.0.0",
     "postcss-loader": "^6.1.0",
     "prettier": "^2.3.1",
+    "standard-version": "^9.3.0",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.3"
   },

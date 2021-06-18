@@ -31,11 +31,11 @@ const handler = async function (
         code: code.toUpperCase(),
       })
       if (!couponIsExists) {
-        // PUT client error => Bad Request -----------------------------------------------------------------
+        // client error => Bad Request -----------------------------------------------------------------
         res.status(400).json({
           error: true,
           message:
-            'userId is a valid ObjectId, but can not find the coupon. Maybe it is already deleted',
+            'Coupon code does not exists',
         })
         return
       }

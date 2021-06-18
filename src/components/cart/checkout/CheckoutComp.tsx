@@ -5,7 +5,7 @@ import CheckoutShippingForm from './CheckoutShippingForm'
 import CheckoutProduct from './CheckoutProduct'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { IOrder } from 'types/LocalStorage'
-import generateRupiah from 'utils/generateRupiah'
+// import generateRupiah from 'utils/generateRupiah'
 
 export type CheckoutStep = 'contacts' | 'shipping'
 
@@ -76,18 +76,16 @@ function CheckoutComp(): JSX.Element {
             <div className="flex justify-center lg:justify-end">
               <div className="w-full max-w-md px-4 py-3 border rounded-md">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-medium text-gray-700">
-                    Order ({order ? order.item_details.length : 0})
-                  </h3>
+                  <h3 className="font-medium text-gray-700">Order</h3>
 
-                  <h3 className="font-medium text-gray-700">
+                  {/* <h3 className="font-medium text-gray-700">
                     Total:{' '}
                     <span className="text-orange-800">
                       {order
                         ? generateRupiah(order.transaction_details.gross_amount)
                         : generateRupiah(0)}
                     </span>
-                  </h3>
+                  </h3> */}
                 </div>
 
                 {/* order product list */}

@@ -22,6 +22,7 @@ export default function CartComp(): JSX.Element {
   const [, setOrder] = useLocalStorage<IOrder>('order', null) // local storage
   const [user] = useLocalStorage<UserPayload>('user', null) // local storage
 
+  const [busy, setBusy] = useState<boolean>(false)
   const [coupon, setCoupon] = useState<string>('')
   const [couponDiscount, setCouponDiscount] = useState<number>(0) // float || number
   const [subtotal, setSubtotal] = useState<number>(0)
@@ -38,7 +39,7 @@ export default function CartComp(): JSX.Element {
 
     // count total price
     const priceAfterDiscount =
-      couponDiscount < 0
+      couponDiscount < 1
         ? Math.floor(mySubtotal * couponDiscount)
         : Math.floor(mySubtotal - couponDiscount)
     setTotal(mySubtotal - priceAfterDiscount)
@@ -60,6 +61,8 @@ export default function CartComp(): JSX.Element {
     }
 
     try {
+      setBusy(true)
+
       const res = await axios.post<APIResponseCoupon>(
         '/public/validate/coupon',
         reqBody
@@ -242,11 +245,14 @@ export default function CartComp(): JSX.Element {
                         />
 
                         <button
-                          onClick={applyCoupon}
                           className="flex items-center px-3 py-1 text-sm text-white bg-orange-800 rounded-full outline-none md:px-4 hover:bg-orange-500 focus:outline-none active:outline-none"
+                          onClick={applyCoupon}
+                          disabled={busy}
                         >
                           <RiCoupon2Fill className="w-8 text-lg" />
-                          <span className="font-medium">Apply</span>
+                          <span className="font-medium">
+                            {busy ? 'Loading...' : 'Apply'}
+                          </span>
                         </button>
                       </div>
                     </div>
