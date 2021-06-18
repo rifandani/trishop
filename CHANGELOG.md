@@ -1,5 +1,9 @@
 # Changelog
 
+## 18 Juni 2021
+
+- Menambahkan `chromatic.yml` workflows
+
 ## 17 Juni 2021
 
 - Update semua deps terutama `nextjs v11.0.0`
