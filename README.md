@@ -43,18 +43,19 @@ Trishop dilengkapi dengan fitur:
 1. 90% typed Next.js dengan Typescript + Eslint + Prettier ⚡
 2. Peyimpanan database dengan Mongodb dan Mongoose ODM 🍃
 3. Penyimpanan file storage dengan Cloudinary 💾
-4. Autentikasi JWT dalam cookie 🔑
-5. Otorisasi berdasarkan role: USER dan ADMIN 🔐
-6. Form validation dengan Formik dan Yup ✨
-7. Customer cart dan wishlist dengan react `context` dan `reducer` 🛠
-8. Customer order dan checkout product dengan custom hooks `useLocalStorage` ⚒
-9. Custom API routes middleware validation 🎊
-10. Review product dengan menyertakan nama, komentar dan bintang ⭐
-11. Report review yang terindikasi spam / mengandung SARA 🚫
-12. Memakai coupon code ketika di cart bagi customer yang memilikinya 👩‍💻
-13. Admin dashboard untuk fungsi CRUD user, product, coupons, reports, dan memantau status order product _(coming soon)_ 💎
-14. Customer dashboard untuk memantau order product yang telah dibeli 🕵️‍♀️
-15. dll...
+4. Dokumentasi komponen UI dengan Storybook dan mendeploy nya ke Chromatic 🌸
+5. Autentikasi JWT dalam cookie 🔑
+6. Otorisasi berdasarkan role: USER dan ADMIN 🔐
+7. Form validation dengan Formik dan Yup ✨
+8. Customer cart dan wishlist dengan react `context` dan `reducer` 🛠
+9. Customer order dan checkout product dengan custom hooks `useLocalStorage` ⚒
+10. Custom API routes middleware validation 🎊
+11. Review product dengan menyertakan nama, komentar dan bintang ⭐
+12. Report review yang terindikasi spam / mengandung SARA 🚫
+13. Memakai coupon code ketika di cart bagi customer yang memilikinya 👩‍💻
+14. Customer dashboard ~~untuk memantau order product yang telah dibeli~~ 🕵️‍♀️
+15. Admin dashboard untuk fungsi CRUD user, product, coupons, reports, ~~dan memantau status order product~~ 💎
+16. dll...
 
 ## Services 📃
 
@@ -63,6 +64,8 @@ Trishop dilengkapi dengan fitur:
 |          [vercel](https://vercel.com/)          |          Next.js Hosting          |
 |      [cloudinary](https://cloudinary.com)       |       File Storage Solution       |
 | [mongodb](https://www.mongodb.com/cloud/atlas/) |          NoSQL Database           |
+|     [storybook](https://storybook.js.org/)      |    UI Component Documentation     |
+|       [chromatic](https://chromatic.com/)       |         Storybook Hosting         |
 |        [midtrans](https://midtrans.com/)        | Payment Gateway **(coming soon)** |
 |         [cypress](https://cypress.io/)          |   E2E Testing **(coming soon)**   |
 

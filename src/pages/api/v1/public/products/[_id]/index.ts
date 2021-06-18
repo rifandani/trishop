@@ -1,3 +1,4 @@
+import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 // files
 import getQueryAsString from 'utils/getQueryAsString'
@@ -5,12 +6,21 @@ import ProductModel from 'mongo/models/Product'
 import ReviewModel from 'mongo/models/Review'
 import checkObjectId from 'middlewares/checkObjectId'
 import connectMongo from 'middlewares/connectMongo'
+import initMiddleware from 'middlewares/initMiddleware'
+
+const cors = initMiddleware(
+  Cors({
+    methods: ['GET'],
+  })
+)
 
 const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   try {
+    await cors(req, res) // Run cors
+
     if (req.method === 'GET') {
       /* -------------------------------------------------------------------------- */
       /*                       GET req => /public/products/:_id                      */
