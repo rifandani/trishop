@@ -53,4 +53,4 @@ const handler = async function (
   }
 }
 
-export default checkObjectId(ProductModel, connectMongo(handler))
+export default connectMongo(checkObjectId(ProductModel, handler))

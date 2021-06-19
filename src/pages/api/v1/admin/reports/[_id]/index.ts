@@ -64,5 +64,5 @@ const handler = async function (
 }
 
 export default checkAuthCookieAsAdmin(
-  checkObjectId(ReportModel, connectMongo(handler))
+  connectMongo(checkObjectId(ReportModel, handler))
 )

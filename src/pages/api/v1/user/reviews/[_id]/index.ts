@@ -80,5 +80,5 @@ const handler = async function (
 }
 
 export default checkAuthCookie(
-  checkObjectId(ReviewModel, withYup(putReviewApiSchema, connectMongo(handler)))
+  connectMongo(checkObjectId(ReviewModel, withYup(putReviewApiSchema, handler)))
 )

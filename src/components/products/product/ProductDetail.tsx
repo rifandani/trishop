@@ -5,9 +5,10 @@ import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 // files
 import ImageSwiper from './ImageSwiper'
-import { CartContext } from 'contexts/CartContext'
 import { WishlistContext } from 'contexts/WishlistContext'
 import { Product } from 'contexts/CartReducer'
+import { useAppDispatch } from 'redux/store'
+import { addProductToCart } from 'redux/slices/cart'
 
 interface ProductDetailProps {
   product: Product
@@ -21,8 +22,9 @@ export default function ProductDetail({
 
   // hooks
   const { push } = useRouter()
-  const { dispatch } = useContext(CartContext)
+  const dispatch = useAppDispatch()
   const { wishlist, dispatchWish } = useContext(WishlistContext)
+
   const [discount] = useState<number>(0.1)
   const [quantity, setQuantity] = useState<string>('1')
   const [error, setError] = useState<string>('')
@@ -56,11 +58,7 @@ export default function ProductDetail({
       quantity: parseInt(quantity),
     }
 
-    // dispatch butuh waktu
-    dispatch({
-      type: 'ADD_PRODUCT',
-      payload,
-    })
+    dispatch(addProductToCart(payload)) // dispatch
 
     toast.success('Product added to the cart')
   }

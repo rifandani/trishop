@@ -93,5 +93,5 @@ const handler = async function (
 }
 
 export default checkAuthCookieAsAdmin(
-  checkObjectId(ProductModel, withYup(productApiSchema, connectMongo(handler)))
+  connectMongo(checkObjectId(ProductModel, withYup(productApiSchema, handler)))
 )

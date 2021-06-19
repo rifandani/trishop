@@ -5,6 +5,7 @@ import { SWRConfig } from 'swr'
 import { ToastContainer, toast } from 'react-toastify'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import { DefaultSeo } from 'next-seo'
+import { Provider } from 'react-redux'
 // Import styles
 import '../styles/index.css'
 import 'nprogress/nprogress.css'
@@ -15,10 +16,10 @@ import 'swiper/components/navigation/navigation.min.css'
 import 'swiper/components/thumbs/thumbs.min.css'
 import 'swiper/components/pagination/pagination.min.css'
 // files
-import { CartProvider } from 'contexts/CartContext'
+import SEO from 'config/seo'
+import store from 'redux/store'
 import { WishlistProvider } from 'contexts/WishlistContext'
 import { UserProvider } from 'contexts/UserContext'
-import SEO from 'config/seo'
 
 // create a custom progress bar
 NProgress.configure({ showSpinner: false })
@@ -54,14 +55,14 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           onError: (err) => toast.error(err.message),
         }}
       >
-        <CartProvider>
+        <Provider store={store}>
           <WishlistProvider>
             <UserProvider>
               <Component {...pageProps} />
               <ToastContainer />
             </UserProvider>
           </WishlistProvider>
-        </CartProvider>
+        </Provider>
       </SWRConfig>
     </>
   )
