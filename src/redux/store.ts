@@ -2,10 +2,12 @@ import { configureStore, Dispatch } from '@reduxjs/toolkit'
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
 // files
 import cartReducer from './slices/cart'
+import wishlistReducer from './slices/wishlist'
 
 const store = configureStore({
   reducer: {
     cart: cartReducer,
+    wishlist: wishlistReducer,
   },
   devTools: process.env.NODE_ENV === 'development',
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(require('redux-logger')),

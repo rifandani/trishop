@@ -20,6 +20,16 @@ export interface IProduct {
   reviews?: IReview[] // new
   createdAt?: Date
   updatedAt?: Date
+  _id?: string
+  __v?: number
+}
+
+export interface IProductProps {
+  product: IProduct
+}
+
+export interface IProductsProps {
+  products: IProduct[]
 }
 
 /* --------------------------------- client --------------------------------- */

@@ -18,8 +18,6 @@ import 'swiper/components/pagination/pagination.min.css'
 // files
 import SEO from 'config/seo'
 import store from 'redux/store'
-import { WishlistProvider } from 'contexts/WishlistContext'
-import { UserProvider } from 'contexts/UserContext'
 
 // create a custom progress bar
 NProgress.configure({ showSpinner: false })
@@ -56,12 +54,8 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         }}
       >
         <Provider store={store}>
-          <WishlistProvider>
-            <UserProvider>
-              <Component {...pageProps} />
-              <ToastContainer />
-            </UserProvider>
-          </WishlistProvider>
+          <Component {...pageProps} />
+          <ToastContainer />
         </Provider>
       </SWRConfig>
     </>

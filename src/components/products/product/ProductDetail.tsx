@@ -1,29 +1,26 @@
-import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { useState, useContext, ChangeEvent } from 'react'
+import { useRouter } from 'next/router'
+import { useState, ChangeEvent, useMemo } from 'react'
 import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 // files
 import ImageSwiper from './ImageSwiper'
-import { WishlistContext } from 'contexts/WishlistContext'
-import { Product } from 'contexts/CartReducer'
-import { useAppDispatch } from 'redux/store'
+import { useAppDispatch, useAppSelector } from 'redux/store'
 import { addProductToCart } from 'redux/slices/cart'
+import { IProductProps } from 'types/Product'
+import {
+  addProductToWishlist,
+  deleteProductFromWishlist,
+} from 'redux/slices/wishlist'
 
-interface ProductDetailProps {
-  product: Product
-}
-
-export default function ProductDetail({
-  product,
-}: ProductDetailProps): JSX.Element {
+export default function ProductDetail({ product }: IProductProps): JSX.Element {
   const { title, price, stock, desc, labels, images, sold, _id, reviews } =
     product // destructure product props
 
   // hooks
   const { push } = useRouter()
+  const wishlist = useAppSelector((state) => state.wishlist)
   const dispatch = useAppDispatch()
-  const { wishlist, dispatchWish } = useContext(WishlistContext)
 
   const [discount] = useState<number>(0.1)
   const [quantity, setQuantity] = useState<string>('1')
@@ -44,7 +41,10 @@ export default function ProductDetail({
       : 0
 
   // check if product already in wishlist
-  const productWishlisted = wishlist?.find((prod) => prod.id === _id)
+  const productWishlisted = useMemo(
+    () => wishlist.values.find((prod) => prod._id === _id),
+    [wishlist]
+  )
 
   async function addToCart(): Promise<void> {
     // if quantity < 1
@@ -58,7 +58,7 @@ export default function ProductDetail({
       quantity: parseInt(quantity),
     }
 
-    dispatch(addProductToCart(payload)) // dispatch
+    dispatch(addProductToCart(payload)) // dispatch cart
 
     toast.success('Product added to the cart')
   }
@@ -81,34 +81,19 @@ export default function ProductDetail({
   function addToWishlist(): void {
     const payload = {
       price,
-      id: _id,
+      _id: _id,
       imageName: images[0].imageName,
       imageUrl: images[0].imageUrl,
       name: title,
     }
 
-    // dispatch butuh waktu
-    dispatchWish({
-      type: 'ADD_WISHLIST',
-      payload,
-    })
+    dispatch(addProductToWishlist(payload)) // dispatch wishlist
 
     toast.success('Product added to wishlist')
   }
 
   function deleteFromWishlist(): void {
-    const payload = {
-      price,
-      id: _id,
-      imageName: images[0].imageName,
-      imageUrl: images[0].imageUrl,
-      name: title,
-    }
-
-    dispatchWish({
-      type: 'DEL_WISHLIST',
-      payload: payload.id,
-    })
+    dispatch(deleteProductFromWishlist(_id)) // dispatch wishlist
 
     toast.info('Product deleted from the wishlist')
   }

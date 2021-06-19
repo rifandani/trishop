@@ -1,12 +1,11 @@
-import { useContext } from 'react'
 import { FaHeart } from 'react-icons/fa'
 // files
 import WishlistProductCard from './WishlistProductCard'
-import { WishlistContext } from 'contexts/WishlistContext'
+import { useAppSelector } from 'redux/store'
 
 export default function WishlistComp(): JSX.Element {
   // hooks
-  const { wishlist, dispatchWish } = useContext(WishlistContext) // local storage
+  const wishlist = useAppSelector((state) => state.wishlist)
 
   return (
     <main className="min-h-screen py-20 bg-white lg:pt-28 lg:mt-3">
@@ -22,20 +21,16 @@ export default function WishlistComp(): JSX.Element {
         </h1>
 
         {/* main content */}
-        {wishlist && wishlist.length === 0 ? (
+        {wishlist.count === 0 ? (
           <h1 className="mx-auto text-lg text-center">
             No products in wishlist
           </h1>
         ) : null}
 
         <div className="grid w-full grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {wishlist
-            ? wishlist.map((prod) => (
-                <WishlistProductCard
-                  key={prod.id}
-                  product={prod}
-                  dispatchWish={dispatchWish}
-                />
+          {wishlist.count > 0
+            ? wishlist.values.map((product) => (
+                <WishlistProductCard key={product._id} product={product} />
               ))
             : null}
         </div>

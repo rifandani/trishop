@@ -1,32 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // files
 import { RootState } from '../store'
-import { IReview } from 'types/Review'
-
-export interface Image {
-  imageName: string
-  imageUrl: string
-  publicId: string
-  tags?: string
-}
-
-export interface Product {
-  desc: string
-  images: Image[]
-  labels: string[]
-  price: number
-  stock: number
-  title: string
-  sold: number // new
-  reviews: IReview[] // new
-  createdAt: string
-  updatedAt: string
-  __v: number
-  _id: string
-}
+import { IProduct } from 'types/Product'
 
 // keseluruhan object product + quantity
-export interface CartPayload extends Product {
+export interface CartPayload extends IProduct {
   quantity: number
 }
 
@@ -61,8 +39,8 @@ const cartSlice = createSlice({
       state.count++
     },
     deleteProductFromCart: (state, action: PayloadAction<string>) => {
-      state.values.filter((prod) => prod._id === action.payload)
-      state.count - 1
+      state.values = state.values.filter((prod) => prod._id !== action.payload)
+      state.count--
     },
   },
 })
