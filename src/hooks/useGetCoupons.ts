@@ -1,19 +1,9 @@
 import useSWR from 'swr'
 // files
-import { APIResponseCoupons } from 'types/Coupon'
+import { ICoupon, APIResponseCoupons } from 'types/Coupon'
 
 interface ReturnType {
-  coupons: {
-    _id: string
-    createdAt: string
-    updatedAt: string // files
-    discount: number
-    minTransaction: number
-    usedBy: string[]
-    code: string
-    desc: string
-    validUntil: number
-  }[]
+  coupons: ICoupon[]
   couponsIsLoading: boolean
   couponsIsError: any
 }
@@ -21,15 +11,15 @@ interface ReturnType {
 export default function useGetCoupons(): ReturnType {
   const { data, error } = useSWR<APIResponseCoupons>('/admin/coupons')
 
-  const coupons = data?.coupons?.map((coupon) => ({
-    ...coupon,
-    _id: coupon._id.toString(),
-    createdAt: new Date(coupon.createdAt).toLocaleString(),
-    updatedAt: new Date(coupon.updatedAt).toLocaleString(),
-  }))
+  // const coupons = data?.coupons?.map((coupon) => ({
+  //   ...coupon,
+  //   _id: coupon._id.toString(),
+  //   createdAt: new Date(coupon.createdAt).toLocaleString(),
+  //   updatedAt: new Date(coupon.updatedAt).toLocaleString(),
+  // }))
 
   return {
-    coupons,
+    coupons: data?.coupons,
     couponsIsLoading: !error && !data,
     couponsIsError: error,
   }

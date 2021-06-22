@@ -8,7 +8,7 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
 import { TRegisterApiSchema, registerApiSchema } from 'yup/apiSchema'
-import { IAuthLoginRegister } from 'types/User'
+import { APIResponseAuthLoginRegister } from 'types/User'
 import { UserPayload } from 'contexts/UserReducer'
 
 export default function RegisterPage(): JSX.Element {
@@ -28,7 +28,10 @@ export default function RegisterPage(): JSX.Element {
   ) => {
     try {
       // POST /auth/register
-      const res = await axios.post<IAuthLoginRegister>('/auth/register', values)
+      const res = await axios.post<APIResponseAuthLoginRegister>(
+        '/auth/register',
+        values
+      )
 
       // client error
       if (res.status !== 201) {

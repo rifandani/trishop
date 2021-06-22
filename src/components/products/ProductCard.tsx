@@ -2,13 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 // files
-import { Product } from 'contexts/CartReducer'
+import { IProductProps } from 'types/Product'
 
-interface Props {
-  product: Product
-}
-
-export default function ProductCard({ product }: Props): JSX.Element {
+export default function ProductCard({ product }: IProductProps): JSX.Element {
   const { images, stock, price, _id, title, desc, labels } = product
 
   // hooks

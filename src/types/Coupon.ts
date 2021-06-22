@@ -14,6 +14,10 @@ export interface ICouponProps {
   coupon: ICoupon
 }
 
+export interface ICouponsProps {
+  coupons: ICoupon[]
+}
+
 export interface IAddAndEditCoupon {
   code: string
   discount: number
@@ -21,6 +25,8 @@ export interface IAddAndEditCoupon {
   desc: string
   validUntil: number
 }
+
+/* ---------------------------------------- API response ---------------------------------------- */
 
 export interface APIResponseCoupon {
   error: boolean

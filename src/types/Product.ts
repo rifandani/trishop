@@ -33,16 +33,16 @@ export interface IProductsProps {
 
 /* --------------------------------- client --------------------------------- */
 
+export interface APIResponseProduct {
+  error: boolean
+  product: IProduct
+  message?: string
+}
+
 export interface APIResponseProducts {
   error: boolean
   products: IProduct[]
   count: number
-  message?: string
-}
-
-export interface APIResponseProduct {
-  error: boolean
-  product: IProduct
   message?: string
 }
 

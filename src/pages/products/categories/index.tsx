@@ -1,24 +1,10 @@
-import { GetServerSideProps } from 'next'
 import useSWR from 'swr'
+import { GetServerSideProps } from 'next'
 // files
-import Categories from 'components/Categories'
 import Nav from 'components/Nav'
+import Categories from 'components/Categories'
 import ProductModel from 'mongo/models/Product'
 import dbConnect from 'mongo/config/dbConnect'
-import { Image } from 'contexts/CartReducer'
-
-export interface PRODUCT {
-  createdAt: string
-  desc: string
-  images: Image[]
-  labels: string[]
-  price: number
-  stock: number
-  title: string
-  updatedAt: string
-  __v: number
-  _id: string
-}
 
 interface CategoryIndexProps {
   queryProducts: string
