@@ -1,75 +1,50 @@
 import Cors from 'cors'
-import { NextApiRequest, NextApiResponse } from 'next'
 // files
+import nc from 'middlewares/nc'
+import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
+import withYupConnect from 'middlewares/withYupConnect'
+import withMongoConnect from 'middlewares/withMongoConnect'
 import ProductModel from 'mongo/models/Product'
-import connectMongo from 'middlewares/connectMongo'
-import withYup from 'middlewares/withYup'
-import initMiddleware from 'middlewares/initMiddleware'
-import checkAuthCookieAsAdmin from 'middlewares/checkAuthCookieAsAdmin'
 import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
 
-const cors = initMiddleware(
-  Cors({
-    methods: ['GET', 'POST'],
-  })
-)
+export default nc
+  // cors, middleware 1
+  .use(
+    Cors({
+      methods: ['GET', 'POST'],
+    })
+  )
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
+  .use(withYupConnect(productApiSchema)) // yup middleware
+  .use(withMongoConnect()) // connect mongodb middleware
+  /* --------------------------------- GET req => /admin/products --------------------------------- */
+  .get(async (req, res) => {
+    // there is no query for filtering & sorting
+    if (Object.keys(req.query).length === 0) {
+      const products = await ProductModel.find()
 
-const handler = async function (
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> {
-  try {
-    await cors(req, res) // Run cors
-
-    if (req.method === 'GET') {
-      /* -------------------------------------------------------------------------- */
-      /*                         GET req => /admin/products                         */
-      /* -------------------------------------------------------------------------- */
-
-      // there is no query for filtering & sorting
-      if (Object.keys(req.query).length === 0) {
-        const products = await ProductModel.find()
-
-        // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        res.status(200).json({ error: false, products, count: products.length })
-        return
-      }
-
-      // const customQuery = req.query
-    } else if (req.method === 'POST') {
-      /* -------------------------------------------------------------------------- */
-      /*                         POST req => /admin/products                        */
-      /* -------------------------------------------------------------------------- */
-
-      const { title, price, stock, desc, labels, images } =
-        req.body as TProductApiSchema
-
-      // create new product to mongodb
-      const product = await ProductModel.create({
-        title,
-        price,
-        stock,
-        desc,
-        labels,
-        images,
-      })
-
-      // POST success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(201).json({ error: false, productId: product._id })
-    } else {
-      // client error => METHOD NOT ALLOWED -----------------------------------------------------------------
-      res.status(405).json({
-        error: true,
-        name: 'METHOD NOT ALLOWED',
-        message: 'Only supports GET, POST method',
-      })
+      // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      res.status(200).json({ error: false, products, count: products.length })
+      return
     }
-  } catch (err) {
-    // server error => Internal Server Error -----------------------------------------------------------------
-    res.status(500).json({ error: true, name: err.name, message: err.message })
-  }
-}
 
-export default checkAuthCookieAsAdmin(
-  withYup(productApiSchema, connectMongo(handler))
-)
+    // const customQuery = req.query
+  })
+  /* --------------------------------- POST req => /admin/products -------------------------------- */
+  .post(async (req, res) => {
+    const { title, price, stock, desc, labels, images } =
+      req.body as TProductApiSchema
+
+    // create new product to mongodb
+    const product = await ProductModel.create({
+      title,
+      price,
+      stock,
+      desc,
+      labels,
+      images,
+    })
+
+    // POST success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    res.status(201).json({ error: false, productId: product._id })
+  })
