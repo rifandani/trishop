@@ -83,6 +83,8 @@ export default function CartComp(): JSX.Element {
     } catch (err) {
       console.error(err)
       toast.error(err.message)
+    } finally {
+      setBusy(false)
     }
   }
 

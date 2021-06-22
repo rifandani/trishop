@@ -1,6 +1,5 @@
 // files
 import { IReview } from './Review'
-import { Product } from 'contexts/CartReducer'
 
 export type TImage = {
   imageName: string
@@ -36,14 +35,14 @@ export interface IProductsProps {
 
 export interface APIResponseProducts {
   error: boolean
-  products: Product[]
+  products: IProduct[]
   count: number
   message?: string
 }
 
 export interface APIResponseProduct {
   error: boolean
-  product: Product
+  product: IProduct
   message?: string
 }
 
