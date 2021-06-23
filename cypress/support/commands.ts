@@ -1,6 +1,11 @@
 // ***********************************************
 // https://on.cypress.io/custom-commands
 // ***********************************************
+/// <reference path="index.d.ts" />
+
+Cypress.Commands.add('dataCy', (dataTestAttribute, args = {}) => {
+  return cy.get(`[data-cy=${dataTestAttribute}]`, ...args)
+})
 
 // POST /auth/login
 Cypress.Commands.add('loginByApi', (requestBody) => {
@@ -23,8 +28,4 @@ Cypress.Commands.add('registerByApi', (requestBody) => {
     // },
     failOnStatusCode: false,
   })
-})
-
-Cypress.Commands.add('dataCy', (value) => {
-  return cy.get(`[data-cy=${value}]`)
 })

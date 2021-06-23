@@ -1,15 +1,17 @@
 import axios from 'axios'
 import Link from 'next/link'
 import { parse } from 'cookie'
+import { verify } from 'jsonwebtoken'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
-import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
-import { APIResponseAuthLoginRegister } from 'types/User'
+import { AuthCookiePayload } from 'types'
 import { UserPayload } from 'contexts/UserReducer'
+import { APIResponseAuthLoginRegister } from 'types/User'
+import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
 
 export default function Login(): JSX.Element {
   const initialValues: TLoginApiSchema = {
@@ -76,7 +78,9 @@ export default function Login(): JSX.Element {
           </section>
 
           <section className="flex flex-col justify-center px-8 pt-8 my-auto md:justify-start md:pt-0 md:px-24 lg:px-32">
-            <p className="text-3xl text-center">Welcome</p>
+            <p className="text-3xl text-center" data-cy="welcome">
+              Welcome
+            </p>
 
             {/* <!-- Start FORM --> */}
             <Formik
@@ -97,13 +101,15 @@ export default function Login(): JSX.Element {
                       placeholder="elonmusk@gmail.com"
                       type="email"
                       name="email"
+                      data-cy="email"
                       autoFocus
                     />
 
                     <ErrorMessage
                       className="error-message"
-                      name="email"
                       component="span"
+                      name="email"
+                      data-cy="error-email"
                     />
                   </div>
 
@@ -118,19 +124,22 @@ export default function Login(): JSX.Element {
                       placeholder="******"
                       name="password"
                       type="password"
+                      data-cy="password"
                     />
 
                     <ErrorMessage
                       className="error-message"
-                      name="password"
                       component="span"
+                      name="password"
+                      data-cy="error-password"
                     />
                   </div>
 
                   <button
                     className="p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer focus:ring-4 focus:ring-orange-500 disabled:opacity-50 hover:underline"
-                    type="submit"
                     disabled={isSubmitting}
+                    type="submit"
+                    data-cy="submit"
                   >
                     {isSubmitting ? 'Loading...' : 'Login'}
                   </button>
@@ -169,14 +178,29 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parse(ctx.req.headers?.cookie ?? '')
   const authCookie = cookies.auth
 
-  // kalau auth cookie sudah ada
-  if (authCookie) {
+  // kalau auth cookie tidak ada === belum login
+  if (!authCookie) {
     return {
-      redirect: { destination: '/user/dashboard', permanent: false },
+      props: {},
     }
   }
 
+  // verify auth cookie
+  const decoded = verify(
+    authCookie,
+    process.env.MY_SECRET_KEY
+  ) as AuthCookiePayload
+  const role = decoded.role
+
+  // kalau user role === ADMIN
+  if (role === 'ADMIN') {
+    return {
+      redirect: { destination: '/admin/dashboard', permanent: false },
+    }
+  }
+
+  // user role === USER
   return {
-    props: {},
+    redirect: { destination: '/user/dashboard', permanent: false },
   }
 }

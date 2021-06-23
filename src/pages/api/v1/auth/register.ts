@@ -21,6 +21,15 @@ export default nc
     // destructure request body form
     const { name, email, password } = req.body as TRegisterApiSchema
 
+    // check if there is already existing email
+    const emailIsExists = await UserModel.exists({ email })
+
+    if (emailIsExists) {
+      // client error => email already exists -----------------------------------------------------------------
+      res.status(400).json({ error: true, message: 'Email already exists' })
+      return
+    }
+
     // hash password with bcrypt
     const hash = hashSync(password, 10)
 

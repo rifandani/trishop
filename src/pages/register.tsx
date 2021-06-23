@@ -1,15 +1,17 @@
 import axios from 'axios'
 import Link from 'next/link'
 import { parse } from 'cookie'
+import { verify } from 'jsonwebtoken'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
-import { TRegisterApiSchema, registerApiSchema } from 'yup/apiSchema'
-import { APIResponseAuthLoginRegister } from 'types/User'
 import { UserPayload } from 'contexts/UserReducer'
+import { AuthCookiePayload } from 'types'
+import { APIResponseAuthLoginRegister } from 'types/User'
+import { TRegisterApiSchema, registerApiSchema } from 'yup/apiSchema'
 
 export default function RegisterPage(): JSX.Element {
   const initialValues: TRegisterApiSchema = {
@@ -183,14 +185,29 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parse(ctx.req.headers?.cookie ?? '')
   const authCookie = cookies.auth
 
-  // kalau auth cookie sudah ada
-  if (authCookie) {
+  // kalau auth cookie tidak ada === belum login
+  if (!authCookie) {
     return {
-      redirect: { destination: '/user/dashboard', permanent: false },
+      props: {},
     }
   }
 
+  // verify auth cookie
+  const decoded = verify(
+    authCookie,
+    process.env.MY_SECRET_KEY
+  ) as AuthCookiePayload
+  const role = decoded.role
+
+  // kalau user role === ADMIN
+  if (role === 'ADMIN') {
+    return {
+      redirect: { destination: '/admin/dashboard', permanent: false },
+    }
+  }
+
+  // user role === USER
   return {
-    props: {},
+    redirect: { destination: '/user/dashboard', permanent: false },
   }
 }

@@ -21,6 +21,15 @@ export default nc
     // destructure request body form
     const { email, password } = req.body as TLoginApiSchema
 
+    // check if user with that email exists
+    const emailIsExists = await UserModel.exists({ email })
+
+    if (!emailIsExists) {
+      // client error => email does not exists -----------------------------------------------------------------
+      res.status(400).json({ error: true, message: 'Email does not exists' })
+      return
+    }
+
     // find specific user
     const userDoc = await UserModel.findOne({ email })
 

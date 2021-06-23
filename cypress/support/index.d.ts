@@ -16,6 +16,16 @@ type TLoginApiSchema = {
 
 declare namespace Cypress {
   interface Chainable {
+    // custom selector data-cy
+    dataCy(
+      dataTestAttribute: string,
+      args?: Partial<
+        Cypress.Loggable &
+          Cypress.Timeoutable &
+          Cypress.Withinable &
+          Cypress.Shadow
+      >
+    ): Chainable<Element>
     // api - auth
     loginByApi(requestBody: TLoginApiSchema): Chainable<Response>
     registerByApi(requestBody: TRegisterApiSchema): Chainable<Response>
