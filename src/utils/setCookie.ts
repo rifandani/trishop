@@ -19,14 +19,16 @@ export const setAuthCookie = function (
     // seperti JSON.stringify untuk cookies
     serialize('auth', jwt, {
       httpOnly: true, // means client side javascript can NOT access our cookies
-      secure: process.env.NODE_ENV !== 'development',
-      sameSite: 'strict',
       maxAge: 60 * 60 * 1, // 1 hour
       path: '/', // make it available everywhere, not only in routes that call this setAuthCookie function
+      secure: process.env.NODE_ENV !== 'development',
+      sameSite: 'strict', // set ke lax biar bisa set-cookie di deployment preview branch develop. Kalau 'strict' restricted ke domain https://trishop.vercel.app
+      domain: process.env.NODE_ENV !== 'development' ? 'vercel.app' : '',
     })
   )
 }
 
+// TODO: setRefreshTokenCookie
 export const setRefreshTokenCookie = function (
   refreshTokenCookiePayload: RefreshTokenCookiePayload,
   res: NextApiResponse

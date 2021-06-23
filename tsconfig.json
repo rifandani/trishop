@@ -13,12 +13,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "downlevelIteration": true,
     "baseUrl": "./src",
     "paths": {
       "@/components/*": ["components/"]
-    },
-    "downlevelIteration": true
-    // "types": ["cypress"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

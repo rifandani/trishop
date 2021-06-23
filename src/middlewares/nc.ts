@@ -14,7 +14,7 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
       error: true,
       name: err.name,
       message: err.message,
-      errors: err.errors || [], // from yup middleware
+      errors: err.errors || null, // from yup middleware
     })
   },
 })
