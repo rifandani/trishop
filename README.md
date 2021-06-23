@@ -47,21 +47,22 @@ Trishop adalah platform e-commerce gratis dan open-source untuk unit usaha yang 
 Trishop dilengkapi dengan fitur:
 
 1. 90% typed Next.js dengan Typescript + Eslint + Prettier ⚡
-2. Peyimpanan database dengan Mongodb dan Mongoose ODM 🍃
-3. Penyimpanan file storage dengan Cloudinary 💾
-4. Dokumentasi komponen UI dengan Storybook dan mendeploy nya ke Chromatic 🌸
-5. Autentikasi JWT dalam cookie 🔑
-6. Otorisasi berdasarkan role: USER dan ADMIN 🔐
-7. Form validation dengan Formik dan Yup ✨
-8. Customer cart dan wishlist dengan react `context` dan `reducer` 🛠
-9. Customer order dan checkout product dengan custom hooks `useLocalStorage` ⚒
-10. Custom API routes middleware validation 🎊
-11. Review product dengan menyertakan nama, komentar dan bintang ⭐
-12. Report review yang terindikasi spam / mengandung SARA 🚫
-13. Memakai coupon code ketika di cart bagi customer yang memilikinya 👩‍💻
-14. Customer dashboard ~~untuk memantau order product yang telah dibeli~~ 🕵️‍♀️
-15. Admin dashboard untuk fungsi CRUD user, product, coupons, reports, ~~dan memantau status order product~~ 💎
-16. dll...
+2. E2E testing dengan cypress + cypress workflows ✅
+3. Dokumentasi komponen UI dengan Storybook dan mendeploy nya ke Chromatic 🌸
+4. Peyimpanan database dengan Mongodb dan Mongoose ODM 🍃
+5. Penyimpanan file storage dengan Cloudinary 💾
+6. Autentikasi JWT dalam cookie 🔑
+7. Otorisasi berdasarkan role: USER dan ADMIN 🔐
+8. Form validation dengan Formik dan Yup ✨
+9. Customer cart dan wishlist dengan react `context` dan `reducer` 🛠
+10. Customer order dan checkout product dengan custom hooks `useLocalStorage` ⚒
+11. Custom API routes middleware validation 🎊
+12. Review product dengan menyertakan nama, komentar dan bintang ⭐
+13. Report review yang terindikasi spam / mengandung SARA 🚫
+14. Memakai coupon code ketika di cart bagi customer yang memilikinya 👩‍💻
+15. Customer dashboard ~~untuk memantau order product yang telah dibeli~~ 🕵️‍♀️
+16. Admin dashboard untuk fungsi CRUD user, product, coupons, reports, ~~dan memantau status order product~~ 💎
+17. dll...
 
 ## Services 👜
 
@@ -71,8 +72,8 @@ Trishop dilengkapi dengan fitur:
 |      [cloudinary](https://cloudinary.com)       |       File Storage Solution       |
 | [mongodb](https://www.mongodb.com/cloud/atlas/) |          NoSQL Database           |
 |       [chromatic](https://chromatic.com/)       |         Storybook Hosting         |
+|         [cypress](https://cypress.io/)          |            E2E Testing            |
 |        [midtrans](https://midtrans.com/)        | Payment Gateway **(coming soon)** |
-|         [cypress](https://cypress.io/)          |   E2E Testing **(coming soon)**   |
 
 ## Branches 🔱
 

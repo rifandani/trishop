@@ -22,8 +22,8 @@ export const setAuthCookie = function (
       maxAge: 60 * 60 * 1, // 1 hour
       path: '/', // make it available everywhere, not only in routes that call this setAuthCookie function
       secure: process.env.NODE_ENV !== 'development',
-      sameSite: 'strict', // set ke lax biar bisa set-cookie di deployment preview branch develop. Kalau 'strict' restricted ke domain https://trishop.vercel.app
       domain: process.env.NODE_ENV !== 'development' ? 'vercel.app' : '',
+      sameSite: 'lax', // set ke lax biar bisa set-cookie di deployment preview branch develop. Kalau 'strict' restricted ke domain https://trishop.vercel.app
     })
   )
 }

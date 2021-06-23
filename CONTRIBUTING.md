@@ -56,14 +56,20 @@ Ikuti langkah berikut untuk memastikan setiap commit message yang anda tulis ter
    MONGO_HOST = 'YOURCLUSTER'
    # untuk cloudinary
    CLOUDINARY_URL = 'YOURCLOUDINARYURL'
+   # untuk cypress E2E testing
+   # silahkan bergabung ke discord server untuk mengetahui admin email & password
+   CYPRESS_RECORD_KEY='' # key yang didapatkan setelah mendaftar dan membuat project di https://cypress.io
+   CYPRESS_ADMIN_EMAIL=''
+   CYPRESS_ADMIN_PASSWORD=''
    ```
 
 6. Jalankan dev server `yarn dev`
 7. Fix bugs atau implementasi new features
 8. Commit changes dengan standar yang telah dijelaskan sebelumnya
-9. Pastikan tidak ada error ataupun warning ketika menjalankan perintah `yarn lint` ✔
-10. Push changes ke remote repo, dan buat pull request ke `develop` branch
-11. Kalau memungkinkan gunakan [reference keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-issues/linking-a-pull-request-to-an-issue) di description untuk mereferensikan ke issues yang bersangkutan dengan pull request yang telah anda buat
+9. Selalu tulis E2E/integration test untuk backend API routes dan frontend, jika anda membuat/mengubah sesuatu di dalam logic backend API / frontend
+10. Pastikan tidak ada error ataupun warning ketika menjalankan perintah `yarn lint` ✔
+11. Push changes ke remote repo, dan buat pull request ke `develop` branch
+12. Kalau memungkinkan gunakan [reference keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-issues/linking-a-pull-request-to-an-issue) di description untuk mereferensikan ke issues yang bersangkutan dengan pull request yang telah anda buat
 
     ```json
     changed transform prop of the modal so it can render text properly
@@ -71,5 +77,4 @@ Ikuti langkah berikut untuk memastikan setiap commit message yang anda tulis ter
     fix #14 // reference ke issues #14
     ```
 
-12. Tunggu review dan comment terhadap pull request yang telah kalian buat
-13. ~~Selalu tulis unit test (coming soon)~~
+13. Tunggu review dan comment terhadap pull request yang telah kalian buat
