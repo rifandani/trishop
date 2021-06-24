@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/rifandani/trishop/compare/v0.2.0...v0.3.0) (2021-06-24)
+
+
+### Features
+
+* **frontend:** adding redux-toolkit, react-redux ([f083373](https://github.com/rifandani/trishop/commits/f08337355a47dca8c3c93fee00138aa4762be134))
+
+
+### Bug Fixes
+
+* **frontend:** cannot find module 'contexts/CartReducer' ([aeae551](https://github.com/rifandani/trishop/commits/aeae551c74f792f469b365b0cbe801059800bb8c))
+* **frontend:** type error: has no exported member 'PRODUCT' ([0a313e8](https://github.com/rifandani/trishop/commits/0a313e8a05764dfba78a58fb0858ef9f241966f5))
+
 ## 0.2.0 (2021-06-18)
 
 ---
