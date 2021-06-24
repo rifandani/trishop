@@ -1,16 +1,24 @@
 /// <reference path="../../support/index.d.ts" />
 
 describe('Login Page', () => {
-  beforeEach(() => {
-    cy.clearCookies()
-    cy.clearLocalStorage()
-  })
+  // beforeEach(() => {
+  //   cy.clearCookies()
+  //   cy.clearLocalStorage()
+  // })
+
+  const AUTH_LOGIN_API_URL = `${Cypress.env('apiUrl')}/auth/login`
 
   /* ---------------------------------- Unauthenticated --------------------------------- */
   context('Unauthenticated', () => {
-    it('should have redirected to /login', function () {
+    it('visit /*/dashboard should have redirected to /login', function () {
       // visit protected page
       cy.visit('/admin/dashboard')
+
+      // should be redirected to /login
+      cy.url().should('include', '/login')
+
+      // visit protected page
+      cy.visit('/user/dashboard')
 
       // should be redirected to /login
       cy.url().should('include', '/login')
@@ -56,7 +64,7 @@ describe('Login Page', () => {
         .should('be.visible')
         .and('contain', 'email invalid')
 
-      // clear form field
+      // clear email and password field
       cy.dataCy('email').clear()
       cy.dataCy('password').clear()
     })
@@ -80,7 +88,7 @@ describe('Login Page', () => {
         .should('be.visible')
         .and('contain', 'password must be 6 characters or more')
 
-      // clear form field
+      // clear email and password field
       cy.dataCy('email').clear()
       cy.dataCy('password').clear()
     })
@@ -95,7 +103,7 @@ describe('Login Page', () => {
       }
 
       // spying on POST login
-      cy.intercept('POST', '/api/v1/auth/login').as('login')
+      cy.intercept('POST', AUTH_LOGIN_API_URL).as('login')
 
       // type in email and password field
       cy.dataCy('email').type(user.email)
@@ -115,7 +123,7 @@ describe('Login Page', () => {
         .should('be.visible')
         .and('contain', 'Email does not exists')
 
-      // clear form field
+      // clear email and password field
       cy.dataCy('email').clear()
       cy.dataCy('password').clear()
     })
@@ -128,7 +136,7 @@ describe('Login Page', () => {
       }
 
       // spying on POST login
-      cy.intercept('POST', '/api/v1/auth/login').as('login')
+      cy.intercept('POST', AUTH_LOGIN_API_URL).as('login')
 
       // type in email and password field
       cy.dataCy('email').type(user.email)
@@ -148,7 +156,7 @@ describe('Login Page', () => {
         .should('be.visible')
         .and('contain', 'Password did not match')
 
-      // clear form field
+      // clear email and password field
       cy.dataCy('email').clear()
       cy.dataCy('password').clear()
     })
@@ -161,7 +169,7 @@ describe('Login Page', () => {
       }
 
       // spying on POST login
-      cy.intercept('POST', '/api/v1/auth/login').as('login')
+      cy.intercept('POST', AUTH_LOGIN_API_URL).as('login')
 
       // type in email and password field
       cy.dataCy('email').type(user.email)
@@ -171,7 +179,7 @@ describe('Login Page', () => {
       cy.dataCy('submit').click()
 
       // wait for the interception response
-      cy.wait('@login').then(({ response }) => {
+      cy.wait('@login', { timeout: 10000 }).then(({ response }) => {
         // success response
         expect(response.statusCode).to.be.equal(201)
         expect(response.body).to.have.property('error', false)
@@ -188,28 +196,51 @@ describe('Login Page', () => {
           expect(cookie.value).to.be.a('string')
         })
 
-      // url should be /admin/dashboard
+      // url now should be /admin/dashboard
       cy.url().should('eq', `${Cypress.config().baseUrl}/admin/dashboard`)
 
       // UI should reflect on login success
-      cy.get('.Toastify__toast-body', { timeout: 5000 }).should('be.visible')
-
-      // clear form field
-      cy.dataCy('email').clear()
-      cy.dataCy('password').clear()
+      cy.get('.Toastify__toast-body').should('be.visible')
     })
   })
 
-  /* ---------------------------------- Already authenticated --------------------------------- */
-  context('Already authenticated', () => {
-    it('should have redirected to /user/dashboard', function () {
-      // cy.visit('/login')
-      // should be redirected to /dashboard
-      // cy.url().should('include', '/dashboard')
+  /* ---------------------------------- Already authenticated as ADMIN --------------------------------- */
+  context('Already authenticated as ADMIN', () => {
+    it('visit /login should be redirected to /admin/dashboard', function () {
+      // login as ADMIN
+      cy.loginAsAdmin()
+
+      // then, navigate back to /login
+      cy.visit('/login')
+
+      // should be redirected to /admin/dashboard
+      cy.url().should('include', '/admin/dashboard')
+
       // auth cookie should be present
-      // cy.getCookie('auth').should('exist')
+      cy.getCookie('auth').should('exist')
+
       // UI should reflect this user being logged in
-      // cy.get('h1').should('contain', 'jane.lane')
+      cy.dataCy('admin-dashboard').should('contain', 'Admin Dashboard')
+    })
+  })
+
+  /* ---------------------------------- Already authenticated as USER --------------------------------- */
+  context('Already authenticated as USER', () => {
+    it('visit /login should be redirected to /user/dashboard', function () {
+      // login as USER
+      cy.loginAsUser()
+
+      // then, navigate back to /login
+      cy.visit('/login')
+
+      // should be redirected to /user/dashboard
+      cy.url().should('include', '/user/dashboard')
+
+      // auth cookie should be present
+      cy.getCookie('auth').should('exist')
+
+      // UI should reflect this user being logged in
+      cy.dataCy('user-dashboard').should('contain', 'User Dashboard')
     })
   })
 })

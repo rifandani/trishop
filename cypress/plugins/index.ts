@@ -21,6 +21,8 @@ module.exports = (
 ) => {
   config.env.adminEmail = process.env.CYPRESS_ADMIN_EMAIL
   config.env.adminPassword = process.env.CYPRESS_ADMIN_PASSWORD
+  config.env.userEmail = process.env.CYPRESS_USER_EMAIL
+  config.env.userPassword = process.env.CYPRESS_USER_PASSWORD
 
   return config
 }
