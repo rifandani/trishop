@@ -24,8 +24,8 @@ export default nc
     // check if there is already existing email
     const emailIsExists = await UserModel.exists({ email })
 
+    // client error => email already exists -----------------------------------------------------------------
     if (emailIsExists) {
-      // client error => email already exists -----------------------------------------------------------------
       res.status(400).json({ error: true, message: 'Email already exists' })
       return
     }
@@ -43,8 +43,7 @@ export default nc
         role: userDoc.role,
         name: userDoc.name,
         email: userDoc.email,
-        createdAt: userDoc.createdAt,
-        updatedAt: userDoc.updatedAt,
+        iss: 'Trishop',
       },
       res
     )

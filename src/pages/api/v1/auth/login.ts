@@ -24,8 +24,8 @@ export default nc
     // check if user with that email exists
     const emailIsExists = await UserModel.exists({ email })
 
+    // client error => email does not exists -----------------------------------------------------------------
     if (!emailIsExists) {
-      // client error => email does not exists -----------------------------------------------------------------
       res.status(400).json({ error: true, message: 'Email does not exists' })
       return
     }
@@ -33,10 +33,11 @@ export default nc
     // find specific user
     const userDoc = await UserModel.findOne({ email })
 
+    // compare req.body.password with user password from mongodb
     const isMatch = await compare(password, userDoc.password)
 
+    // client error => password did not match -----------------------------------------------------------------
     if (!isMatch) {
-      // client error => password did not match -----------------------------------------------------------------
       res.status(400).json({ error: true, message: 'Password did not match' })
       return
     }
@@ -48,8 +49,7 @@ export default nc
         role: userDoc.role,
         name: userDoc.name,
         email: userDoc.email,
-        createdAt: userDoc.createdAt,
-        updatedAt: userDoc.updatedAt,
+        iss: 'Trishop',
       },
       res
     )

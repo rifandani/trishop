@@ -7,16 +7,16 @@ export interface AuthCookiePayload {
   email: string
   name: string
   role: 'USER' | 'ADMIN'
-  createdAt: Date
-  updatedAt: Date
   iat?: number // issuedAt, seconds since Unix epoch
   exp?: number // expiredAt, seconds since Unix epoch
+  iss?: string // issuer, token creator
 }
 
 export interface RefreshTokenCookiePayload {
   refreshToken: string
   iat?: number // issuedAt, seconds since Unix epoch
   exp?: number // expiredAt, seconds since Unix epoch
+  iss?: string // issuer, token creator
 }
 
 export interface IPhotoURL {
