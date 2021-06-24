@@ -12,18 +12,13 @@ import {
 } from 'formik'
 // files
 import Dropzone, { ImagePreview } from '../Dropzone'
-import { Product } from 'contexts/CartReducer'
 import { addProductSchema, TAddProductSchema } from 'yup/schema'
-import { TImage } from 'types/Product'
-
-interface Props {
-  product: Product
-}
+import { IProductProps, TImage } from 'types/Product'
 
 const CLOUDINARY_URL =
   'https://api.cloudinary.com/v1_1/ipandani2505/image/upload'
 
-export default function EditProduct({ product }: Props): JSX.Element {
+export default function EditProduct({ product }: IProductProps): JSX.Element {
   const {
     _id,
     title,
@@ -35,6 +30,7 @@ export default function EditProduct({ product }: Props): JSX.Element {
     updatedAt,
     images,
   } = product
+
   // hooks
   const { push } = useRouter()
   const [photos, setPhotos] = useState<ImagePreview[]>([])

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaShoppingCart } from 'react-icons/fa'
 import { IoMdClose, IoIosCard } from 'react-icons/io'
 import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri'
@@ -9,19 +9,23 @@ import { toast } from 'react-toastify'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
 import generateRupiah from 'utils/generateRupiah'
-import { CartContext } from 'contexts/CartContext'
-import { ProductPayload } from 'contexts/CartReducer'
 import { APIResponseCoupon } from 'types/Coupon'
 import { IOrder } from 'types/LocalStorage'
 import { UserPayload } from 'contexts/UserReducer'
+import { useAppDispatch, useAppSelector } from 'redux/store'
+import { deleteProductFromCart } from 'redux/slices/cart'
 
 export default function CartComp(): JSX.Element {
   // hooks
   const { push } = useRouter()
-  const { cart, dispatch } = useContext(CartContext) // cart context
+
+  const cart = useAppSelector((state) => state.cart) // redux -> cart
+  const dispatch = useAppDispatch()
+
   const [, setOrder] = useLocalStorage<IOrder>('order', null) // local storage
   const [user] = useLocalStorage<UserPayload>('user', null) // local storage
 
+  const [busy, setBusy] = useState<boolean>(false)
   const [coupon, setCoupon] = useState<string>('')
   const [couponDiscount, setCouponDiscount] = useState<number>(0) // float || number
   const [subtotal, setSubtotal] = useState<number>(0)
@@ -29,7 +33,7 @@ export default function CartComp(): JSX.Element {
 
   useEffect(() => {
     // count subtotal
-    const mySubtotal = cart.reduce(
+    const mySubtotal = cart.values.reduce(
       (accumulator, currentValue) =>
         accumulator + currentValue.price * currentValue.quantity,
       0
@@ -38,17 +42,14 @@ export default function CartComp(): JSX.Element {
 
     // count total price
     const priceAfterDiscount =
-      couponDiscount < 0
+      couponDiscount < 1
         ? Math.floor(mySubtotal * couponDiscount)
         : Math.floor(mySubtotal - couponDiscount)
     setTotal(mySubtotal - priceAfterDiscount)
   }, [cart, couponDiscount])
 
-  function deleteProduct(product: ProductPayload): void {
-    dispatch({
-      type: 'DEL_PRODUCT',
-      payload: product._id,
-    })
+  function deleteProduct(productId: string): void {
+    dispatch(deleteProductFromCart(productId))
 
     toast.info('Product deleted from the cart')
   }
@@ -60,6 +61,8 @@ export default function CartComp(): JSX.Element {
     }
 
     try {
+      setBusy(true)
+
       const res = await axios.post<APIResponseCoupon>(
         '/public/validate/coupon',
         reqBody
@@ -80,6 +83,8 @@ export default function CartComp(): JSX.Element {
     } catch (err) {
       console.error(err)
       toast.error(err.message)
+    } finally {
+      setBusy(false)
     }
   }
 
@@ -93,12 +98,12 @@ export default function CartComp(): JSX.Element {
 
   async function checkout(): Promise<void> {
     // if there is no cart
-    if (cart.length === 0) {
+    if (cart.count === 0) {
       toast.dark('Please add a product to cart before proceeding to checkout')
       return
     }
 
-    const item_details = cart.map((prod) => ({
+    const item_details = cart.values.map((prod) => ({
       id: prod._id,
       name: prod.title,
       price: prod.price,
@@ -162,12 +167,12 @@ export default function CartComp(): JSX.Element {
 
                 {/* isi product */}
                 <tbody>
-                  {cart &&
-                    cart.map((prod, i) => (
+                  {cart.count > 0 &&
+                    cart.values.map((prod) => (
                       <Transition
                         key={prod._id}
                         as="tr"
-                        show={Boolean(cart[i])}
+                        show={!!cart.count}
                         className="transition duration-500 ease-in-out"
                         enter="transition ease-in-out duration-300 transform"
                         enterFrom="-translate-x-full"
@@ -186,7 +191,7 @@ export default function CartComp(): JSX.Element {
                         <td>
                           <p className="flex items-end justify-between mb-2">
                             {prod.title}
-                            <span onClick={() => deleteProduct(prod)}>
+                            <span onClick={() => deleteProduct(prod._id)}>
                               <IoMdClose className="mr-3 text-red-500 transition duration-500 transform cursor-pointer hover:scale-150" />
                             </span>
                           </p>
@@ -242,11 +247,14 @@ export default function CartComp(): JSX.Element {
                         />
 
                         <button
-                          onClick={applyCoupon}
                           className="flex items-center px-3 py-1 text-sm text-white bg-orange-800 rounded-full outline-none md:px-4 hover:bg-orange-500 focus:outline-none active:outline-none"
+                          onClick={applyCoupon}
+                          disabled={busy}
                         >
                           <RiCoupon2Fill className="w-8 text-lg" />
-                          <span className="font-medium">Apply</span>
+                          <span className="font-medium">
+                            {busy ? 'Loading...' : 'Apply'}
+                          </span>
                         </button>
                       </div>
                     </div>

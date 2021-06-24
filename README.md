@@ -3,7 +3,7 @@
     <img height=100 src="./public/images/trishop.png"/>
   </p>
 
-  <h1 style="color: #9c4221;" align="center">
+  <h1 style="color: #D5A95B;" align="center">
     Trishop
   </h1>
 </a>
@@ -26,6 +26,12 @@
   </a>
 </p>
 
+<p align="center">
+  <a href="http://commitizen.github.io/cz-cli/">
+    <img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge&color=D5A95B" alt="Commitizen friendly" />
+  </a>
+</p>
+
 <h3 align="center">
   <a href="https://discord.gg/W9gPJ6kUPY">📢 Discord Contributors Community 📢</a>
 </h3>
@@ -41,81 +47,80 @@ Trishop adalah platform e-commerce gratis dan open-source untuk unit usaha yang 
 Trishop dilengkapi dengan fitur:
 
 1. 90% typed Next.js dengan Typescript + Eslint + Prettier ⚡
-2. Peyimpanan database dengan Mongodb dan Mongoose ODM 🍃
-3. Penyimpanan file storage dengan Cloudinary 💾
-4. Dokumentasi komponen UI dengan Storybook dan mendeploy nya ke Chromatic 🌸
-5. Autentikasi JWT dalam cookie 🔑
-6. Otorisasi berdasarkan role: USER dan ADMIN 🔐
-7. Form validation dengan Formik dan Yup ✨
-8. Customer cart dan wishlist dengan react `context` dan `reducer` 🛠
-9. Customer order dan checkout product dengan custom hooks `useLocalStorage` ⚒
-10. Custom API routes middleware validation 🎊
-11. Review product dengan menyertakan nama, komentar dan bintang ⭐
-12. Report review yang terindikasi spam / mengandung SARA 🚫
-13. Memakai coupon code ketika di cart bagi customer yang memilikinya 👩‍💻
-14. Customer dashboard ~~untuk memantau order product yang telah dibeli~~ 🕵️‍♀️
-15. Admin dashboard untuk fungsi CRUD user, product, coupons, reports, ~~dan memantau status order product~~ 💎
-16. dll...
+2. E2E testing dengan cypress + cypress workflows ✅
+3. Dokumentasi komponen UI dengan Storybook dan mendeploy nya ke Chromatic 🌸
+4. Peyimpanan database dengan Mongodb dan Mongoose ODM 🍃
+5. Penyimpanan file storage dengan Cloudinary 💾
+6. Autentikasi JWT dalam cookie 🔑
+7. Otorisasi berdasarkan role: USER dan ADMIN 🔐
+8. Form validation dengan Formik dan Yup ✨
+9. Customer cart dan wishlist dengan react `context` dan `reducer` 🛠
+10. Customer order dan checkout product dengan custom hooks `useLocalStorage` ⚒
+11. Custom API routes middleware validation 🎊
+12. Review product dengan menyertakan nama, komentar dan bintang ⭐
+13. Report review yang terindikasi spam / mengandung SARA 🚫
+14. Memakai coupon code ketika di cart bagi customer yang memilikinya 👩‍💻
+15. Customer dashboard ~~untuk memantau order product yang telah dibeli~~ 🕵️‍♀️
+16. Admin dashboard untuk fungsi CRUD user, product, coupons, reports, ~~dan memantau status order product~~ 💎
+17. dll...
 
-## Services 📃
+## Services 👜
 
 |                     Service                     |            Description            |
 | :---------------------------------------------: | :-------------------------------: |
 |          [vercel](https://vercel.com/)          |          Next.js Hosting          |
 |      [cloudinary](https://cloudinary.com)       |       File Storage Solution       |
 | [mongodb](https://www.mongodb.com/cloud/atlas/) |          NoSQL Database           |
-|     [storybook](https://storybook.js.org/)      |    UI Component Documentation     |
 |       [chromatic](https://chromatic.com/)       |         Storybook Hosting         |
+|         [cypress](https://cypress.io/)          |            E2E Testing            |
 |        [midtrans](https://midtrans.com/)        | Payment Gateway **(coming soon)** |
-|         [cypress](https://cypress.io/)          |   E2E Testing **(coming soon)**   |
 
 ## Branches 🔱
 
 - [develop](https://github.com/rifandani/trishop/tree/develop) -> **Pull Request** branch ini untuk kontribusi
 - [main](https://github.com/rifandani/trishop) -> Jangan disentuh, branch ini untuk production
 
-## Contributions 🧩
+## Screenshots 📷
 
-Trishop web dibuka untuk kontribusi baik itu kontribusi untuk fungsionalitas project ataupun berupa dokumentasi seperti CONTRIBUTING GUIDE, DESIGN GUIDELINES, dll. Saya merekomendasikan kalian membuat issue baru atau ikut bergabung dalam komunitas Discord agar saya dapat mengetahui terlebih dahulu apa yang kalian ingin tambahkan/kerjakan. Dengan itu apa yang kita kerjakan tidak akan saling bertabrakan.
+- Halaman products
 
-1. [Submit new issue](https://github.com/rifandani/trishop/issues)
-2. Fork repository ini
-3. Buat branch baru dari develop branch (jangan pernah bekerja di _main branch_), contoh:
+  <img src="public/readme/products.jpg" alt="products page" style="height: 300px;" />
 
-   ```bash
-    # ketika ingin menambah feature baru
-    git checkout -b feature/redux
-    # ketika ingin memperbaiki bug
-    git checkout -b fix/admin-dashboard
-   ```
+- Halaman product detail
 
-4. Install semua dependencies `yarn install`
-5. Buat file `.env.local` di root folder:
+  <img src="public/readme/product.jpg" alt="product detail page" style="height: 300px;" />
 
-   ```py
-   # untuk JWT
-   MY_SECRET_KEY = 'TEST'
-   # untuk mongodb
-   MONGO_HOST = 'YOURCLUSTER'
-   # untuk cloudinary
-   CLOUDINARY_URL = 'YOURCLOUDINARYURL'
-   ```
+- Halaman cart
 
-6. Jalankan dev server `yarn dev`
-7. Fix bugs atau implementasi new features
-8. Commit changes dengan message yang memiliki arti (at least make it pretty with [Emoji](https://gist.github.com/parmentf/035de27d6ed1dce0b36a)) 😎
-9. Pastikan tidak ada error ataupun warning ketika menjalankan perintah `yarn lint` ✔
-10. Push changes ke remote repo, dan buat pull request ke `develop` branch
-11. Kalau memungkinkan gunakan [reference keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-issues/linking-a-pull-request-to-an-issue) di description untuk mereferensikan ke issues yang bersangkutan dengan pull request yang telah anda buat
+  <img src="public/readme/cart.jpg" alt="cart page" style="height: 300px;" />
 
-    ```json
-    changed transform prop of the modal so it can render text properly
+- Halaman checkout
 
-    fix #14 // reference ke issues #14
-    ```
+  <img src="public/readme/checkout.jpg" alt="checkout page" style="height: 400px;" />
 
-12. Tunggu review dan comment terhadap pull request yang telah kalian buat
-13. ~~Selalu tulis unit test (coming soon)~~
+- Halaman admin dashboard
+
+  <img src="public/readme/admin1.jpg" alt="admin dashboard page" style="height: 300px;" />
+
+- Halaman admin dashboard add product
+
+  <img src="public/readme/admin2.jpg" alt="admin dashboard add product page" style="height: 300px;" />
+
+## Usage 🏀
+
+Untuk menjalankan project ini di local, ikuti langkah berikut:
+
+1. Clone repo ini
+2. Jalankan `yarn` atau `npm install`
+3. Jalankan `yarn dev` untuk menjalankan nextjs frontend dan backend di port `3000`
+4. Backend API berada pada folder `/pages/api/v1`
+5. Jalankan `yarn storybook` untuk menjalankan storybook UI component di port `6006`
+
+## Contributing 🧩
+
+Trishop web dibuka untuk kontribusi baik itu kontribusi untuk fungsionalitas project ataupun berupa dokumentasi. Saya merekomendasikan kalian membuat issue baru atau ikut bergabung dalam komunitas Discord agar saya dapat mengetahui terlebih dahulu apa yang kalian ingin tambahkan/kerjakan sehingga project bisa lebih terkoordinir dan apa yang kita kerjakan tidak akan saling bertabrakan.
+
+Silahkan baca [CONTRIBUTING.md](https://github.com/rifandani/trishop/blob/develop/CONTRIBUTING.md) untuk mengetahui lebih detailnya.
 
 ## Code of Conduct 📐
 
@@ -128,3 +133,7 @@ Silahkan baca [CODE_OF_CONDUCT.md](https://github.com/rifandani/trishop/blob/dev
 Digunakan untuk tracking major update dan breaking changes terhadap project.
 
 Silahkan baca [CHANGELOG.md](https://github.com/rifandani/trishop/blob/develop/CHANGELOG.md) untuk mengetahui lebih detailnya.
+
+## License 📄
+
+[MIT](https://github.com/rifandani/trishop/blob/develop/LICENSE)

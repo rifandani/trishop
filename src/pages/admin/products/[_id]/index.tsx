@@ -9,14 +9,12 @@ import ProductModel from 'mongo/models/Product'
 import UserModel from 'mongo/models/User'
 import dbConnect from 'mongo/config/dbConnect'
 import getQueryAsString from 'utils/getQueryAsString'
-import { Product } from 'contexts/CartReducer'
 import { AuthCookiePayload } from 'types'
+import { IProductProps } from 'types/Product'
 
-interface Props {
-  product: Product
-}
-
-export default function AdminProductEdit({ product }: Props): JSX.Element {
+export default function AdminProductEdit({
+  product,
+}: IProductProps): JSX.Element {
   return (
     <>
       <NextSeo title="Edit Product" />

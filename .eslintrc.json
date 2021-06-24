@@ -1,19 +1,21 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "prettier", "chai-friendly", "cypress"],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    // Uncomment the following lines to enable eslint-config-prettier. Is not enabled right now to avoid issues with the Next.js repo
-    "prettier"
+    "prettier",
+    "plugin:chai-friendly/recommended",
+    "plugin:cypress/recommended"
     // "plugin:@next/next/recommended"
   ],
   "env": {
     "es6": true,
     "browser": true,
     "jest": true,
-    "node": true
+    "node": true,
+    "cypress/globals": true
   },
   "settings": {
     "react": {
@@ -31,6 +33,7 @@
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-use-before-define": 0,
+    "@typescript-eslint/triple-slash-reference": 0,
     "@typescript-eslint/no-unused-vars": [
       2,
       {

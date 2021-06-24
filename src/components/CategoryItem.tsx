@@ -1,15 +1,9 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 // files
-import { PRODUCT } from '../pages/products/categories'
+import { IProductProps } from 'types/Product'
 
-interface CategoryItemProps {
-  product: PRODUCT
-}
-
-export default function CategoryItem({
-  product,
-}: CategoryItemProps): JSX.Element {
+export default function CategoryItem({ product }: IProductProps): JSX.Element {
   const { push } = useRouter()
 
   async function toProductDetail() {

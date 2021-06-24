@@ -2,22 +2,21 @@ import Link from 'next/link'
 import Image from 'next/image'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { FaShoppingCart, FaHeart } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 // files
 import useLocalStorage from 'hooks/useLocalStorage'
-import { CartContext } from 'contexts/CartContext'
-import { WishlistContext } from 'contexts/WishlistContext'
 import { UserPayload } from 'contexts/UserReducer'
+import { useAppSelector } from 'redux/store'
 
 export default function Nav(): JSX.Element {
   // hooks
   const { push } = useRouter()
+  const { cart, wishlist } = useAppSelector((state) => state) // redux -> global store
+
   const [user, setUser] = useLocalStorage<UserPayload>('user', null)
-  const { cart } = useContext(CartContext) // cart context
-  const { wishlist } = useContext(WishlistContext) // cart context
   const [toggle, setToggle] = useState<boolean>(true) // toggle hamburger menu
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false) // toggle dropdown menu
 
@@ -86,7 +85,7 @@ export default function Nav(): JSX.Element {
                 <a className="inline-block px-4 pt-4 pb-3 bg-white rounded-full lg:mr-2">
                   <div className="flex space-x-2">
                     <FaShoppingCart className="text-xl text-orange-800 transition duration-500 transform hover:scale-150 hover:text-orange-400" />
-                    <p className="text-orange-800">{cart ? cart.length : 0}</p>
+                    <p className="text-orange-800">{cart.count}</p>
                   </div>
                 </a>
               </Link>
@@ -97,9 +96,7 @@ export default function Nav(): JSX.Element {
                 <a className="inline-block px-4 pt-4 pb-3 bg-white rounded-full lg:mr-2">
                   <div className="flex space-x-2">
                     <FaHeart className="text-xl text-red-800 transition duration-500 transform hover:scale-150 hover:text-orange-400" />
-                    <p className="text-orange-800">
-                      {wishlist ? wishlist.length : 0}
-                    </p>
+                    <p className="text-orange-800">{wishlist.count}</p>
                   </div>
                 </a>
               </Link>

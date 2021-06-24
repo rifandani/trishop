@@ -1,37 +1,17 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import Cors from 'cors'
 // files
-import connectMongo from 'middlewares/connectMongo'
+import nc from 'middlewares/nc'
+import withMongoConnect from 'middlewares/withMongoConnect'
 
 // TODO: implement refresh token
-const handler = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> => {
-  try {
-    if (req.method === 'POST') {
-      // destructure request body form
-
-      // login SUCCESS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(201).json({
-        error: false,
-        message: 'Refresh token success',
-      })
-    } else {
-      // client error => Method Not Allowed -----------------------------------------------------------------
-      res.status(405).json({
-        error: true,
-        name: 'METHOD NOT ALLOWED',
-        message: 'Only support POST req',
-      })
-    }
-  } catch (err) {
-    // server error => Internal Server Error -----------------------------------------------------------------
-    res.status(500).json({
-      error: true,
-      name: err.name,
-      message: err.message,
+export default nc
+  // cors middleware
+  .use(
+    Cors({
+      methods: ['POST'],
     })
-  }
-}
-
-export default connectMongo(handler)
+  )
+  .use(withMongoConnect()) // connect mongodb middleware
+  .post(async (_, res) => {
+    res.status(501).json({ error: true, message: 'Not yet implemented' })
+  })

@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from 'react'
 import ReactPaginate from 'react-paginate'
 // files
-import { Product } from 'contexts/CartReducer'
+import { IProduct } from 'types/Product'
 
 interface Props {
-  products: Product[]
+  products: IProduct[]
   currentPage: number
   setCurrentPage: Dispatch<SetStateAction<number>>
   limit: number

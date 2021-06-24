@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 // files
-import CategoryItem from './CategoryItem'
-import { PRODUCT } from '../pages/products/categories'
+import CategoryItem from 'components/CategoryItem'
+import { IProduct } from 'types/Product'
 
 interface CategoriesProps {
   labels: string[]
-  queryProducts: PRODUCT[]
+  queryProducts: IProduct[]
 }
 
 export default function Categories({
@@ -47,10 +47,9 @@ export default function Categories({
           </article>
 
           <div className="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {queryProducts &&
-              (queryProducts as PRODUCT[]).map((product) => (
-                <CategoryItem key={product._id} product={product} />
-              ))}
+            {queryProducts?.map((product) => (
+              <CategoryItem key={product._id} product={product} />
+            ))}
           </div>
 
           {/* pagination */}

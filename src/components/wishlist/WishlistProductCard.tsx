@@ -1,27 +1,26 @@
 import Link from 'next/link'
-import { Dispatch } from 'react'
 import { FaHeart } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 // files
 import generateRupiah from 'utils/generateRupiah'
-import { WishlistPayload, Action } from 'contexts/WishlistReducer'
+import { useAppDispatch } from 'redux/store'
+import {
+  deleteProductFromWishlist,
+  WishlistPayload,
+} from 'redux/slices/wishlist'
 
 interface Props {
   product: WishlistPayload
-  dispatchWish: Dispatch<Action>
 }
 
-export default function WishlistProductCard({
-  product,
-  dispatchWish,
-}: Props): JSX.Element {
-  const { id, imageUrl, name, price } = product
+export default function WishlistProductCard({ product }: Props): JSX.Element {
+  const { _id, imageUrl, name, price } = product
+
+  // hooks
+  const dispatch = useAppDispatch()
 
   function onDeleteWishlist() {
-    dispatchWish({
-      type: 'DEL_WISHLIST',
-      payload: product.id,
-    })
+    dispatch(deleteProductFromWishlist(_id)) // dispatch wishlist
 
     toast.info('Product deleted from the wishlist')
   }
@@ -43,7 +42,7 @@ export default function WishlistProductCard({
       </div>
 
       <div className="px-5 py-3">
-        <Link href={`/products/${id}`}>
+        <Link href={`/products/${_id}`}>
           <h3 className="text-gray-700 cursor-pointer hover:text-orange-800 hover:underline">
             {name}
           </h3>

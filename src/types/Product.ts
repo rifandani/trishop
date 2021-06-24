@@ -1,6 +1,5 @@
 // files
 import { IReview } from './Review'
-import { Product } from 'contexts/CartReducer'
 
 export type TImage = {
   imageName: string
@@ -20,20 +19,30 @@ export interface IProduct {
   reviews?: IReview[] // new
   createdAt?: Date
   updatedAt?: Date
+  _id?: string
+  __v?: number
+}
+
+export interface IProductProps {
+  product: IProduct
+}
+
+export interface IProductsProps {
+  products: IProduct[]
 }
 
 /* --------------------------------- client --------------------------------- */
 
-export interface APIResponseProducts {
+export interface APIResponseProduct {
   error: boolean
-  products: Product[]
-  count: number
+  product: IProduct
   message?: string
 }
 
-export interface APIResponseProduct {
+export interface APIResponseProducts {
   error: boolean
-  product: Product
+  products: IProduct[]
+  count: number
   message?: string
 }
 

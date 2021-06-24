@@ -7,6 +7,8 @@ export interface IUser {
   role: 'ADMIN' | 'USER'
   createdAt?: Date
   updatedAt?: Date
+  _id?: string
+  __v?: number
 }
 
 export interface IUserProps {
@@ -19,10 +21,21 @@ export interface IUsersProps {
 
 /* ------------------------------ API Response ------------------------------ */
 
-export interface IAuthLoginRegister {
+export interface APIResponseAuthLoginRegister {
   error: boolean
   message: string
   data?: UserPayload
+}
+
+export interface APIResponseUser {
+  error: boolean
+  user: IUser
+}
+
+export interface APIResponseUsers {
+  error: boolean
+  users: IUser[]
+  count: number
 }
 
 // import { Document, Model } from 'mongoose'

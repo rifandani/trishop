@@ -1,56 +1,34 @@
 import Cors from 'cors'
-import { NextApiRequest, NextApiResponse } from 'next'
 // files
+import nc from 'middlewares/nc'
 import getQueryAsString from 'utils/getQueryAsString'
 import ProductModel from 'mongo/models/Product'
 import ReviewModel from 'mongo/models/Review'
-import checkObjectId from 'middlewares/checkObjectId'
-import connectMongo from 'middlewares/connectMongo'
-import initMiddleware from 'middlewares/initMiddleware'
+import withMongoConnect from 'middlewares/withMongoConnect'
+import withCheckObjectId from 'middlewares/withCheckObjectId'
 
-const cors = initMiddleware(
-  Cors({
-    methods: ['GET'],
-  })
-)
+export default nc
+  // cors, middleware 1
+  .use(
+    Cors({
+      methods: ['GET'],
+    })
+  )
+  .use(withMongoConnect()) // connet mongodb, middleware 2
+  .use(withCheckObjectId(ProductModel)) // check objectId query validity, middleware 3
+  /* ------------------------------ GET req => /public/products/:_id ------------------------------ */
+  .get(async (req, res) => {
+    // get productId
+    const productId = getQueryAsString(req.query._id)
 
-const handler = async function (
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> {
-  try {
-    await cors(req, res) // Run cors
-
-    if (req.method === 'GET') {
-      /* -------------------------------------------------------------------------- */
-      /*                       GET req => /public/products/:_id                      */
-      /* -------------------------------------------------------------------------- */
-
-      // get productId
-      const productId = getQueryAsString(req.query._id)
-
-      // get product by productId & populate 'reviews'
-      const productDoc = await ProductModel.findById(productId)
-        .populate({
-          path: 'reviews',
-          model: ReviewModel, // reference the model, or it will throw an Error
-        })
-        .exec()
-
-      // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      res.status(200).json({ error: false, product: productDoc })
-    } else {
-      // client error => METHOD NOT ALLOWED -----------------------------------------------------------------
-      res.status(405).json({
-        error: true,
-        name: 'METHOD NOT ALLOWED',
-        message: 'Only supports GET method',
+    // get product by productId & populate 'reviews'
+    const productDoc = await ProductModel.findById(productId)
+      .populate({
+        path: 'reviews',
+        model: ReviewModel, // reference the model, or it will throw an Error
       })
-    }
-  } catch (err) {
-    // server error => Internal Server Error -----------------------------------------------------------------
-    res.status(500).json({ error: true, name: err.name, message: err.message })
-  }
-}
+      .exec()
 
-export default checkObjectId(ProductModel, connectMongo(handler))
+    // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    res.status(200).json({ error: false, product: productDoc })
+  })

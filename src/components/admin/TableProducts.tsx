@@ -11,7 +11,7 @@ import generateRupiah from 'utils/generateRupiah'
 export default function TableProducts(): JSX.Element {
   // hooks
   const { push } = useRouter()
-  const { products } = useProducts()
+  const { products, productsIsLoading, productsIsError } = useProducts()
 
   const editProduct = (_id: string): Promise<boolean> =>
     push(`/admin/products/${_id}`)
@@ -48,76 +48,80 @@ export default function TableProducts(): JSX.Element {
     <section className="flex flex-col mt-8">
       <div className="-my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="min-w-full overflow-hidden sm:rounded-lg ">
-          <Grid
-            data={products ? products : []}
-            search={true}
-            sort={true}
-            pagination={{
-              enabled: true,
-              limit: 3,
-            }}
-            columns={[
-              {
-                id: 'title',
-                name: 'Title',
-              },
-              {
-                id: 'price',
-                name: 'Price',
-                formatter: (cell) => generateRupiah(+cell.toString()),
-              },
-              {
-                id: 'stock',
-                name: 'Stock',
-              },
-              {
-                id: 'sold',
-                name: 'Sold',
-              },
-              {
-                id: '_id',
-                name: 'Edit',
-                sort: {
-                  enabled: false,
+          {productsIsLoading && 'Loading...'}
+          {productsIsError && 'Error'}
+          {products && (
+            <Grid
+              data={(products as any) || []}
+              search={true}
+              sort={true}
+              pagination={{
+                enabled: true,
+                limit: 3,
+              }}
+              columns={[
+                {
+                  id: 'title',
+                  name: 'Title',
                 },
-                formatter: (_cell, row) => {
-                  return h(
-                    'button',
-                    {
-                      className:
-                        'py-2 px-4 border rounded-md text-white bg-orange-500 hover:bg-orange-600',
-                      onClick: () => {
-                        // console.log(row.cells)
-                        editProduct(row.cells[4].data.toString())
+                {
+                  id: 'price',
+                  name: 'Price',
+                  formatter: (cell) => generateRupiah(+cell.toString()),
+                },
+                {
+                  id: 'stock',
+                  name: 'Stock',
+                },
+                {
+                  id: 'sold',
+                  name: 'Sold',
+                },
+                {
+                  id: '_id',
+                  name: 'Edit',
+                  sort: {
+                    enabled: false,
+                  },
+                  formatter: (_cell, row) => {
+                    return h(
+                      'button',
+                      {
+                        className:
+                          'py-2 px-4 border rounded-md text-white bg-orange-500 hover:bg-orange-600',
+                        onClick: () => {
+                          // console.log(row.cells)
+                          editProduct(row.cells[4].data.toString())
+                        },
                       },
-                    },
-                    'Edit'
-                  )
+                      'Edit'
+                    )
+                  },
                 },
-              },
-              {
-                id: '_id',
-                name: 'Delete',
-                sort: {
-                  enabled: false,
-                },
-                formatter: (_cell, row) => {
-                  return h(
-                    'button',
-                    {
-                      className:
-                        'py-2 px-4 border rounded-md text-white bg-red-600 hover:bg-red-700',
-                      onClick: () => {
-                        // console.log(row.cells)
-                        deleteProduct(row.cells[5].data.toString())
+                {
+                  id: '_id',
+                  name: 'Delete',
+                  sort: {
+                    enabled: false,
+                  },
+                  formatter: (_cell, row) => {
+                    return h(
+                      'button',
+                      {
+                        className:
+                          'py-2 px-4 border rounded-md text-white bg-red-600 hover:bg-red-700',
+                        onClick: () => {
+                          // console.log(row.cells)
+                          deleteProduct(row.cells[5].data.toString())
+                        },
                       },
-                    },
-                    'Delete'
-                  )
+                      'Delete'
+                    )
+                  },
                 },
-              },
-            ]}
-          />
+              ]}
+            />
+          )}
         </div>
       </div>
     </section>
