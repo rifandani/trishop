@@ -18,12 +18,12 @@ export const setAuthCookie = function (
     'Set-Cookie',
     // seperti JSON.stringify untuk cookies
     serialize('auth', jwt, {
+      secure: process.env.NODE_ENV !== 'development',
+      path: '/', // make it available everywhere, not only in routes that call this setAuthCookie function
       httpOnly: true, // means client side javascript can NOT access our cookies
       maxAge: 60 * 60 * 1, // 1 hour
-      path: '/', // make it available everywhere, not only in routes that call this setAuthCookie function
-      secure: process.env.NODE_ENV !== 'development',
-      domain: process.env.NODE_ENV !== 'development' ? 'vercel.app' : '',
-      sameSite: 'lax', // set ke lax biar bisa set-cookie di deployment preview branch develop. Kalau 'strict' restricted ke domain https://trishop.vercel.app
+      sameSite: 'strict', // Kalau 'strict' restricted ke domain https://trishop.vercel.app
+      // domain: process.env.NODE_ENV !== 'development' ? 'vercel.app' : '',
     })
   )
 }

@@ -1,9 +1,9 @@
+import Axios from 'axios'
+import { h } from 'gridjs'
+import { mutate } from 'swr'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { Grid } from 'gridjs-react'
-import { h } from 'gridjs'
-import { mutate } from 'swr'
-import Axios from 'axios'
 // files
 import useProducts from 'hooks/useProducts'
 import generateRupiah from 'utils/generateRupiah'
@@ -52,7 +52,7 @@ export default function TableProducts(): JSX.Element {
           {productsIsError && 'Error'}
           {products && (
             <Grid
-              data={(products as any) || []}
+              data={products as any}
               search={true}
               sort={true}
               pagination={{
