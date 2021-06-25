@@ -43,7 +43,7 @@ export default function TableUsers(): JSX.Element {
           {usersIsError && 'Error'}
           {users && (
             <Grid
-              data={(users as any) || []}
+              data={users as any}
               search={true}
               sort={true}
               pagination={{

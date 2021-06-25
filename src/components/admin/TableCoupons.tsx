@@ -45,7 +45,7 @@ export default function TableCoupons(): JSX.Element {
           {couponsIsError && 'Error'}
           {coupons && (
             <Grid
-              data={(coupons as any) || []}
+              data={coupons as any}
               search={true}
               sort={true}
               pagination={{

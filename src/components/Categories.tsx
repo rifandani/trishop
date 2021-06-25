@@ -34,20 +34,19 @@ export default function Categories({
           </p>
 
           <article className="flex items-center justify-center w-full h-20 px-4 py-2 my-2 space-x-3 overflow-y-auto">
-            {labels &&
-              labels.map((label, i: number) => (
-                <section
-                  key={i}
-                  onClick={() => querying(label)}
-                  className="px-4 py-1 transition duration-500 transform border rounded-lg shadow-lg cursor-pointer hover:bg-orange-200 hover:scale-125"
-                >
-                  <p className="font-light uppercase">{label}</p>
-                </section>
-              ))}
+            {labels.map((label, i: number) => (
+              <section
+                key={i}
+                onClick={() => querying(label)}
+                className="px-4 py-1 transition duration-500 transform border rounded-lg shadow-lg cursor-pointer hover:bg-orange-200 hover:scale-125"
+              >
+                <p className="font-light uppercase">{label}</p>
+              </section>
+            ))}
           </article>
 
           <div className="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {queryProducts?.map((product) => (
+            {queryProducts.map((product) => (
               <CategoryItem key={product._id} product={product} />
             ))}
           </div>

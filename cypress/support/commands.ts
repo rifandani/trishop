@@ -15,8 +15,8 @@ const user = {
   password: Cypress.env('userPassword'),
 }
 
-Cypress.Commands.add('dataCy', (dataTestAttribute, args = {}) => {
-  return cy.get(`[data-cy=${dataTestAttribute}]`, ...args)
+Cypress.Commands.add('dataCy', (dataTestAttribute, args) => {
+  return cy.get(`[data-cy=${dataTestAttribute}]`, args)
 })
 
 Cypress.Commands.add('loginAsAdmin', () => {
