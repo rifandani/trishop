@@ -1,17 +1,12 @@
-import Cors from 'cors'
 import { parse } from 'querystring'
 import { v2 as cld } from 'cloudinary'
 // files
 import nc from 'middlewares/nc'
+import withCors from 'middlewares/withCors'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
 
 export default nc
-  // cors, middleware 1
-  .use(
-    Cors({
-      methods: ['GET', 'POST', 'DELETE'],
-    })
-  )
+  .use(withCors(['GET', 'POST', 'DELETE'])) // cors
   .use(withCheckAuthCookieAsAdmin()) // check auth cookie mongodb, middleware 2
   /* ----------------------------- GET req => /admin/cloudinary/images ---------------------------- */
   .get(async (req, res) => {

@@ -5,17 +5,43 @@ import { NextSeo } from 'next-seo'
 // files
 import Navbar from 'components/admin/Navbar'
 import AdminDashboard from 'components/admin/AdminDashboard'
-import UserModel from 'mongo/models/User'
 import dbConnect from 'mongo/config/dbConnect'
+import ProductModel from 'mongo/models/Product'
+import UserModel from 'mongo/models/User'
+import CouponModel from 'mongo/models/Coupon'
+import ReportModel from 'mongo/models/Report'
+import ReviewModel from 'mongo/models/Review'
 import { AuthCookiePayload } from 'types'
+import { IProduct } from 'types/Product'
+import { IUser } from 'types/User'
+import { ICoupon } from 'types/Coupon'
+import { IReport } from 'types/Report'
 
-export default function AdminDashboardPage(): JSX.Element {
+export interface AdminDashboardProps {
+  products: IProduct[]
+  users: IUser[]
+  coupons: ICoupon[]
+  reports: IReport[]
+}
+
+// NOTE: ngambil data nya pake SSR, karena bermasalah di caching ketika memakai SWR / react-query / RTK Query
+export default function AdminDashboardPage({
+  products,
+  users,
+  coupons,
+  reports,
+}: AdminDashboardProps): JSX.Element {
   return (
     <>
       <NextSeo title="Admin Dashboard" />
 
       <Navbar>
-        <AdminDashboard />
+        <AdminDashboard
+          products={products}
+          users={users}
+          coupons={coupons}
+          reports={reports}
+        />
       </Navbar>
     </>
   )
@@ -43,16 +69,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // connect to mongodb
     await dbConnect()
 
-    // // if user does not exists
+    // if user does not exists
     const userIsExists = await UserModel.exists({ _id: userId })
     if (!userIsExists) {
       return {
         redirect: { destination: '/login', permanent: false },
       }
     }
-
-    // find user by id
-    // const user = await UserModel.findById(userId)
 
     // if user.role === 'USER'
     if (decoded.role === 'USER') {
@@ -61,8 +84,27 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       }
     }
 
+    /* -------------------------------- get all admin dashboard props ------------------------------- */
+
+    // products
+    const products = await ProductModel.find()
+    // users
+    const users = await UserModel.find()
+    // coupons
+    const coupons = await CouponModel.find()
+    // reports
+    const reports = await ReportModel.find()
+      .populate({ path: 'reviewRef', model: ReviewModel })
+      .sort({ createdAt: -1 }) // desc
+      .exec()
+
     return {
-      props: {},
+      props: {
+        products: JSON.parse(JSON.stringify(products)),
+        users: JSON.parse(JSON.stringify(users)),
+        coupons: JSON.parse(JSON.stringify(coupons)),
+        reports: JSON.parse(JSON.stringify(reports)),
+      },
     }
   } catch (err) {
     // kalau jwt malformed  || auth cookie tidak valid

@@ -1,17 +1,12 @@
-import Cors from 'cors'
 import { createTransport } from 'nodemailer'
 // files
 import nc from 'middlewares/nc'
+import withCors from 'middlewares/withCors'
 import withYupConnect from 'middlewares/withYupConnect'
 import { contactApiSchema } from 'yup/apiSchema'
 
 export default nc
-  // cors middleware
-  .use(
-    Cors({
-      methods: ['POST'],
-    })
-  )
+  .use(withCors(['POST'])) // cors
   .use(withYupConnect(contactApiSchema)) // yup middleware
   .post(async (req, res) => {
     // destructure request body form

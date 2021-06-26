@@ -1,20 +1,15 @@
-import Cors from 'cors'
 import { hashSync } from 'bcrypt'
 // files
 import nc from 'middlewares/nc'
-import UserModel from 'mongo/models/User'
+import withCors from 'middlewares/withCors'
 import withYupConnect from 'middlewares/withYupConnect'
 import withMongoConnect from 'middlewares/withMongoConnect'
-import { setAuthCookie } from 'utils/setCookie'
+import UserModel from 'mongo/models/User'
+import setAuthCookie from 'utils/setAuthCookie'
 import { registerApiSchema, TRegisterApiSchema } from 'yup/apiSchema'
 
 export default nc
-  // cors middleware
-  .use(
-    Cors({
-      methods: ['POST'],
-    })
-  )
+  .use(withCors(['POST'])) // cors
   .use(withMongoConnect()) // connect mongodb middleware
   .use(withYupConnect(registerApiSchema)) // yup middleware
   .post(async (req, res) => {

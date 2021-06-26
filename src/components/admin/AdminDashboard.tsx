@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { MdReportProblem } from 'react-icons/md'
 import {
   FaUserFriends,
   FaShoppingCart,
@@ -6,23 +7,20 @@ import {
   FaMoneyBillWave,
   FaTicketAlt,
 } from 'react-icons/fa'
-import { MdReportProblem } from 'react-icons/md'
 // files
 import TableUsers from './TableUsers'
 import TableProducts from './TableProducts'
 import TableCoupons from './TableCoupons'
 import SwiperReports from './SwiperReports'
-import useUsers from 'hooks/useUsers'
-import useProducts from 'hooks/useProducts'
-import useGetCoupons from 'hooks/useGetCoupons'
-import useGetReports from 'hooks/useGetReports'
+import { AdminDashboardProps } from 'pages/admin/dashboard'
 
-export default function AdminDashboard(): JSX.Element {
+export default function AdminDashboard({
+  users,
+  products,
+  coupons,
+  reports,
+}: AdminDashboardProps): JSX.Element {
   // hooks
-  const { users, usersIsLoading, usersIsError } = useUsers()
-  const { products, productsIsLoading, productsIsError } = useProducts()
-  const { coupons, couponsIsLoading, couponsIsError } = useGetCoupons()
-  const { reports, reportsIsLoading, reportsIsError } = useGetReports()
   const { push } = useRouter()
 
   return (
@@ -47,9 +45,7 @@ export default function AdminDashboard(): JSX.Element {
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {users && users.length}
-                    {usersIsLoading && 'Loading...'}
-                    {usersIsError && 'Error'}
+                    {users.length}
                   </h4>
                   <div className="text-gray-500">Total Users</div>
                 </div>
@@ -65,9 +61,7 @@ export default function AdminDashboard(): JSX.Element {
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {products && products.length}
-                    {productsIsLoading && 'Loading...'}
-                    {productsIsError && 'Error'}
+                    {products.length}
                   </h4>
                   <div className="text-gray-500">Total Products</div>
                 </div>
@@ -83,9 +77,7 @@ export default function AdminDashboard(): JSX.Element {
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {coupons && coupons.length}
-                    {couponsIsLoading && 'Loading...'}
-                    {couponsIsError && 'Error'}
+                    {coupons.length}
                   </h4>
                   <div className="text-gray-500">Total Coupons</div>
                 </div>
@@ -101,9 +93,7 @@ export default function AdminDashboard(): JSX.Element {
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {reports && reports.length}
-                    {reportsIsLoading && 'Loading...'}
-                    {reportsIsError && 'Error'}
+                    {reports.length}
                   </h4>
                   <div className="text-gray-500">Total Reports</div>
                 </div>
@@ -118,7 +108,7 @@ export default function AdminDashboard(): JSX.Element {
                 </div>
 
                 <div className="mx-5">
-                  <h4 className="text-2xl font-semibold text-gray-700">152</h4>
+                  <h4 className="text-2xl font-semibold text-gray-700">999</h4>
                   <div className="text-gray-500">Weekly Orders</div>
                 </div>
               </div>
@@ -133,7 +123,7 @@ export default function AdminDashboard(): JSX.Element {
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    Rp 550.000
+                    Rp 99.999.999
                   </h4>
                   <div className="text-gray-500">Weekly Income</div>
                 </div>
@@ -156,7 +146,7 @@ export default function AdminDashboard(): JSX.Element {
         </div>
 
         {/* table using gridjs */}
-        <TableUsers />
+        <TableUsers users={users} />
 
         <div className="mt-8"></div>
 
@@ -172,7 +162,7 @@ export default function AdminDashboard(): JSX.Element {
         </div>
 
         {/* table using gridjs */}
-        <TableProducts />
+        <TableProducts products={products} />
 
         <div className="mt-8"></div>
 
@@ -188,7 +178,7 @@ export default function AdminDashboard(): JSX.Element {
         </div>
 
         {/* table using gridjs */}
-        <TableCoupons />
+        <TableCoupons coupons={coupons} />
 
         <div className="mt-8"></div>
 
@@ -197,9 +187,7 @@ export default function AdminDashboard(): JSX.Element {
           <h3 className="text-3xl font-medium text-gray-700">Reports</h3>
         </div>
 
-        {reportsIsLoading && 'Loading reports...'}
-        {reportsIsError && 'Error getting reports'}
-        {reports && <SwiperReports reports={reports} />}
+        <SwiperReports reports={reports} />
       </div>
     </main>
   )

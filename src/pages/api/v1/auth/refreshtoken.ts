@@ -1,17 +1,11 @@
-import Cors from 'cors'
-// files
 import nc from 'middlewares/nc'
+import withCors from 'middlewares/withCors'
 import withMongoConnect from 'middlewares/withMongoConnect'
 
 // TODO: implement refresh token
 export default nc
-  // cors middleware
-  .use(
-    Cors({
-      methods: ['POST'],
-    })
-  )
+  .use(withCors(['POST'])) // cors
   .use(withMongoConnect()) // connect mongodb middleware
-  .post(async (_, res) => {
+  .post(async (_req, res) => {
     res.status(501).json({ error: true, message: 'Not yet implemented' })
   })

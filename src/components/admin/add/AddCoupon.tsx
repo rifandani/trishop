@@ -34,12 +34,12 @@ export default function AddCoupon(): JSX.Element {
       }
 
       // success
-      toast.success('Coupon created')
       await push('/admin/dashboard')
-      actions.setSubmitting(false) // finish formik cycle
+      toast.success('Coupon created')
     } catch (err) {
       console.error(err.toJSON())
       toast.error(err.message)
+    } finally {
       actions.setSubmitting(false) // finish formik cycle
     }
   }

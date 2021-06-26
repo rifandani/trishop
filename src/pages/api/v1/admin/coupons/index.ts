@@ -1,6 +1,5 @@
-import Cors from 'cors'
-// files
 import nc from 'middlewares/nc'
+import withCors from 'middlewares/withCors'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
 import withYupConnect from 'middlewares/withYupConnect'
 import withMongoConnect from 'middlewares/withMongoConnect'
@@ -13,12 +12,7 @@ interface CouponCodes {
 }
 
 export default nc
-  // cors, middleware 1
-  .use(
-    Cors({
-      methods: ['GET', 'POST'],
-    })
-  )
+  .use(withCors(['GET', 'POST'])) // cors
   .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
   .use(withYupConnect(couponApiSchema)) // yup middleware
   .use(withMongoConnect()) // connect mongodb middleware

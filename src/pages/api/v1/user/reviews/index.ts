@@ -1,6 +1,5 @@
-import Cors from 'cors'
-// files
 import nc from 'middlewares/nc'
+import withCors from 'middlewares/withCors'
 import withMongoConnect from 'middlewares/withMongoConnect'
 import withYupConnect from 'middlewares/withYupConnect'
 import withCheckAuthCookie from 'middlewares/withCheckAuthCookie'
@@ -9,12 +8,7 @@ import ProductModel from 'mongo/models/Product'
 import { addReviewApiSchema, TAddReviewApiSchema } from 'yup/apiSchema'
 
 export default nc
-  // cors middleware
-  .use(
-    Cors({
-      methods: ['GET', 'POST'],
-    })
-  )
+  .use(withCors(['GET', 'POST'])) // cors
   .use(withCheckAuthCookie()) // check auth cookie middleware
   .use(withYupConnect(addReviewApiSchema)) // yup middleware
   .use(withMongoConnect()) // connect mongodb middleware

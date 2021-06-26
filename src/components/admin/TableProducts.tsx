@@ -5,13 +5,14 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { Grid } from 'gridjs-react'
 // files
-import useProducts from 'hooks/useProducts'
 import generateRupiah from 'utils/generateRupiah'
+import { IProductsProps } from 'types/Product'
 
-export default function TableProducts(): JSX.Element {
+export default function TableProducts({
+  products,
+}: IProductsProps): JSX.Element {
   // hooks
   const { push } = useRouter()
-  const { products, productsIsLoading, productsIsError } = useProducts()
 
   const editProduct = (_id: string): Promise<boolean> =>
     push(`/admin/products/${_id}`)
@@ -48,9 +49,7 @@ export default function TableProducts(): JSX.Element {
     <section className="flex flex-col mt-8">
       <div className="-my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="min-w-full overflow-hidden sm:rounded-lg ">
-          {productsIsLoading && 'Loading...'}
-          {productsIsError && 'Error'}
-          {products && (
+          {
             <Grid
               data={products as any}
               search={true}
@@ -121,7 +120,7 @@ export default function TableProducts(): JSX.Element {
                 },
               ]}
             />
-          )}
+          }
         </div>
       </div>
     </section>

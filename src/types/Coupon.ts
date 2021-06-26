@@ -8,6 +8,7 @@ export interface ICoupon {
   createdAt?: Date
   updatedAt?: Date
   _id?: string
+  __v?: number
 }
 
 export interface ICouponProps {

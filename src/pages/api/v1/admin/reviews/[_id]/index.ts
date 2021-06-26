@@ -1,6 +1,5 @@
-import Cors from 'cors'
-// files
 import nc from 'middlewares/nc'
+import withCors from 'middlewares/withCors'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
 import withMongoConnect from 'middlewares/withMongoConnect'
 import withCheckObjectId from 'middlewares/withCheckObjectId'
@@ -9,12 +8,7 @@ import ReviewModel from 'mongo/models/Review'
 import ProductModel from 'mongo/models/Product'
 
 export default nc
-  // cors, middleware 1
-  .use(
-    Cors({
-      methods: ['DELETE'],
-    })
-  )
+  .use(withCors(['DELETE'])) // cors
   .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
   .use(withMongoConnect()) // connect mongodb middleware
   .use(withCheckObjectId(ReviewModel)) // check query object id middleware

@@ -5,12 +5,11 @@ import { Grid } from 'gridjs-react'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 // files
-import useUsers from 'hooks/useUsers'
+import { IUsersProps } from 'types/User'
 
-export default function TableUsers(): JSX.Element {
+export default function TableUsers({ users }: IUsersProps): JSX.Element {
   // hooks
   const { push } = useRouter()
-  const { users, usersIsLoading, usersIsError } = useUsers()
 
   const editUser = (_id: string): Promise<boolean> =>
     push(`/admin/users/${_id}`)
@@ -39,9 +38,7 @@ export default function TableUsers(): JSX.Element {
     <section className="flex flex-col mt-8">
       <div className="-my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="min-w-full overflow-hidden sm:rounded-lg ">
-          {usersIsLoading && 'Loading...'}
-          {usersIsError && 'Error'}
-          {users && (
+          {
             <Grid
               data={users as any}
               search={true}
@@ -107,7 +104,7 @@ export default function TableUsers(): JSX.Element {
                 },
               ]}
             />
-          )}
+          }
         </div>
       </div>
     </section>

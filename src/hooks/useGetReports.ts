@@ -1,31 +1,18 @@
 import useSWR from 'swr'
 // files
-import { IGetReportsResponse } from 'types/Report'
-import { IReview } from 'types/Review'
+import { IGetReportsResponse, IReport } from 'types/Report'
 
-interface ReturnType {
-  reports: {
-    _id: string
-    reviewRef: string | IReview
-    reporter: string
-    argument: string
-    typeId: number
-    createdAt: Date
-  }[]
+interface UseGetReportsReturn {
+  reports: IReport[]
   reportsIsLoading: boolean
   reportsIsError: any
 }
 
-export default function useGetReports(): ReturnType {
+export default function useGetReports(): UseGetReportsReturn {
   const { data, error } = useSWR<IGetReportsResponse>('/admin/reports')
 
-  const reports = data?.reports?.map((report) => ({
-    ...report,
-    _id: report._id.toString(),
-  }))
-
   return {
-    reports,
+    reports: data?.reports,
     reportsIsLoading: !error && !data,
     reportsIsError: error,
   }

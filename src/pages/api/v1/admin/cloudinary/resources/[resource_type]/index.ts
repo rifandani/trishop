@@ -1,18 +1,13 @@
-import Cors from 'cors'
 import { v2 as cld } from 'cloudinary'
 // files
 import nc from 'middlewares/nc'
+import withCors from 'middlewares/withCors'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
 import getQueryAsString from 'utils/getQueryAsString'
 import getQueryStringAsArray from 'utils/getQueryStringAsArray'
 
 export default nc
-  // cors, middleware 1
-  .use(
-    Cors({
-      methods: ['GET', 'PUT', 'DELETE'],
-    })
-  )
+  .use(withCors(['GET', 'PUT', 'DELETE'])) // cors
   .use(withCheckAuthCookieAsAdmin()) // ccheck auth cookie, middleware 2
   /* -------------------- GET req => /admin/cloudinary/resources/:resource_type ------------------- */
   .get(async (_req, res) => {

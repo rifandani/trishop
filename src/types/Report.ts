@@ -8,6 +8,7 @@ export interface IReport {
   typeId: number
   createdAt: Date
   _id?: string
+  __v?: number
 }
 
 export interface IReportProps {

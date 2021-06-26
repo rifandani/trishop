@@ -1,6 +1,5 @@
-import Cors from 'cors'
-// files
 import nc from 'middlewares/nc'
+import withCors from 'middlewares/withCors'
 import getQueryAsString from 'utils/getQueryAsString'
 import ProductModel from 'mongo/models/Product'
 import ReviewModel from 'mongo/models/Review'
@@ -8,12 +7,7 @@ import withMongoConnect from 'middlewares/withMongoConnect'
 import withCheckObjectId from 'middlewares/withCheckObjectId'
 
 export default nc
-  // cors, middleware 1
-  .use(
-    Cors({
-      methods: ['GET'],
-    })
-  )
+  .use(withCors(['GET'])) // cors
   .use(withMongoConnect()) // connet mongodb, middleware 2
   .use(withCheckObjectId(ProductModel)) // check objectId query validity, middleware 3
   /* ------------------------------ GET req => /public/products/:_id ------------------------------ */

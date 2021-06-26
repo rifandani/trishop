@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
 import Axios from 'axios'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import { TUserApiSchema, userApiSchema } from 'yup/apiSchema'
@@ -25,12 +25,12 @@ export default function AddUser(): JSX.Element {
       await Axios.post('/admin/users', values)
 
       // success
-      toast.success('User created')
       await push('/admin/dashboard')
-      actions.setSubmitting(false) // finish formik cycle
+      toast.success('User created')
     } catch (err) {
       console.error(err)
       toast.error(err.data.message)
+    } finally {
       actions.setSubmitting(false) // finish formik cycle
     }
   }

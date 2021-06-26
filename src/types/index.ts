@@ -1,31 +1,22 @@
+import { JwtPayload } from 'jsonwebtoken'
+
 export interface ChildrenProps {
   children: React.ReactNode
 }
 
-export interface AuthCookiePayload {
+export interface ImagePreview extends File {
+  preview?: string // hasil URL.createObjectURL(image)
+}
+
+/* ----------------------------------------- JWT Payload ---------------------------------------- */
+
+export interface AuthCookiePayload extends JwtPayload {
   sub: string // subject, whom the token refers to
   email: string
   name: string
   role: 'USER' | 'ADMIN'
-  iat?: number // issuedAt, seconds since Unix epoch
-  exp?: number // expiredAt, seconds since Unix epoch
-  iss?: string // issuer, token creator
 }
 
-export interface RefreshTokenCookiePayload {
+export interface RefreshTokenCookiePayload extends JwtPayload {
   refreshToken: string
-  iat?: number // issuedAt, seconds since Unix epoch
-  exp?: number // expiredAt, seconds since Unix epoch
-  iss?: string // issuer, token creator
-}
-
-export interface IPhotoURL {
-  lastModified: number
-  lastModifiedDate: Date
-  name: string
-  path: string
-  preview?: string // hasil URL.createObjectURL(image)
-  size: number
-  type: string
-  webkitRelativePath: string
 }

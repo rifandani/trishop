@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import { DefaultSeo } from 'next-seo'
 import { Provider } from 'react-redux'
+import { useState } from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 // Import styles
 import '../styles/index.css'
 import 'nprogress/nprogress.css'
@@ -18,6 +20,7 @@ import 'swiper/components/pagination/pagination.min.css'
 // files
 import SEO from 'config/seo'
 import store from 'redux/store'
+import { API_URL_DEV, API_URL_PROD } from 'config/constants'
 
 // create a custom progress bar
 NProgress.configure({ showSpinner: false })
@@ -33,15 +36,15 @@ Router.events.on('routeChangeError', () => {
 
 // axios default baseUrl
 axios.defaults.baseURL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000/api/v1'
-    : 'https://trishop.vercel.app/api/v1'
+  process.env.NODE_ENV === 'development' ? API_URL_DEV : API_URL_PROD
 
 // axios default validateStatus
 axios.defaults.validateStatus = (status) =>
   (status >= 200 && status < 300) || (status >= 400 && status < 500) // Resolve only if the status code is 200 more and less than 500
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+  const [queryClient] = useState(() => new QueryClient())
+
   return (
     <>
       <DefaultSeo {...SEO} />
@@ -53,10 +56,12 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           onError: (err) => toast.error(err.message),
         }}
       >
-        <Provider store={store}>
-          <Component {...pageProps} />
-          <ToastContainer />
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store}>
+            <Component {...pageProps} />
+            <ToastContainer />
+          </Provider>
+        </QueryClientProvider>
       </SWRConfig>
     </>
   )

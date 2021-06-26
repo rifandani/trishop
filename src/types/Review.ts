@@ -18,6 +18,7 @@ export interface IReview {
   createdAt?: Date
   updatedAt?: Date
   _id?: string
+  __v?: number
 }
 
 export interface IReviewProps {

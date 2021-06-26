@@ -1,7 +1,7 @@
 import Axios from 'axios'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import {
   Formik,
   Form,
@@ -12,8 +12,8 @@ import {
 } from 'formik'
 // files
 import Dropzone, { ImagePreview } from '../Dropzone'
-import { addProductSchema, TAddProductSchema } from 'yup/schema'
 import { TImage } from 'types/Product'
+import { addProductSchema, TAddProductSchema } from 'yup/schema'
 
 const CLOUDINARY_URL =
   'https://api.cloudinary.com/v1_1/ipandani2505/image/upload'
@@ -83,14 +83,14 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
           await Axios.post('/admin/products', newProduct)
 
           // success
-          toast.success('Product created')
           await push('/admin/dashboard')
-          actions.setSubmitting(false) // finish formik cycle
+          toast.success('Product created')
         }
       }
     } catch (err) {
       console.error(err)
       toast.error(err.data.message)
+    } finally {
       actions.setSubmitting(false) // finish formik cycle
     }
   }
