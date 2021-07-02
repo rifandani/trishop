@@ -6,6 +6,6 @@ import withMongoConnect from 'middlewares/withMongoConnect'
 export default nc
   .use(withCors(['POST'])) // cors
   .use(withMongoConnect()) // connect mongodb middleware
-  .post(async (_req, res) => {
+  .post('/api/v1/auth/refreshtoken', async (_req, res) => {
     res.status(501).json({ error: true, message: 'Not yet implemented' })
   })

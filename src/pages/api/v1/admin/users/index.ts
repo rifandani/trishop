@@ -10,13 +10,13 @@ import { userApiSchema } from 'yup/apiSchema'
 
 export default nc
   .use(withCors(['GET', 'POST'])) // cors
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
-  .use(withYupConnect(userApiSchema)) // yup middleware
-  .use(withMongoConnect()) // connect mongodb middleware
-  /* ----------------------------------- GET req => /admin/users ---------------------------------- */
-  .get(async (req, res) => {
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie
+  .use(withYupConnect(userApiSchema)) // yup
+  .use(withMongoConnect()) // connect mongodb
+  .get('/api/v1/admin/users', async (req, res) => {
     // there is no query for filtering & sorting
     if (Object.keys(req.query).length === 0) {
+      // find all users
       const users = await UserModel.find()
 
       // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -27,7 +27,8 @@ export default nc
     // const customQuery = req.query
   })
   /* ---------------------------------- POST req => /admin/users ---------------------------------- */
-  .post(async (req, res) => {
+  .post('/api/v1/admin/users', async (req, res) => {
+    // destructure req.body
     const { name, role, email, password } = req.body
 
     // hash password with bcrypt

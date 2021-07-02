@@ -10,9 +10,9 @@ import { registerApiSchema, TRegisterApiSchema } from 'yup/apiSchema'
 
 export default nc
   .use(withCors(['POST'])) // cors
-  .use(withMongoConnect()) // connect mongodb middleware
-  .use(withYupConnect(registerApiSchema)) // yup middleware
-  .post(async (req, res) => {
+  .use(withMongoConnect()) // connect mongodb
+  .use(withYupConnect(registerApiSchema)) // yup
+  .post('/api/v1/auth/register', async (req, res) => {
     // destructure request body form
     const { name, email, password } = req.body as TRegisterApiSchema
 

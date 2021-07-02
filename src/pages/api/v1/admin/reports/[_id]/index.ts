@@ -9,11 +9,10 @@ import ReviewModel from 'mongo/models/Review'
 
 export default nc
   .use(withCors(['GET', 'DELETE'])) // cors
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
-  .use(withMongoConnect()) // connect mongodb middleware
-  .use(withCheckObjectId(ReportModel)) // check query object id middleware
-  /* ------------------------------- GET req => /admin/reports/:_id ------------------------------- */
-  .get(async (req, res) => {
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie
+  .use(withMongoConnect()) // connect mongodb
+  .use(withCheckObjectId(ReportModel)) // check query object id
+  .get('/api/v1/admin/reports/:_id', async (req, res) => {
     // get id
     const reportId = getQueryAsString(req.query._id)
 
@@ -25,9 +24,8 @@ export default nc
     // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     res.status(200).json({ error: false, report: reportDoc })
   })
-  /* ------------------------------ DELETE req => /admin/reports/:_id ----------------------------- */
-  /* -------------------------------- TODO: delete report + review -------------------------------- */
-  .delete(async (req, res) => {
+  .delete('/api/v1/admin/reports/:_id', async (req, res) => {
+    /* -------------------------------- TODO: delete report + review -------------------------------- */
     const reportId = getQueryAsString(req.query._id)
 
     // just delete one report

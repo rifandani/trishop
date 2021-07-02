@@ -9,11 +9,10 @@ import ProductModel from 'mongo/models/Product'
 
 export default nc
   .use(withCors(['DELETE'])) // cors
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
-  .use(withMongoConnect()) // connect mongodb middleware
-  .use(withCheckObjectId(ReviewModel)) // check query object id middleware
-  /* ------------------------------ DELETE req => /admin/reviews/:_id ----------------------------- */
-  .delete(async (req, res) => {
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie
+  .use(withMongoConnect()) // connect mongodb
+  .use(withCheckObjectId(ReviewModel)) // check query object id
+  .delete('/api/v1/admin/reviews/:_id', async (req, res) => {
     // get id
     const reviewId = getQueryAsString(req.query._id)
 

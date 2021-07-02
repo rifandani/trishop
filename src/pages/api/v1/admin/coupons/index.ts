@@ -13,13 +13,13 @@ interface CouponCodes {
 
 export default nc
   .use(withCors(['GET', 'POST'])) // cors
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
-  .use(withYupConnect(couponApiSchema)) // yup middleware
-  .use(withMongoConnect()) // connect mongodb middleware
-  /* ---------------------------------- GET req => /admin/coupons --------------------------------- */
-  .get(async (req, res) => {
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie
+  .use(withYupConnect(couponApiSchema)) // yup
+  .use(withMongoConnect()) // connect mongodb
+  .get('/api/v1/admin/coupons', async (req, res) => {
     // there is no query for filtering & sorting
     if (Object.keys(req.query).length === 0) {
+      // find all coupons
       const coupons = await CouponModel.find()
 
       // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -29,8 +29,8 @@ export default nc
 
     // const customQuery = req.query
   })
-  /* --------------------------------- POST req => /admin/coupons --------------------------------- */
-  .post(async (req, res) => {
+  .post('/api/v1/admin/coupons', async (req, res) => {
+    // destructure req.body
     const { discount, minTransaction, code, desc, validUntil } =
       req.body as TCouponApiSchema
 

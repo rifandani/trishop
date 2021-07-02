@@ -8,7 +8,7 @@ import { contactApiSchema } from 'yup/apiSchema'
 export default nc
   .use(withCors(['POST'])) // cors
   .use(withYupConnect(contactApiSchema)) // yup middleware
-  .post(async (req, res) => {
+  .post('/api/v1/public/contact', async (req, res) => {
     // destructure request body form
     const { email, subject, message } = req.body
 

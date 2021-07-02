@@ -12,16 +12,20 @@ import TableUsers from './TableUsers'
 import TableProducts from './TableProducts'
 import TableCoupons from './TableCoupons'
 import SwiperReports from './SwiperReports'
-import { AdminDashboardProps } from 'pages/admin/dashboard'
+import LoadingSpinner from 'components/LoadingSpinner'
+// custom hooks
+import useGetProducts from 'hooks/useGetProducts'
+import useGetUsers from 'hooks/useGetUsers'
+import useGetCoupons from 'hooks/useGetCoupons'
+import useGetReports from 'hooks/useGetReports'
 
-export default function AdminDashboard({
-  users,
-  products,
-  coupons,
-  reports,
-}: AdminDashboardProps): JSX.Element {
+export default function AdminDashboard(): JSX.Element {
   // hooks
   const { push } = useRouter()
+  const { users, usersIsLoading, usersIsError } = useGetUsers()
+  const { products, productsIsLoading, productsIsError } = useGetProducts()
+  const { coupons, couponsIsLoading, couponsIsError } = useGetCoupons()
+  const { reports, reportsIsLoading, reportsIsError } = useGetReports()
 
   return (
     <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
@@ -45,7 +49,9 @@ export default function AdminDashboard({
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {users.length}
+                    {usersIsError && 'Error'}
+                    {usersIsLoading && 'Loading...'}
+                    {users?.length}
                   </h4>
                   <div className="text-gray-500">Total Users</div>
                 </div>
@@ -61,7 +67,9 @@ export default function AdminDashboard({
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {products.length}
+                    {productsIsError && 'Error'}
+                    {productsIsLoading && 'Loading...'}
+                    {products?.length}
                   </h4>
                   <div className="text-gray-500">Total Products</div>
                 </div>
@@ -77,7 +85,9 @@ export default function AdminDashboard({
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {coupons.length}
+                    {couponsIsError && 'Error'}
+                    {couponsIsLoading && 'Loading...'}
+                    {coupons?.length}
                   </h4>
                   <div className="text-gray-500">Total Coupons</div>
                 </div>
@@ -93,7 +103,9 @@ export default function AdminDashboard({
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {reports.length}
+                    {reportsIsError && 'Error'}
+                    {reportsIsLoading && 'Loading...'}
+                    {reports?.length}
                   </h4>
                   <div className="text-gray-500">Total Reports</div>
                 </div>
@@ -146,7 +158,8 @@ export default function AdminDashboard({
         </div>
 
         {/* table using gridjs */}
-        <TableUsers users={users} />
+        {usersIsLoading && <LoadingSpinner className="mt-6" />}
+        {users && <TableUsers users={users} />}
 
         <div className="mt-8"></div>
 
@@ -162,7 +175,8 @@ export default function AdminDashboard({
         </div>
 
         {/* table using gridjs */}
-        <TableProducts products={products} />
+        {productsIsLoading && <LoadingSpinner className="mt-6" />}
+        {products && <TableProducts products={products} />}
 
         <div className="mt-8"></div>
 
@@ -178,7 +192,8 @@ export default function AdminDashboard({
         </div>
 
         {/* table using gridjs */}
-        <TableCoupons coupons={coupons} />
+        {couponsIsLoading && <LoadingSpinner className="mt-6" />}
+        {coupons && <TableCoupons coupons={coupons} />}
 
         <div className="mt-8"></div>
 
@@ -187,7 +202,8 @@ export default function AdminDashboard({
           <h3 className="text-3xl font-medium text-gray-700">Reports</h3>
         </div>
 
-        <SwiperReports reports={reports} />
+        {reportsIsLoading && <LoadingSpinner className="mt-6" />}
+        {reports && <SwiperReports reports={reports} />}
       </div>
     </main>
   )

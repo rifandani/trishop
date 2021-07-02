@@ -8,10 +8,9 @@ import withCheckObjectId from 'middlewares/withCheckObjectId'
 
 export default nc
   .use(withCors(['GET'])) // cors
-  .use(withMongoConnect()) // connet mongodb, middleware 2
-  .use(withCheckObjectId(ProductModel)) // check objectId query validity, middleware 3
-  /* ------------------------------ GET req => /public/products/:_id ------------------------------ */
-  .get(async (req, res) => {
+  .use(withMongoConnect()) // connect mongodb
+  .use(withCheckObjectId(ProductModel)) // check objectId query validity
+  .get('/api/v1/public/products/:_id', async (req, res) => {
     // get productId
     const productId = getQueryAsString(req.query._id)
 

@@ -4,7 +4,7 @@ import unsetAuthCookie from 'utils/unsetAuthCookie'
 
 export default nc
   .use(withCors(['GET'])) // cors
-  .get(async (_req, res) => {
+  .get('/api/v1/auth/logout', async (_req, res) => {
     // remove cookies by setting expires to new Date(0)
     unsetAuthCookie(res)
 

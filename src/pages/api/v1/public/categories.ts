@@ -6,7 +6,7 @@ import ProductModel from 'mongo/models/Product'
 export default nc
   .use(withCors(['GET'])) // cors
   .use(withMongoConnect()) // connect mongodb middleware
-  .get(async (_req, res) => {
+  .get('/api/v1/public/categories', async (_req, res) => {
     // get all products
       const products = await ProductModel.find()
 

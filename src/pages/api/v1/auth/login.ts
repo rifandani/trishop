@@ -12,7 +12,7 @@ export default nc
   .use(withCors(['POST'])) // cors
   .use(withMongoConnect()) // connect mongodb
   .use(withYupConnect(loginApiSchema)) // yup
-  .post(async (req, res) => {
+  .post('/api/v1/auth/login', async (req, res) => {
     // destructure request body form
     const { email, password } = req.body as TLoginApiSchema
 

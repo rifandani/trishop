@@ -7,9 +7,8 @@ import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
 
 export default nc
   .use(withCors(['GET', 'POST', 'DELETE'])) // cors
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie mongodb, middleware 2
-  /* ----------------------------- GET req => /admin/cloudinary/images ---------------------------- */
-  .get(async (req, res) => {
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie mongodb
+  .get('/api/v1/admin/cloudinary/resources', async (req, res) => {
     // there is no query for filtering & sorting
     if (Object.keys(req.query).length === 0) {
       const resources = await cld.api.resources({
@@ -26,15 +25,13 @@ export default nc
 
     // const customQuery = req.query
   })
-  /* ---------------------------- POST req => /admin/cloudinary/images ---------------------------- */
-  .post(async (_req, res) => {
+  .post('/api/v1/admin/cloudinary/resources', async (_req, res) => {
     // const image = await cld.uploader.upload()
 
     // POST success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     res.status(501).json({ error: false, message: 'Not yet implemented' })
   })
-  /* ------------------------- DELETE req => /admin/cloudinary/images?ids ------------------------- */
-  .delete(async (req, res) => {
+  .delete('/api/v1/admin/cloudinary/resources', async (req, res) => {
     // get query params
     const params = parse(req.url)
 

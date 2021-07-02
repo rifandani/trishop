@@ -11,7 +11,7 @@ export default nc
   .use(withCheckAuthCookie()) // check auth cookie middleware
   .use(withYupConnect(addReportApiSchema)) // yup middleware
   .use(withMongoConnect()) // connect mongodb middleware
-  .post(async (req, res) => {
+  .post('/api/v1/user/reports', async (req, res) => {
     const { reviewRef, reporter, argument, typeId } =
       req.body as TAddReportApiSchema
 

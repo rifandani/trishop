@@ -5,9 +5,8 @@ import withMongoConnect from 'middlewares/withMongoConnect'
 
 export default nc
   .use(withCors(['GET'])) // cors
-  .use(withMongoConnect()) // connet mongodb, middleware 2
-  .get(async (req, res) => {
-    /* --------------------------------- GET req => /public/products -------------------------------- */
+  .use(withMongoConnect()) // connect mongodb
+  .get('/api/v1/public/products', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
       const products = await ProductModel.find()
 

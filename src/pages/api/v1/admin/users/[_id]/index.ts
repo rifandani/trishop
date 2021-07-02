@@ -12,12 +12,11 @@ import { userApiSchema, TUserApiSchema } from 'yup/apiSchema'
 
 export default nc
   .use(withCors(['GET', 'PUT', 'DELETE'])) // cors
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
-  .use(withYupConnect(userApiSchema)) // yup middleware
-  .use(withMongoConnect()) // connect mongodb middleware
-  .use(withCheckObjectId(UserModel)) // check query object id middleware
-  /* -------------------------------- GET req => /admin/users/:_id -------------------------------- */
-  .get(async (req, res) => {
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie
+  .use(withYupConnect(userApiSchema)) // yup
+  .use(withMongoConnect()) // connect mongodb
+  .use(withCheckObjectId(UserModel)) // check query object id
+  .get('/api/v1/admin/users/:_id', async (req, res) => {
     // check id validity
     const userId = getQueryAsString(req.query._id)
 
@@ -27,11 +26,11 @@ export default nc
     // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     res.status(200).json({ error: false, user })
   })
-  /* -------------------------------- PUT req => /admin/users/:_id -------------------------------- */
-  .put(async (req, res) => {
+  .put('/api/v1/admin/users/:_id', async (req, res) => {
     // check id validity
     const userId = getQueryAsString(req.query._id)
 
+    // destructure req.body
     const { name, role, email, password } = req.body as TUserApiSchema
 
     // hash new password with bcrypt
@@ -48,8 +47,7 @@ export default nc
     // PUT success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     res.status(201).json({ error: false, message: 'User updated' })
   })
-  /* ------------------------------- DELETE req => /admin/users/:_id ------------------------------ */
-  .delete(async (req, res) => {
+  .delete('/api/v1/admin/users/:_id', async (req, res) => {
     // check id validity
     const userId = getQueryAsString(req.query._id)
 

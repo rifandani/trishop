@@ -11,12 +11,11 @@ import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
 
 export default nc
   .use(withCors(['GET', 'PUT', 'DELETE'])) // cors
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
-  .use(withYupConnect(productApiSchema)) // yup middleware
-  .use(withMongoConnect()) // connect mongodb middleware
-  .use(withCheckObjectId(ProductModel)) // check query object id middleware
-  /* ------------------------------- GET req => /admin/products/:_id ------------------------------ */
-  .get(async (req, res) => {
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie
+  .use(withYupConnect(productApiSchema)) // yup
+  .use(withMongoConnect()) // connect mongodb
+  .use(withCheckObjectId(ProductModel)) // check query object id
+  .get('/api/v1/admin/products/:_id', async (req, res) => {
     // get productId
     const productId = getQueryAsString(req.query._id)
 
@@ -31,8 +30,7 @@ export default nc
     // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     res.status(200).json({ error: false, product: productDoc })
   })
-  /* ------------------------------- PUT req => /admin/products/:_id ------------------------------ */
-  .put(async (req, res) => {
+  .put('/api/v1/admin/products/:_id', async (req, res) => {
     // get productId
     const productId = getQueryAsString(req.query._id)
 
@@ -52,8 +50,7 @@ export default nc
     // PUT success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     res.status(201).json({ error: false, message: 'Product updated' })
   })
-  /* ----------------------------- DELETE req => /admin/products/:_id ----------------------------- */
-  .delete(async (req, res) => {
+  .delete('/api/v1/admin/products/:_id', async (req, res) => {
     // get productId
     const productId = getQueryAsString(req.query._id)
 

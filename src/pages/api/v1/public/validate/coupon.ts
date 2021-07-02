@@ -12,7 +12,7 @@ export default nc
   .use(withCors(['POST'])) // cors
   .use(withMongoConnect()) // connect mongodb middleware
   .use(withYupConnect(validateCouponApiSchema)) // yup middleware
-  .post(async (req, res) => {
+  .post('/api/v1/public/validate/coupon', async (req, res) => {
     const { userId, code } = req.body as TValidateCouponApiSchema // destructure request body form
 
     // find existing coupon by {code}

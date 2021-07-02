@@ -9,13 +9,13 @@ import { addReportApiSchema, TAddReportApiSchema } from 'yup/apiSchema'
 
 export default nc
   .use(withCors(['GET', 'POST'])) // cors
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
-  .use(withYupConnect(addReportApiSchema)) // yup middleware
-  .use(withMongoConnect()) // connect mongodb middleware
-  /* ---------------------------------- GET req => /admin/reports --------------------------------- */
-  .get(async (req, res) => {
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie
+  .use(withYupConnect(addReportApiSchema)) // yup
+  .use(withMongoConnect()) // connect mongodb
+  .get('/api/v1/admin/reports', async (req, res) => {
     // there is no query for filtering & sorting
     if (Object.keys(req.query).length === 0) {
+      // find report and populate reviewRef property
       const reportsDoc = await ReportModel.find()
         .populate({ path: 'reviewRef', model: ReviewModel })
         .sort({ createdAt: -1 }) // desc
@@ -30,8 +30,8 @@ export default nc
 
     // const customQuery = req.query
   })
-  /* --------------------------------- POST req => /admin/reports --------------------------------- */
-  .post(async (req, res) => {
+  .post('/api/v1/admin/reports', async (req, res) => {
+    // destructure req.body
     const { reviewRef, reporter, argument, typeId } =
       req.body as TAddReportApiSchema
 

@@ -15,8 +15,7 @@ export default nc
   .use(withYupConnect(putReviewApiSchema)) // yup middleware
   .use(withMongoConnect()) // connect mongodb middleware
   .use(withCheckObjectId(ReviewModel)) // check query object id middleware
-  /* -------------------------------- PUT req => /user/reviews/:_id ------------------------------- */
-  .put(async (req, res) => {
+  .put('/api/v1/user/reviews/:_id', async (req, res) => {
     // get reviewId
     const reviewId = getQueryAsString(req.query._id)
 
@@ -32,8 +31,7 @@ export default nc
     // PUT success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     res.status(201).json({ error: false, message: 'Review updated' })
   })
-  /* ------------------------------ DELETE req => /user/reviews/:_id ------------------------------ */
-  .delete(async (req, res) => {
+  .delete('/api/v1/user/reviews/:_id', async (req, res) => {
     // get id
     const reviewId = getQueryAsString(req.query._id)
 
