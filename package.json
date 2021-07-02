@@ -1,7 +1,7 @@
 {
   "name": "trishop",
   "description": "Fullstack e-commerce website built with Next.js",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": false,
   "author": {
     "name": "Tri Rizeki Rifandani",
