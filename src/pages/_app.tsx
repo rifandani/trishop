@@ -32,7 +32,7 @@ Router.events.on('routeChangeError', () => {
   NProgress.done()
 })
 
-// axios default baseUrl
+// axios default baseUrl for default SWR url
 axios.defaults.baseURL =
   process.env.NODE_ENV === 'development' ? API_URL_DEV : API_URL_PROD
 

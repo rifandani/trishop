@@ -1,9 +1,23 @@
 import axios from 'axios'
 // files
-import { APIResponseProducts, IProduct } from 'types/Product'
+import {
+  IProduct,
+  APIResponseProducts,
+  APIResponseProduct,
+} from 'types/Product'
+import { API_BASE_URL } from 'config/constants'
 
-export async function getProductsAsAdmin(): Promise<IProduct[]> {
-  const res = await axios.get<APIResponseProducts>('/admin/products')
+// create axios instance
+const adminProductsApi = axios.create({
+  baseURL: `${API_BASE_URL}/admin/products`,
+})
 
+export async function getAdminProducts(): Promise<IProduct[]> {
+  const res = await adminProductsApi.get<APIResponseProducts>(``)
   return res.data.products
+}
+
+export async function getAdminProduct(productId: string): Promise<IProduct> {
+  const res = await adminProductsApi.get<APIResponseProduct>(`/${productId}`)
+  return res.data.product
 }

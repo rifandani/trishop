@@ -4,15 +4,14 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.3.1](https://github.com/rifandani/trishop/compare/v0.3.0...v0.3.1) (2021-07-02)
 
-
 ### ⚠ BREAKING CHANGES
 
-* **backend:** admin dashboard using custom hooks with LoadingSpinner instead of SSR
+- **backend:** admin dashboard using custom hooks with LoadingSpinner instead of SSR
 
 ### Bug Fixes
 
-* **backend:** fix setCookie settings ([68dbe3a](https://github.com/rifandani/trishop/commits/68dbe3a60cd601a4805fe028b1572875f2733940))
-* **backend:** next-connect with prefix routes in backend + admin dashboard using custom hooks ([a75022f](https://github.com/rifandani/trishop/commits/a75022f7bfa62a3e6c785efa7b6c0a072046f3cb))
+- **backend:** fix setCookie settings ([68dbe3a](https://github.com/rifandani/trishop/commits/68dbe3a60cd601a4805fe028b1572875f2733940))
+- **backend:** next-connect with prefix routes in backend + admin dashboard using custom hooks ([a75022f](https://github.com/rifandani/trishop/commits/a75022f7bfa62a3e6c785efa7b6c0a072046f3cb))
 
 ## [0.3.0](https://github.com/rifandani/trishop/compare/v0.2.0...v0.3.0) (2021-06-24)
 

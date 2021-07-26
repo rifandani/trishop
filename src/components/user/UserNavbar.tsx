@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -8,18 +7,19 @@ import { FaReact, FaHome, FaSearch, FaBars, FaCpanel } from 'react-icons/fa'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { UserPayload } from 'contexts/UserReducer'
 import { ChildrenProps } from 'types'
+import { logout } from 'services/auth'
 
 export default function UserNavbar({ children }: ChildrenProps): JSX.Element {
   // hooks
-  const { pathname, push } = useRouter()
-  const [, setUser] = useLocalStorage<UserPayload>('user', null) // local storage
   const [toggleSidebar, setToggleSidebar] = useState<boolean>(false)
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
+  const [, setUser] = useLocalStorage<UserPayload>('user', null) // local storage
+  const { pathname, push } = useRouter()
 
-  async function logout(): Promise<void> {
+  async function onLogout(): Promise<void> {
     try {
       // call logout API
-      await axios.get('/auth/logout')
+      await logout()
 
       // remove user in local storage
       setUser(null)
@@ -28,8 +28,8 @@ export default function UserNavbar({ children }: ChildrenProps): JSX.Element {
       await push('/')
       toast.info('Logout success')
     } catch (err) {
-      toast.error(err.message)
       console.error(err)
+      toast.error(err.message)
     }
   }
 
@@ -142,7 +142,7 @@ export default function UserNavbar({ children }: ChildrenProps): JSX.Element {
                     <button
                       className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-red-500 hover:text-white"
                       type="button"
-                      onClick={logout}
+                      onClick={onLogout}
                     >
                       Logout
                     </button>

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Link from 'next/link'
 import { parse } from 'cookie'
 import { verify } from 'jsonwebtoken'
@@ -10,8 +9,8 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { AuthCookiePayload } from 'types'
 import { UserPayload } from 'contexts/UserReducer'
-import { APIResponseAuthLoginRegister } from 'types/User'
 import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
+import { login } from 'services/auth'
 
 export default function Login(): JSX.Element {
   const initialValues: TLoginApiSchema = {
@@ -28,31 +27,28 @@ export default function Login(): JSX.Element {
     actions: FormikHelpers<TLoginApiSchema>
   ) => {
     try {
-      // POST /auth/login
-      const res = await axios.post<APIResponseAuthLoginRegister>(
-        '/auth/login',
-        values
-      )
+      // call login API
+      const { status, data } = await login(values)
 
       // client error
-      if (res.status !== 201) {
-        toast.error(res.data.message)
+      if (status !== 201) {
+        toast.error(data.message)
         return
       }
 
       // set data user to local storage
-      setUser(res.data.data)
+      setUser(data.data)
 
       // if role == 'ADMIN'
-      if (res.data.data.role === 'ADMIN') {
+      if (data.data.role === 'ADMIN') {
         await push('/admin/dashboard')
-        toast.success(`Welcome, ${res.data.data.name}`)
+        toast.success(`Welcome, ${data.data.name}`)
         return
       }
 
       // if role == 'USER'
       await push('/user/dashboard')
-      toast.success(`Welcome, ${res.data.data.name}`)
+      toast.success(`Welcome, ${data.data.name}`)
     } catch (err) {
       // 500 - server error
       console.error(err)

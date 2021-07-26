@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -17,6 +16,7 @@ import {
 import useLocalStorage from 'hooks/useLocalStorage'
 import { UserPayload } from 'contexts/UserReducer'
 import { ChildrenProps } from 'types'
+import { logout } from 'services/auth'
 
 export default function Navbar({ children }: ChildrenProps): JSX.Element {
   // hooks
@@ -25,10 +25,10 @@ export default function Navbar({ children }: ChildrenProps): JSX.Element {
   const [toggleSidebar, setToggleSidebar] = useState<boolean>(false)
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
 
-  async function logout(): Promise<void> {
+  async function onLogout(): Promise<void> {
     try {
       // call logout API
-      await axios.get('/auth/logout')
+      await logout()
 
       // remove user in local storage
       setUser(null)
@@ -193,7 +193,7 @@ export default function Navbar({ children }: ChildrenProps): JSX.Element {
                     <button
                       className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-red-500 hover:text-white"
                       type="button"
-                      onClick={logout}
+                      onClick={onLogout}
                     >
                       Logout
                     </button>

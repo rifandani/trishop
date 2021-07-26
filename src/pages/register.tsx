@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Link from 'next/link'
 import { parse } from 'cookie'
 import { verify } from 'jsonwebtoken'
@@ -10,8 +9,8 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { UserPayload } from 'contexts/UserReducer'
 import { AuthCookiePayload } from 'types'
-import { APIResponseAuthLoginRegister } from 'types/User'
 import { TRegisterApiSchema, registerApiSchema } from 'yup/apiSchema'
+import { register } from 'services/auth'
 
 export default function RegisterPage(): JSX.Element {
   const initialValues: TRegisterApiSchema = {
@@ -29,24 +28,21 @@ export default function RegisterPage(): JSX.Element {
     actions: FormikHelpers<TRegisterApiSchema>
   ) => {
     try {
-      // POST /auth/register
-      const res = await axios.post<APIResponseAuthLoginRegister>(
-        '/auth/register',
-        values
-      )
+      // call register service
+      const { status, data } = await register(values)
 
       // client error
-      if (res.status !== 201) {
-        toast.error(res.data.message)
+      if (status !== 201) {
+        toast.error(data.message)
         return
       }
 
       // set data user to local storage
-      setUser(res.data.data)
+      setUser(data.data)
 
       // if role == 'USER'
       await push('/user/dashboard')
-      toast.success(`Welcome, ${res.data.data.name}`)
+      toast.success(`Welcome, ${data.data.name}`)
     } catch (err) {
       // 500 - server error
       console.error(err)

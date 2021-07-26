@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FaStar } from 'react-icons/fa'
@@ -7,19 +6,12 @@ import { mutate } from 'swr'
 // files
 import { IReportProps } from 'types/Report'
 import { IReview } from 'types/Review'
+import { TYPE_IDS } from 'config/constants'
+import axios from 'axios'
 
 export default function ReportCard({ report }: IReportProps): JSX.Element {
   const { argument, typeId, _id } = report
   const reviewRef = report.reviewRef as IReview
-
-  // typeId = 1 // 'Bug or problem with the website'
-  // typeId = 2 // 'Spam or commercial unrelated to trishop'
-  // typeId = 3 // 'Contains offensive or inappropriate content'
-  const typeIds = [
-    'Bug or problem with the website',
-    'Spam or commercial unrelated to trishop',
-    'Contains offensive or inappropriate content',
-  ]
 
   // hooks
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
@@ -88,7 +80,7 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
         <p className="text-sm text-center text-orange-800">{argument}</p>
 
         <p className="px-3 py-1 my-2 text-sm font-bold text-orange-800 bg-orange-200 rounded">
-          {typeIds.find((_, i) => i + 1 === typeId)}
+          {TYPE_IDS.find((_, i) => i + 1 === typeId)}
         </p>
 
         <hr className="my-4 text-gray-400" />

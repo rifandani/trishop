@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi'
@@ -10,6 +9,7 @@ import { toast } from 'react-toastify'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { UserPayload } from 'contexts/UserReducer'
 import { useAppSelector } from 'redux/store'
+import { logout } from 'services/auth'
 
 export default function Nav(): JSX.Element {
   // hooks
@@ -23,12 +23,12 @@ export default function Nav(): JSX.Element {
   const pushToAdminDashboard = (): Promise<boolean> => push('/admin/dashboard')
   const pushToUserDashboard = (): Promise<boolean> => push('/user/dashboard')
 
-  const login = (): Promise<boolean> => push('/login')
+  const onLogin = (): Promise<boolean> => push('/login')
 
-  const logout = async (): Promise<void> => {
+  const onLogout = async (): Promise<void> => {
     try {
       // call logout API
-      await axios.get('/auth/logout')
+      await logout()
 
       // remove user in local storage
       setUser(null)
@@ -150,7 +150,7 @@ export default function Nav(): JSX.Element {
                     user ? 'hover:bg-red-500' : 'hover:bg-orange-500'
                   } w-full px-4 py-2 text-sm text-left text-gray-700 hover:text-white`}
                   type="button"
-                  onClick={user ? logout : login}
+                  onClick={user ? onLogout : onLogin}
                 >
                   {user ? 'Logout' : 'Login'}
                 </button>
