@@ -6,8 +6,6 @@ import { ToastContainer, toast } from 'react-toastify'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import { DefaultSeo } from 'next-seo'
 import { Provider } from 'react-redux'
-import { useState } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 // Import styles
 import '../styles/index.css'
 import 'nprogress/nprogress.css'
@@ -43,8 +41,6 @@ axios.defaults.validateStatus = (status) =>
   (status >= 200 && status < 300) || (status >= 400 && status < 500) // Resolve only if the status code is 200 more and less than 500
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-  const [queryClient] = useState(() => new QueryClient())
-
   return (
     <>
       <DefaultSeo {...SEO} />
@@ -56,12 +52,10 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           onError: (err) => toast.error(err.message),
         }}
       >
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store}>
-            <Component {...pageProps} />
-            <ToastContainer />
-          </Provider>
-        </QueryClientProvider>
+        <Provider store={store}>
+          <Component {...pageProps} />
+          <ToastContainer />
+        </Provider>
       </SWRConfig>
     </>
   )
