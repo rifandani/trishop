@@ -6,8 +6,8 @@ import withCors from 'middlewares/withCors'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
 
 export default nc
-  .use(withCors(['GET', 'POST', 'DELETE'])) // cors
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie mongodb
+  .use(withCors(['GET', 'POST', 'DELETE']))
+  .use(withCheckAuthCookieAsAdmin())
   .get('/api/v1/admin/cloudinary/resources', async (req, res) => {
     // there is no query for filtering & sorting
     if (Object.keys(req.query).length === 0) {

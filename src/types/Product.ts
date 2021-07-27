@@ -1,5 +1,6 @@
 // files
 import { IReview } from './Review'
+import { TAddProductSchema } from 'yup/schema'
 
 export type TImage = {
   imageName: string
@@ -31,6 +32,10 @@ export interface IProductsProps {
   products: IProduct[]
 }
 
+export interface IAddAndEditProduct extends TAddProductSchema {
+  images: TImage[]
+}
+
 /* --------------------------------- client --------------------------------- */
 
 export interface APIResponseProduct {
@@ -44,6 +49,12 @@ export interface APIResponseProducts {
   products: IProduct[]
   count: number
   message?: string
+}
+
+export interface IPostProductResponse {
+  readonly error?: boolean
+  readonly productId?: string
+  readonly message?: string
 }
 
 // import { Document, Model } from 'mongoose'

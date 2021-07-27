@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
-import Axios from 'axios'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import DatePickerField from '../DatePickerField'
 import { couponApiSchema } from 'yup/apiSchema'
 import { IAddAndEditCoupon } from 'types/Coupon'
+import { postAdminCoupon } from 'services/admin/coupons'
 
 export default function AddCoupon(): JSX.Element {
   // hooks
@@ -24,12 +24,12 @@ export default function AddCoupon(): JSX.Element {
     actions: FormikHelpers<IAddAndEditCoupon>
   ): Promise<void> => {
     try {
-      // POST /admin/coupons
-      const res = await Axios.post('/admin/coupons', values)
+      // call admin coupons service
+      const { status, data } = await postAdminCoupon(values)
 
       // client error
-      if (res.status !== 201) {
-        toast.error(res.data.message)
+      if (status !== 201) {
+        toast.error(data.message)
         return
       }
 

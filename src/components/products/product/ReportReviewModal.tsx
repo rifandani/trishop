@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import { Dialog, Transition } from '@headlessui/react'
@@ -6,8 +5,8 @@ import { Dispatch, Fragment, SetStateAction } from 'react'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 // files
 import { IReview } from 'types/Review'
-import { IPostReportResponse } from 'types/Report'
 import { addReportSchema, TAddReportSchema } from 'yup/schema'
+import { postUserReport } from 'services/user/reports'
 
 interface Props {
   reportIsOpen: boolean
@@ -22,35 +21,36 @@ export default function ReportReviewModal({
   review,
   userId,
 }: Props): JSX.Element {
-  // hooks
-  const { push } = useRouter()
-
   const initialValues: TAddReportSchema = {
     typeId: 1,
     argument: '',
   }
+
+  // hooks
+  const { push } = useRouter()
 
   const onSubmit = async (
     values: TAddReportSchema,
     actions: FormikHelpers<TAddReportSchema>
   ): Promise<void> => {
     try {
-      const data = {
+      const reportBody = {
         reviewRef: review._id,
         reporter: userId,
         argument: values.argument,
         typeId: +values.typeId, // number
       }
 
-      const res = await axios.post<IPostReportResponse>('/user/reports', data)
+      // call postUserReport service
+      const { status, data } = await postUserReport(reportBody)
 
       // client error
-      if (res.status === 401) {
-        toast.error(res.data.message)
+      if (status === 401) {
+        toast.error(data.message)
         await push('/login')
         return
-      } else if (res.status !== 201) {
-        toast.error(res.data.message)
+      } else if (status !== 201) {
+        toast.error(data.message)
         return
       }
 

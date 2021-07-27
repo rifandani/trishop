@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
@@ -14,9 +14,9 @@ import {
 import Dropzone, { ImagePreview } from '../Dropzone'
 import { addProductSchema, TAddProductSchema } from 'yup/schema'
 import { IProductProps, TImage } from 'types/Product'
-
-const CLOUDINARY_URL =
-  'https://api.cloudinary.com/v1_1/ipandani2505/image/upload'
+import { CLOUDINARY_URL } from 'config/constants'
+import { deleteAdminCloudinaryImages } from 'services/admin/cloudinary/resources/image'
+import { putAdminProduct } from 'services/admin/products'
 
 export default function EditProduct({ product }: IProductProps): JSX.Element {
   const {
@@ -57,9 +57,7 @@ export default function EditProduct({ product }: IProductProps): JSX.Element {
 
       // delete all images in cloudinary first
       const public_ids = product.images.map((image) => image.publicId)
-      await Axios.delete(
-        `/admin/cloudinary/resources/image?public_ids=${public_ids.join(',')}`
-      )
+      await deleteAdminCloudinaryImages(public_ids)
 
       const newPhotos: TImage[] = []
 
@@ -71,7 +69,7 @@ export default function EditProduct({ product }: IProductProps): JSX.Element {
         formData.append('upload_preset', 'unsigned_preset')
 
         // POST image to cloudinary
-        const res = await Axios.post(CLOUDINARY_URL, formData)
+        const res = await axios.post(CLOUDINARY_URL, formData)
 
         // push to newPhotos array
         const publicId: string = res.data.public_id
@@ -97,8 +95,8 @@ export default function EditProduct({ product }: IProductProps): JSX.Element {
             labels: values.labels,
           }
 
-          // PUT /admin/products
-          await Axios.put(`/admin/products/${_id}`, newProduct)
+          // call admin products service
+          await putAdminProduct(_id, newProduct)
 
           // success
           toast.info('Product updated')

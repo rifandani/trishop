@@ -1,4 +1,3 @@
-import Axios from 'axios'
 import dayjs from 'dayjs'
 import { h } from 'gridjs'
 import { mutate } from 'swr'
@@ -8,6 +7,7 @@ import { useRouter } from 'next/router'
 // files
 import generateRupiah from 'utils/generateRupiah'
 import { ICouponsProps } from 'types/Coupon'
+import { deleteAdminCoupon } from 'services/admin/coupons'
 
 export default function TableCoupons({ coupons }: ICouponsProps): JSX.Element {
   // hooks
@@ -24,8 +24,8 @@ export default function TableCoupons({ coupons }: ICouponsProps): JSX.Element {
         return
       }
 
-      // DELETE /admin/coupons/:_id
-      await Axios.delete(`/admin/coupons/${_id}`)
+      // call deleteAdminCoupon service
+      await deleteAdminCoupon(_id)
 
       // trigger a revalidation (refetch) to make sure our local data is correct
       await mutate('/admin/coupons')

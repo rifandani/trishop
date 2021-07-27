@@ -1,4 +1,3 @@
-import Axios from 'axios'
 import { h } from 'gridjs'
 import { mutate } from 'swr'
 import { Grid } from 'gridjs-react'
@@ -6,6 +5,7 @@ import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 // files
 import { IUsersProps } from 'types/User'
+import { deleteAdminUser } from 'services/admin/users'
 
 export default function TableUsers({ users }: IUsersProps): JSX.Element {
   // hooks
@@ -22,8 +22,8 @@ export default function TableUsers({ users }: IUsersProps): JSX.Element {
         return
       }
 
-      // DELETE /admin/users/:_id
-      await Axios.delete(`/admin/users/${_id}`)
+      // call admin users service
+      await deleteAdminUser(_id)
 
       // trigger a revalidation (refetch) to make sure our local data is correct
       await mutate('/admin/users')

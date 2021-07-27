@@ -7,8 +7,8 @@ import getQueryAsString from 'utils/getQueryAsString'
 import getQueryStringAsArray from 'utils/getQueryStringAsArray'
 
 export default nc
-  .use(withCors(['GET', 'PUT', 'DELETE'])) // cors
-  .use(withCheckAuthCookieAsAdmin()) // ccheck auth cookie, middleware 2
+  .use(withCors(['GET', 'PUT', 'DELETE']))
+  .use(withCheckAuthCookieAsAdmin())
   .get(
     '/api/v1/admin/cloudinary/resources/:resource_type',
     async (_req, res) => {

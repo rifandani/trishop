@@ -9,6 +9,9 @@ export const IS_CLIENT_SIDE = !!(
   window.document.createElement
 )
 
+export const CLOUDINARY_URL =
+  'https://api.cloudinary.com/v1_1/ipandani2505/image/upload'
+
 /* ---------------------------------------- in ReportCard --------------------------------------- */
 
 // typeId = 1 // 'Bug or problem with the website'

@@ -4,6 +4,11 @@ import { API_BASE_URL } from 'config/constants'
 import { IPostReportResponse } from 'types/Report'
 import { TAddReportSchema } from 'yup/schema'
 
+interface PostResponse {
+  status: number
+  data: IPostReportResponse
+}
+
 // create axios instance
 const userReportsApi = axios.create({
   baseURL: `${API_BASE_URL}/user/reports`,
@@ -11,10 +16,10 @@ const userReportsApi = axios.create({
 
 export async function postUserReport(
   reportInput: TAddReportSchema
-): Promise<{ status: number; message: string }> {
+): Promise<PostResponse> {
   const res = await userReportsApi.post<IPostReportResponse>(``, reportInput)
   return {
     status: res.status,
-    message: res.data.message,
+    data: res.data,
   }
 }

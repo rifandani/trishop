@@ -1,4 +1,3 @@
-import Axios from 'axios'
 import { h } from 'gridjs'
 import { mutate } from 'swr'
 import { useRouter } from 'next/router'
@@ -7,6 +6,8 @@ import { Grid } from 'gridjs-react'
 // files
 import generateRupiah from 'utils/generateRupiah'
 import { IProductsProps } from 'types/Product'
+import { deleteAdminCloudinaryImages } from 'services/admin/cloudinary/resources/image'
+import { deleteAdminProduct } from 'services/admin/products'
 
 export default function TableProducts({
   products,
@@ -25,16 +26,15 @@ export default function TableProducts({
         return
       }
 
+      // get image.publicId
       const selectedProduct = products.find((product) => product._id === _id)
       const public_ids = selectedProduct.images.map((image) => image.publicId)
 
-      // delete images resources in cloudinary
-      await Axios.delete(
-        `/admin/cloudinary/resources/image?public_ids=${public_ids.join(',')}`
-      )
+      // call admin cloudinary service
+      await deleteAdminCloudinaryImages(public_ids)
 
-      // delete product in mongodb
-      await Axios.delete(`/admin/products/${_id}`)
+      // call admin products service
+      await deleteAdminProduct(_id)
 
       // trigger a revalidation (refetch) to make sure our local data is correct
       await mutate('/admin/products')

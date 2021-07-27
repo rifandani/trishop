@@ -29,17 +29,23 @@ export interface IAddAndEditCoupon {
 
 /* ---------------------------------------- API response ---------------------------------------- */
 
+export interface APIResponseCoupons {
+  error: boolean
+  coupons: ICoupon[]
+  count: number
+  message?: string
+}
+
 export interface APIResponseCoupon {
   error: boolean
   coupon: ICoupon
   message?: string
 }
 
-export interface APIResponseCoupons {
-  error: boolean
-  coupons: ICoupon[]
-  count: number
-  message?: string
+export interface IPostCouponResponse {
+  readonly error?: boolean
+  readonly couponId?: string
+  readonly message?: string
 }
 
 // import { Document, Model } from 'mongoose'

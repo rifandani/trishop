@@ -7,7 +7,8 @@ import { mutate } from 'swr'
 import { IReportProps } from 'types/Report'
 import { IReview } from 'types/Review'
 import { TYPE_IDS } from 'config/constants'
-import axios from 'axios'
+import { deleteAdminReport } from 'services/admin/reports'
+import { deleteAdminReview } from 'services/admin/reviews'
 
 export default function ReportCard({ report }: IReportProps): JSX.Element {
   const { argument, typeId, _id } = report
@@ -20,7 +21,8 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
     try {
       setIsDeleting(true)
 
-      await axios.delete(`/admin/reports/${_id}`) // delete report
+      // delete report as admin
+      await deleteAdminReport(_id)
 
       // success
       toast.info('Report deleted')
@@ -37,8 +39,9 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
     try {
       setIsDeleting(true)
 
-      await axios.delete(`/admin/reports/${_id}`) // delete report
-      await axios.delete(`/admin/reviews/${reviewRef._id}`) // delete review
+      // delete report & review as admin
+      await deleteAdminReport(_id)
+      await deleteAdminReview(reviewRef._id)
 
       // success
       toast.info('Report and review deleted')
