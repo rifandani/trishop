@@ -1,22 +1,22 @@
 import axios from 'axios'
+import { CLOUDINARY_URL } from 'config/constants'
+import {
+  ErrorMessage,
+  Field,
+  FieldArray,
+  Form,
+  Formik,
+  FormikHelpers,
+} from 'formik'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import {
-  Formik,
-  Form,
-  Field,
-  ErrorMessage,
-  FormikHelpers,
-  FieldArray,
-} from 'formik'
-// files
-import Dropzone, { ImagePreview } from '../Dropzone'
-import { addProductSchema, TAddProductSchema } from 'yup/schema'
-import { IProductProps, TImage } from 'types/Product'
-import { CLOUDINARY_URL } from 'config/constants'
 import { deleteAdminCloudinaryImages } from 'services/admin/cloudinary/resources/image'
 import { putAdminProduct } from 'services/admin/products'
+import { IProductProps, TImage } from 'types/Product'
+import { addProductSchema, TAddProductSchema } from 'yup/schema'
+// files
+import Dropzone, { ImagePreview } from '../Dropzone'
 
 export default function EditProduct({ product }: IProductProps): JSX.Element {
   const {
@@ -101,12 +101,12 @@ export default function EditProduct({ product }: IProductProps): JSX.Element {
           // success
           toast.info('Product updated')
           await push('/admin/dashboard')
-          actions.setSubmitting(false) // finish formik cycle
         }
       }
     } catch (err) {
       console.error(err)
       toast.error(err.data.message)
+    } finally {
       actions.setSubmitting(false) // finish formik cycle
     }
   }
