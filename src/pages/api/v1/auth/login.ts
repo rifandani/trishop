@@ -1,5 +1,4 @@
-import { compare } from 'bcrypt'
-// files
+import { compareSync } from 'bcryptjs'
 import nc from 'middlewares/nc'
 import withCors from 'middlewares/withCors'
 import withMongoConnect from 'middlewares/withMongoConnect'
@@ -29,7 +28,7 @@ export default nc
     const userDoc = await UserModel.findOne({ email })
 
     // compare req.body.password with user password from mongodb
-    const isMatch = await compare(password, userDoc.password)
+    const isMatch = compareSync(password, userDoc.password)
 
     // client error => password did not match -----------------------------------------------------------------
     if (!isMatch) {

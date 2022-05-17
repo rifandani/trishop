@@ -1,10 +1,9 @@
-import { hashSync } from 'bcrypt'
-// files
+import { hashSync } from 'bcryptjs'
 import nc from 'middlewares/nc'
-import withCors from 'middlewares/withCors'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
-import withYupConnect from 'middlewares/withYupConnect'
+import withCors from 'middlewares/withCors'
 import withMongoConnect from 'middlewares/withMongoConnect'
+import withYupConnect from 'middlewares/withYupConnect'
 import UserModel from 'mongo/models/User'
 import { userApiSchema } from 'yup/apiSchema'
 
