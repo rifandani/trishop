@@ -1,17 +1,16 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState, ChangeEvent, useMemo } from 'react'
-import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa'
+import { ChangeEvent, useMemo, useState } from 'react'
+import { FaCartPlus, FaChevronRight, FaHeart, FaStar } from 'react-icons/fa'
 import { toast } from 'react-toastify'
-// files
-import ImageSwiper from './ImageSwiper'
-import { useAppDispatch, useAppSelector } from 'redux/store'
 import { addProductToCart } from 'redux/slices/cart'
-import { IProductProps } from 'types/Product'
 import {
   addProductToWishlist,
   deleteProductFromWishlist,
 } from 'redux/slices/wishlist'
+import { useAppDispatch, useAppSelector } from 'redux/store'
+import { IProductProps } from 'types/Product'
+import ImageSwiper from './ImageSwiper'
 
 export default function ProductDetail({ product }: IProductProps): JSX.Element {
   const { title, price, stock, desc, labels, images, sold, _id, reviews } =

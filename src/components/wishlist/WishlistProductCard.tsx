@@ -1,13 +1,12 @@
 import Link from 'next/link'
 import { FaHeart } from 'react-icons/fa'
 import { toast } from 'react-toastify'
-// files
-import generateRupiah from 'utils/generateRupiah'
-import { useAppDispatch } from 'redux/store'
 import {
   deleteProductFromWishlist,
   WishlistPayload,
 } from 'redux/slices/wishlist'
+import { useAppDispatch } from 'redux/store'
+import generateRupiah from 'utils/generateRupiah'
 
 interface Props {
   product: WishlistPayload

@@ -1,19 +1,18 @@
+import { Transition } from '@headlessui/react'
 import axios from 'axios'
+import { UserPayload } from 'contexts/UserReducer'
+import useLocalStorage from 'hooks/useLocalStorage'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { FaShoppingCart } from 'react-icons/fa'
-import { IoMdClose, IoIosCard } from 'react-icons/io'
+import { IoIosCard, IoMdClose } from 'react-icons/io'
 import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri'
-import { Transition } from '@headlessui/react'
 import { toast } from 'react-toastify'
-// files
-import useLocalStorage from 'hooks/useLocalStorage'
-import generateRupiah from 'utils/generateRupiah'
+import { deleteProductFromCart } from 'redux/slices/cart'
+import { useAppDispatch, useAppSelector } from 'redux/store'
 import { APIResponseCoupon } from 'types/Coupon'
 import { IOrder } from 'types/LocalStorage'
-import { UserPayload } from 'contexts/UserReducer'
-import { useAppDispatch, useAppSelector } from 'redux/store'
-import { deleteProductFromCart } from 'redux/slices/cart'
+import generateRupiah from 'utils/generateRupiah'
 
 export default function CartComp(): JSX.Element {
   // hooks
