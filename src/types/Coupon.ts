@@ -1,3 +1,5 @@
+import { HttpResponse } from 'types'
+
 export interface ICoupon {
   discount: number
   minTransaction: number
@@ -29,23 +31,17 @@ export interface IAddAndEditCoupon {
 
 /* ---------------------------------------- API response ---------------------------------------- */
 
-export interface APIResponseCoupons {
-  error: boolean
-  coupons: ICoupon[]
-  count: number
-  message?: string
+export interface APIResponseCoupons extends HttpResponse {
+  readonly coupons: ICoupon[]
+  readonly count: number
 }
 
-export interface APIResponseCoupon {
-  error: boolean
-  coupon: ICoupon
-  message?: string
+export interface APIResponseCoupon extends HttpResponse {
+  readonly coupon: ICoupon
 }
 
-export interface IPostCouponResponse {
-  readonly error?: boolean
+export interface IPostCouponResponse extends HttpResponse {
   readonly couponId?: string
-  readonly message?: string
 }
 
 // import { Document, Model } from 'mongoose'

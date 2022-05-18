@@ -1,19 +1,19 @@
-import axios from 'axios'
+import Footer from 'components/Footer'
+import Nav from 'components/Nav'
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
 import { NextSeo } from 'next-seo'
-import { toast } from 'react-toastify'
 import {
+  FaEnvelope,
   FaGithub,
   FaInstagram,
   FaLinkedin,
-  FaPhoneAlt,
   FaMapMarkerAlt,
+  FaPhoneAlt,
   FaShareAlt,
-  FaEnvelope,
 } from 'react-icons/fa'
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-// files
-import Nav from 'components/Nav'
-import Footer from 'components/Footer'
+import { toast } from 'react-toastify'
+import { httpPost } from 'services/http'
+import { HttpResponse } from 'types'
 import { contactApiSchema, TContactApiSchema } from 'yup/apiSchema'
 
 function Contact(): JSX.Element {
@@ -35,7 +35,7 @@ function Contact(): JSX.Element {
 
     try {
       // POST email form
-      const res = await axios.post('/public/contact', data)
+      const res = await httpPost<HttpResponse>('/public/contact', data)
 
       // client error
       if (res.status !== 201) {

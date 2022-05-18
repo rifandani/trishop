@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { CLOUDINARY_URL } from 'config/constants'
 import {
   ErrorMessage,
@@ -13,9 +12,9 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { deleteAdminCloudinaryImages } from 'services/admin/cloudinary/resources/image'
 import { putAdminProduct } from 'services/admin/products'
+import { httpPost } from 'services/http'
 import { IProductProps, TImage } from 'types/Product'
 import { addProductSchema, TAddProductSchema } from 'yup/schema'
-// files
 import Dropzone, { ImagePreview } from '../Dropzone'
 
 export default function EditProduct({ product }: IProductProps): JSX.Element {
@@ -69,7 +68,7 @@ export default function EditProduct({ product }: IProductProps): JSX.Element {
         formData.append('upload_preset', 'unsigned_preset')
 
         // POST image to cloudinary
-        const res = await axios.post(CLOUDINARY_URL, formData)
+        const res = await httpPost(CLOUDINARY_URL, formData)
 
         // push to newPhotos array
         const publicId: string = res.data.public_id

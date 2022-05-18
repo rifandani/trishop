@@ -1,6 +1,5 @@
-import axios from 'axios'
-// files
-import { API_BASE_URL } from 'config/constants'
+import { API_BASE_URL_USER_REPORT } from 'config/constants'
+import { httpPost } from 'services/http'
 import { IPostReportResponse } from 'types/Report'
 import { TAddReportSchema } from 'yup/schema'
 
@@ -9,15 +8,13 @@ interface PostResponse {
   data: IPostReportResponse
 }
 
-// create axios instance
-const userReportsApi = axios.create({
-  baseURL: `${API_BASE_URL}/user/reports`,
-})
-
 export async function postUserReport(
   reportInput: TAddReportSchema
 ): Promise<PostResponse> {
-  const res = await userReportsApi.post<IPostReportResponse>(``, reportInput)
+  const res = await httpPost<IPostReportResponse>(
+    API_BASE_URL_USER_REPORT,
+    reportInput
+  )
   return {
     status: res.status,
     data: res.data,

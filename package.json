@@ -58,7 +58,7 @@
     "@tailwindcss/forms": "^0.3.3",
     "@tailwindcss/line-clamp": "^0.2.1",
     "autoprefixer": "^10.2.6",
-    "axios": "^0.21.1",
+    "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.30.0",
     "cookie": "^0.4.1",

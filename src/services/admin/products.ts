@@ -1,12 +1,11 @@
-import axios from 'axios'
-// files
-import { API_BASE_URL } from 'config/constants'
+import { API_BASE_URL_ADMIN_PRODUCT } from 'config/constants'
+import { httpDelete, httpGet, httpPost, httpPut } from 'services/http'
 import {
-  IProduct,
-  APIResponseProducts,
   APIResponseProduct,
-  IPostProductResponse,
+  APIResponseProducts,
   IAddAndEditProduct,
+  IPostProductResponse,
+  IProduct,
 } from 'types/Product'
 
 interface PostResponse {
@@ -19,21 +18,16 @@ interface PutResponse {
   readonly data: Omit<IPostProductResponse, 'productId'>
 }
 
-// create axios instance
-const adminProductsApi = axios.create({
-  baseURL: `${API_BASE_URL}/admin/products`,
-})
-
 export async function getAdminProducts(): Promise<IProduct[]> {
-  const res = await adminProductsApi.get<APIResponseProducts>(``)
+  const res = await httpGet<APIResponseProducts>(API_BASE_URL_ADMIN_PRODUCT)
   return res.data.products
 }
 
 export async function postAdminProduct(
   productInput: IAddAndEditProduct
 ): Promise<PostResponse> {
-  const res = await adminProductsApi.post<IPostProductResponse>(
-    ``,
+  const res = await httpPost<IPostProductResponse>(
+    API_BASE_URL_ADMIN_PRODUCT,
     productInput
   )
 
@@ -44,7 +38,9 @@ export async function postAdminProduct(
 }
 
 export async function getAdminProduct(productId: string): Promise<IProduct> {
-  const res = await adminProductsApi.get<APIResponseProduct>(`/${productId}`)
+  const res = await httpGet<APIResponseProduct>(
+    `${API_BASE_URL_ADMIN_PRODUCT}/${productId}`
+  )
   return res.data.product
 }
 
@@ -52,8 +48,8 @@ export async function putAdminProduct(
   productId: string,
   productInput: IAddAndEditProduct
 ): Promise<PutResponse> {
-  const res = await adminProductsApi.put<IPostProductResponse>(
-    `/${productId}`,
+  const res = await httpPut<IPostProductResponse>(
+    `${API_BASE_URL_ADMIN_PRODUCT}/${productId}`,
     productInput
   )
 
@@ -64,5 +60,5 @@ export async function putAdminProduct(
 }
 
 export async function deleteAdminProduct(productId: string): Promise<void> {
-  await adminProductsApi.delete(`/${productId}`)
+  await httpDelete(`${API_BASE_URL_ADMIN_PRODUCT}/${productId}`)
 }

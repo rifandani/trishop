@@ -1,18 +1,18 @@
+import { UserPayload } from 'contexts/UserReducer'
 import dayjs from 'dayjs'
-import axios from 'axios'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { MdThumbUp, MdReportProblem } from 'react-icons/md'
-import { FaStar } from 'react-icons/fa'
-import { toast } from 'react-toastify'
-import { useState } from 'react'
+import useLocalStorage from 'hooks/useLocalStorage'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { FaStar } from 'react-icons/fa'
+import { MdReportProblem, MdThumbUp } from 'react-icons/md'
+import { toast } from 'react-toastify'
+import { httpDelete } from 'services/http'
 import { mutate } from 'swr'
-// files
+import { HttpResponse } from 'types'
+import { IReviewProps } from 'types/Review'
 import EditReviewModal from './EditReviewModal'
 import ReportReviewModal from './ReportReviewModal'
-import useLocalStorage from 'hooks/useLocalStorage'
-import { IReviewProps } from 'types/Review'
-import { UserPayload } from 'contexts/UserReducer'
 
 dayjs.extend(relativeTime) // so that we can user relative formatting
 
@@ -55,7 +55,7 @@ export default function CustomerReviewCard({
     if (!isAgree) return
 
     try {
-      const res = await axios.delete(`/user/reviews/${_id}`) // delete review
+      const res = await httpDelete<HttpResponse>(`/user/reviews/${_id}`) // delete review
 
       // client error
       if (res.status === 401) {

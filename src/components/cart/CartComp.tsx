@@ -1,5 +1,4 @@
 import { Transition } from '@headlessui/react'
-import axios from 'axios'
 import { UserPayload } from 'contexts/UserReducer'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { useRouter } from 'next/router'
@@ -10,6 +9,7 @@ import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri'
 import { toast } from 'react-toastify'
 import { deleteProductFromCart } from 'redux/slices/cart'
 import { useAppDispatch, useAppSelector } from 'redux/store'
+import { httpPost } from 'services/http'
 import { APIResponseCoupon } from 'types/Coupon'
 import { IOrder } from 'types/LocalStorage'
 import generateRupiah from 'utils/generateRupiah'
@@ -62,7 +62,7 @@ export default function CartComp(): JSX.Element {
     try {
       setBusy(true)
 
-      const res = await axios.post<APIResponseCoupon>(
+      const res = await httpPost<APIResponseCoupon>(
         '/public/validate/coupon',
         reqBody
       )

@@ -1,10 +1,9 @@
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
-import Axios from 'axios'
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-// files
-import { TUserApiSchema, userApiSchema } from 'yup/apiSchema'
+import { httpPut } from 'services/http'
 import { IUserProps } from 'types/User'
+import { TUserApiSchema, userApiSchema } from 'yup/apiSchema'
 
 export default function EditUser({ user }: IUserProps): JSX.Element {
   // hooks
@@ -23,7 +22,7 @@ export default function EditUser({ user }: IUserProps): JSX.Element {
   ): Promise<void> => {
     try {
       // PUT /admin/users/:_id
-      await Axios.put(`/admin/users/${query._id}`, values) // bisa pake query._id atau dari user._id
+      await httpPut(`/admin/users/${query._id}`, values) // bisa pake query._id atau dari user._id
 
       // success
       await push('/admin/dashboard')

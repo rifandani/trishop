@@ -1,14 +1,13 @@
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
+import useDebounce from 'hooks/useDebounce'
+import useLocalStorage from 'hooks/useLocalStorage'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { HiArrowNarrowLeft, HiArrowNarrowRight } from 'react-icons/hi'
 import { toast } from 'react-toastify'
-import Axios from 'axios'
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-// files
-import useDebounce from 'hooks/useDebounce'
-import useLocalStorage from 'hooks/useLocalStorage'
-import { StepProps } from './CheckoutContactForm'
+import { httpGet } from 'services/http'
 import { ICheckout } from 'types/LocalStorage'
 import { checkoutShippingSchema, TCheckoutShippingSchema } from 'yup/schema'
+import { StepProps } from './CheckoutContactForm'
 
 export default function CheckoutShippingForm({
   setStep,
@@ -48,9 +47,7 @@ export default function CheckoutShippingForm({
   // API search function
   async function searchIndoAddress(search: string): Promise<any[]> {
     try {
-      const res = await Axios.get(
-        `https://kodepos.vercel.app/search?q=${search}`
-      )
+      const res = await httpGet(`https://kodepos.vercel.app/search?q=${search}`)
 
       const data = res.data.data
       return data as any[]

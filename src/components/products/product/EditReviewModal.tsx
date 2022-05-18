@@ -1,11 +1,10 @@
-import axios from 'axios'
-import { mutate } from 'swr'
-import { toast } from 'react-toastify'
-import { useRouter } from 'next/router'
 import { Dialog, Transition } from '@headlessui/react'
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
+import { useRouter } from 'next/router'
 import { Dispatch, Fragment, SetStateAction } from 'react'
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-// files
+import { toast } from 'react-toastify'
+import { httpPut } from 'services/http'
+import { mutate } from 'swr'
 import { IPutReviewResponse, IReview } from 'types/Review'
 import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
 
@@ -36,7 +35,7 @@ export default function EditReviewModal({
     actions: FormikHelpers<TPutReviewApiSchema>
   ): Promise<void> => {
     try {
-      const res = await axios.put<IPutReviewResponse>(
+      const res = await httpPut<IPutReviewResponse>(
         `/user/reviews/${review._id}`,
         {
           ...values,

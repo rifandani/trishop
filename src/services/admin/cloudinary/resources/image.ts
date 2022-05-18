@@ -1,11 +1,5 @@
-import axios from 'axios'
-// files
-import { API_BASE_URL } from 'config/constants'
-
-// create axios instance
-const adminCloudinaryResourcesApi = axios.create({
-  baseURL: `${API_BASE_URL}/admin/cloudinary/resources`,
-})
+import { API_BASE_URL_ADMIN_CLOUDINARY_RESOURCE } from 'config/constants'
+import { httpDelete } from 'services/http'
 
 /* ------------------------------------ resource_type = image ----------------------------------- */
 
@@ -13,7 +7,9 @@ const adminCloudinaryResourcesApi = axios.create({
 export async function deleteAdminCloudinaryImages(
   public_ids: string[]
 ): Promise<void> {
-  await adminCloudinaryResourcesApi.delete(
-    `/image?public_ids=${public_ids.join(',')}`
+  await httpDelete(
+    `${API_BASE_URL_ADMIN_CLOUDINARY_RESOURCE}/image?public_ids=${public_ids.join(
+      ','
+    )}`
   )
 }

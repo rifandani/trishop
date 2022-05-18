@@ -1,8 +1,7 @@
-import Axios from 'axios'
-import { toast } from 'react-toastify'
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
 import { useRouter } from 'next/router'
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-// files
+import { toast } from 'react-toastify'
+import { httpPost } from 'services/http'
 import { TUserApiSchema, userApiSchema } from 'yup/apiSchema'
 
 export default function AddUser(): JSX.Element {
@@ -22,7 +21,7 @@ export default function AddUser(): JSX.Element {
   ): Promise<void> => {
     try {
       // POST /admin/users
-      await Axios.post('/admin/users', values)
+      await httpPost('/admin/users', values)
 
       // success
       await push('/admin/dashboard')

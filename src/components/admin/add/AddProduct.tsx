@@ -1,21 +1,20 @@
-import axios from 'axios'
+import { CLOUDINARY_URL } from 'config/constants'
+import {
+  ErrorMessage,
+  Field,
+  FieldArray,
+  Form,
+  Formik,
+  FormikHelpers,
+} from 'formik'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import { useRouter } from 'next/router'
-import {
-  Formik,
-  Form,
-  Field,
-  ErrorMessage,
-  FormikHelpers,
-  FieldArray,
-} from 'formik'
-// files
-import Dropzone, { ImagePreview } from '../Dropzone'
+import { postAdminProduct } from 'services/admin/products'
+import { httpPost } from 'services/http'
 import { TImage } from 'types/Product'
 import { addProductSchema, TAddProductSchema } from 'yup/schema'
-import { postAdminProduct } from 'services/admin/products'
-import { CLOUDINARY_URL } from 'config/constants'
+import Dropzone, { ImagePreview } from '../Dropzone'
 
 export default function AddProductWithCloudinaryWidget(): JSX.Element {
   // hooks
@@ -52,7 +51,7 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
         formData.append('upload_preset', 'unsigned_preset')
 
         // POST to cloudinary
-        const res = await axios.post(CLOUDINARY_URL, formData)
+        const res = await httpPost(CLOUDINARY_URL, formData)
 
         // push to newImages array
         const publicId: string = res.data.public_id

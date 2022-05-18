@@ -1,11 +1,11 @@
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
-import Axios from 'axios'
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-// files
-import DatePickerField from '../DatePickerField'
+import { httpPut } from 'services/http'
+import { HttpResponse } from 'types'
+import { IAddAndEditCoupon, ICouponProps } from 'types/Coupon'
 import { couponApiSchema } from 'yup/apiSchema'
-import { ICouponProps, IAddAndEditCoupon } from 'types/Coupon'
+import DatePickerField from '../DatePickerField'
 
 export default function EditCoupon({ coupon }: ICouponProps): JSX.Element {
   // hooks
@@ -25,7 +25,10 @@ export default function EditCoupon({ coupon }: ICouponProps): JSX.Element {
   ): Promise<void> => {
     try {
       // bisa pake query._id atau dari coupon._id
-      const res = await Axios.put(`/admin/coupons/${coupon._id}`, values)
+      const res = await httpPut<HttpResponse>(
+        `/admin/coupons/${coupon._id}`,
+        values
+      )
 
       // client error
       if (res.status !== 201) {

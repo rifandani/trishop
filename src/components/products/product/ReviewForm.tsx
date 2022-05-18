@@ -1,13 +1,12 @@
-import axios from 'axios'
-import { mutate } from 'swr'
-import { toast } from 'react-toastify'
-import { useRouter } from 'next/router'
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-// files
-import useLocalStorage from 'hooks/useLocalStorage'
-import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
-import { IPostReviewResponse } from 'types/Review'
 import { UserPayload } from 'contexts/UserReducer'
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
+import useLocalStorage from 'hooks/useLocalStorage'
+import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
+import { httpPost } from 'services/http'
+import { mutate } from 'swr'
+import { IPostReviewResponse } from 'types/Review'
+import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
 
 interface ReviewFormProps {
   productRef: string
@@ -46,7 +45,7 @@ export default function ReviewForm({
         star: +values.star,
       }
 
-      const res = await axios.post<IPostReviewResponse>(
+      const res = await httpPost<IPostReviewResponse>(
         '/user/reviews',
         newReview
       )
