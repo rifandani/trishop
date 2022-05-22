@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { FileError, FileRejection, useDropzone } from 'react-dropzone'
 import { ImagePreview } from 'types'
 
@@ -8,11 +8,11 @@ interface Props {
   setImages: Dispatch<SetStateAction<ImagePreview[]>>
 }
 
-export default function Dropzone({ images, setImages }: Props): JSX.Element {
+const Dropzone: FC<Props> = ({ images, setImages }) => {
   const [errors, setErrors] = useState<FileError[]>([])
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+    accept: { 'image/*': ['.png', '.jpeg', '.jpg', '.webp', '.svg'] },
     maxFiles: 3,
     maxSize: 2000000, // 2 MB
     onDrop: (acceptedImages: File[], fileRejections: FileRejection[]) => {
@@ -32,6 +32,9 @@ export default function Dropzone({ images, setImages }: Props): JSX.Element {
           )
         )
       }
+    },
+    onError: (err) => {
+      console.error('Dropzone error', err)
     },
   })
 
@@ -64,7 +67,7 @@ export default function Dropzone({ images, setImages }: Props): JSX.Element {
         <Image
           src={image.preview}
           alt={image.name}
-          // className="rounded-lg"
+          className="rounded-lg"
           layout="fill"
           objectFit="cover"
           objectPosition="center"
@@ -105,3 +108,5 @@ export default function Dropzone({ images, setImages }: Props): JSX.Element {
     </section>
   )
 }
+
+export default Dropzone
