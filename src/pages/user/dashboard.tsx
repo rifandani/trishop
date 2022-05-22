@@ -1,15 +1,14 @@
-import { GetServerSideProps } from 'next'
-import { verify } from 'jsonwebtoken'
-import { parse } from 'cookie'
-import { NextSeo } from 'next-seo'
-// files
-import UserNavbar from 'components/user/UserNavbar'
 import UserDashboard from 'components/user/UserDashboard'
-import UserModel from 'mongo/models/User'
+import UserNavbar from 'components/user/UserNavbar'
+import { parse } from 'cookie'
+import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
+import UserModel from 'mongo/models/User'
+import { GetServerSideProps, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 import { AuthCookiePayload } from 'types'
 
-export default function UserDashboardPage(): JSX.Element {
+const UserDashboardPage: NextPage = () => {
   return (
     <>
       <NextSeo title="User Dashboard" />
@@ -72,3 +71,5 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 }
+
+export default UserDashboardPage

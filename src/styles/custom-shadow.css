@@ -1,0 +1,21 @@
+.card-shadow:hover {
+  box-shadow: -10px 10px 5px 0px rgba(254, 235, 200, 1);
+}
+
+.shadow-pop-bl:hover {
+  animation: shadow-pop-bl 0.3s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+}
+
+@keyframes shadow-pop-bl {
+  0% {
+    box-shadow: 0 0 #92400e, 0 0 #92400e, 0 0 #92400e, 0 0 #92400e, 0 0 #92400e,
+      0 0 #92400e, 0 0 #92400e, 0 0 #92400e;
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    box-shadow: -1px 1px #92400e, -2px 2px #92400e, -3px 3px #92400e,
+      -4px 4px #92400e, -5px 5px #92400e, -6px 6px #92400e, -7px 7px #92400e,
+      -8px 8px #92400e;
+    transform: translateX(8px) translateY(-8px);
+  }
+}

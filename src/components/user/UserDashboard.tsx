@@ -1,20 +1,18 @@
-import { toast } from 'react-toastify'
-import { MdReportProblem } from 'react-icons/md'
+import { FC } from 'react'
 import {
-  FaUserFriends,
-  FaShoppingCart,
-  FaShoppingBag,
   FaMoneyBillWave,
+  FaShoppingBag,
+  FaShoppingCart,
   FaTicketAlt,
+  FaUserFriends,
 } from 'react-icons/fa'
-// files
+import { MdReportProblem } from 'react-icons/md'
+import { toast } from 'react-toastify'
 
-export default function AdminDashboard(): JSX.Element {
-  // hooks
-
+const UserDashboard: FC = () => {
   return (
-    <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-      <div className="container px-6 py-8 mx-auto">
+    <main className="flex-1 overflow-y-auto overflow-x-hidden bg-gray-200">
+      <div className="container mx-auto px-6 py-8">
         {/* dashboard title */}
         <h3
           className="text-3xl font-medium text-gray-700"
@@ -24,12 +22,12 @@ export default function AdminDashboard(): JSX.Element {
         </h3>
 
         <div className="mt-4">
-          <div className="flex flex-wrap -mx-6">
+          <div className="-mx-6 flex flex-wrap">
             {/* Total Users */}
             <section className="w-full px-6 sm:w-1/2 xl:w-1/3">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-indigo-500 bg-opacity-75 rounded-full">
-                  <FaUserFriends className="w-8 h-8 text-white" />
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-indigo-500 bg-opacity-75 p-3">
+                  <FaUserFriends className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
@@ -40,10 +38,10 @@ export default function AdminDashboard(): JSX.Element {
             </section>
 
             {/* Total Products */}
-            <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 sm:mt-0">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-pink-500 bg-opacity-75 rounded-full">
-                  <FaShoppingBag className="w-8 h-8 text-white" />
+            <section className="mt-6 w-full px-6 sm:mt-0 sm:w-1/2 xl:w-1/3">
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-pink-500 bg-opacity-75 p-3">
+                  <FaShoppingBag className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
@@ -54,10 +52,10 @@ export default function AdminDashboard(): JSX.Element {
             </section>
 
             {/* Total Coupons */}
-            <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-blue-500 bg-opacity-75 rounded-full">
-                  <FaTicketAlt className="w-8 h-8 text-white" />
+            <section className="mt-6 w-full px-6 sm:w-1/2 xl:mt-0 xl:w-1/3">
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-blue-500 bg-opacity-75 p-3">
+                  <FaTicketAlt className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
@@ -68,10 +66,10 @@ export default function AdminDashboard(): JSX.Element {
             </section>
 
             {/* Total Reports */}
-            <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-red-500 bg-opacity-75 rounded-full">
-                  <MdReportProblem className="w-8 h-8 text-white" />
+            <section className="mt-6 w-full px-6 sm:w-1/2 xl:w-1/3">
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-red-500 bg-opacity-75 p-3">
+                  <MdReportProblem className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
@@ -82,10 +80,10 @@ export default function AdminDashboard(): JSX.Element {
             </section>
 
             {/* Weekly Orders */}
-            <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-orange-500 bg-opacity-75 rounded-full">
-                  <FaShoppingCart className="w-8 h-8 text-white" />
+            <section className="mt-6 w-full px-6 sm:w-1/2 xl:w-1/3">
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-orange-500 bg-opacity-75 p-3">
+                  <FaShoppingCart className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
@@ -96,10 +94,10 @@ export default function AdminDashboard(): JSX.Element {
             </section>
 
             {/* Weekly Income */}
-            <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-green-500 bg-opacity-75 rounded-full">
-                  <FaMoneyBillWave className="w-8 h-8 text-white" />
+            <section className="mt-6 w-full px-6 sm:w-1/2 xl:w-1/3">
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-green-500 bg-opacity-75 p-3">
+                  <FaMoneyBillWave className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
@@ -120,7 +118,7 @@ export default function AdminDashboard(): JSX.Element {
           <h3 className="text-3xl font-medium text-gray-700">Orders</h3>
           <button
             onClick={() => toast('coming soon')}
-            className="px-4 py-2 text-white bg-green-500 border rounded-md focus:outline-none focus:ring-4 focus:ring-green-300 hover:bg-green-600"
+            className="rounded-md border bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300"
           >
             Add New Order
           </button>
@@ -133,3 +131,5 @@ export default function AdminDashboard(): JSX.Element {
     </main>
   )
 }
+
+export default UserDashboard

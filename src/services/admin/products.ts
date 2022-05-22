@@ -1,21 +1,21 @@
 import { API_BASE_URL_ADMIN_PRODUCT } from 'config/constants'
 import { httpDelete, httpGet, httpPost, httpPut } from 'services/http'
 import {
+  APIResponsePostProduct,
   APIResponseProduct,
   APIResponseProducts,
   IAddAndEditProduct,
-  IPostProductResponse,
   IProduct,
 } from 'types/Product'
 
 interface PostResponse {
   readonly status: number
-  readonly data: IPostProductResponse
+  readonly data: APIResponsePostProduct
 }
 
 interface PutResponse {
   readonly status: number
-  readonly data: Omit<IPostProductResponse, 'productId'>
+  readonly data: Omit<APIResponsePostProduct, 'productId'>
 }
 
 export async function getAdminProducts(): Promise<IProduct[]> {
@@ -26,7 +26,7 @@ export async function getAdminProducts(): Promise<IProduct[]> {
 export async function postAdminProduct(
   productInput: IAddAndEditProduct
 ): Promise<PostResponse> {
-  const res = await httpPost<IPostProductResponse>(
+  const res = await httpPost<APIResponsePostProduct>(
     API_BASE_URL_ADMIN_PRODUCT,
     productInput
   )
@@ -48,7 +48,7 @@ export async function putAdminProduct(
   productId: string,
   productInput: IAddAndEditProduct
 ): Promise<PutResponse> {
-  const res = await httpPut<IPostProductResponse>(
+  const res = await httpPut<APIResponsePostProduct>(
     `${API_BASE_URL_ADMIN_PRODUCT}/${productId}`,
     productInput
   )

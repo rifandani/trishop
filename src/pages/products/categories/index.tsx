@@ -1,17 +1,18 @@
-import useSWR from 'swr'
-import { GetServerSideProps } from 'next'
-// files
-import Nav from 'components/Nav'
 import Categories from 'components/Categories'
-import ProductModel from 'mongo/models/Product'
+import Nav from 'components/common/Nav'
 import dbConnect from 'mongo/config/dbConnect'
+import ProductModel from 'mongo/models/Product'
+import { GetServerSideProps, NextPage } from 'next'
+import useSWR from 'swr'
 
-interface CategoryIndexProps {
+interface Props {
   queryProducts: string
 }
 
-function CategoriesIndex({ queryProducts }: CategoryIndexProps): JSX.Element {
+const CategoriesPage: NextPage<Props> = ({ queryProducts }) => {
+  //#region SERVICES
   const { data, error } = useSWR<string[]>('/public/categories')
+  //#endregion
 
   return (
     <>
@@ -54,4 +55,4 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 }
 
-export default CategoriesIndex
+export default CategoriesPage

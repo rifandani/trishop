@@ -1,22 +1,23 @@
+import { TYPE_IDS } from 'config/constants'
 import Link from 'next/link'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { FaStar } from 'react-icons/fa'
 import { toast } from 'react-toastify'
-import { mutate } from 'swr'
-// files
-import { IReportProps } from 'types/Report'
-import { IReview } from 'types/Review'
-import { TYPE_IDS } from 'config/constants'
 import { deleteAdminReport } from 'services/admin/reports'
 import { deleteAdminReview } from 'services/admin/reviews'
+import { mutate } from 'swr'
+import { IReportProps } from 'types/Report'
+import { IReview } from 'types/Review'
 
-export default function ReportCard({ report }: IReportProps): JSX.Element {
+const ReportCard: FC<IReportProps> = ({ report }) => {
+  //#region GENERAL
   const { argument, typeId, _id } = report
   const reviewRef = report.reviewRef as IReview
 
-  // hooks
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
+  //#endregion
 
+  //#region HANDLER REPORT ACTIONS
   async function onDeleteReport(): Promise<void> {
     try {
       setIsDeleting(true)
@@ -53,9 +54,10 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
       setIsDeleting(false)
     }
   }
+  //#endregion
 
   return (
-    <section className="px-8 py-4 mx-auto bg-white rounded-lg shadow-md">
+    <section className="mx-auto rounded-lg bg-white px-8 py-4 shadow-md">
       <div className="mt-2">
         <Link href={`/products/${reviewRef.productRef.toString()}`}>
           <a className="block text-2xl font-bold text-gray-900 hover:text-orange-800 hover:underline">
@@ -67,10 +69,10 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
           .fill('whatever')
           .map((_, i) => (
             <div
-              className="inline-flex items-center justify-center flex-shrink-0 w-10 h-10 mx-auto mt-2 mb-5 bg-orange-200 rounded-full"
+              className="mx-auto mt-2 mb-5 inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-orange-200"
               key={i}
             >
-              <FaStar className="w-6 h-6 text-orange-800" />
+              <FaStar className="h-6 w-6 text-orange-800" />
             </div>
           ))}
 
@@ -80,9 +82,9 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
       </div>
 
       <div className="mt-2">
-        <p className="text-sm text-center text-orange-800">{argument}</p>
+        <p className="text-center text-sm text-orange-800">{argument}</p>
 
-        <p className="px-3 py-1 my-2 text-sm font-bold text-orange-800 bg-orange-200 rounded">
+        <p className="my-2 rounded bg-orange-200 px-3 py-1 text-sm font-bold text-orange-800">
           {TYPE_IDS.find((_, i) => i + 1 === typeId)}
         </p>
 
@@ -91,7 +93,7 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
 
       <div className="flex flex-col items-center justify-center space-y-3">
         <button
-          className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-orange-800 border border-orange-800 rounded-md focus:ring-4 focus:ring-red-500 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-800"
+          className="inline-flex w-full justify-center rounded-md border border-orange-800 px-4 py-2 text-sm font-medium text-orange-800 hover:bg-red-200 focus:outline-none focus:ring-4 focus:ring-red-500 focus-visible:ring-2 focus-visible:ring-red-800 focus-visible:ring-offset-2"
           type="button"
           disabled={isDeleting}
           onClick={onDeleteReport}
@@ -100,7 +102,7 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
         </button>
 
         <button
-          className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md focus:ring-4 focus:ring-red-500 disabled:opacity-50 hover:bg-red-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
+          className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-red-500 focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 disabled:opacity-50"
           type="button"
           disabled={isDeleting}
           onClick={onDeleteReportAndReview}
@@ -111,3 +113,5 @@ export default function ReportCard({ report }: IReportProps): JSX.Element {
     </section>
   )
 }
+
+export default ReportCard

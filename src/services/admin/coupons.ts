@@ -3,14 +3,14 @@ import { httpDelete, httpGet, httpPost } from 'services/http'
 import {
   APIResponseCoupon,
   APIResponseCoupons,
+  APIResponsePostCoupon,
   IAddAndEditCoupon,
   ICoupon,
-  IPostCouponResponse,
 } from 'types/Coupon'
 
 interface PostResponse {
   readonly status: number
-  readonly data: IPostCouponResponse
+  readonly data: APIResponsePostCoupon
 }
 
 export async function getAdminCoupons(): Promise<ICoupon[]> {
@@ -21,7 +21,7 @@ export async function getAdminCoupons(): Promise<ICoupon[]> {
 export async function postAdminCoupon(
   couponInput: IAddAndEditCoupon
 ): Promise<PostResponse> {
-  const res = await httpPost<IPostCouponResponse>(
+  const res = await httpPost<APIResponsePostCoupon>(
     API_BASE_URL_ADMIN_COUPON,
     couponInput
   )

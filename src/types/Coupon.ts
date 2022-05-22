@@ -40,7 +40,7 @@ export interface APIResponseCoupon extends HttpResponse {
   readonly coupon: ICoupon
 }
 
-export interface IPostCouponResponse extends HttpResponse {
+export interface APIResponsePostCoupon extends HttpResponse {
   readonly couponId?: string
 }
 

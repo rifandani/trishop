@@ -1,9 +1,7 @@
+import Image from 'next/image'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { FileRejection, useDropzone, FileError } from 'react-dropzone'
-
-export interface ImagePreview extends File {
-  preview?: string
-}
+import { FileError, FileRejection, useDropzone } from 'react-dropzone'
+import { ImagePreview } from 'types'
 
 interface Props {
   images: ImagePreview[]
@@ -58,22 +56,26 @@ export default function Dropzone({ images, setImages }: Props): JSX.Element {
   // image thumbnail component
   const thumbs = images.map((image) => (
     <div
-      className="box-border inline-flex w-32 h-32 p-2 mb-2 mr-2 border rounded-md cursor-pointer hover:bg-red-500"
+      className="mb-2 mr-2 box-border inline-flex h-32 w-32 cursor-pointer rounded-md border p-2 hover:bg-red-500"
       key={image.name}
       onClick={() => removeImage(image.name)}
     >
-      <div className="flex min-w-0 overflow-hidden">
-        <img
-          className="block w-auto h-full"
+      <div className="relative flex h-full w-full min-w-0 overflow-hidden">
+        <Image
           src={image.preview}
           alt={image.name}
+          // className="rounded-lg"
+          layout="fill"
+          objectFit="cover"
+          objectPosition="center"
+          priority
         />
       </div>
     </div>
   ))
 
   return (
-    <section className="container px-3 py-2 mt-1 border border-orange-200 border-dashed rounded-md shadow-sm form-input">
+    <section className="container form-input mt-1 rounded-md border border-dashed border-orange-200 px-3 py-2 shadow-sm">
       <div
         {...getRootProps({
           className:
@@ -81,17 +83,17 @@ export default function Dropzone({ images, setImages }: Props): JSX.Element {
         })}
       >
         <input {...getInputProps()} />
-        <p className="text-sm italic font-bold text-center text-orange-800">
+        <p className="text-center text-sm font-bold italic text-orange-800">
           Drag and drop some images here, or
         </p>
-        <p className="text-sm italic font-bold text-center text-orange-800">
+        <p className="text-center text-sm font-bold italic text-orange-800">
           Click to select images
         </p>
-        <p className="text-xs italic text-center text-orange-800">
+        <p className="text-center text-xs italic text-orange-800">
           Click on the image to remove it
         </p>
       </div>
-      <aside className="flex flex-wrap mt-4">{thumbs}</aside>
+      <aside className="mt-4 flex flex-wrap">{thumbs}</aside>
 
       {errors.length > 0
         ? errors.map((err, i) => (

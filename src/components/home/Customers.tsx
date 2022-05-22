@@ -1,22 +1,24 @@
-function Customers(): JSX.Element {
+import { FC } from 'react'
+
+const Customers: FC = () => {
   return (
-    <article className="py-4 border-b bg-gradient-to-r from-orange-200 via-orange-500 to-orange-800">
-      <div className="container flex flex-wrap items-center justify-between mx-auto">
+    <article className="border-b bg-gradient-to-r from-orange-200 via-orange-500 to-orange-800 py-4">
+      <div className="container mx-auto flex flex-wrap items-center justify-between">
         {/* title */}
-        <h2 className="w-full my-2 text-3xl font-black leading-tight text-center text-white lg:mt-8">
+        <h2 className="my-2 w-full text-center text-3xl font-black leading-tight text-white lg:mt-8">
           Our Customers
         </h2>
 
         {/* straight line */}
-        <div className="w-full mb-4">
-          <div className="w-64 h-1 py-0 mx-auto my-0 bg-orange-200 rounded-t opacity-25"></div>
+        <div className="mb-4 w-full">
+          <div className="mx-auto my-0 h-1 w-64 rounded-t bg-orange-200 py-0 opacity-50"></div>
         </div>
 
         {/* list of customers */}
-        <section className="flex flex-wrap items-center justify-center flex-1 max-w-4xl mx-auto text-xl font-bold text-white opacity-75 lg:justify-between">
-          <span className="flex items-center w-1/2 p-4 md:w-auto">
+        <section className="mx-auto flex max-w-4xl flex-1 flex-wrap items-center justify-center text-xl font-bold text-white opacity-75 lg:justify-between">
+          <span className="flex w-1/2 items-center p-4 md:w-auto">
             <svg
-              className="w-10 h-10 mr-4 text-white opacity-75 fill-current"
+              className="mr-4 h-10 w-10 fill-current text-white"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
             >
@@ -25,9 +27,9 @@ function Customers(): JSX.Element {
             TeeShirtz
           </span>
 
-          <span className="flex items-center w-1/2 p-4 md:w-auto">
+          <span className="flex w-1/2 items-center p-4 md:w-auto">
             <svg
-              className="w-10 h-10 mr-4 text-white opacity-75 fill-current"
+              className="mr-4 h-10 w-10 fill-current text-white"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
             >
@@ -36,9 +38,9 @@ function Customers(): JSX.Element {
             Mic.Check
           </span>
 
-          <span className="flex items-center w-1/2 p-4 md:w-auto">
+          <span className="flex w-1/2 items-center p-4 md:w-auto">
             <svg
-              className="w-10 h-10 mr-4 text-white opacity-75 fill-current"
+              className="mr-4 h-10 w-10 fill-current text-white"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
             >
@@ -47,9 +49,9 @@ function Customers(): JSX.Element {
             BadgeLife.io
           </span>
 
-          <span className="flex items-center w-1/2 p-4 md:w-auto">
+          <span className="flex w-1/2 items-center p-4 md:w-auto">
             <svg
-              className="w-10 h-10 mr-4 text-white opacity-75 fill-current"
+              className="mr-4 h-10 w-10 fill-current text-white"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
             >

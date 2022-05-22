@@ -8,7 +8,7 @@ import {
   FormikHelpers,
 } from 'formik'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { toast } from 'react-toastify'
 import { postAdminProduct } from 'services/admin/products'
 import { httpPost } from 'services/http'
@@ -16,9 +16,12 @@ import { TImage } from 'types/Product'
 import { addProductSchema, TAddProductSchema } from 'yup/schema'
 import Dropzone, { ImagePreview } from '../Dropzone'
 
-export default function AddProductWithCloudinaryWidget(): JSX.Element {
-  // hooks
+const AddProduct: FC = () => {
+  //#region GENERAL
   const { push } = useRouter()
+  //#endregion
+
+  //#region FORM
   const [images, setImages] = useState<ImagePreview[]>([])
 
   const initialValues: TAddProductSchema = {
@@ -92,11 +95,12 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
       actions.setSubmitting(false) // finish formik cycle
     }
   }
+  //#endregion
 
   return (
-    <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+    <main className="flex-1 overflow-y-auto overflow-x-hidden bg-gray-200">
       {/* Add New User */}
-      <section className="p-6 mt-10 sm:mt-0">
+      <section className="mt-10 p-6 sm:mt-0">
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
@@ -111,7 +115,7 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
             </div>
           </div>
 
-          <div className="mt-5 md:mt-0 md:col-span-2">
+          <div className="mt-5 md:col-span-2 md:mt-0">
             {/* START FORM */}
             <Formik
               initialValues={initialValues}
@@ -121,7 +125,7 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
               {({ isSubmitting, values }) => (
                 <Form className="">
                   <div className="overflow-hidden shadow sm:rounded-md">
-                    <div className="px-4 py-5 bg-white sm:p-6">
+                    <div className="bg-white px-4 py-5 sm:p-6">
                       <div className="grid grid-cols-6 gap-6">
                         {/* title */}
                         <div className="col-span-6 sm:col-span-4">
@@ -133,7 +137,7 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
                           </label>
 
                           <Field
-                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            className="focus:shadow-outline-blue form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                             placeholder="Product title..."
                             name="title"
                             type="text"
@@ -157,7 +161,7 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
                           </label>
 
                           <Field
-                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            className="focus:shadow-outline-blue form-select mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                             name="price"
                             type="number"
                           />
@@ -179,7 +183,7 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
                           </label>
 
                           <Field
-                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            className="focus:shadow-outline-blue form-select mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                             name="stock"
                             type="number"
                           />
@@ -201,7 +205,7 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
                           </label>
 
                           <Field
-                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            className="focus:shadow-outline-blue form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                             placeholder="Product description..."
                             name="desc"
                             type="text"
@@ -219,7 +223,7 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
                         {/* labels */}
                         <FieldArray name="labels">
                           {({ remove, push }) => (
-                            <div className="flex-col col-span-6 space-y-2 sm:col-span-4">
+                            <div className="col-span-6 flex-col space-y-2 sm:col-span-4">
                               {values.labels.length > 0 &&
                                 values.labels.map((_, i) => (
                                   <div key={i} className="flex-col space-y-2">
@@ -232,14 +236,14 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
 
                                     <div className="flex space-x-1">
                                       <Field
-                                        className="block w-full px-3 py-2 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                                        className="focus:shadow-outline-blue form-input block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                                         placeholder="Product label..."
                                         type="text"
                                         name={`labels.${i}`}
                                       />
 
                                       <button
-                                        className="px-3 py-2 text-sm font-medium text-white transition duration-150 ease-in-out bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none focus:border-white active:bg-red-600"
+                                        className="rounded-md border border-transparent bg-red-500 px-3 py-2 text-sm font-medium text-white shadow-sm transition duration-150 ease-in-out hover:bg-red-600 focus:border-white focus:outline-none active:bg-red-600"
                                         type="button"
                                         onClick={() => {
                                           remove(i)
@@ -259,7 +263,7 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
 
                               {values.labels.length >= 3 ? null : (
                                 <button
-                                  className="px-3 py-2 mt-2 text-sm font-medium text-white transition duration-150 ease-in-out bg-orange-500 border border-transparent rounded-md shadow-sm hover:bg-orange-600 focus:outline-none focus:border-white active:bg-orange-600"
+                                  className="mt-2 rounded-md border border-transparent bg-orange-500 px-3 py-2 text-sm font-medium text-white shadow-sm transition duration-150 ease-in-out hover:bg-orange-600 focus:border-white focus:outline-none active:bg-orange-600"
                                   type="button"
                                   onClick={() => push('')}
                                 >
@@ -297,9 +301,9 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
                     </div>
 
                     {/* submit button */}
-                    <div className="px-4 py-3 text-right bg-green-100 sm:px-6">
+                    <div className="bg-green-100 px-4 py-3 text-right sm:px-6">
                       <button
-                        className="px-6 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-green-500 border border-transparent rounded-md shadow-sm disabled:opacity-50 hover:bg-green-600 focus:outline-none focus:border-white active:bg-green-600"
+                        className="rounded-md border border-transparent bg-green-500 px-6 py-2 text-sm font-medium leading-5 text-white shadow-sm transition duration-150 ease-in-out hover:bg-green-600 focus:border-white focus:outline-none active:bg-green-600 disabled:opacity-50"
                         type="submit"
                         disabled={isSubmitting}
                       >
@@ -317,3 +321,5 @@ export default function AddProductWithCloudinaryWidget(): JSX.Element {
     </main>
   )
 }
+
+export default AddProduct

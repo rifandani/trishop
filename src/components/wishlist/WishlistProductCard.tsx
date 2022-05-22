@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { FC } from 'react'
 import { FaHeart } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import {
@@ -12,37 +13,41 @@ interface Props {
   product: WishlistPayload
 }
 
-export default function WishlistProductCard({ product }: Props): JSX.Element {
+const WishlistProductCard: FC<Props> = ({ product }) => {
+  //#region GENERAL
   const { _id, imageUrl, name, price } = product
 
-  // hooks
   const dispatch = useAppDispatch()
+  //#endregion
 
+  //#region ACTION HANDLER
   function onDeleteWishlist() {
     dispatch(deleteProductFromWishlist(_id)) // dispatch wishlist
 
+    // on success
     toast.info('Product deleted from the wishlist')
   }
+  //#endregion
 
   return (
-    <a className="w-full max-w-sm mx-auto overflow-hidden shadow-md card-shadow">
+    <a className="card-shadow mx-auto w-full max-w-sm overflow-hidden shadow-md">
       <div
-        className="flex items-end justify-end w-full h-56 bg-cover"
+        className="flex h-56 w-full items-end justify-end bg-cover"
         style={{
           backgroundImage: `url(${imageUrl})`,
         }}
       >
         <button
           onClick={onDeleteWishlist}
-          className="p-2 mx-5 -mb-4 text-white bg-orange-800 rounded-full hover:bg-orange-500 focus:outline-none focus:bg-orange-500"
+          className="mx-5 -mb-4 rounded-full bg-orange-800 p-2 text-white hover:bg-orange-500 focus:bg-orange-500 focus:outline-none"
         >
-          <FaHeart className="w-5 h-5" />
+          <FaHeart className="h-5 w-5" />
         </button>
       </div>
 
       <div className="px-5 py-3">
         <Link href={`/products/${_id}`}>
-          <h3 className="text-gray-700 cursor-pointer hover:text-orange-800 hover:underline">
+          <h3 className="cursor-pointer text-gray-700 hover:text-orange-800 hover:underline">
             {name}
           </h3>
         </Link>
@@ -52,3 +57,5 @@ export default function WishlistProductCard({ product }: Props): JSX.Element {
     </a>
   )
 }
+
+export default WishlistProductCard

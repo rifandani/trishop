@@ -1,18 +1,20 @@
 import dayjs from 'dayjs'
 import { h } from 'gridjs'
-import { mutate } from 'swr'
 import { Grid } from 'gridjs-react'
-import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
-// files
-import generateRupiah from 'utils/generateRupiah'
-import { ICouponsProps } from 'types/Coupon'
+import { FC } from 'react'
+import { toast } from 'react-toastify'
 import { deleteAdminCoupon } from 'services/admin/coupons'
+import { mutate } from 'swr'
+import { ICouponsProps } from 'types/Coupon'
+import generateRupiah from 'utils/generateRupiah'
 
-export default function TableCoupons({ coupons }: ICouponsProps): JSX.Element {
-  // hooks
+const TableCoupons: FC<ICouponsProps> = ({ coupons }) => {
+  //#region GENERAL
   const { push } = useRouter()
+  //#endregion
 
+  //#region HANDLER COUPON ACTIONS
   const editCoupon = (_id: string): Promise<boolean> =>
     push(`/admin/coupons/${_id}`)
 
@@ -35,9 +37,10 @@ export default function TableCoupons({ coupons }: ICouponsProps): JSX.Element {
       toast.error(err.message)
     }
   }
+  //#endregion
 
   return (
-    <section className="flex flex-col mt-8">
+    <section className="mt-8 flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="min-w-full overflow-hidden sm:rounded-lg ">
           {
@@ -135,3 +138,5 @@ export default function TableCoupons({ coupons }: ICouponsProps): JSX.Element {
     </section>
   )
 }
+
+export default TableCoupons

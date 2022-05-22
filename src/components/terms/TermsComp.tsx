@@ -1,6 +1,8 @@
-export default function TermsComp(): JSX.Element {
+import { FC } from 'react'
+
+const TermsComp: FC = () => {
   return (
-    <main className="w-full text-lg text-justify text-gray-700 bg-white">
+    <main className="w-full bg-white text-justify text-lg text-gray-700">
       <h2 className="mb-10">
         The Terms and Conditions listed below spell out your rights and
         obligations in connection with the use of the{' '}
@@ -92,3 +94,5 @@ export default function TermsComp(): JSX.Element {
     </main>
   )
 }
+
+export default TermsComp

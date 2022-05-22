@@ -1,13 +1,16 @@
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
 import { useRouter } from 'next/router'
+import { FC } from 'react'
 import { toast } from 'react-toastify'
 import { httpPost } from 'services/http'
 import { TUserApiSchema, userApiSchema } from 'yup/apiSchema'
 
-export default function AddUser(): JSX.Element {
-  // hooks
+const AddUser: FC = () => {
+  //#region GENERAL
   const { push } = useRouter()
+  //#endregion
 
+  //#region FORM
   const initialValues: TUserApiSchema = {
     name: '',
     email: '',
@@ -33,11 +36,12 @@ export default function AddUser(): JSX.Element {
       actions.setSubmitting(false) // finish formik cycle
     }
   }
+  //#endregion
 
   return (
-    <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+    <main className="flex-1 overflow-y-auto overflow-x-hidden bg-gray-200">
       {/* Add New User */}
-      <section className="p-6 mt-10 sm:mt-0">
+      <section className="mt-10 p-6 sm:mt-0">
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
@@ -50,7 +54,7 @@ export default function AddUser(): JSX.Element {
             </div>
           </div>
 
-          <div className="mt-5 md:mt-0 md:col-span-2">
+          <div className="mt-5 md:col-span-2 md:mt-0">
             {/* START FORM */}
             <Formik
               initialValues={initialValues}
@@ -60,7 +64,7 @@ export default function AddUser(): JSX.Element {
               {({ isSubmitting }) => (
                 <Form className="">
                   <div className="overflow-hidden shadow sm:rounded-md">
-                    <div className="px-4 py-5 bg-white sm:p-6">
+                    <div className="bg-white px-4 py-5 sm:p-6">
                       <div className="grid grid-cols-6 gap-6">
                         {/* name */}
                         <div className="col-span-6 sm:col-span-4">
@@ -72,7 +76,7 @@ export default function AddUser(): JSX.Element {
                           </label>
 
                           <Field
-                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            className="focus:shadow-outline-blue form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                             placeholder="Your name..."
                             type="text"
                             name="name"
@@ -95,7 +99,7 @@ export default function AddUser(): JSX.Element {
                           </label>
 
                           <Field
-                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            className="focus:shadow-outline-blue form-select mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                             as="select"
                             name="role"
                           >
@@ -120,7 +124,7 @@ export default function AddUser(): JSX.Element {
                           </label>
 
                           <Field
-                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            className="focus:shadow-outline-blue form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                             placeholder="Your email..."
                             type="email"
                             name="email"
@@ -143,7 +147,7 @@ export default function AddUser(): JSX.Element {
                           </label>
 
                           <Field
-                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            className="focus:shadow-outline-blue form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                             placeholder="******"
                             type="password"
                             name="password"
@@ -159,9 +163,9 @@ export default function AddUser(): JSX.Element {
                     </div>
 
                     {/* submit button */}
-                    <div className="px-4 py-3 text-right bg-green-100 sm:px-6">
+                    <div className="bg-green-100 px-4 py-3 text-right sm:px-6">
                       <button
-                        className="px-6 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-green-500 border border-transparent rounded-md shadow-sm disabled:opacity-50 hover:bg-green-600 focus:outline-none focus:shadow-outline-blue active:bg-green-600"
+                        className="focus:shadow-outline-blue rounded-md border border-transparent bg-green-500 px-6 py-2 text-sm font-medium leading-5 text-white shadow-sm transition duration-150 ease-in-out hover:bg-green-600 focus:outline-none active:bg-green-600 disabled:opacity-50"
                         type="submit"
                         disabled={isSubmitting}
                       >
@@ -178,3 +182,5 @@ export default function AddUser(): JSX.Element {
     </main>
   )
 }
+
+export default AddUser

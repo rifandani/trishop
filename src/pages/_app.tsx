@@ -1,5 +1,8 @@
 import SEO from 'config/seo'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import 'gridjs/dist/theme/mermaid.css'
+import { NextPage } from 'next'
 import { DefaultSeo } from 'next-seo'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import Router from 'next/router'
@@ -10,14 +13,11 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import store from 'redux/store'
 import { httpGet } from 'services/http'
-import 'swiper/components/navigation/navigation.min.css'
-import 'swiper/components/pagination/pagination.min.css'
-import 'swiper/components/thumbs/thumbs.min.css'
-import 'swiper/swiper.min.css'
+import 'swiper/css/bundle'
 import { SWRConfig } from 'swr'
 import '../styles/index.css'
 
-// create a custom progress bar
+//#region NPROGRESS - create a custom progress bar
 NProgress.configure({ showSpinner: false })
 Router.events.on('routeChangeStart', () => {
   NProgress.start()
@@ -28,8 +28,13 @@ Router.events.on('routeChangeComplete', () => {
 Router.events.on('routeChangeError', () => {
   NProgress.done()
 })
+//#endregion
 
-export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+//#region DAYJS
+dayjs.extend(relativeTime) // so that user can relative formatting
+//#endregion
+
+const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <DefaultSeo {...SEO} />
@@ -49,3 +54,5 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     </>
   )
 }
+
+export default MyApp

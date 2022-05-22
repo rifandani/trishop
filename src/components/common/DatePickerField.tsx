@@ -1,32 +1,37 @@
 import { useField, useFormikContext } from 'formik'
+import { FC } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 interface DatePickerFieldProps {
   name: string
   className: string
+  minDate?: Date
+  maxDate?: Date
 }
 
-const DatePickerField = ({
+const DatePickerField: FC<DatePickerFieldProps> = ({
   name,
   className,
-}: DatePickerFieldProps): JSX.Element => {
+  minDate = new Date(),
+  maxDate = new Date('2999-12-31'),
+}) => {
   const { setFieldValue } = useFormikContext()
   const [fieldInputProps] = useField({ name })
 
   return (
     <DatePicker
       {...fieldInputProps}
-      name={name}
-      className={className}
       selected={
         (fieldInputProps.value && new Date(fieldInputProps.value)) || new Date()
       }
-      minDate={new Date()}
       onChange={(val) => {
-        // val === Date
         setFieldValue(fieldInputProps.name, val.valueOf()) // convert to milliseconds
       }}
+      name={name}
+      className={className}
+      minDate={minDate}
+      maxDate={maxDate}
       showTimeSelect
       timeFormat="HH:mm"
       timeIntervals={30}

@@ -1,6 +1,5 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, FC, SetStateAction } from 'react'
 import ReactPaginate from 'react-paginate'
-// files
 import { IProduct } from 'types/Product'
 
 interface Props {
@@ -10,12 +9,13 @@ interface Props {
   limit: number
 }
 
-export default function ProductsPagination({
+const ProductsPagination: FC<Props> = ({
   products,
   limit,
   currentPage,
   setCurrentPage,
-}: Props): JSX.Element {
+}) => {
+  //#region GENERAL
   const classNames =
     'bg-white text-orange-800 hover:bg-orange-200 px-2 py-1 border cursor-pointer rounded-md appearance-none focus:outline-none focus:ring focus:border-orange-300 list-none'
 
@@ -26,9 +26,10 @@ export default function ProductsPagination({
       ? limit * (currentPage + 1)
       : productCount
   const pageCount = Math.ceil(productCount / limit)
+  //#endregion
 
   return (
-    <div className="flex flex-col items-center mt-20">
+    <div className="mt-20 flex flex-col items-center">
       <article className="flex justify-center text-gray-500">
         Showing {firstShow} - {secondShow} of {productCount} products
       </article>
@@ -51,3 +52,5 @@ export default function ProductsPagination({
     </div>
   )
 }
+
+export default ProductsPagination

@@ -1,9 +1,9 @@
 import { UserPayload } from 'contexts/UserReducer'
 import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
 import useLocalStorage from 'hooks/useLocalStorage'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { FaStar } from 'react-icons/fa'
 import { MdReportProblem, MdThumbUp } from 'react-icons/md'
 import { toast } from 'react-toastify'
@@ -14,26 +14,25 @@ import { IReviewProps } from 'types/Review'
 import EditReviewModal from './EditReviewModal'
 import ReportReviewModal from './ReportReviewModal'
 
-dayjs.extend(relativeTime) // so that we can user relative formatting
-
+//#region INTERFACE
 interface Props extends IReviewProps {
   productRef: string
 }
+//#endregion
 
-export default function CustomerReviewCard({
-  review,
-  productRef,
-}: Props): JSX.Element {
+const CustomerReviewCard: FC<Props> = ({ review, productRef }) => {
+  //#region GENERAL
   const { reviewerName, comment, star, updatedAt, reviewerId, _id } = review
 
-  // hooks
   const { push } = useRouter()
-  const [user] = useLocalStorage<UserPayload>('user', null) // local storage
+  const [user] = useLocalStorage<UserPayload>('user', null)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [reportIsOpen, setReportIsOpen] = useState<boolean>(false)
+  //#endregion
 
-  // TODO: add like functionality to review document
+  //#region ACTION HANDLER
   const onLike = () => {
+    // TODO: add like functionality to review document
     toast('This feature coming soon')
   }
 
@@ -75,24 +74,31 @@ export default function CustomerReviewCard({
       toast.error(err.message)
     }
   }
+  //#endregion
 
   return (
-    <section className="flex-col w-full p-4 rounded-lg shadow-lg">
+    <section className="w-full flex-col rounded-lg p-4 shadow-lg">
       <div className="flex flex-row">
-        <img
-          className="w-12 h-12 border-2 border-gray-300 rounded-full"
-          src="/images/trishop.png"
-          alt="image name"
-        />
-        <div className="flex-col w-full mt-1">
-          <div className="flex items-center justify-between flex-1 ml-4 font-bold leading-tight">
+        <span className="relative h-12 w-12 rounded-full border-2 border-gray-300">
+          <Image
+            src="/images/trishop.png"
+            alt="image name"
+            // className="rounded-lg"
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+            priority
+          />
+        </span>
+        <div className="mt-1 w-full flex-col">
+          <div className="ml-4 flex flex-1 items-center justify-between font-bold leading-tight">
             <span className="flex">
               <p className="mr-3">{reviewerName}</p>
 
               {Array(star)
                 .fill('star')
                 .map((_, i) => (
-                  <FaStar key={i} className="w-4 h-4 mr-1 text-orange-500" />
+                  <FaStar key={i} className="mr-1 h-4 w-4 text-orange-500" />
                 ))}
             </span>
 
@@ -101,13 +107,13 @@ export default function CustomerReviewCard({
             </p>
           </div>
 
-          <div className="flex-1 px-2 ml-2 text-sm font-medium leading-loose text-gray-700">
+          <div className="ml-2 flex-1 px-2 text-sm font-medium leading-loose text-gray-700">
             {comment}
           </div>
         </div>
       </div>
 
-      <hr className="px-4 my-2" />
+      <hr className="my-2 px-4" />
 
       <div className="flex flex-row items-center justify-between">
         <p className="text-sm text-gray-500">Is this review helps?</p>
@@ -116,15 +122,15 @@ export default function CustomerReviewCard({
           {/* FIXME: styling did not works */}
           {!user || user._id !== reviewerId ? (
             <button
-              className="flex items-center group focus:outline-none"
+              className="group flex items-center focus:outline-none"
               onClick={onLike}
             >
-              <MdThumbUp className="w-4 h-4 text-gray-500 group-hover:text-orange-500" />
+              <MdThumbUp className="h-4 w-4 text-gray-500 group-hover:text-orange-500" />
               <span className="ml-2 text-sm">4</span>
             </button>
           ) : (
             <button
-              className="flex items-center px-2 py-2 bg-orange-200 border rounded-md hover:border-orange-500 focus:outline-none"
+              className="flex items-center rounded-md border bg-orange-200 px-2 py-2 hover:border-orange-500 focus:outline-none"
               onClick={onEditOpenModal}
             >
               <span className="text-sm">Edit</span>
@@ -134,15 +140,15 @@ export default function CustomerReviewCard({
           {/* FIXME: styling did not works */}
           {!user || user._id !== reviewerId ? (
             <button
-              className="flex items-center ml-2 group focus:outline-none"
+              className="group ml-2 flex items-center focus:outline-none"
               onClick={onReport}
             >
-              <MdReportProblem className="w-4 h-4 text-gray-500 group-hover:text-red-500" />
+              <MdReportProblem className="h-4 w-4 text-gray-500 group-hover:text-red-500" />
               <span className="ml-2 text-sm">Report</span>
             </button>
           ) : (
             <button
-              className="flex items-center px-2 py-2 bg-red-200 border rounded-md hover:border-red-500 focus:outline-none"
+              className="flex items-center rounded-md border bg-red-200 px-2 py-2 hover:border-red-500 focus:outline-none"
               onClick={onDelete}
             >
               <span className="text-sm">Delete</span>
@@ -169,3 +175,5 @@ export default function CustomerReviewCard({
     </section>
   )
 }
+
+export default CustomerReviewCard

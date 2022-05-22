@@ -1,10 +1,10 @@
-import { NextSeo } from 'next-seo'
-// files
 import CartComp from 'components/cart/CartComp'
-import Nav from 'components/Nav'
-import Footer from 'components/Footer'
+import Footer from 'components/common/Footer'
+import Nav from 'components/common/Nav'
+import { NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 
-export default function CartPage(): JSX.Element {
+const CartPage: NextPage = () => {
   return (
     <>
       <NextSeo
@@ -20,3 +20,5 @@ export default function CartPage(): JSX.Element {
     </>
   )
 }
+
+export default CartPage

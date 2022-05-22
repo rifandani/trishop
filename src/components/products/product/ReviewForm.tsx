@@ -2,23 +2,26 @@ import { UserPayload } from 'contexts/UserReducer'
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { useRouter } from 'next/router'
+import { FC } from 'react'
 import { toast } from 'react-toastify'
 import { httpPost } from 'services/http'
 import { mutate } from 'swr'
 import { IPostReviewResponse } from 'types/Review'
 import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
 
-interface ReviewFormProps {
+//#region INTERFACE
+interface Props {
   productRef: string
 }
+//#endregion
 
-export default function ReviewForm({
-  productRef,
-}: ReviewFormProps): JSX.Element {
-  // hooks
-  const [user] = useLocalStorage<UserPayload>('user', null) // local storage
+const ReviewForm: FC<Props> = ({ productRef }) => {
+  //#region GENERAL
   const { push } = useRouter()
+  const [user] = useLocalStorage<UserPayload>('user', null)
+  //#endregion
 
+  //#region FORM
   const initialValues: TPutReviewApiSchema = {
     reviewerName: '',
     star: 1,
@@ -71,10 +74,11 @@ export default function ReviewForm({
       actions.setSubmitting(false) // finish formik cycle
     }
   }
+  //#endregion
 
   return (
-    <main className="relative flex items-center justify-center w-full mx-auto bg-white max-w-7xl">
-      <section className="w-full p-6 mt-10 sm:mt-0">
+    <main className="relative mx-auto flex w-full max-w-7xl items-center justify-center bg-white">
+      <section className="mt-10 w-full p-14 sm:mt-0">
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
@@ -88,7 +92,7 @@ export default function ReviewForm({
             </div>
           </div>
 
-          <div className="mt-5 md:mt-0 md:col-span-2">
+          <div className="mt-5 md:col-span-2 md:mt-0">
             {/* START FORM */}
             <Formik
               initialValues={initialValues}
@@ -98,7 +102,7 @@ export default function ReviewForm({
               {({ isSubmitting }) => (
                 <Form className="">
                   <div className="overflow-hidden shadow-lg sm:rounded-md">
-                    <div className="px-4 py-5 bg-white sm:p-6">
+                    <div className="bg-white px-4 py-5 sm:p-6">
                       <div className="grid grid-cols-6 gap-6">
                         {/* name - text */}
                         <div className="col-span-3">
@@ -110,7 +114,7 @@ export default function ReviewForm({
                           </label>
 
                           <Field
-                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            className="focus:shadow-outline-blue form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                             placeholder="Write your name..."
                             name="reviewerName"
                             type="text"
@@ -133,7 +137,7 @@ export default function ReviewForm({
                           </label>
 
                           <Field
-                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            className="focus:shadow-outline-blue form-select mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                             name="star"
                             as="select"
                           >
@@ -155,7 +159,7 @@ export default function ReviewForm({
                           </label>
 
                           <Field
-                            className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            className="focus:shadow-outline-blue form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
                             placeholder="Write your comment about this product..."
                             name="comment"
                             type="text"
@@ -173,9 +177,9 @@ export default function ReviewForm({
                     </div>
 
                     {/* submit button */}
-                    <div className="px-4 py-3 text-right bg-gray-50 sm:px-6">
+                    <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                       <button
-                        className="px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-orange-800 border border-transparent rounded-md shadow-sm hover:bg-orange-500 focus:outline-none focus:shadow-outline-blue active:bg-orange-800"
+                        className="focus:shadow-outline-blue rounded-md border border-transparent bg-orange-800 px-4 py-2 text-sm font-medium leading-5 text-white shadow-sm transition duration-150 ease-in-out hover:bg-orange-500 focus:outline-none active:bg-orange-800"
                         type="submit"
                         disabled={isSubmitting}
                       >
@@ -194,6 +198,4 @@ export default function ReviewForm({
   )
 }
 
-// <article className="flex flex-col w-full -mx-4 md:flex-row">
-//   <section className="flex">Review htmlForm</section>
-// </article>
+export default ReviewForm

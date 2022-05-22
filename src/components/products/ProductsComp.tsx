@@ -1,39 +1,35 @@
-import { useState } from 'react'
+import LoadingSpinner from 'components/common/LoadingSpinner'
+import ProductsPagination from 'components/common/pagination/ProductsPagination'
+import ProductCard from 'components/products/ProductCard'
+import { FC, useState } from 'react'
 import { GiCakeSlice } from 'react-icons/gi'
 import useSWR from 'swr'
-// files
-import LoadingSpinner from 'components/LoadingSpinner'
-import ProductCard from 'components/products/ProductCard'
-import ProductsPagination from 'components/common/pagination/ProductsPagination'
 import { APIResponseProducts } from 'types/Product'
 
-export default function ProductsComp(): JSX.Element {
-  // hooks
+const PRODUCTS_LIMIT = 6
+
+const ProductsComp: FC = () => {
+  //#region GENERAL
+  const [currentPage, setCurrentPage] = useState<number>(0) // for pagination
+  const offset = currentPage * PRODUCTS_LIMIT
+  //#endregion
+
+  //#region PRODUCT SERVICE
   const { data, error } = useSWR<APIResponseProducts>('/public/products', {
     refreshInterval: 10000,
   })
-  const [currentPage, setCurrentPage] = useState<number>(0) // for pagination
-  const [limit] = useState<number>(9) // for pagination
-
-  const offset = currentPage * limit
-
-  // map ProductCard component
-  const currentProducts =
-    data &&
-    data.products
-      .slice(offset, offset + limit)
-      .map((product) => <ProductCard key={product._id} product={product} />)
+  //#endregion
 
   return (
-    <main className="min-h-screen py-20 bg-white lg:pt-28 lg:mt-3">
-      <div className="container flex flex-col items-center justify-center px-4 pt-2 pb-8 mx-auto sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-white py-20 lg:mt-3 lg:pt-28">
+      <div className="container mx-auto flex flex-col items-center justify-center px-4 pt-2 pb-8 sm:px-6 lg:px-8">
         {/* title */}
-        <p className="inline-block px-3 py-1 mb-4 text-xs font-semibold leading-tight tracking-widest text-orange-800 uppercase bg-orange-200 rounded-full">
+        <p className="mb-4 inline-block rounded-full bg-orange-200 px-3 py-1 text-xs font-semibold uppercase leading-tight tracking-widest text-orange-800">
           Get the best from us
         </p>
 
-        <h1 className="flex justify-center mb-12 font-sans text-3xl font-bold leading-none tracking-tight text-center text-gray-900 b-6 sm:text-4xl md:mx-auto">
-          <GiCakeSlice className="w-8 h-8 mt-1 mr-3 text-orange-800" />
+        <h1 className="b-6 mb-12 flex justify-center text-center font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
+          <GiCakeSlice className="mt-1 mr-3 h-8 w-8 text-orange-800" />
           <span className="relative">Our Featured Products</span>{' '}
         </h1>
 
@@ -44,8 +40,14 @@ export default function ProductsComp(): JSX.Element {
 
         {!data && <LoadingSpinner />}
 
-        <article className="grid max-w-lg gap-10 mx-auto md:grid-cols-2 lg:grid-cols-3 md:max-w-none">
-          {data && data.count === 0 ? 'There is no data' : currentProducts}
+        <article className="mx-auto grid max-w-lg gap-10 md:max-w-none md:grid-cols-2 lg:grid-cols-3">
+          {data && data.count === 0
+            ? 'There is no data'
+            : data?.products
+                .slice(offset, offset + PRODUCTS_LIMIT)
+                .map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
         </article>
 
         {/* pagination */}
@@ -54,10 +56,12 @@ export default function ProductsComp(): JSX.Element {
             products={data.products}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            limit={limit}
+            limit={PRODUCTS_LIMIT}
           />
         )}
       </div>
     </main>
   )
 }
+
+export default ProductsComp
