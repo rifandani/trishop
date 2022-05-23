@@ -5,7 +5,7 @@ import { FaStar } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import { deleteAdminReport } from 'services/admin/reports'
 import { deleteAdminReview } from 'services/admin/reviews'
-import { mutate } from 'swr'
+import { useSWRConfig } from 'swr'
 import { IReportProps } from 'types/Report'
 import { IReview } from 'types/Review'
 
@@ -14,6 +14,7 @@ const ReportCard: FC<IReportProps> = ({ report }) => {
   const { argument, typeId, _id } = report
   const reviewRef = report.reviewRef as IReview
 
+  const { mutate } = useSWRConfig()
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
   //#endregion
 

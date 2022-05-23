@@ -8,7 +8,7 @@ import { FaStar } from 'react-icons/fa'
 import { MdReportProblem, MdThumbUp } from 'react-icons/md'
 import { toast } from 'react-toastify'
 import { httpDelete } from 'services/http'
-import { mutate } from 'swr'
+import { useSWRConfig } from 'swr'
 import { HttpResponse } from 'types'
 import { IReviewProps } from 'types/Review'
 import EditReviewModal from './EditReviewModal'
@@ -25,6 +25,7 @@ const CustomerReviewCard: FC<Props> = ({ review, productRef }) => {
   const { reviewerName, comment, star, updatedAt, reviewerId, _id } = review
 
   const { push } = useRouter()
+  const { mutate } = useSWRConfig()
   const [user] = useLocalStorage<UserPayload>('user', null)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [reportIsOpen, setReportIsOpen] = useState<boolean>(false)

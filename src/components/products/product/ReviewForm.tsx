@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { toast } from 'react-toastify'
 import { httpPost } from 'services/http'
-import { mutate } from 'swr'
+import { useSWRConfig } from 'swr'
 import { IPostReviewResponse } from 'types/Review'
 import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
 
@@ -18,6 +18,7 @@ interface Props {
 const ReviewForm: FC<Props> = ({ productRef }) => {
   //#region GENERAL
   const { push } = useRouter()
+  const { mutate } = useSWRConfig()
   const [user] = useLocalStorage<UserPayload>('user', null)
   //#endregion
 

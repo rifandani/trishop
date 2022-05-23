@@ -5,13 +5,14 @@ import { FC } from 'react'
 import { toast } from 'react-toastify'
 import { deleteAdminCloudinaryImages } from 'services/admin/cloudinary/resources/image'
 import { deleteAdminProduct } from 'services/admin/products'
-import { mutate } from 'swr'
+import { useSWRConfig } from 'swr'
 import { IProductsProps } from 'types/Product'
 import generateRupiah from 'utils/generateRupiah'
 
 const TableProducts: FC<IProductsProps> = ({ products }) => {
   //#region GENERAL
   const { push } = useRouter()
+  const { mutate } = useSWRConfig()
   //#endregion
 
   //#region HANDLER PRODUCT ACTIONS

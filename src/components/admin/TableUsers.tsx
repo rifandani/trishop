@@ -4,12 +4,13 @@ import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { toast } from 'react-toastify'
 import { deleteAdminUser } from 'services/admin/users'
-import { mutate } from 'swr'
+import { useSWRConfig } from 'swr'
 import { IUsersProps } from 'types/User'
 
 const TableUsers: FC<IUsersProps> = ({ users }) => {
   //#region GENERAL
   const { push } = useRouter()
+  const { mutate } = useSWRConfig()
   //#endregion
 
   //#region HANDLE USER ACTIONS

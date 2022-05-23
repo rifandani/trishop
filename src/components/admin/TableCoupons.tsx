@@ -5,13 +5,14 @@ import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { toast } from 'react-toastify'
 import { deleteAdminCoupon } from 'services/admin/coupons'
-import { mutate } from 'swr'
+import { useSWRConfig } from 'swr'
 import { ICouponsProps } from 'types/Coupon'
 import generateRupiah from 'utils/generateRupiah'
 
 const TableCoupons: FC<ICouponsProps> = ({ coupons }) => {
   //#region GENERAL
   const { push } = useRouter()
+  const { mutate } = useSWRConfig()
   //#endregion
 
   //#region HANDLER COUPON ACTIONS

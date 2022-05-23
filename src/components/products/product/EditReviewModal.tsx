@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { Dispatch, FC, Fragment, SetStateAction } from 'react'
 import { toast } from 'react-toastify'
 import { httpPut } from 'services/http'
-import { mutate } from 'swr'
+import { useSWRConfig } from 'swr'
 import { IPutReviewResponse, IReview } from 'types/Review'
 import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
 
@@ -25,6 +25,7 @@ const EditReviewModal: FC<Props> = ({
 }) => {
   //#region GENERAL
   const { push } = useRouter()
+  const { mutate } = useSWRConfig()
   //#endregion
 
   //#region FORM
