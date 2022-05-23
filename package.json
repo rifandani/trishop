@@ -114,7 +114,7 @@
     "@typescript-eslint/eslint-plugin": "^5.25.0",
     "@typescript-eslint/parser": "^5.25.0",
     "autoprefixer": "^10.4.7",
-    "chromatic": "^5.9.2",
+    "chromatic": "^6.5.4",
     "commitizen": "^4.2.4",
     "cypress": "^7.6.0",
     "cz-conventional-changelog": "^3.3.0",
