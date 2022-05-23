@@ -1,5 +1,10 @@
 import { HttpResponse } from 'types'
 
+export interface ICouponCode {
+  _id: string
+  code: string
+}
+
 export interface ICoupon {
   discount: number
   minTransaction: number

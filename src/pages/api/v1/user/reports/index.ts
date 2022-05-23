@@ -1,8 +1,8 @@
 import nc from 'middlewares/nc'
+import withCheckAuthCookie from 'middlewares/withCheckAuthCookie'
 import withCors from 'middlewares/withCors'
 import withMongoConnect from 'middlewares/withMongoConnect'
 import withYupConnect from 'middlewares/withYupConnect'
-import withCheckAuthCookie from 'middlewares/withCheckAuthCookie'
 import ReportModel from 'mongo/models/Report'
 import { addReportApiSchema, TAddReportApiSchema } from 'yup/apiSchema'
 

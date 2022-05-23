@@ -1,11 +1,16 @@
 import { UserPayload } from 'contexts/UserReducer'
 import { HttpResponse } from 'types'
 
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
+
 export interface IUser {
   email: string
   name: string
   password: string
-  role: 'ADMIN' | 'USER'
+  role: UserRole
   createdAt?: Date
   updatedAt?: Date
   _id?: string

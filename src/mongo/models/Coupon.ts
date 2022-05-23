@@ -1,5 +1,4 @@
-import { Schema, model, models, Model } from 'mongoose'
-// files
+import { model, Model, models, Schema } from 'mongoose'
 import { ICoupon } from 'types/Coupon'
 
 const couponSchema = new Schema<ICoupon>(
@@ -17,7 +16,7 @@ const couponSchema = new Schema<ICoupon>(
     code: {
       type: String,
       required: [true, 'code must not be empty'],
-      unique: [true, 'code must be unique'], // kalau pake nanti nambah index, kalau ada code yg sama throw MongoError
+      unique: true, // kalau pake nanti nambah index, kalau ada code yg sama throw MongoServerError
       trim: true,
       minLength: 3,
       maxLength: 30,

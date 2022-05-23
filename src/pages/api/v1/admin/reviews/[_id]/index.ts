@@ -1,11 +1,11 @@
 import nc from 'middlewares/nc'
-import withCors from 'middlewares/withCors'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
-import withMongoConnect from 'middlewares/withMongoConnect'
 import withCheckObjectId from 'middlewares/withCheckObjectId'
-import getQueryAsString from 'utils/getQueryAsString'
-import ReviewModel from 'mongo/models/Review'
+import withCors from 'middlewares/withCors'
+import withMongoConnect from 'middlewares/withMongoConnect'
 import ProductModel from 'mongo/models/Product'
+import ReviewModel from 'mongo/models/Review'
+import getQueryAsString from 'utils/getQueryAsString'
 
 export default nc
   .use(withCors(['DELETE'])) // cors

@@ -1,8 +1,14 @@
+/* eslint-disable no-useless-escape */
 export const IS_CLIENT_SIDE = !!(
   typeof window !== 'undefined' &&
   window.document &&
   window.document.createElement
 )
+
+export const EMAIL_REGEX =
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+export const URL_REGEX =
+  /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/
 
 /* ---------------------------------------- URL --------------------------------------- */
 

@@ -1,17 +1,13 @@
 import nc from 'middlewares/nc'
-import withCors from 'middlewares/withCors'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
-import withYupConnect from 'middlewares/withYupConnect'
-import withMongoConnect from 'middlewares/withMongoConnect'
 import withCheckObjectId from 'middlewares/withCheckObjectId'
+import withCors from 'middlewares/withCors'
+import withMongoConnect from 'middlewares/withMongoConnect'
+import withYupConnect from 'middlewares/withYupConnect'
 import CouponModel from 'mongo/models/Coupon'
+import { ICouponCode } from 'types/Coupon'
 import getQueryAsString from 'utils/getQueryAsString'
 import { couponApiSchema, TCouponApiSchema } from 'yup/apiSchema'
-
-interface CouponCodes {
-  _id: string
-  code: string
-}
 
 export default nc
   .use(withCors(['GET', 'PUT', 'DELETE'])) // cors
@@ -38,7 +34,7 @@ export default nc
 
     // get all coupons code
     const couponsDoc = await CouponModel.find().select('code') // { _id: string, code: string }[]
-    const coupons = JSON.parse(JSON.stringify(couponsDoc)) as CouponCodes[]
+    const coupons = JSON.parse(JSON.stringify(couponsDoc)) as ICouponCode[]
     const codes = coupons.map((coupon) => coupon.code)
     const codeAlreadyExists = codes.includes(code.toUpperCase())
 
