@@ -12,9 +12,10 @@ import { FC, useState } from 'react'
 import { toast } from 'react-toastify'
 import { postAdminProduct } from 'services/admin/products'
 import { httpPost } from 'services/http'
+import { ImagePreview } from 'types'
 import { TImage } from 'types/Product'
 import { addProductSchema, TAddProductSchema } from 'yup/schema'
-import Dropzone, { ImagePreview } from '../Dropzone'
+import Dropzone from '../Dropzone'
 
 const AddProduct: FC = () => {
   //#region GENERAL
