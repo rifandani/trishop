@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/rifandani/trishop/compare/v0.3.1...v0.4.0) (2022-05-28)
+
+
+### Bug Fixes
+
+* ImagePreview import ([90d3a9d](https://github.com/rifandani/trishop/commits/90d3a9da90efbab419c38bf334b32f2036d84c48))
+
 ### [0.3.1](https://github.com/rifandani/trishop/compare/v0.3.0...v0.3.1) (2021-07-02)
 
 ### ⚠ BREAKING CHANGES
