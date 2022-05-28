@@ -1,4 +1,4 @@
-import { API_BASE_URL_ADMIN_CLOUDINARY_RESOURCE } from 'config/constants'
+import { API_BASE_URL_ADMIN_CLOUDINARY_RESOURCE } from 'config/constants.config'
 import { httpDelete } from 'services/http'
 
 /* ------------------------------------ resource_type = image ----------------------------------- */

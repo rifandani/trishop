@@ -1,3 +1,4 @@
+import { DatePickerField } from 'components/common/DatePickerField'
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
@@ -168,18 +169,18 @@ const AddCoupon: FC = () => {
                           />
                         </div>
 
-                        {/* TODO: when MUI is installed & configured, turn this back on validUntil */}
-                        {/* <div className="col-span-6 sm:col-span-4">
+                        <div className="col-span-6 sm:col-span-4">
                           <label
                             htmlFor="validUntil"
-                            className="block text-sm font-medium leading-5 text-gray-700"
+                            className="mb-2 block text-sm font-medium leading-5 text-gray-700"
                           >
                             Valid Until
                           </label>
 
-                          <DatePickerField
-                            className="focus:shadow-outline-blue form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
+                          <Field
+                            component={DatePickerField}
                             name="validUntil"
+                            label={'Choose date'}
                           />
 
                           <ErrorMessage
@@ -187,7 +188,7 @@ const AddCoupon: FC = () => {
                             name="validUntil"
                             component="span"
                           />
-                        </div> */}
+                        </div>
                       </div>
                     </div>
 

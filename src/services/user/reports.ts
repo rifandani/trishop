@@ -1,4 +1,4 @@
-import { API_BASE_URL_USER_REPORT } from 'config/constants'
+import { API_BASE_URL_USER_REPORT } from 'config/constants.config'
 import { httpPost } from 'services/http'
 import { APIResponsePostReport } from 'types/Report'
 import { TAddReportSchema } from 'yup/schema'

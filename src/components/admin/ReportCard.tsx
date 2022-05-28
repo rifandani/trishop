@@ -1,4 +1,4 @@
-import { TYPE_IDS } from 'config/constants'
+import { TYPE_IDS } from 'config/constants.config'
 import Link from 'next/link'
 import { FC, useState } from 'react'
 import { FaStar } from 'react-icons/fa'

@@ -1,4 +1,4 @@
-import { API_BASE_URL_ADMIN_COUPON } from 'config/constants'
+import { API_BASE_URL_ADMIN_COUPON } from 'config/constants.config'
 import { httpDelete, httpGet, httpPost } from 'services/http'
 import {
   APIResponseCoupon,

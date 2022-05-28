@@ -1,4 +1,6 @@
-import SEO from 'config/seo'
+import { ThemeProvider } from '@mui/material'
+import { theme } from 'config/mui.config'
+import SEO from 'config/seo.config'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'gridjs/dist/theme/mermaid.css'
@@ -47,8 +49,10 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
         }}
       >
         <Provider store={store}>
-          <Component {...pageProps} />
-          <ToastContainer />
+          <ThemeProvider theme={theme}>
+            <Component {...pageProps} />
+            <ToastContainer />
+          </ThemeProvider>
         </Provider>
       </SWRConfig>
     </>

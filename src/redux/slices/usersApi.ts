@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { API_URL_DEV, API_URL_PROD } from 'config/constants.config'
 // files
 import { APIResponseUser, APIResponseUsers, IUser } from 'types/User'
-import { API_URL_DEV, API_URL_PROD } from 'config/constants'
 
 // Define a service using a base URL and expected endpoints
 export const usersApi = createApi({

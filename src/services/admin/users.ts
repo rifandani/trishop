@@ -1,4 +1,4 @@
-import { API_BASE_URL_ADMIN_USER } from 'config/constants'
+import { API_BASE_URL_ADMIN_USER } from 'config/constants.config'
 import { httpDelete, httpGet } from 'services/http'
 import { APIResponseUser, APIResponseUsers, IUser } from 'types/User'
 

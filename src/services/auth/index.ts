@@ -1,4 +1,4 @@
-import { API_BASE_URL_AUTH } from 'config/constants'
+import { API_BASE_URL_AUTH } from 'config/constants.config'
 import { httpGet, httpPost } from 'services/http'
 import { APIResponseAuthLoginRegister } from 'types/User'
 import { TLoginApiSchema, TRegisterApiSchema } from 'yup/apiSchema'

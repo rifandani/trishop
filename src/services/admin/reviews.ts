@@ -1,4 +1,4 @@
-import { API_BASE_URL_ADMIN_REVIEW } from 'config/constants'
+import { API_BASE_URL_ADMIN_REVIEW } from 'config/constants.config'
 import { httpDelete, httpGet } from 'services/http'
 import {
   IDeleteReviewResponse,

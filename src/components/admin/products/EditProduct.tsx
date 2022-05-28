@@ -1,4 +1,4 @@
-import { CLOUDINARY_URL } from 'config/constants'
+import { CLOUDINARY_URL } from 'config/constants.config'
 import dayjs from 'dayjs'
 import {
   ErrorMessage,
