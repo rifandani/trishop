@@ -1,20 +1,21 @@
 import { h } from 'gridjs'
-import { mutate } from 'swr'
-import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
 import { Grid } from 'gridjs-react'
-// files
-import generateRupiah from 'utils/generateRupiah'
-import { IProductsProps } from 'types/Product'
+import { useRouter } from 'next/router'
+import { FC } from 'react'
+import { toast } from 'react-toastify'
 import { deleteAdminCloudinaryImages } from 'services/admin/cloudinary/resources/image'
 import { deleteAdminProduct } from 'services/admin/products'
+import { useSWRConfig } from 'swr'
+import { IProductsProps } from 'types/Product'
+import generateRupiah from 'utils/generateRupiah'
 
-export default function TableProducts({
-  products,
-}: IProductsProps): JSX.Element {
-  // hooks
+const TableProducts: FC<IProductsProps> = ({ products }) => {
+  //#region GENERAL
   const { push } = useRouter()
+  const { mutate } = useSWRConfig()
+  //#endregion
 
+  //#region HANDLER PRODUCT ACTIONS
   const editProduct = (_id: string): Promise<boolean> =>
     push(`/admin/products/${_id}`)
 
@@ -44,9 +45,10 @@ export default function TableProducts({
       toast.error(err.message)
     }
   }
+  //#endregion
 
   return (
-    <section className="flex flex-col mt-8">
+    <section className="mt-8 flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="min-w-full overflow-hidden sm:rounded-lg ">
           {
@@ -126,3 +128,5 @@ export default function TableProducts({
     </section>
   )
 }
+
+export default TableProducts

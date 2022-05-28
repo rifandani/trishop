@@ -1,3 +1,5 @@
+import Image from 'next/image'
+import { FC } from 'react'
 import { IOrderItemDetails } from 'types/LocalStorage'
 import generateRupiah from 'utils/generateRupiah'
 
@@ -5,22 +7,28 @@ interface Props {
   product: IOrderItemDetails
 }
 
-export default function CheckoutProduct({ product }: Props): JSX.Element {
+const CheckoutProduct: FC<Props> = ({ product }) => {
   return (
-    <main className="flex justify-between mt-6">
+    <main className="mt-6 flex justify-between">
       <div className="flex">
         {/* image */}
-        <img
-          className="object-cover w-20 h-20 rounded"
-          src={product.imageUrl}
-          alt={product.imageName}
-        />
+        <span className="relative h-20 w-20 flex-shrink-0">
+          <Image
+            src={product.imageUrl}
+            alt={product.imageName}
+            className="rounded"
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+            priority
+          />
+        </span>
 
         <div className="mx-3">
           {/* title */}
           <h3 className="text-sm text-gray-600">{product.name}</h3>
 
-          <div className="flex items-center mt-2">
+          <div className="mt-2 flex items-center">
             {/* <button className="text-gray-500 focus:outline-none focus:text-gray-600">
               <svg
                 className="w-5 h-5"
@@ -60,3 +68,5 @@ export default function CheckoutProduct({ product }: Props): JSX.Element {
     </main>
   )
 }
+
+export default CheckoutProduct

@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import Cors from 'cors'
-import { NextHandler } from 'next-connect'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { NextHandler } from 'next-connect'
 
 const withCors =
   (methods: string[]) =>

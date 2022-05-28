@@ -1,11 +1,14 @@
 {
+  "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "prettier", "chai-friendly", "cypress"],
   "extends": [
+    "next/core-web-vitals",
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:prettier/recommended",
     "plugin:chai-friendly/recommended",
     "plugin:cypress/recommended"
     // "plugin:@next/next/recommended"

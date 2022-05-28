@@ -1,62 +1,57 @@
+import Image from 'next/image'
 import Link from 'next/link'
+import { FC } from 'react'
 import { FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa'
 
-function Footer(): JSX.Element {
+const Footer: FC = () => {
   return (
-    <footer className="container px-4 py-12 mx-auto bg-white max-w-7xl sm:px-6 lg:py-10 lg:px-8 xl:px-10 dark:bg-dark-900 rounded-t-xl">
+    <footer className="dark:bg-dark-900 container mx-auto max-w-7xl rounded-t-xl bg-white px-4 py-12 sm:px-6 lg:py-10 lg:px-8 xl:px-10">
       <article className="xl:grid xl:grid-cols-3 xl:gap-8">
         {/* logo with description and social links */}
         <section className="mt-4 xl:col-span-1">
           {/* logo */}
-          <img
-            className="w-10 h-10 rounded"
+          <Image
+            className="h-10 w-10 rounded"
             src="/images/trishop.png"
             alt="trishop logo"
+            width={25}
+            height={25}
           />
           {/* description */}
           <p className="mt-4 text-base leading-6 text-black">
             Created with 🔥 and 💖 by 🎂 lovers.
           </p>
           {/* social links */}
-          <div className="flex mt-8">
-            <a
-              className=""
-              href="https://www.linkedin.com/in/rifandani/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="sr-only">LinkedIn</span>
-              <FaLinkedin className="w-6 h-6 text-blue-500 hover:text-blue-700" />
-            </a>
+          <div className="mt-8 flex">
+            <Link href="https://www.linkedin.com/in/rifandani/">
+              <a className="" target="_blank" rel="noopener noreferrer">
+                <span className="sr-only">LinkedIn</span>
+                <FaLinkedin className="h-6 w-6 text-blue-500 hover:text-blue-700" />
+              </a>
+            </Link>
 
-            <a
-              className="ml-6"
-              href="https://www.instagram.com/3richkey"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="sr-only">Instagram</span>
-              <FaInstagram className="w-6 h-6 text-red-500 hover:text-red-700" />
-            </a>
+            <Link href="https://www.instagram.com/3richkey">
+              <a className="ml-6" target="_blank" rel="noopener noreferrer">
+                <span className="sr-only">Instagram</span>
+                <FaInstagram className="h-6 w-6 text-red-500 hover:text-red-700" />
+              </a>
+            </Link>
 
-            <a
-              className="ml-6"
-              href="https://github.com/rifandani/trishop"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="sr-only">Github</span>
-              <FaGithub className="w-6 h-6 text-gray-500 hover:text-gray-700" />
-            </a>
+            <Link href="https://github.com/rifandani/trishop">
+              <a className="ml-6" target="_blank" rel="noopener noreferrer">
+                <span className="sr-only">Github</span>
+                <FaGithub className="h-6 w-6 text-gray-500 hover:text-gray-700" />
+              </a>
+            </Link>
           </div>
         </section>
 
-        <section className="grid grid-cols-2 gap-8 mt-8 xl:mt-0 xl:col-span-2">
+        <section className="mt-8 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
           {/* left menu p-0 */}
           <menu className="p-0 md:grid md:grid-cols-2 md:gap-8">
             {/* sitemaps */}
             <div>
-              <h4 className="text-sm font-semibold leading-5 tracking-wider text-gray-500 uppercase">
+              <h4 className="text-sm font-semibold uppercase leading-5 tracking-wider text-gray-500">
                 Sitemaps
               </h4>
               <ul className="mt-4">
@@ -80,7 +75,7 @@ function Footer(): JSX.Element {
 
             {/* Resources */}
             <div className="mt-12 md:mt-0">
-              <h4 className="text-sm font-semibold leading-5 tracking-wider text-gray-500 uppercase">
+              <h4 className="text-sm font-semibold uppercase leading-5 tracking-wider text-gray-500">
                 Resources
               </h4>
               <ul className="mt-4">
@@ -107,7 +102,7 @@ function Footer(): JSX.Element {
           <menu className="p-0 md:grid md:grid-cols-2 md:gap-8">
             {/* company */}
             <div>
-              <h4 className="text-sm font-semibold leading-5 tracking-wider text-gray-500 uppercase">
+              <h4 className="text-sm font-semibold uppercase leading-5 tracking-wider text-gray-500">
                 Company
               </h4>
               <ul className="mt-4">
@@ -131,7 +126,7 @@ function Footer(): JSX.Element {
 
             {/* other */}
             <div className="mt-12 md:mt-0">
-              <h4 className="text-sm font-semibold leading-5 tracking-wider text-gray-500 uppercase">
+              <h4 className="text-sm font-semibold uppercase leading-5 tracking-wider text-gray-500">
                 Other
               </h4>
               <ul className="mt-4">
@@ -157,7 +152,7 @@ function Footer(): JSX.Element {
       </article>
 
       {/* bottom copyright */}
-      <article className="pt-8 mt-12 border-t border-gray-200 dark:border-dark-900">
+      <article className="dark:border-dark-900 mt-12 border-t border-gray-200 pt-8">
         <p className="text-base leading-6 text-gray-500 xl:text-center">
           © {new Date().getFullYear()} Trishop. All rights reserved.
         </p>

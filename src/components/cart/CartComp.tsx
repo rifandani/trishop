@@ -1,29 +1,26 @@
-import axios from 'axios'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { FaShoppingCart } from 'react-icons/fa'
-import { IoMdClose, IoIosCard } from 'react-icons/io'
-import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri'
-import { Transition } from '@headlessui/react'
-import { toast } from 'react-toastify'
-// files
+import { UserPayload } from 'contexts/UserReducer'
 import useLocalStorage from 'hooks/useLocalStorage'
-import generateRupiah from 'utils/generateRupiah'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { FC, useEffect, useState } from 'react'
+import { FaShoppingCart } from 'react-icons/fa'
+import { IoIosCard, IoMdClose } from 'react-icons/io'
+import { RiCoupon2Fill, RiDeleteBin6Line } from 'react-icons/ri'
+import { toast } from 'react-toastify'
+import { deleteProductFromCart } from 'redux/slices/cart'
+import { useAppDispatch, useAppSelector } from 'redux/store'
+import { httpPost } from 'services/http'
 import { APIResponseCoupon } from 'types/Coupon'
 import { IOrder } from 'types/LocalStorage'
-import { UserPayload } from 'contexts/UserReducer'
-import { useAppDispatch, useAppSelector } from 'redux/store'
-import { deleteProductFromCart } from 'redux/slices/cart'
+import generateRupiah from 'utils/generateRupiah'
 
-export default function CartComp(): JSX.Element {
-  // hooks
+const CartComp: FC = () => {
+  //#region GENERAL
   const { push } = useRouter()
-
-  const cart = useAppSelector((state) => state.cart) // redux -> cart
+  const cart = useAppSelector((state) => state.cart)
   const dispatch = useAppDispatch()
-
-  const [, setOrder] = useLocalStorage<IOrder>('order', null) // local storage
-  const [user] = useLocalStorage<UserPayload>('user', null) // local storage
+  const [, setOrder] = useLocalStorage<IOrder>('order', null)
+  const [user] = useLocalStorage<UserPayload>('user', null)
 
   const [busy, setBusy] = useState<boolean>(false)
   const [coupon, setCoupon] = useState<string>('')
@@ -47,14 +44,16 @@ export default function CartComp(): JSX.Element {
         : Math.floor(mySubtotal - couponDiscount)
     setTotal(mySubtotal - priceAfterDiscount)
   }, [cart, couponDiscount])
+  //#endregion
 
-  function deleteProduct(productId: string): void {
+  //#region ACTION HANDLER
+  const deleteProduct = (productId: string): void => {
     dispatch(deleteProductFromCart(productId))
 
     toast.info('Product deleted from the cart')
   }
 
-  async function applyCoupon(): Promise<void> {
+  const applyCoupon = async (): Promise<void> => {
     const reqBody = {
       userId: user._id, // user _id
       code: coupon,
@@ -63,7 +62,7 @@ export default function CartComp(): JSX.Element {
     try {
       setBusy(true)
 
-      const res = await axios.post<APIResponseCoupon>(
+      const res = await httpPost<APIResponseCoupon>(
         '/public/validate/coupon',
         reqBody
       )
@@ -88,7 +87,7 @@ export default function CartComp(): JSX.Element {
     }
   }
 
-  function deleteCoupon(): void {
+  const deleteCoupon = (): void => {
     // reset all coupon
     setCoupon('')
     setCouponDiscount(0)
@@ -96,7 +95,7 @@ export default function CartComp(): JSX.Element {
     toast('Coupon reset')
   }
 
-  async function checkout(): Promise<void> {
+  const checkout = async (): Promise<void> => {
     // if there is no cart
     if (cart.count === 0) {
       toast.dark('Please add a product to cart before proceeding to checkout')
@@ -128,23 +127,24 @@ export default function CartComp(): JSX.Element {
       console.error(err)
     }
   }
+  //#endregion
 
   return (
-    <main className="min-h-screen py-20 bg-white lg:pt-28 lg:mt-3">
-      <div className="container flex flex-col items-center justify-center px-4 pt-2 pb-8 mx-auto sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-white py-20 lg:mt-3 lg:pt-28">
+      <div className="container mx-auto flex flex-col items-center justify-center px-4 pt-2 pb-8 sm:px-6 lg:px-8">
         {/* title */}
-        <p className="inline-block px-3 py-1 mb-4 text-xs font-semibold leading-tight tracking-widest text-orange-800 uppercase bg-orange-200 rounded-full">
+        <p className="mb-4 inline-block rounded-full bg-orange-200 px-3 py-1 text-xs font-semibold uppercase leading-tight tracking-widest text-orange-800">
           Get the best from us
         </p>
 
-        <h1 className="flex justify-center mb-12 font-sans text-3xl font-bold leading-none tracking-tight text-center text-gray-900 b-6 sm:text-4xl md:mx-auto">
-          <FaShoppingCart className="w-8 h-8 mr-3 text-orange-800" />
+        <h1 className="b-6 mb-12 flex justify-center text-center font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
+          <FaShoppingCart className="mr-3 h-8 w-8 text-orange-800" />
           <span className="relative">Your Cart</span>{' '}
         </h1>
 
         {/* main content */}
         <section className="flex w-full">
-          <div className="flex flex-col w-full p-8 text-gray-800 bg-white shadow-lg">
+          <div className="flex w-full flex-col bg-white p-8 text-gray-800 shadow-lg">
             <article className="flex-1">
               {/* product table */}
               <table className="w-full text-sm lg:text-base" cellSpacing={0}>
@@ -169,30 +169,23 @@ export default function CartComp(): JSX.Element {
                 <tbody>
                   {cart.count > 0 &&
                     cart.values.map((prod) => (
-                      <Transition
-                        key={prod._id}
-                        as="tr"
-                        show={!!cart.count}
-                        className="transition duration-500 ease-in-out"
-                        enter="transition ease-in-out duration-300 transform"
-                        enterFrom="-translate-x-full"
-                        enterTo="translate-x-0"
-                        leave="transition ease-in-out duration-300 transform"
-                        leaveFrom="translate-x-0"
-                        leaveTo="-translate-x-full"
-                      >
-                        <td className="hidden pb-4 md:table-cell">
-                          <img
-                            className="w-20 rounded"
+                      <tr key={prod._id} className="mb-10">
+                        <td className="relative hidden h-10 w-10 pb-4 md:table-cell">
+                          <Image
                             src={prod.images[0].imageUrl}
                             alt={prod.images[0].imageName}
+                            className="rounded-xl"
+                            layout="fill"
+                            objectFit="contain"
+                            objectPosition="center"
+                            priority
                           />
                         </td>
                         <td>
-                          <p className="flex items-end justify-between mb-2">
+                          <p className="mb-2 flex items-end justify-between">
                             {prod.title}
                             <span onClick={() => deleteProduct(prod._id)}>
-                              <IoMdClose className="mr-3 text-red-500 transition duration-500 transform cursor-pointer hover:scale-150" />
+                              <IoMdClose className="mr-3 transform cursor-pointer text-red-500 transition duration-500 hover:scale-150" />
                             </span>
                           </p>
                         </td>
@@ -211,43 +204,38 @@ export default function CartComp(): JSX.Element {
                             {generateRupiah(prod.price * prod.quantity)}
                           </span>
                         </td>
-                      </Transition>
-                      // <tr
-                      //   key={product._id}
-                      //   className="transition duration-500 ease-in-out"
-                      // >
-                      // </tr>
+                      </tr>
                     ))}
                 </tbody>
               </table>
 
-              <hr className="pb-6 mt-6" />
+              <hr className="mt-6 pb-6" />
 
-              <section className="my-4 mt-6 -mx-2 lg:flex">
-                <div className="lg:px-2 lg:w-1/2">
+              <section className="my-4 -mx-2 mt-6 lg:flex">
+                <div className="lg:w-1/2 lg:px-2">
                   {/* coupon */}
-                  <div className="p-4 bg-orange-200 rounded-full">
-                    <h1 className="ml-2 font-bold text-orange-800 uppercase">
+                  <div className="rounded-full bg-orange-200 p-4">
+                    <h1 className="ml-2 font-bold uppercase text-orange-800">
                       Coupon Code
                     </h1>
                   </div>
 
                   <div className="p-4">
-                    <p className="mb-4 italic font-thin text-gray-500">
+                    <p className="mb-4 font-thin italic text-gray-500">
                       If you have a coupon code, please enter it in the box
                       below
                     </p>
                     <div className="justify-center md:flex">
-                      <div className="flex items-center w-full pl-3 bg-gray-100 border rounded-full h-13">
+                      <div className="h-13 flex w-full items-center rounded-full border bg-gray-100 pl-3">
                         <input
-                          className="w-full bg-gray-100 outline-none appearance-none focus:outline-none active:outline-none focus:border-blue-500 border-1"
+                          className="border-1 w-full appearance-none bg-gray-100 outline-none focus:border-blue-500 focus:outline-none active:outline-none"
                           placeholder="Your coupon code here..."
                           onChange={(e) => setCoupon(e.target.value)}
                           value={coupon}
                         />
 
                         <button
-                          className="flex items-center px-3 py-1 text-sm text-white bg-orange-800 rounded-full outline-none md:px-4 hover:bg-orange-500 focus:outline-none active:outline-none"
+                          className="flex items-center rounded-full bg-orange-800 px-3 py-1 text-sm text-white outline-none hover:bg-orange-500 focus:outline-none active:outline-none md:px-4"
                           onClick={applyCoupon}
                           disabled={busy}
                         >
@@ -261,51 +249,51 @@ export default function CartComp(): JSX.Element {
                   </div>
 
                   {/* TODO: add seller instruction to ORDER */}
-                  <div className="p-4 mt-6 bg-orange-200 rounded-full">
-                    <h1 className="ml-2 font-bold text-orange-800 uppercase">
+                  <div className="mt-6 rounded-full bg-orange-200 p-4">
+                    <h1 className="ml-2 font-bold uppercase text-orange-800">
                       Instruction for seller
                     </h1>
                   </div>
                   <div className="p-4">
-                    <p className="mb-4 italic font-thin text-gray-500">
+                    <p className="mb-4 font-thin italic text-gray-500">
                       If you have some information for the seller you can leave
                       them in the box below
                     </p>
-                    <textarea className="w-full h-24 p-2 bg-gray-100 rounded"></textarea>
+                    <textarea className="h-24 w-full rounded bg-gray-100 p-2"></textarea>
                   </div>
                 </div>
 
                 {/* order details */}
-                <div className="lg:px-2 lg:w-1/2">
-                  <div className="p-4 bg-orange-200 rounded-full">
-                    <h1 className="ml-2 font-bold text-orange-800 uppercase">
+                <div className="lg:w-1/2 lg:px-2">
+                  <div className="rounded-full bg-orange-200 p-4">
+                    <h1 className="ml-2 font-bold uppercase text-orange-800">
                       Order Details
                     </h1>
                   </div>
                   <div className="p-4">
-                    <p className="mb-6 italic font-thin text-gray-500">
+                    <p className="mb-6 font-thin italic text-gray-500">
                       Shipping and additionnal costs are calculated based on
                       values you have entered
                     </p>
 
                     <div className="flex justify-between border-b">
-                      <div className="m-2 text-lg font-bold text-center text-gray-800 lg:px-4 lg:py-2 lg:text-xl">
+                      <div className="m-2 text-center text-lg font-bold text-gray-800 lg:px-4 lg:py-2 lg:text-xl">
                         Subtotal
                       </div>
-                      <div className="m-2 font-bold text-center text-gray-900 lg:px-4 lg:py-2 lg:text-lg">
+                      <div className="m-2 text-center font-bold text-gray-900 lg:px-4 lg:py-2 lg:text-lg">
                         {generateRupiah(subtotal)}
                       </div>
                     </div>
 
-                    <div className="flex justify-between pt-4 border-b">
-                      <div className="flex items-center m-2 text-lg font-bold text-gray-800 lg:px-4 lg:py-2 lg:text-xl">
+                    <div className="flex justify-between border-b pt-4">
+                      <div className="m-2 flex items-center text-lg font-bold text-gray-800 lg:px-4 lg:py-2 lg:text-xl">
                         <RiDeleteBin6Line
                           onClick={deleteCoupon}
-                          className="w-4 mr-2 text-red-600 transition duration-500 transform cursor-pointer hover:scale-125"
+                          className="mr-2 w-4 transform cursor-pointer text-red-600 transition duration-500 hover:scale-125"
                         />
                         <span>Coupon &quot;{coupon}&quot;</span>
                       </div>
-                      <div className="m-2 font-bold text-center text-red-500 lg:px-4 lg:py-2 lg:text-lg">
+                      <div className="m-2 text-center font-bold text-red-500 lg:px-4 lg:py-2 lg:text-lg">
                         -{' '}
                         {generateRupiah(
                           couponDiscount < 1
@@ -315,11 +303,11 @@ export default function CartComp(): JSX.Element {
                       </div>
                     </div>
 
-                    <div className="flex justify-between pt-4 border-b">
-                      <div className="m-2 text-lg font-bold text-center lg:px-4 lg:py-2 lg:text-xl">
+                    <div className="flex justify-between border-b pt-4">
+                      <div className="m-2 text-center text-lg font-bold lg:px-4 lg:py-2 lg:text-xl">
                         Total
                       </div>
-                      <div className="m-2 font-bold text-center text-orange-800 lg:px-4 lg:py-2 lg:text-lg">
+                      <div className="m-2 text-center font-bold text-orange-800 lg:px-4 lg:py-2 lg:text-lg">
                         {generateRupiah(total)}
                       </div>
                     </div>
@@ -327,7 +315,7 @@ export default function CartComp(): JSX.Element {
                     {/* checkout button */}
                     <button
                       onClick={checkout}
-                      className="flex items-center justify-center w-full px-10 py-3 mt-6 font-medium text-white uppercase bg-orange-800 rounded-full shadow item-center hover:bg-orange-500 focus:shadow-outline focus:outline-none"
+                      className="item-center focus:shadow-outline mt-6 flex w-full items-center justify-center rounded-full bg-orange-800 px-10 py-3 font-medium uppercase text-white shadow hover:bg-orange-500 focus:outline-none"
                     >
                       <IoIosCard className="text-lg" />
                       <span className="ml-2">Proceed to checkout</span>
@@ -342,3 +330,5 @@ export default function CartComp(): JSX.Element {
     </main>
   )
 }
+
+export default CartComp

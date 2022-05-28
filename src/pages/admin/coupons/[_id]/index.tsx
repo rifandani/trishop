@@ -1,20 +1,17 @@
-import { GetServerSideProps } from 'next'
-import { verify } from 'jsonwebtoken'
-import { parse } from 'cookie'
-import { NextSeo } from 'next-seo'
-// files
-import Navbar from 'components/admin/Navbar'
+import Navbar from 'components/admin/AdminNavbar'
 import EditCoupon from 'components/admin/coupons/EditCoupon'
-import UserModel from 'mongo/models/User'
-import CouponModel from 'mongo/models/Coupon'
+import { parse } from 'cookie'
+import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
-import getQueryAsString from 'utils/getQueryAsString'
-import { ICouponProps } from 'types/Coupon'
+import CouponModel from 'mongo/models/Coupon'
+import UserModel from 'mongo/models/User'
+import { GetServerSideProps, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 import { AuthCookiePayload } from 'types'
+import { ICouponProps } from 'types/Coupon'
+import getQueryAsString from 'utils/getQueryAsString'
 
-export default function AdminCouponsEditPage({
-  coupon,
-}: ICouponProps): JSX.Element {
+const EditCouponPage: NextPage<ICouponProps> = ({ coupon }) => {
   return (
     <>
       <NextSeo title="Edit Coupon" />
@@ -94,3 +91,5 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 }
+
+export default EditCouponPage

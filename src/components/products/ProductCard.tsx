@@ -1,35 +1,38 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-// files
+import { FC } from 'react'
 import { IProductProps } from 'types/Product'
 
-export default function ProductCard({ product }: IProductProps): JSX.Element {
+const ProductCard: FC<IProductProps> = ({ product }) => {
+  //#region GENERAL
   const { images, stock, price, _id, title, desc, labels } = product
 
-  // hooks
   const { push } = useRouter()
+  //#endregion
 
+  //#region ACTION HANDLER
   const onClickLabel = (label: string) =>
     push(`/products/categories?label=${label}`)
+  //#endregion
 
   return (
-    <section className="flex flex-col overflow-hidden shadow-lg card-shadow">
+    <section className="card-shadow flex flex-col overflow-hidden shadow-lg">
       <div className="relative flex-shrink-0">
         <Image
-          className="object-cover w-full h-56"
+          className="h-56 w-full object-cover"
           src={images[0].imageUrl}
           alt={`Cover for ${images[0].imageName}`}
           width={520}
           height={260}
           priority={true}
         />
-        <span className="absolute bottom-0 left-0 inline-flex items-center px-3 py-1 ml-6 -mb-3 text-xs font-medium leading-tight text-orange-800 bg-orange-200 border rounded-full">
+        <span className="absolute bottom-0 left-0 ml-6 -mb-3 inline-flex items-center rounded-full border bg-orange-200 px-3 py-1 text-xs font-medium leading-tight text-orange-800">
           stock:{' '}
           <strong className="ml-1 text-base text-orange-800">{stock}</strong>
         </span>
 
-        <span className="absolute bottom-0 right-0 inline-flex items-center px-3 py-1 mr-6 -mb-3 text-xs font-medium leading-tight text-orange-800 bg-orange-200 border rounded-full">
+        <span className="absolute bottom-0 right-0 mr-6 -mb-3 inline-flex items-center rounded-full border bg-orange-200 px-3 py-1 text-xs font-medium leading-tight text-orange-800">
           Rp{' '}
           <strong className="mx-1 text-lg text-orange-800">
             {new Intl.NumberFormat('id-ID', {
@@ -41,11 +44,11 @@ export default function ProductCard({ product }: IProductProps): JSX.Element {
         </span>
       </div>
 
-      <div className="flex flex-col justify-between flex-1">
-        <div className="flex flex-col justify-between flex-1 p-6 bg-white">
+      <div className="flex flex-1 flex-col justify-between">
+        <div className="flex flex-1 flex-col justify-between bg-white p-6">
           <div>
             <Link href={`/products/${encodeURIComponent(_id)}`}>
-              <a className="block text-xl font-semibold leading-7 text-gray-800 hover:underline hover:text-orange-800">
+              <a className="block text-xl font-semibold leading-7 text-gray-800 hover:text-orange-800 hover:underline">
                 {title}
               </a>
             </Link>
@@ -55,7 +58,7 @@ export default function ProductCard({ product }: IProductProps): JSX.Element {
             </p>
           </div>
 
-          <p className="mt-6 text-sm font-medium leading-5">
+          <div className="mt-6 flex flex-wrap gap-3">
             {labels?.map((label: string, i: number) => (
               <button
                 className="product-label-btn"
@@ -65,7 +68,7 @@ export default function ProductCard({ product }: IProductProps): JSX.Element {
                 {label}
               </button>
             ))}
-          </p>
+          </div>
         </div>
 
         {/* button */}
@@ -78,3 +81,5 @@ export default function ProductCard({ product }: IProductProps): JSX.Element {
     </section>
   )
 }
+
+export default ProductCard

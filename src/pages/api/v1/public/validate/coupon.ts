@@ -4,8 +4,7 @@ import withMongoConnect from 'middlewares/withMongoConnect'
 import withYupConnect from 'middlewares/withYupConnect'
 import CouponModel from 'mongo/models/Coupon'
 import {
-  validateCouponApiSchema,
-  TValidateCouponApiSchema,
+  TValidateCouponApiSchema, validateCouponApiSchema
 } from 'yup/apiSchema'
 
 export default nc

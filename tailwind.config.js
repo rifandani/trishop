@@ -1,9 +1,8 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
-  mode: 'jit',
-  purge: ['./public/**/*.html', './src/**/*.{js,ts,jsx,tsx}'],
-  darkMode: 'media', // 'media' or 'class'
+  content: ['./public/**/*.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class', // default 'media'
   theme: {
     screens: {
       sm: '640px',
@@ -29,18 +28,19 @@ module.exports = {
         },
       },
       lineClamp: {
+        5: '5',
+        6: '6',
+        7: '7',
+        8: '8',
+        9: '9',
         10: '10',
       },
     },
   },
-  variants: {
-    extend: {
-      // in JIT, every variants is enabled by default
-      // see more: https://tailwindcss.com/docs/just-in-time-mode
-      // opacity: ['disabled'],
-      // textColor: ['visited'],
-      lineClamp: ['responsive', 'hover'],
-    },
-  },
+  // variants: {
+  //   extend: {
+  //     lineClamp: ['responsive', 'hover'],
+  //   },
+  // },
   plugins: [require('@tailwindcss/line-clamp'), require('@tailwindcss/forms')],
 }

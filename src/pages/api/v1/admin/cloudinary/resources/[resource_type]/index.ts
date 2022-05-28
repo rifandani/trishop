@@ -1,8 +1,7 @@
 import { v2 as cld } from 'cloudinary'
-// files
 import nc from 'middlewares/nc'
-import withCors from 'middlewares/withCors'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
+import withCors from 'middlewares/withCors'
 import getQueryAsString from 'utils/getQueryAsString'
 import getQueryStringAsArray from 'utils/getQueryStringAsArray'
 

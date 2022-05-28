@@ -1,10 +1,10 @@
-import { NextSeo } from 'next-seo'
-// files
-import Nav from 'components/Nav'
-import Footer from 'components/Footer'
+import Footer from 'components/common/Footer'
+import Nav from 'components/common/Nav'
 import ProductsComp from 'components/products/ProductsComp'
+import { NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 
-export default function ProductsPage(): JSX.Element {
+const ProductsPage: NextPage = () => {
   return (
     <div className="flex flex-col ">
       <NextSeo
@@ -21,3 +21,5 @@ export default function ProductsPage(): JSX.Element {
     </div>
   )
 }
+
+export default ProductsPage

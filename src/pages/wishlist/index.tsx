@@ -1,10 +1,10 @@
-import { NextSeo } from 'next-seo'
-// files
+import Footer from 'components/common/Footer'
+import Nav from 'components/common/Nav'
 import WishlistComp from 'components/wishlist/WishlistComp'
-import Nav from 'components/Nav'
-import Footer from 'components/Footer'
+import { NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 
-export default function WishlistPage(): JSX.Element {
+const WishlistPage: NextPage = () => {
   return (
     <>
       <NextSeo
@@ -20,3 +20,5 @@ export default function WishlistPage(): JSX.Element {
     </>
   )
 }
+
+export default WishlistPage

@@ -1,8 +1,8 @@
 import nc from 'middlewares/nc'
-import withCors from 'middlewares/withCors'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
-import withYupConnect from 'middlewares/withYupConnect'
+import withCors from 'middlewares/withCors'
 import withMongoConnect from 'middlewares/withMongoConnect'
+import withYupConnect from 'middlewares/withYupConnect'
 import ProductModel from 'mongo/models/Product'
 import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
 

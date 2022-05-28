@@ -1,28 +1,26 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { FC } from 'react'
+import { A11y, Autoplay, Navigation, Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Autoplay, Pagination, Navigation } from 'swiper/core'
-// files
-import ReportCard from './ReportCard'
 import { IReportsProps } from 'types/Report'
+import ReportCard from './ReportCard'
 
-// install Swiper modules
-SwiperCore.use([Autoplay, Pagination, Navigation])
+const SwiperReports: FC<IReportsProps> = ({ reports }) => {
+  const swiperStyle = {
+    '--swiper-navigation-color': '#92400e',
+    '--swiper-pagination-color': '#92400e',
+    width: '100%',
+    height: '30em',
+  } as const
 
-export default function SwiperReports({ reports }: IReportsProps): JSX.Element {
   return (
-    <section className="w-full h-left-full">
+    <section className="h-left-full w-full">
       <Swiper
         className="rounded-md"
-        style={{
-          // @ts-ignore
-          '--swiper-navigation-color': '#92400e',
-          '--swiper-pagination-color': '#92400e',
-          width: '100%',
-          height: '30em',
-        }}
+        style={swiperStyle}
         spaceBetween={10}
-        navigation
         centeredSlides={true}
+        modules={[A11y, Autoplay, Navigation, Pagination]}
+        navigation
         autoplay={{
           delay: 5000,
           disableOnInteraction: true,
@@ -43,3 +41,5 @@ export default function SwiperReports({ reports }: IReportsProps): JSX.Element {
     </section>
   )
 }
+
+export default SwiperReports

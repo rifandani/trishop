@@ -1,17 +1,16 @@
-import { GetServerSideProps } from 'next'
-import { verify } from 'jsonwebtoken'
-import { parse } from 'cookie'
-import { NextSeo } from 'next-seo'
-// files
-import Navbar from 'components/admin/Navbar'
+import Navbar from 'components/admin/AdminNavbar'
 import EditUser from 'components/admin/users/EditUser'
-import UserModel from 'mongo/models/User'
+import { parse } from 'cookie'
+import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
-import getQueryAsString from 'utils/getQueryAsString'
-import { IUserProps } from 'types/User'
+import UserModel from 'mongo/models/User'
+import { GetServerSideProps, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 import { AuthCookiePayload } from 'types'
+import { IUserProps } from 'types/User'
+import getQueryAsString from 'utils/getQueryAsString'
 
-export default function AdminUsersEditPage({ user }: IUserProps): JSX.Element {
+const EditUserPage: NextPage<IUserProps> = ({ user }) => {
   return (
     <>
       <NextSeo title="Edit User" />
@@ -97,3 +96,5 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 }
+
+export default EditUserPage

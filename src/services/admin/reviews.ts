@@ -1,6 +1,5 @@
-import axios from 'axios'
-// files
-import { API_BASE_URL } from 'config/constants'
+import { API_BASE_URL_ADMIN_REVIEW } from 'config/constants'
+import { httpDelete, httpGet } from 'services/http'
 import {
   IDeleteReviewResponse,
   IGetReviewResponse,
@@ -8,21 +7,20 @@ import {
   IReview,
 } from 'types/Review'
 
-// create axios instance
-const adminReviewsApi = axios.create({
-  baseURL: `${API_BASE_URL}/admin/reviews`,
-})
-
 export async function getAdminReviews(): Promise<IReview[]> {
-  const res = await adminReviewsApi.get<IGetReviewsResponse>(``)
+  const res = await httpGet<IGetReviewsResponse>(API_BASE_URL_ADMIN_REVIEW)
   return res.data.reviews
 }
 
 export async function getAdminReview(reportId: string): Promise<IReview> {
-  const res = await adminReviewsApi.get<IGetReviewResponse>(`/${reportId}`)
+  const res = await httpGet<IGetReviewResponse>(
+    `${API_BASE_URL_ADMIN_REVIEW}/${reportId}`
+  )
   return res.data.review
 }
 
 export async function deleteAdminReview(reportId: string): Promise<void> {
-  await adminReviewsApi.delete<IDeleteReviewResponse>(`/${reportId}`)
+  await httpDelete<IDeleteReviewResponse>(
+    `${API_BASE_URL_ADMIN_REVIEW}/${reportId}`
+  )
 }

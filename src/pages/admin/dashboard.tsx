@@ -1,15 +1,14 @@
-import { GetServerSideProps } from 'next'
-import { verify } from 'jsonwebtoken'
-import { parse } from 'cookie'
-import { NextSeo } from 'next-seo'
-// files
-import Navbar from 'components/admin/Navbar'
 import AdminDashboard from 'components/admin/AdminDashboard'
+import Navbar from 'components/admin/AdminNavbar'
+import { parse } from 'cookie'
+import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
 import UserModel from 'mongo/models/User'
+import { GetServerSideProps, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 import { AuthCookiePayload } from 'types'
 
-export default function AdminDashboardPage(): JSX.Element {
+const AdminDashboardPage: NextPage = () => {
   return (
     <>
       <NextSeo title="Admin Dashboard" />
@@ -69,3 +68,5 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 }
+
+export default AdminDashboardPage

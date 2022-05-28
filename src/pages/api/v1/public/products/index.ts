@@ -1,7 +1,7 @@
 import nc from 'middlewares/nc'
 import withCors from 'middlewares/withCors'
-import ProductModel from 'mongo/models/Product'
 import withMongoConnect from 'middlewares/withMongoConnect'
+import ProductModel from 'mongo/models/Product'
 
 export default nc
   .use(withCors(['GET'])) // cors

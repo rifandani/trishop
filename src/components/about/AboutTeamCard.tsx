@@ -1,5 +1,7 @@
-// import { Disclosure, Transition } from '@headlessui/react'
-import { AiFillInstagram, AiFillFacebook } from 'react-icons/ai'
+import Image from 'next/image'
+import Link from 'next/link'
+import { FC } from 'react'
+import { AiFillFacebook, AiFillInstagram } from 'react-icons/ai'
 
 interface Props {
   team: {
@@ -11,20 +13,25 @@ interface Props {
   }
 }
 
-export default function AboutTeamCard({ team }: Props): JSX.Element {
+const AboutTeamCard: FC<Props> = ({ team }) => {
   const { name, job, desc, imageUrl } = team
 
   return (
-    <section className="p-4 lg:w-1/4 md:w-1/2">
-      <div className="flex flex-col items-center h-full text-center">
-        <img
-          className="flex-shrink-0 object-cover object-center w-full h-56 mb-4 rounded-lg"
-          src={imageUrl}
-          alt={name}
-        />
-
+    <section className="p-4">
+      <div className="flex h-full flex-col items-center text-center">
+        <span className="relative mb-4 h-56 w-full flex-shrink-0">
+          <Image
+            src={imageUrl}
+            alt={name}
+            className="rounded-lg"
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+            priority
+          />
+        </span>
         <div className="w-full">
-          <h2 className="text-lg font-medium text-gray-900 title-font">
+          <h2 className="title-font text-lg font-medium text-gray-900">
             {name}
           </h2>
 
@@ -33,26 +40,22 @@ export default function AboutTeamCard({ team }: Props): JSX.Element {
           <p className="mb-4">{desc}</p>
 
           <span className="inline-flex">
-            <a
-              className=""
-              href="https://example.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <AiFillInstagram className="w-5 h-5 text-red-500 hover:text-red-700" />
-            </a>
+            <Link href="https://example.com/">
+              <a className="" target="_blank" rel="noopener noreferrer">
+                <AiFillInstagram className="h-5 w-5 text-red-500 hover:text-red-700" />
+              </a>
+            </Link>
 
-            <a
-              className="ml-2 "
-              href="https://example.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <AiFillFacebook className="w-5 h-5 text-blue-500 hover:text-blue-700" />
-            </a>
+            <Link href="https://example.com/">
+              <a className="ml-2 " target="_blank" rel="noopener noreferrer">
+                <AiFillFacebook className="h-5 w-5 text-blue-500 hover:text-blue-700" />
+              </a>
+            </Link>
           </span>
         </div>
       </div>
     </section>
   )
 }
+
+export default AboutTeamCard

@@ -1,16 +1,19 @@
 import { h } from 'gridjs'
-import { mutate } from 'swr'
 import { Grid } from 'gridjs-react'
-import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
-// files
-import { IUsersProps } from 'types/User'
+import { FC } from 'react'
+import { toast } from 'react-toastify'
 import { deleteAdminUser } from 'services/admin/users'
+import { useSWRConfig } from 'swr'
+import { IUsersProps } from 'types/User'
 
-export default function TableUsers({ users }: IUsersProps): JSX.Element {
-  // hooks
+const TableUsers: FC<IUsersProps> = ({ users }) => {
+  //#region GENERAL
   const { push } = useRouter()
+  const { mutate } = useSWRConfig()
+  //#endregion
 
+  //#region HANDLE USER ACTIONS
   const editUser = (_id: string): Promise<boolean> =>
     push(`/admin/users/${_id}`)
 
@@ -33,9 +36,10 @@ export default function TableUsers({ users }: IUsersProps): JSX.Element {
       toast.error(err.data.message)
     }
   }
+  //#endregion
 
   return (
-    <section className="flex flex-col mt-8">
+    <section className="mt-8 flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="min-w-full overflow-hidden sm:rounded-lg ">
           {
@@ -110,3 +114,5 @@ export default function TableUsers({ users }: IUsersProps): JSX.Element {
     </section>
   )
 }
+
+export default TableUsers

@@ -1,6 +1,8 @@
-export default function PrivacyComp(): JSX.Element {
+import { FC } from 'react'
+
+const PrivacyComp: FC = () => {
   return (
-    <main className="w-full text-lg text-justify text-gray-700 bg-white">
+    <main className="w-full bg-white text-justify text-lg text-gray-700">
       <h1 className="mb-5">
         We take the protection of your personal information very seriously. This
         policy is intended to help you understand how we collect, use and
@@ -28,3 +30,5 @@ export default function PrivacyComp(): JSX.Element {
     </main>
   )
 }
+
+export default PrivacyComp

@@ -1,33 +1,30 @@
-import axios from 'axios'
-// files
-import { API_BASE_URL } from 'config/constants'
+import { API_BASE_URL_ADMIN_COUPON } from 'config/constants'
+import { httpDelete, httpGet, httpPost } from 'services/http'
 import {
   APIResponseCoupon,
   APIResponseCoupons,
+  APIResponsePostCoupon,
   IAddAndEditCoupon,
   ICoupon,
-  IPostCouponResponse,
 } from 'types/Coupon'
 
 interface PostResponse {
   readonly status: number
-  readonly data: IPostCouponResponse
+  readonly data: APIResponsePostCoupon
 }
 
-// create axios instance
-const adminCouponsApi = axios.create({
-  baseURL: `${API_BASE_URL}/admin/coupons`,
-})
-
 export async function getAdminCoupons(): Promise<ICoupon[]> {
-  const res = await adminCouponsApi.get<APIResponseCoupons>(``)
+  const res = await httpGet<APIResponseCoupons>(API_BASE_URL_ADMIN_COUPON)
   return res.data.coupons
 }
 
 export async function postAdminCoupon(
   couponInput: IAddAndEditCoupon
 ): Promise<PostResponse> {
-  const res = await adminCouponsApi.post<IPostCouponResponse>(``, couponInput)
+  const res = await httpPost<APIResponsePostCoupon>(
+    API_BASE_URL_ADMIN_COUPON,
+    couponInput
+  )
 
   return {
     status: res.status,
@@ -36,10 +33,12 @@ export async function postAdminCoupon(
 }
 
 export async function getAdminCoupon(couponId: string): Promise<ICoupon> {
-  const res = await adminCouponsApi.get<APIResponseCoupon>(`/${couponId}`)
+  const res = await httpGet<APIResponseCoupon>(
+    `${API_BASE_URL_ADMIN_COUPON}/${couponId}`
+  )
   return res.data.coupon
 }
 
 export async function deleteAdminCoupon(couponId: string): Promise<void> {
-  await adminCouponsApi.delete(`/${couponId}`)
+  await httpDelete(`${API_BASE_URL_ADMIN_COUPON}/${couponId}`)
 }

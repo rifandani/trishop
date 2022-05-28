@@ -1,11 +1,11 @@
-import { FaStoreAlt } from 'react-icons/fa'
-import { NextSeo } from 'next-seo'
-// files
-import Nav from 'components/Nav'
+import Footer from 'components/common/Footer'
+import Nav from 'components/common/Nav'
 import Store from 'components/stores/Store'
-import Footer from 'components/Footer'
+import { NextPage } from 'next'
+import { NextSeo } from 'next-seo'
+import { FaStoreAlt } from 'react-icons/fa'
 
-export default function Stores(): JSX.Element {
+const StorePage: NextPage = () => {
   return (
     <div className="flex flex-col">
       <NextSeo
@@ -15,21 +15,21 @@ export default function Stores(): JSX.Element {
 
       <Nav />
 
-      <main className="py-20 bg-white lg:pt-28 lg:mt-3">
-        <div className="container flex flex-col items-center justify-center px-4 pt-2 pb-8 mx-auto sm:px-6 lg:px-8">
+      <main className="bg-white py-20 lg:mt-3 lg:pt-28">
+        <div className="container mx-auto flex flex-col items-center justify-center px-4 pt-2 pb-8 sm:px-6 lg:px-8">
           {/* title */}
-          <p className="inline-block px-3 py-1 mb-4 text-xs font-semibold leading-tight tracking-widest text-orange-800 uppercase bg-orange-200 rounded-full">
+          <p className="mb-4 inline-block rounded-full bg-orange-200 px-3 py-1 text-xs font-semibold uppercase leading-tight tracking-widest text-orange-800">
             Continuously growing outlets
           </p>
 
-          <h2 className="flex justify-center text-3xl font-bold leading-none tracking-tight text-center text-gray-900 b-6 sm:text-4xl md:mx-auto">
-            <FaStoreAlt className="w-8 h-8 mr-3 text-orange-800" />
+          <h2 className="b-6 flex justify-center text-center text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
+            <FaStoreAlt className="mr-3 h-8 w-8 text-orange-800" />
             <span className="relative">Visit Our Stores</span>
           </h2>
 
           {/* content */}
           <Store
-            imgSrc="images/store2.jpg"
+            imgSrc="/images/store2.jpg"
             imgAlt="Store #2"
             rank="#2"
             address="Jl Gejayan,"
@@ -38,7 +38,7 @@ export default function Stores(): JSX.Element {
           />
 
           <Store
-            imgSrc="images/store3.jpg"
+            imgSrc="/images/store3.jpg"
             imgAlt="Store #3"
             rank="#3"
             address="Jl Prapatan,"
@@ -52,3 +52,5 @@ export default function Stores(): JSX.Element {
     </div>
   )
 }
+
+export default StorePage

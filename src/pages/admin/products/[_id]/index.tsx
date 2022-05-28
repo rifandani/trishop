@@ -1,20 +1,17 @@
-import { GetServerSideProps } from 'next'
+import Navbar from 'components/admin/AdminNavbar'
+import EditProduct from 'components/admin/products/EditProduct'
 import { parse } from 'cookie'
 import { verify } from 'jsonwebtoken'
-import { NextSeo } from 'next-seo'
-// files
-import Navbar from 'components/admin/Navbar'
-import EditProduct from 'components/admin/products/EditProduct'
+import dbConnect from 'mongo/config/dbConnect'
 import ProductModel from 'mongo/models/Product'
 import UserModel from 'mongo/models/User'
-import dbConnect from 'mongo/config/dbConnect'
-import getQueryAsString from 'utils/getQueryAsString'
+import { GetServerSideProps, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 import { AuthCookiePayload } from 'types'
 import { IProductProps } from 'types/Product'
+import getQueryAsString from 'utils/getQueryAsString'
 
-export default function AdminProductEdit({
-  product,
-}: IProductProps): JSX.Element {
+const EditProductPage: NextPage<IProductProps> = ({ product }) => {
   return (
     <>
       <NextSeo title="Edit Product" />
@@ -78,10 +75,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     // find product by id
-    const product = (await ProductModel.findById(productIdParams)).toJSON()
+    const product = await ProductModel.findById(productIdParams)
 
     const data = {
-      ...product,
+      ...JSON.parse(JSON.stringify(product)),
       _id: product._id.toString(),
       createdAt: product.createdAt.toLocaleString(),
       updatedAt: product.updatedAt.toLocaleString(),
@@ -100,3 +97,5 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 }
+
+export default EditProductPage

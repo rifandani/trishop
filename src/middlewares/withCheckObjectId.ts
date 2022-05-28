@@ -1,12 +1,17 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { NextHandler } from 'next-connect'
 import { isValidObjectId, Model } from 'mongoose'
 import { NextApiRequest, NextApiResponse } from 'next'
-// files
+import { NextHandler } from 'next-connect'
 import getQueryAsString from 'utils/getQueryAsString'
 
 const withCheckObjectId =
-  (model: Model<any, Record<string, unknown>, Record<string, unknown>>) =>
+  <T>(
+    model: Model<
+      T,
+      Record<string, unknown>,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >
+  ) =>
   async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
     // supported request method
     const isSupportedMethod = ['PUT', 'DELETE'].includes(req.method)

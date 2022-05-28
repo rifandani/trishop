@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { NextHandler } from 'next-connect'
+import { TokenExpiredError, verify } from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { verify, TokenExpiredError } from 'jsonwebtoken'
+import { NextHandler } from 'next-connect'
 
 const withCheckAuthCookie =
   () => (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {

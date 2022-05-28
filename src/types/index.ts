@@ -20,3 +20,10 @@ export interface AuthCookiePayload extends JwtPayload {
 export interface RefreshTokenCookiePayload extends JwtPayload {
   refreshToken: string
 }
+
+/* ----------------------------------------- GENERIC RESPONSE ---------------------------------------- */
+
+export interface HttpResponse {
+  error: boolean
+  message?: string
+}

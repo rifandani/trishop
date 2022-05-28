@@ -1,9 +1,8 @@
-import { parse } from 'querystring'
 import { v2 as cld } from 'cloudinary'
-// files
 import nc from 'middlewares/nc'
-import withCors from 'middlewares/withCors'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
+import withCors from 'middlewares/withCors'
+import { parse } from 'querystring'
 
 export default nc
   .use(withCors(['GET', 'POST', 'DELETE']))

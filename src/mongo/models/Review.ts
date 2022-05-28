@@ -1,5 +1,4 @@
-import { Schema, model, models, Model } from 'mongoose'
-// files
+import { model, Model, models, Schema } from 'mongoose'
 import { IReview } from 'types/Review'
 
 const reviewSchema = new Schema<IReview>(

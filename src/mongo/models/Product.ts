@@ -1,9 +1,6 @@
-import { Schema, model, models, Model } from 'mongoose'
-// files
+import { model, Model, models, Schema } from 'mongoose'
 import { IProduct } from 'types/Product'
-
-const urlRegex =
-  /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/
+import { string } from 'yup'
 
 const productSchema = new Schema<IProduct>(
   {
@@ -51,7 +48,7 @@ const productSchema = new Schema<IProduct>(
         required: [true, 'imageUrl must not be empty'],
         trim: true,
         validate: {
-          validator: (url: string): boolean => urlRegex.test(url),
+          validator: (url: string): boolean => string().url().isValidSync(url),
           message: (props: any): string => `${props.value} is not a valid URL`,
         },
       },

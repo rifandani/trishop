@@ -1,10 +1,16 @@
 import { UserPayload } from 'contexts/UserReducer'
+import { HttpResponse } from 'types'
+
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
 
 export interface IUser {
   email: string
   name: string
   password: string
-  role: 'ADMIN' | 'USER'
+  role: UserRole
   createdAt?: Date
   updatedAt?: Date
   _id?: string
@@ -21,21 +27,17 @@ export interface IUsersProps {
 
 /* ------------------------------ API Response ------------------------------ */
 
-export interface APIResponseAuthLoginRegister {
-  error: boolean
-  message: string
-  data?: UserPayload
+export interface APIResponseAuthLoginRegister extends HttpResponse {
+  readonly data?: UserPayload
 }
 
-export interface APIResponseUser {
-  error: boolean
-  user: IUser
+export interface APIResponseUser extends HttpResponse {
+  readonly user: IUser
 }
 
-export interface APIResponseUsers {
-  error: boolean
-  users: IUser[]
-  count: number
+export interface APIResponseUsers extends HttpResponse {
+  readonly users: IUser[]
+  readonly count: number
 }
 
 // import { Document, Model } from 'mongoose'

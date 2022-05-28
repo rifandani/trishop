@@ -1,14 +1,14 @@
-// files
+import Footer from 'components/common/Footer'
+import CTA from 'components/home/CTA'
+import Customers from 'components/home/Customers'
 import Header from 'components/home/Header'
 import Portfolio from 'components/home/Portfolio'
-import Customers from 'components/home/Customers'
 import Stores from 'components/home/Stores'
-import CTA from 'components/home/CTA'
-import Footer from 'components/Footer'
+import { NextPage } from 'next'
 
-export default function HomePage(): JSX.Element {
+const HomePage: NextPage = () => {
   return (
-    <div className="bg-white">
+    <div className="home bg-white">
       <Header />
 
       <Portfolio />
@@ -23,3 +23,5 @@ export default function HomePage(): JSX.Element {
     </div>
   )
 }
+
+export default HomePage

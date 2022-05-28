@@ -1,8 +1,7 @@
-import { createTransport } from 'nodemailer'
-// files
 import nc from 'middlewares/nc'
 import withCors from 'middlewares/withCors'
 import withYupConnect from 'middlewares/withYupConnect'
+import { createTransport } from 'nodemailer'
 import { contactApiSchema } from 'yup/apiSchema'
 
 export default nc

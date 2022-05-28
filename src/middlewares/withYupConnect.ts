@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { NextHandler } from 'next-connect'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { NextHandler } from 'next-connect'
 import { ObjectShape, OptionalObjectSchema } from 'yup/lib/object'
 
 const withYupConnect =

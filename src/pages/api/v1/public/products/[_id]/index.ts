@@ -1,10 +1,10 @@
 import nc from 'middlewares/nc'
+import withCheckObjectId from 'middlewares/withCheckObjectId'
 import withCors from 'middlewares/withCors'
-import getQueryAsString from 'utils/getQueryAsString'
+import withMongoConnect from 'middlewares/withMongoConnect'
 import ProductModel from 'mongo/models/Product'
 import ReviewModel from 'mongo/models/Review'
-import withMongoConnect from 'middlewares/withMongoConnect'
-import withCheckObjectId from 'middlewares/withCheckObjectId'
+import getQueryAsString from 'utils/getQueryAsString'
 
 export default nc
   .use(withCors(['GET'])) // cors

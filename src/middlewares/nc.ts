@@ -1,5 +1,5 @@
-import nextConnect from 'next-connect'
 import { NextApiRequest, NextApiResponse } from 'next'
+import nextConnect from 'next-connect'
 
 export default nextConnect<NextApiRequest, NextApiResponse>({
   onNoMatch(req, res) {
@@ -8,7 +8,7 @@ export default nextConnect<NextApiRequest, NextApiResponse>({
       .status(405)
       .json({ error: true, message: `Method ${req.method} not allowed` })
   },
-  async onError(err, _, res) {
+  onError(err, _, res) {
     // server error => Internal Server Error -----------------------------------------------------------------
     res.status(500).json({
       error: true,
