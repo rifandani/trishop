@@ -5,7 +5,6 @@ import { toast } from 'react-toastify'
 import { postAdminCoupon } from 'services/admin/coupons'
 import { IAddAndEditCoupon } from 'types/Coupon'
 import { couponApiSchema } from 'yup/apiSchema'
-import DatePickerField from '../../common/DatePickerField'
 
 const AddCoupon: FC = () => {
   //#region FORM
@@ -169,8 +168,8 @@ const AddCoupon: FC = () => {
                           />
                         </div>
 
-                        {/* validUntil */}
-                        <div className="col-span-6 sm:col-span-4">
+                        {/* TODO: when MUI is installed & configured, turn this back on validUntil */}
+                        {/* <div className="col-span-6 sm:col-span-4">
                           <label
                             htmlFor="validUntil"
                             className="block text-sm font-medium leading-5 text-gray-700"
@@ -188,7 +187,7 @@ const AddCoupon: FC = () => {
                             name="validUntil"
                             component="span"
                           />
-                        </div>
+                        </div> */}
                       </div>
                     </div>
 
