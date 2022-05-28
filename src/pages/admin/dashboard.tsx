@@ -1,15 +1,14 @@
-import { GetServerSideProps } from 'next'
-import { verify } from 'jsonwebtoken'
-import { parse } from 'cookie'
-import { NextSeo } from 'next-seo'
-// files
-import Navbar from 'components/admin/Navbar'
 import AdminDashboard from 'components/admin/AdminDashboard'
-import UserModel from 'mongo/models/User'
+import Navbar from 'components/admin/AdminNavbar'
+import { parse } from 'cookie'
+import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
+import UserModel from 'mongo/models/User'
+import { GetServerSideProps, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 import { AuthCookiePayload } from 'types'
 
-export default function AdminDashboardPage(): JSX.Element {
+const AdminDashboardPage: NextPage = () => {
   return (
     <>
       <NextSeo title="Admin Dashboard" />
@@ -43,16 +42,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // connect to mongodb
     await dbConnect()
 
-    // // if user does not exists
+    // if user does not exists
     const userIsExists = await UserModel.exists({ _id: userId })
     if (!userIsExists) {
       return {
         redirect: { destination: '/login', permanent: false },
       }
     }
-
-    // find user by id
-    // const user = await UserModel.findById(userId)
 
     // if user.role === 'USER'
     if (decoded.role === 'USER') {
@@ -72,3 +68,5 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 }
+
+export default AdminDashboardPage

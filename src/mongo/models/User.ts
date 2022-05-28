@@ -1,10 +1,6 @@
-import { Schema, Model, model, models } from 'mongoose'
+import { Model, model, models, Schema } from 'mongoose'
+import { IUser, UserRole } from 'types/User'
 import { string } from 'yup'
-// types
-import { IUser } from 'types/User'
-
-// const emailRegex =
-//   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 const userSchema = new Schema<IUser>(
   {
@@ -21,11 +17,8 @@ const userSchema = new Schema<IUser>(
       trim: true,
       unique: true,
       validate: {
-        validator: (email: string): boolean => {
-          // emailRegex.test(email)
-          const emailSchema = string().email()
-          return emailSchema.isValidSync(email)
-        },
+        validator: (email: string): boolean =>
+          string().email().isValidSync(email),
         message: (props: any): string => `${props.value} is not a valid email`,
       },
     },
@@ -37,8 +30,8 @@ const userSchema = new Schema<IUser>(
     role: {
       type: String,
       required: true,
-      enum: ['USER', 'ADMIN'],
-      default: (): string => 'USER',
+      enum: [UserRole.USER, UserRole.ADMIN],
+      default: UserRole.USER,
     },
   },
   { timestamps: true }
@@ -66,11 +59,7 @@ export default UserModel as Model<
 /* -------------------------------------------------------------------------- */
 
 // import { Schema, model, models } from 'mongoose';
-// // types
 // import { IUserDocument, IUserModel } from 'types/User';
-
-// const emailRegex =
-//   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 // const UserSchema = new Schema(
 //   {

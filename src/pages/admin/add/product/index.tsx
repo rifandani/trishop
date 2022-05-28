@@ -1,15 +1,14 @@
-import { GetServerSideProps } from 'next'
-import { verify } from 'jsonwebtoken'
+import Navbar from 'components/admin/AdminNavbar'
+import AddProduct from 'components/admin/products/AddProduct'
 import { parse } from 'cookie'
-import { NextSeo } from 'next-seo'
-// files
-import Navbar from 'components/admin/Navbar'
-import AddProduct from 'components/admin/add/AddProduct'
+import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
 import UserModel from 'mongo/models/User'
+import { GetServerSideProps, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 import { AuthCookiePayload } from 'types'
 
-export default function AddProductPage(): JSX.Element {
+const AddProductPage: NextPage = () => {
   return (
     <>
       <NextSeo title="Add New Product" />
@@ -72,3 +71,5 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 }
+
+export default AddProductPage

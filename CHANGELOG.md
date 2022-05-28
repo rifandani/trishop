@@ -2,18 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [0.3.0](https://github.com/rifandani/trishop/compare/v0.2.0...v0.3.0) (2021-06-24)
-
-
-### Features
-
-* **frontend:** adding redux-toolkit, react-redux ([f083373](https://github.com/rifandani/trishop/commits/f08337355a47dca8c3c93fee00138aa4762be134))
+## [0.4.0](https://github.com/rifandani/trishop/compare/v0.3.1...v0.4.0) (2022-05-28)
 
 
 ### Bug Fixes
 
-* **frontend:** cannot find module 'contexts/CartReducer' ([aeae551](https://github.com/rifandani/trishop/commits/aeae551c74f792f469b365b0cbe801059800bb8c))
-* **frontend:** type error: has no exported member 'PRODUCT' ([0a313e8](https://github.com/rifandani/trishop/commits/0a313e8a05764dfba78a58fb0858ef9f241966f5))
+* ImagePreview import ([90d3a9d](https://github.com/rifandani/trishop/commits/90d3a9da90efbab419c38bf334b32f2036d84c48))
+
+### [0.3.1](https://github.com/rifandani/trishop/compare/v0.3.0...v0.3.1) (2021-07-02)
+
+### ⚠ BREAKING CHANGES
+
+- **backend:** admin dashboard using custom hooks with LoadingSpinner instead of SSR
+
+### Bug Fixes
+
+- **backend:** fix setCookie settings ([68dbe3a](https://github.com/rifandani/trishop/commits/68dbe3a60cd601a4805fe028b1572875f2733940))
+- **backend:** next-connect with prefix routes in backend + admin dashboard using custom hooks ([a75022f](https://github.com/rifandani/trishop/commits/a75022f7bfa62a3e6c785efa7b6c0a072046f3cb))
+
+## [0.3.0](https://github.com/rifandani/trishop/compare/v0.2.0...v0.3.0) (2021-06-24)
+
+### Features
+
+- **frontend:** adding redux-toolkit, react-redux ([f083373](https://github.com/rifandani/trishop/commits/f08337355a47dca8c3c93fee00138aa4762be134))
+
+### Bug Fixes
+
+- **frontend:** cannot find module 'contexts/CartReducer' ([aeae551](https://github.com/rifandani/trishop/commits/aeae551c74f792f469b365b0cbe801059800bb8c))
+- **frontend:** type error: has no exported member 'PRODUCT' ([0a313e8](https://github.com/rifandani/trishop/commits/0a313e8a05764dfba78a58fb0858ef9f241966f5))
 
 ## 0.2.0 (2021-06-18)
 

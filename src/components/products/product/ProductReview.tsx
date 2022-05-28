@@ -1,17 +1,16 @@
+import { FC } from 'react'
 import { FaStar } from 'react-icons/fa'
-// files
-import CustomerReviewCard from './CustomerReviewCard'
 import { IReview } from 'types/Review'
+import CustomerReviewCard from './CustomerReviewCard'
 
+//#region INTERFACE
 interface ProductReviewProps {
   reviews: IReview[]
   productRef: string
 }
+//#endregion
 
-export default function ProductReview({
-  reviews,
-  productRef,
-}: ProductReviewProps): JSX.Element {
+const ProductReview: FC<ProductReviewProps> = ({ reviews, productRef }) => {
   const reviewsCount = reviews.length
   const averageStars =
     reviewsCount > 0
@@ -43,11 +42,11 @@ export default function ProductReview({
   ]
 
   return (
-    <main className="relative flex items-center justify-center w-full pb-8 mx-auto bg-white max-w-7xl">
-      <article className="flex flex-col w-full -mx-4 md:flex-row">
+    <main className="relative mx-auto flex w-full max-w-7xl items-center justify-center bg-white pb-8">
+      <article className="-mx-4 flex w-full flex-col md:flex-row">
         {/* stars */}
-        <div className="flex flex-col w-full px-4 md:w-1/2 sm:px-6 lg:px-16 md:flex-row">
-          <section className="flex flex-col py-4 sm:px-4 sm:py-4 md:px-4 sm:rounded-lg md:w-2/3">
+        <div className="flex w-full flex-col px-4 sm:px-6 md:w-1/2 md:flex-row lg:px-16">
+          <section className="flex flex-col py-4 sm:rounded-lg sm:px-4 sm:py-4 md:w-2/3 md:px-4">
             <div className="flex flex-col items-center justify-center">
               <span className="flex items-end">
                 {/* average stars */}
@@ -56,11 +55,11 @@ export default function ProductReview({
               </span>
 
               {/* overall stars */}
-              <span className="flex items-center my-2">
+              <span className="my-2 flex items-center">
                 {Array(roundedAverageStars)
                   .fill('whatever')
                   .map((_, i) => (
-                    <FaStar key={i} className="w-6 h-6 text-orange-500" />
+                    <FaStar key={i} className="h-6 w-6 text-orange-500" />
                   ))}
               </span>
 
@@ -68,30 +67,33 @@ export default function ProductReview({
             </div>
           </section>
 
-          <section className="flex flex-col py-4 space-y-2 sm:px-4 sm:py-4 md:px-4 sm:rounded-lg md:w-2/3">
+          <section className="flex flex-col space-y-2 py-4 sm:rounded-lg sm:px-4 sm:py-4 md:w-2/3 md:px-4">
             {Array(5)
               .fill('whatever')
               .map((_, i) => (
                 <div className="flex flex-row items-center" key={i}>
-                  <FaStar className="w-4 h-4 text-orange-500" />
+                  <FaStar className="h-4 w-4 text-orange-500" />
                   <p className="mt-1 ml-2 text-gray-500">{i + 1}</p>
                   {/* progress bar */}
-                  <div className="w-full mx-2 bg-gray-200 rounded-full shadow">
+                  <div className="mx-2 w-full rounded-full bg-gray-200 shadow">
                     <div
-                      className="py-1 text-xs leading-none text-center text-white bg-orange-500 rounded-full"
+                      className="rounded-full bg-orange-500 py-1 text-center text-xs leading-none text-white"
                       style={{
                         width: `${
                           starCountArray[i] > 0
                             ? (
                                 (starCountArray[i] / reviewsCount) *
                                 100
-                              ).toPrecision(2)
+                              ).toPrecision(3)
                             : '0'
                         }%`,
                       }}
                     >
                       {starCountArray[i] > 0
-                        ? `${(starCountArray[i] / reviewsCount) * 100}%`
+                        ? `${(
+                            (starCountArray[i] / reviewsCount) *
+                            100
+                          ).toPrecision(3)}%`
                         : ''}
                     </div>
                   </div>
@@ -102,7 +104,7 @@ export default function ProductReview({
         </div>
 
         {/* customer reviews */}
-        <div className="flex flex-col w-full px-4 mt-6 space-y-3 md:w-1/2 md:mt-0 sm:px-6 lg:px-16">
+        <div className="mt-6 flex w-full flex-col space-y-3 px-4 sm:px-6 md:mt-0 md:w-1/2 lg:px-16">
           {reviewsCount > 0 ? (
             reviews.map((review, i) => (
               <CustomerReviewCard
@@ -119,3 +121,5 @@ export default function ProductReview({
     </main>
   )
 }
+
+export default ProductReview

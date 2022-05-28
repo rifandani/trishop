@@ -1,23 +1,17 @@
-import Cors from 'cors'
-import { compare } from 'bcrypt'
-// files
+import { compareSync } from 'bcryptjs'
+import nc from 'middlewares/nc'
+import withCors from 'middlewares/withCors'
 import withMongoConnect from 'middlewares/withMongoConnect'
 import withYupConnect from 'middlewares/withYupConnect'
-import nc from 'middlewares/nc'
 import UserModel from 'mongo/models/User'
-import { setAuthCookie } from 'utils/setCookie'
+import setAuthCookie from 'utils/setAuthCookie'
 import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
 
 export default nc
-  // cors middleware
-  .use(
-    Cors({
-      methods: ['POST'],
-    })
-  )
-  .use(withMongoConnect()) // connect mongodb middleware
-  .use(withYupConnect(loginApiSchema)) // yup middleware
-  .post(async (req, res) => {
+  .use(withCors(['POST'])) // cors
+  .use(withMongoConnect()) // connect mongodb
+  .use(withYupConnect(loginApiSchema)) // yup
+  .post('/api/v1/auth/login', async (req, res) => {
     // destructure request body form
     const { email, password } = req.body as TLoginApiSchema
 
@@ -34,7 +28,7 @@ export default nc
     const userDoc = await UserModel.findOne({ email })
 
     // compare req.body.password with user password from mongodb
-    const isMatch = await compare(password, userDoc.password)
+    const isMatch = compareSync(password, userDoc.password)
 
     // client error => password did not match -----------------------------------------------------------------
     if (!isMatch) {

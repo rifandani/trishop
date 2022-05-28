@@ -10,10 +10,6 @@ if (!MONGO_HOST) {
 
 async function dbConnect(): Promise<typeof import('mongoose')> {
   const conn = await connect(MONGO_HOST, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
     // bufferCommands: false,
     // bufferMaxEntries: 0,
   })

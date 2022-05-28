@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import AboutFeature from './AboutFeature'
 
 const features = [
@@ -39,11 +40,11 @@ const features = [
   },
 ]
 
-export default function AboutComp(): JSX.Element {
+const AboutComp: FC = () => {
   return (
     <section className="w-full bg-white">
       {/* real content */}
-      <div className="flex flex-wrap -mx-4 -mt-4 -mb-10 space-y-6 sm:-m-4 md:space-y-0">
+      <div className="-mx-4 -mt-4 -mb-10 grid grid-cols-1 sm:-m-4 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((feature) => (
           <AboutFeature key={feature.id} feature={feature} />
         ))}
@@ -51,3 +52,5 @@ export default function AboutComp(): JSX.Element {
     </section>
   )
 }
+
+export default AboutComp

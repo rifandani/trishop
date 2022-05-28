@@ -1,3 +1,5 @@
+import { FC } from 'react'
+
 // const careers = [
 //   {
 //     id: 1,
@@ -37,13 +39,15 @@
 //   },
 // ]
 
-export default function CareerComp(): JSX.Element {
+const CareerComp: FC = () => {
   return (
     <section className="w-full bg-white">
       {/* real content */}
-      <div className="flex flex-wrap -mx-4 -mt-4 -mb-10 space-y-6 sm:-m-4 md:space-y-0">
+      <div className="-mx-4 -mt-4 -mb-10 flex flex-wrap space-y-6 sm:-m-4 md:space-y-0">
         Coming Soon ~
       </div>
     </section>
   )
 }
+
+export default CareerComp

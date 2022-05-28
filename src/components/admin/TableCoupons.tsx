@@ -1,19 +1,21 @@
-import Axios from 'axios'
 import dayjs from 'dayjs'
 import { h } from 'gridjs'
-import { mutate } from 'swr'
 import { Grid } from 'gridjs-react'
-import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
-// files
-import useGetCoupons from 'hooks/useGetCoupons'
+import { FC } from 'react'
+import { toast } from 'react-toastify'
+import { deleteAdminCoupon } from 'services/admin/coupons'
+import { useSWRConfig } from 'swr'
+import { ICouponsProps } from 'types/Coupon'
 import generateRupiah from 'utils/generateRupiah'
 
-export default function TableCoupons(): JSX.Element {
-  // hooks
+const TableCoupons: FC<ICouponsProps> = ({ coupons }) => {
+  //#region GENERAL
   const { push } = useRouter()
-  const { coupons, couponsIsLoading, couponsIsError } = useGetCoupons()
+  const { mutate } = useSWRConfig()
+  //#endregion
 
+  //#region HANDLER COUPON ACTIONS
   const editCoupon = (_id: string): Promise<boolean> =>
     push(`/admin/coupons/${_id}`)
 
@@ -25,8 +27,8 @@ export default function TableCoupons(): JSX.Element {
         return
       }
 
-      // DELETE /admin/coupons/:_id
-      await Axios.delete(`/admin/coupons/${_id}`)
+      // call deleteAdminCoupon service
+      await deleteAdminCoupon(_id)
 
       // trigger a revalidation (refetch) to make sure our local data is correct
       await mutate('/admin/coupons')
@@ -36,14 +38,13 @@ export default function TableCoupons(): JSX.Element {
       toast.error(err.message)
     }
   }
+  //#endregion
 
   return (
-    <section className="flex flex-col mt-8">
+    <section className="mt-8 flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="min-w-full overflow-hidden sm:rounded-lg ">
-          {couponsIsLoading && 'Loading...'}
-          {couponsIsError && 'Error'}
-          {coupons && (
+          {
             <Grid
               data={coupons as any}
               search={true}
@@ -132,9 +133,11 @@ export default function TableCoupons(): JSX.Element {
                 },
               ]}
             />
-          )}
+          }
         </div>
       </div>
     </section>
   )
 }
+
+export default TableCoupons

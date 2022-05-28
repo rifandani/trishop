@@ -1,9 +1,14 @@
 module.exports = {
-  stories: ['../src/stories/**/*.stories.@(ts|tsx|js|jsx|mdx)'],
+  stories: ['../src/**/*.stories.@(ts|tsx|js|jsx|mdx)'],
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
     '@storybook/addon-a11y',
+    '@storybook/addon-actions',
+    '@storybook/addon-controls',
+    '@storybook/addon-essentials',
+    '@storybook/addon-links',
+    '@storybook/addon-measure',
+    '@storybook/addon-outline',
+    '@storybook/addon-viewport',
     {
       name: '@storybook/addon-postcss',
       options: {

@@ -1,28 +1,21 @@
-import Cors from 'cors'
-// files
 import nc from 'middlewares/nc'
-import withMongoConnect from 'middlewares/withMongoConnect'
-import withYupConnect from 'middlewares/withYupConnect'
 import withCheckAuthCookie from 'middlewares/withCheckAuthCookie'
 import withCheckObjectId from 'middlewares/withCheckObjectId'
-import ReviewModel from 'mongo/models/Review'
+import withCors from 'middlewares/withCors'
+import withMongoConnect from 'middlewares/withMongoConnect'
+import withYupConnect from 'middlewares/withYupConnect'
 import ProductModel from 'mongo/models/Product'
+import ReviewModel from 'mongo/models/Review'
 import getQueryAsString from 'utils/getQueryAsString'
 import { putReviewApiSchema, TPutReviewApiSchema } from 'yup/apiSchema'
 
 export default nc
-  // cors middleware
-  .use(
-    Cors({
-      methods: ['PUT', 'DELETE'],
-    })
-  )
+  .use(withCors(['PUT', 'DELETE'])) // cors
   .use(withCheckAuthCookie()) // check auth cookie middleware
   .use(withYupConnect(putReviewApiSchema)) // yup middleware
   .use(withMongoConnect()) // connect mongodb middleware
   .use(withCheckObjectId(ReviewModel)) // check query object id middleware
-  /* -------------------------------- PUT req => /user/reviews/:_id ------------------------------- */
-  .put(async (req, res) => {
+  .put('/api/v1/user/reviews/:_id', async (req, res) => {
     // get reviewId
     const reviewId = getQueryAsString(req.query._id)
 
@@ -38,8 +31,7 @@ export default nc
     // PUT success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     res.status(201).json({ error: false, message: 'Review updated' })
   })
-  /* ------------------------------ DELETE req => /user/reviews/:_id ------------------------------ */
-  .delete(async (req, res) => {
+  .delete('/api/v1/user/reviews/:_id', async (req, res) => {
     // get id
     const reviewId = getQueryAsString(req.query._id)
 

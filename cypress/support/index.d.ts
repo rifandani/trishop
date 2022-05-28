@@ -25,7 +25,7 @@ declare namespace Cypress {
           Cypress.Withinable &
           Cypress.Shadow
       >
-    ): Chainable<Element>
+    ): Chainable<JQuery<HTMLElement>>
 
     // api - auth
     loginByApi(requestBody: TLoginApiSchema): Chainable<Response>

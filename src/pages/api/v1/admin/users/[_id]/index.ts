@@ -1,28 +1,21 @@
-import Cors from 'cors'
-import { hashSync } from 'bcrypt'
-// files
+import { hashSync } from 'bcryptjs'
 import nc from 'middlewares/nc'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
-import withYupConnect from 'middlewares/withYupConnect'
-import withMongoConnect from 'middlewares/withMongoConnect'
 import withCheckObjectId from 'middlewares/withCheckObjectId'
-import getQueryAsString from 'utils/getQueryAsString'
+import withCors from 'middlewares/withCors'
+import withMongoConnect from 'middlewares/withMongoConnect'
+import withYupConnect from 'middlewares/withYupConnect'
 import UserModel from 'mongo/models/User'
-import { userApiSchema, TUserApiSchema } from 'yup/apiSchema'
+import getQueryAsString from 'utils/getQueryAsString'
+import { TUserApiSchema, userApiSchema } from 'yup/apiSchema'
 
 export default nc
-  // cors, middleware 1
-  .use(
-    Cors({
-      methods: ['GET', 'PUT', 'DELETE'],
-    })
-  )
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
-  .use(withYupConnect(userApiSchema)) // yup middleware
-  .use(withMongoConnect()) // connect mongodb middleware
-  .use(withCheckObjectId(UserModel)) // check query object id middleware
-  /* -------------------------------- GET req => /admin/users/:_id -------------------------------- */
-  .get(async (req, res) => {
+  .use(withCors(['GET', 'PUT', 'DELETE'])) // cors
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie
+  .use(withYupConnect(userApiSchema)) // yup
+  .use(withMongoConnect()) // connect mongodb
+  .use(withCheckObjectId(UserModel)) // check query object id
+  .get('/api/v1/admin/users/:_id', async (req, res) => {
     // check id validity
     const userId = getQueryAsString(req.query._id)
 
@@ -32,11 +25,11 @@ export default nc
     // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     res.status(200).json({ error: false, user })
   })
-  /* -------------------------------- PUT req => /admin/users/:_id -------------------------------- */
-  .put(async (req, res) => {
+  .put('/api/v1/admin/users/:_id', async (req, res) => {
     // check id validity
     const userId = getQueryAsString(req.query._id)
 
+    // destructure req.body
     const { name, role, email, password } = req.body as TUserApiSchema
 
     // hash new password with bcrypt
@@ -53,8 +46,7 @@ export default nc
     // PUT success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     res.status(201).json({ error: false, message: 'User updated' })
   })
-  /* ------------------------------- DELETE req => /admin/users/:_id ------------------------------ */
-  .delete(async (req, res) => {
+  .delete('/api/v1/admin/users/:_id', async (req, res) => {
     // check id validity
     const userId = getQueryAsString(req.query._id)
 

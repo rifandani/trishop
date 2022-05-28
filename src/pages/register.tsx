@@ -1,52 +1,50 @@
-import axios from 'axios'
-import Link from 'next/link'
+import { UserPayload } from 'contexts/UserReducer'
 import { parse } from 'cookie'
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
+import useLocalStorage from 'hooks/useLocalStorage'
 import { verify } from 'jsonwebtoken'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-// files
-import useLocalStorage from 'hooks/useLocalStorage'
-import { UserPayload } from 'contexts/UserReducer'
+import { register } from 'services/auth'
 import { AuthCookiePayload } from 'types'
-import { APIResponseAuthLoginRegister } from 'types/User'
-import { TRegisterApiSchema, registerApiSchema } from 'yup/apiSchema'
+import { registerApiSchema, TRegisterApiSchema } from 'yup/apiSchema'
 
-export default function RegisterPage(): JSX.Element {
+const RegisterPage: NextPage = () => {
+  //#region GENERAL
+  const { push } = useRouter()
+  const [, setUser] = useLocalStorage<UserPayload>('user', null)
+  //#endregion
+
+  //#region FORM
   const initialValues: TRegisterApiSchema = {
     name: '',
     email: '',
     password: '',
   }
 
-  // hooks
-  const { push } = useRouter()
-  const [, setUser] = useLocalStorage<UserPayload>('user', null)
-
-  const onRegister = async (
+  const onSubmitForm = async (
     values: TRegisterApiSchema,
     actions: FormikHelpers<TRegisterApiSchema>
   ) => {
     try {
-      // POST /auth/register
-      const res = await axios.post<APIResponseAuthLoginRegister>(
-        '/auth/register',
-        values
-      )
+      // call register service
+      const { status, data } = await register(values)
 
       // client error
-      if (res.status !== 201) {
-        toast.error(res.data.message)
+      if (status !== 201) {
+        toast.error(data.message)
         return
       }
 
       // set data user to local storage
-      setUser(res.data.data)
+      setUser(data.data)
 
       // if role == 'USER'
       await push('/user/dashboard')
-      toast.success(`Welcome, ${res.data.data.name}`)
+      toast.success(`Welcome, ${data.data.name}`)
     } catch (err) {
       // 500 - server error
       console.error(err)
@@ -55,30 +53,37 @@ export default function RegisterPage(): JSX.Element {
       actions.setSubmitting(false) // finish formik cycle
     }
   }
+  //#endregion
 
   return (
-    <main className="h-screen bg-white my-custom-font-family">
-      <div className="flex flex-wrap w-full">
+    <main className="my-custom-font-family h-screen bg-white">
+      <div className="flex w-full flex-wrap">
         {/* <!-- Register Section --> */}
-        <article className="flex flex-col w-full md:w-1/2">
-          <section className="flex justify-center pt-12 md:justify-start md:pl-12 md:-mb-12">
+        <article className="flex w-full flex-col md:w-1/2">
+          <section className="flex justify-center pt-12 md:-mb-12 md:justify-start md:pl-12">
             <Link href="/">
-              <img
-                className="w-16 h-16 rounded cursor-pointer"
-                src="images/trishop.png"
-                alt="trishop logo"
-              />
+              <a className="relative h-16 w-16 cursor-pointer">
+                <Image
+                  src="/images/trishop.png"
+                  alt="trishop logo"
+                  className="rounded"
+                  layout="fill"
+                  objectFit="cover"
+                  objectPosition="center"
+                  priority
+                />
+              </a>
             </Link>
           </section>
 
-          <section className="flex flex-col justify-center px-8 pt-8 my-auto md:justify-start md:pt-0 md:px-24 lg:px-32">
-            <p className="text-3xl text-center">Join Us</p>
+          <section className="my-auto flex flex-col justify-center px-8 pt-8 md:justify-start md:px-24 md:pt-0 lg:px-32">
+            <p className="text-center text-3xl">Join Us</p>
 
             {/* <!-- START form --> */}
             <Formik
               initialValues={initialValues}
               validationSchema={registerApiSchema}
-              onSubmit={onRegister}
+              onSubmit={onSubmitForm}
             >
               {({ isSubmitting }) => (
                 <Form className="flex flex-col pt-3 md:pt-8">
@@ -144,7 +149,7 @@ export default function RegisterPage(): JSX.Element {
                   </div>
 
                   <button
-                    className="p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer hover:underline disabled:opacity-50 focus:ring-4 focus:ring-orange-500"
+                    className="mt-8 cursor-pointer rounded bg-orange-800 p-2 text-lg font-bold text-white hover:underline focus:ring-4 focus:ring-orange-500 disabled:opacity-50"
                     disabled={isSubmitting}
                     type="submit"
                   >
@@ -159,7 +164,7 @@ export default function RegisterPage(): JSX.Element {
               <p>
                 Already have an account?{' '}
                 <Link href="/login">
-                  <a className="font-semibold underline cursor-pointer hover:text-orange-800">
+                  <a className="cursor-pointer font-semibold underline hover:text-orange-800">
                     Log in here.
                   </a>
                 </Link>
@@ -170,11 +175,16 @@ export default function RegisterPage(): JSX.Element {
 
         {/* <!-- Image Section --> */}
         <article className="w-1/2 shadow-2xl">
-          <img
-            className="hidden object-cover w-full h-screen md:block"
-            src="images/cover/tabur-coklat.jpg"
-            alt="register page cover"
-          />
+          <span className="relative hidden h-screen w-full md:block">
+            <Image
+              src="/images/cover/tabur-coklat.jpg"
+              alt="register page cover"
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
+              priority
+            />
+          </span>
         </article>
       </div>
     </main>
@@ -211,3 +221,5 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     redirect: { destination: '/user/dashboard', permanent: false },
   }
 }
+
+export default RegisterPage

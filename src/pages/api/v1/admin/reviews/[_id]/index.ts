@@ -1,25 +1,18 @@
-import Cors from 'cors'
-// files
 import nc from 'middlewares/nc'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
-import withMongoConnect from 'middlewares/withMongoConnect'
 import withCheckObjectId from 'middlewares/withCheckObjectId'
-import getQueryAsString from 'utils/getQueryAsString'
-import ReviewModel from 'mongo/models/Review'
+import withCors from 'middlewares/withCors'
+import withMongoConnect from 'middlewares/withMongoConnect'
 import ProductModel from 'mongo/models/Product'
+import ReviewModel from 'mongo/models/Review'
+import getQueryAsString from 'utils/getQueryAsString'
 
 export default nc
-  // cors, middleware 1
-  .use(
-    Cors({
-      methods: ['DELETE'],
-    })
-  )
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
-  .use(withMongoConnect()) // connect mongodb middleware
-  .use(withCheckObjectId(ReviewModel)) // check query object id middleware
-  /* ------------------------------ DELETE req => /admin/reviews/:_id ----------------------------- */
-  .delete(async (req, res) => {
+  .use(withCors(['DELETE'])) // cors
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie
+  .use(withMongoConnect()) // connect mongodb
+  .use(withCheckObjectId(ReviewModel)) // check query object id
+  .delete('/api/v1/admin/reviews/:_id', async (req, res) => {
     // get id
     const reviewId = getQueryAsString(req.query._id)
 

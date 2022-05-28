@@ -1,18 +1,21 @@
-import Axios from 'axios'
 import { h } from 'gridjs'
-import { mutate } from 'swr'
-import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
 import { Grid } from 'gridjs-react'
-// files
-import useProducts from 'hooks/useProducts'
+import { useRouter } from 'next/router'
+import { FC } from 'react'
+import { toast } from 'react-toastify'
+import { deleteAdminCloudinaryImages } from 'services/admin/cloudinary/resources/image'
+import { deleteAdminProduct } from 'services/admin/products'
+import { useSWRConfig } from 'swr'
+import { IProductsProps } from 'types/Product'
 import generateRupiah from 'utils/generateRupiah'
 
-export default function TableProducts(): JSX.Element {
-  // hooks
+const TableProducts: FC<IProductsProps> = ({ products }) => {
+  //#region GENERAL
   const { push } = useRouter()
-  const { products, productsIsLoading, productsIsError } = useProducts()
+  const { mutate } = useSWRConfig()
+  //#endregion
 
+  //#region HANDLER PRODUCT ACTIONS
   const editProduct = (_id: string): Promise<boolean> =>
     push(`/admin/products/${_id}`)
 
@@ -24,16 +27,15 @@ export default function TableProducts(): JSX.Element {
         return
       }
 
+      // get image.publicId
       const selectedProduct = products.find((product) => product._id === _id)
       const public_ids = selectedProduct.images.map((image) => image.publicId)
 
-      // delete images resources in cloudinary
-      await Axios.delete(
-        `/admin/cloudinary/resources/image?public_ids=${public_ids.join(',')}`
-      )
+      // call admin cloudinary service
+      await deleteAdminCloudinaryImages(public_ids)
 
-      // delete product in mongodb
-      await Axios.delete(`/admin/products/${_id}`)
+      // call admin products service
+      await deleteAdminProduct(_id)
 
       // trigger a revalidation (refetch) to make sure our local data is correct
       await mutate('/admin/products')
@@ -43,14 +45,13 @@ export default function TableProducts(): JSX.Element {
       toast.error(err.message)
     }
   }
+  //#endregion
 
   return (
-    <section className="flex flex-col mt-8">
+    <section className="mt-8 flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="min-w-full overflow-hidden sm:rounded-lg ">
-          {productsIsLoading && 'Loading...'}
-          {productsIsError && 'Error'}
-          {products && (
+          {
             <Grid
               data={products as any}
               search={true}
@@ -121,9 +122,11 @@ export default function TableProducts(): JSX.Element {
                 },
               ]}
             />
-          )}
+          }
         </div>
       </div>
     </section>
   )
 }
+
+export default TableProducts

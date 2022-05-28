@@ -1,4 +1,5 @@
 // files
+import { HttpResponse } from 'types'
 import { IReview } from './Review'
 
 export interface IReport {
@@ -8,6 +9,7 @@ export interface IReport {
   typeId: number
   createdAt: Date
   _id?: string
+  __v?: number
 }
 
 export interface IReportProps {
@@ -20,26 +22,17 @@ export interface IReportsProps {
 
 /* ------------------------------ API response ------------------------------ */
 
-export interface IGetReportResponse {
-  error: boolean
-  report: IReport
-  message?: string
+export interface APIResponseReport extends HttpResponse {
+  readonly report: IReport
 }
 
-export interface IGetReportsResponse {
-  error: boolean
-  reports: IReport[]
-  count: number
-  message?: string
+export interface APIResponseReports extends HttpResponse {
+  readonly reports: IReport[]
+  readonly count: number
 }
 
-export interface IPostReportResponse {
-  error: boolean
-  reportId: string
-  message?: string
+export interface APIResponsePostReport extends HttpResponse {
+  readonly reportId: string
 }
 
-export interface IDeleteReportResponse {
-  error: boolean
-  message: string
-}
+export type APIResponseDeleteReport = HttpResponse

@@ -1,17 +1,14 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { NextHandler } from 'next-connect'
+import { TokenExpiredError, verify } from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { verify, TokenExpiredError } from 'jsonwebtoken'
-// files
+import { NextHandler } from 'next-connect'
 import { AuthCookiePayload } from 'types'
 
 const withCheckAuthCookie =
-  () =>
-  async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
+  () => (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
     verify(
       req.cookies.auth,
       process.env.MY_SECRET_KEY,
-      async (err, decoded) => {
+      (err, decoded: AuthCookiePayload) => {
         // 401 -> Unauthorized error
         if (err instanceof TokenExpiredError) {
           res.status(401).json({
@@ -29,10 +26,8 @@ const withCheckAuthCookie =
           return
         }
 
-        const decodedToken = decoded as AuthCookiePayload
-
         // if not admin
-        if (decodedToken.role !== 'ADMIN') {
+        if (decoded.role !== 'ADMIN') {
           res.status(401).json({
             error: true,
             name: 'NotAdmin',
@@ -42,7 +37,7 @@ const withCheckAuthCookie =
         }
 
         // continue ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        return next()
+        next()
       }
     )
   }

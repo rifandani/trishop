@@ -1,33 +1,65 @@
+import LoadingSpinner from 'components/common/LoadingSpinner'
 import { useRouter } from 'next/router'
+import { FC } from 'react'
 import {
-  FaUserFriends,
-  FaShoppingCart,
-  FaShoppingBag,
   FaMoneyBillWave,
+  FaShoppingBag,
+  FaShoppingCart,
   FaTicketAlt,
+  FaUserFriends,
 } from 'react-icons/fa'
 import { MdReportProblem } from 'react-icons/md'
-// files
-import TableUsers from './TableUsers'
-import TableProducts from './TableProducts'
-import TableCoupons from './TableCoupons'
+import useSWR from 'swr'
+import { HttpResponse } from 'types'
+import { APIResponseCoupons } from 'types/Coupon'
+import { APIResponseProducts } from 'types/Product'
+import { APIResponseReports } from 'types/Report'
+import { APIResponseUsers } from 'types/User'
 import SwiperReports from './SwiperReports'
-import useUsers from 'hooks/useUsers'
-import useProducts from 'hooks/useProducts'
-import useGetCoupons from 'hooks/useGetCoupons'
-import useGetReports from 'hooks/useGetReports'
+import TableCoupons from './TableCoupons'
+import TableProducts from './TableProducts'
+import TableUsers from './TableUsers'
 
-export default function AdminDashboard(): JSX.Element {
-  // hooks
-  const { users, usersIsLoading, usersIsError } = useUsers()
-  const { products, productsIsLoading, productsIsError } = useProducts()
-  const { coupons, couponsIsLoading, couponsIsError } = useGetCoupons()
-  const { reports, reportsIsLoading, reportsIsError } = useGetReports()
+const AdminDashboard: FC = () => {
+  //#region GENERAL
   const { push } = useRouter()
+  //#endregion
+
+  //#region ADMIN-USERS SERVICES
+  const { data: usersRes, error: usersIsError } = useSWR<
+    APIResponseUsers,
+    HttpResponse
+  >('/admin/users')
+  const usersIsLoading = !usersRes && !usersIsError
+  //#endregion
+
+  //#region ADMIN-PRODUCTS SERVICE
+  const { data: productsRes, error: productsIsError } = useSWR<
+    APIResponseProducts,
+    HttpResponse
+  >('/admin/products')
+  const productsIsLoading = !productsRes && !productsIsError
+  //#endregion
+
+  //#region ADMIN-COUPONS SERVICE
+  const { data: couponsRes, error: couponsIsError } = useSWR<
+    APIResponseCoupons,
+    HttpResponse
+  >('/admin/coupons')
+  const couponsIsLoading = !couponsRes && !couponsIsError
+  //#endregion
+
+  //#region ADMIN-REPORTS SERVICE
+  const { data: reportsRes, error: reportsIsError } = useSWR<
+    APIResponseReports,
+    HttpResponse
+  >('/admin/reports')
+  const reportsIsLoading = !reportsRes && !reportsIsError
+  //#endregion
 
   return (
-    <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-      <div className="container px-6 py-8 mx-auto">
+    <main className="flex-1 overflow-y-auto overflow-x-hidden bg-gray-200">
+      <div className="container mx-auto px-6 py-8">
         {/* dashboard title */}
         <h3
           className="text-3xl font-medium text-gray-700"
@@ -37,19 +69,19 @@ export default function AdminDashboard(): JSX.Element {
         </h3>
 
         <div className="mt-4">
-          <div className="flex flex-wrap -mx-6">
+          <div className="-mx-6 flex flex-wrap">
             {/* Total Users */}
             <section className="w-full px-6 sm:w-1/2 xl:w-1/3">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-indigo-500 bg-opacity-75 rounded-full">
-                  <FaUserFriends className="w-8 h-8 text-white" />
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-indigo-500 bg-opacity-75 p-3">
+                  <FaUserFriends className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {users && users.length}
-                    {usersIsLoading && 'Loading...'}
                     {usersIsError && 'Error'}
+                    {usersIsLoading && 'Loading...'}
+                    {usersRes && usersRes.count}
                   </h4>
                   <div className="text-gray-500">Total Users</div>
                 </div>
@@ -57,17 +89,17 @@ export default function AdminDashboard(): JSX.Element {
             </section>
 
             {/* Total Products */}
-            <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 sm:mt-0">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-pink-500 bg-opacity-75 rounded-full">
-                  <FaShoppingBag className="w-8 h-8 text-white" />
+            <section className="mt-6 w-full px-6 sm:mt-0 sm:w-1/2 xl:w-1/3">
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-pink-500 bg-opacity-75 p-3">
+                  <FaShoppingBag className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {products && products.length}
-                    {productsIsLoading && 'Loading...'}
                     {productsIsError && 'Error'}
+                    {productsIsLoading && 'Loading...'}
+                    {productsRes && productsRes.count}
                   </h4>
                   <div className="text-gray-500">Total Products</div>
                 </div>
@@ -75,17 +107,17 @@ export default function AdminDashboard(): JSX.Element {
             </section>
 
             {/* Total Coupons */}
-            <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-blue-500 bg-opacity-75 rounded-full">
-                  <FaTicketAlt className="w-8 h-8 text-white" />
+            <section className="mt-6 w-full px-6 sm:w-1/2 xl:mt-0 xl:w-1/3">
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-blue-500 bg-opacity-75 p-3">
+                  <FaTicketAlt className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {coupons && coupons.length}
-                    {couponsIsLoading && 'Loading...'}
                     {couponsIsError && 'Error'}
+                    {couponsIsLoading && 'Loading...'}
+                    {couponsRes && couponsRes.count}
                   </h4>
                   <div className="text-gray-500">Total Coupons</div>
                 </div>
@@ -93,17 +125,17 @@ export default function AdminDashboard(): JSX.Element {
             </section>
 
             {/* Total Reports */}
-            <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-red-500 bg-opacity-75 rounded-full">
-                  <MdReportProblem className="w-8 h-8 text-white" />
+            <section className="mt-6 w-full px-6 sm:w-1/2 xl:w-1/3">
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-red-500 bg-opacity-75 p-3">
+                  <MdReportProblem className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    {reports && reports.length}
-                    {reportsIsLoading && 'Loading...'}
                     {reportsIsError && 'Error'}
+                    {reportsIsLoading && 'Loading...'}
+                    {reportsRes && reportsRes.count}
                   </h4>
                   <div className="text-gray-500">Total Reports</div>
                 </div>
@@ -111,29 +143,29 @@ export default function AdminDashboard(): JSX.Element {
             </section>
 
             {/* Weekly Orders */}
-            <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-orange-500 bg-opacity-75 rounded-full">
-                  <FaShoppingCart className="w-8 h-8 text-white" />
+            <section className="mt-6 w-full px-6 sm:w-1/2 xl:w-1/3">
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-orange-500 bg-opacity-75 p-3">
+                  <FaShoppingCart className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
-                  <h4 className="text-2xl font-semibold text-gray-700">152</h4>
+                  <h4 className="text-2xl font-semibold text-gray-700">999</h4>
                   <div className="text-gray-500">Weekly Orders</div>
                 </div>
               </div>
             </section>
 
             {/* Weekly Income */}
-            <section className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3">
-              <div className="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                <div className="p-3 bg-green-500 bg-opacity-75 rounded-full">
-                  <FaMoneyBillWave className="w-8 h-8 text-white" />
+            <section className="mt-6 w-full px-6 sm:w-1/2 xl:w-1/3">
+              <div className="flex items-center rounded-md bg-white px-5 py-6 shadow-sm">
+                <div className="rounded-full bg-green-500 bg-opacity-75 p-3">
+                  <FaMoneyBillWave className="h-8 w-8 text-white" />
                 </div>
 
                 <div className="mx-5">
                   <h4 className="text-2xl font-semibold text-gray-700">
-                    Rp 550.000
+                    Rp 99.999.999
                   </h4>
                   <div className="text-gray-500">Weekly Income</div>
                 </div>
@@ -149,14 +181,15 @@ export default function AdminDashboard(): JSX.Element {
           <h3 className="text-3xl font-medium text-gray-700">Users</h3>
           <button
             onClick={() => push('/admin/add/user')}
-            className="px-4 py-2 text-white bg-green-500 border rounded-md focus:outline-none focus:ring-4 focus:ring-green-300 hover:bg-green-600"
+            className="rounded-md border bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300"
           >
             Add New User
           </button>
         </div>
 
         {/* table using gridjs */}
-        <TableUsers />
+        {usersIsLoading && <LoadingSpinner className="mt-6" />}
+        {usersRes && <TableUsers users={usersRes.users} />}
 
         <div className="mt-8"></div>
 
@@ -165,14 +198,15 @@ export default function AdminDashboard(): JSX.Element {
           <h3 className="text-3xl font-medium text-gray-700">Products</h3>
           <button
             onClick={() => push('/admin/add/product')}
-            className="px-4 py-2 text-white bg-green-500 border rounded-md focus:outline-none focus:ring-4 focus:ring-green-300 hover:bg-green-600"
+            className="rounded-md border bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300"
           >
             Add New Product
           </button>
         </div>
 
         {/* table using gridjs */}
-        <TableProducts />
+        {productsIsLoading && <LoadingSpinner className="mt-6" />}
+        {productsRes && <TableProducts products={productsRes.products} />}
 
         <div className="mt-8"></div>
 
@@ -181,14 +215,15 @@ export default function AdminDashboard(): JSX.Element {
           <h3 className="text-3xl font-medium text-gray-700">Coupons</h3>
           <button
             onClick={() => push('/admin/add/coupon')}
-            className="px-4 py-2 text-white bg-green-500 border rounded-md focus:outline-none focus:ring-4 focus:ring-green-300 hover:bg-green-600"
+            className="rounded-md border bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300"
           >
             Add New Coupon
           </button>
         </div>
 
         {/* table using gridjs */}
-        <TableCoupons />
+        {couponsIsLoading && <LoadingSpinner className="mt-6" />}
+        {couponsRes && <TableCoupons coupons={couponsRes.coupons} />}
 
         <div className="mt-8"></div>
 
@@ -197,10 +232,11 @@ export default function AdminDashboard(): JSX.Element {
           <h3 className="text-3xl font-medium text-gray-700">Reports</h3>
         </div>
 
-        {reportsIsLoading && 'Loading reports...'}
-        {reportsIsError && 'Error getting reports'}
-        {reports && <SwiperReports reports={reports} />}
+        {reportsIsLoading && <LoadingSpinner className="mt-6" />}
+        {reportsRes && <SwiperReports reports={reportsRes.reports} />}
       </div>
     </main>
   )
 }
+
+export default AdminDashboard

@@ -1,58 +1,56 @@
-import axios from 'axios'
-import Link from 'next/link'
+import { UserPayload } from 'contexts/UserReducer'
 import { parse } from 'cookie'
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
+import useLocalStorage from 'hooks/useLocalStorage'
 import { verify } from 'jsonwebtoken'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-// files
-import useLocalStorage from 'hooks/useLocalStorage'
+import { login } from 'services/auth'
 import { AuthCookiePayload } from 'types'
-import { UserPayload } from 'contexts/UserReducer'
-import { APIResponseAuthLoginRegister } from 'types/User'
 import { loginApiSchema, TLoginApiSchema } from 'yup/apiSchema'
 
-export default function Login(): JSX.Element {
+const LoginPage: NextPage = () => {
+  //#region GENERAL
+  const { push } = useRouter()
+  const [, setUser] = useLocalStorage<UserPayload>('user', null)
+  //#endregion
+
+  //#region FORM
   const initialValues: TLoginApiSchema = {
     email: '',
     password: '',
   }
 
-  // hooks
-  const { push } = useRouter()
-  const [, setUser] = useLocalStorage<UserPayload>('user', null)
-
-  const onLogin = async (
+  const onSubmitForm = async (
     values: TLoginApiSchema,
     actions: FormikHelpers<TLoginApiSchema>
   ) => {
     try {
-      // POST /auth/login
-      const res = await axios.post<APIResponseAuthLoginRegister>(
-        '/auth/login',
-        values
-      )
+      // call login API
+      const { status, data } = await login(values)
 
       // client error
-      if (res.status !== 201) {
-        toast.error(res.data.message)
+      if (status !== 201) {
+        toast.error(data.message)
         return
       }
 
       // set data user to local storage
-      setUser(res.data.data)
+      setUser(data.data)
 
       // if role == 'ADMIN'
-      if (res.data.data.role === 'ADMIN') {
+      if (data.data.role === 'ADMIN') {
         await push('/admin/dashboard')
-        toast.success(`Welcome, ${res.data.data.name}`)
+        toast.success(`Welcome, ${data.data.name}`)
         return
       }
 
       // if role == 'USER'
       await push('/user/dashboard')
-      toast.success(`Welcome, ${res.data.data.name}`)
+      toast.success(`Welcome, ${data.data.name}`)
     } catch (err) {
       // 500 - server error
       console.error(err)
@@ -61,24 +59,31 @@ export default function Login(): JSX.Element {
       actions.setSubmitting(false) // finish formik cycle
     }
   }
+  //#endregion
 
   return (
-    <main className="h-screen bg-white my-custom-font-family">
-      <div className="flex flex-wrap w-full">
+    <main className="my-custom-font-family h-screen bg-white">
+      <div className="flex w-full flex-wrap">
         {/* <!-- Login Section --> */}
-        <article className="flex flex-col w-full md:w-1/2">
-          <section className="flex justify-center pt-12 md:justify-start md:pl-12 md:-mb-24">
+        <article className="flex w-full flex-col md:w-1/2">
+          <section className="flex justify-center pt-12 md:-mb-24 md:justify-start md:pl-12">
             <Link href="/">
-              <img
-                className="w-16 h-16 rounded cursor-pointer"
-                src="images/trishop.png"
-                alt="trishop logo"
-              />
+              <a className="relative h-16 w-16 cursor-pointer">
+                <Image
+                  src="/images/trishop.png"
+                  alt="trishop logo"
+                  className="rounded"
+                  layout="fill"
+                  objectFit="cover"
+                  objectPosition="center"
+                  priority
+                />
+              </a>
             </Link>
           </section>
 
-          <section className="flex flex-col justify-center px-8 pt-8 my-auto md:justify-start md:pt-0 md:px-24 lg:px-32">
-            <p className="text-3xl text-center" data-cy="welcome">
+          <section className="my-auto flex flex-col justify-center px-8 pt-8 md:justify-start md:px-24 md:pt-0 lg:px-32">
+            <p className="text-center text-3xl" data-cy="welcome">
               Welcome
             </p>
 
@@ -86,7 +91,7 @@ export default function Login(): JSX.Element {
             <Formik
               initialValues={initialValues}
               validationSchema={loginApiSchema}
-              onSubmit={onLogin}
+              onSubmit={onSubmitForm}
             >
               {({ isSubmitting }) => (
                 <Form className="flex flex-col pt-3 md:pt-8">
@@ -136,7 +141,7 @@ export default function Login(): JSX.Element {
                   </div>
 
                   <button
-                    className="p-2 mt-8 text-lg font-bold text-white bg-orange-800 rounded cursor-pointer focus:ring-4 focus:ring-orange-500 disabled:opacity-50 hover:underline"
+                    className="mt-8 cursor-pointer rounded bg-orange-800 p-2 text-lg font-bold text-white hover:underline focus:ring-4 focus:ring-orange-500 disabled:opacity-50"
                     disabled={isSubmitting}
                     type="submit"
                     data-cy="submit"
@@ -152,7 +157,7 @@ export default function Login(): JSX.Element {
               <p>
                 Don&apos;t have an account?{' '}
                 <Link href="/register">
-                  <a className="font-semibold underline cursor-pointer hover:text-orange-800">
+                  <a className="cursor-pointer font-semibold underline hover:text-orange-800">
                     Register here.
                   </a>
                 </Link>
@@ -163,11 +168,16 @@ export default function Login(): JSX.Element {
 
         {/* <!-- Image Section --> */}
         <article className="w-1/2 shadow-2xl">
-          <img
-            className="hidden object-cover w-full h-screen md:block"
-            src="images/cover/potong-coklat.jpg"
-            alt="login page cover"
-          />
+          <span className="relative hidden h-screen w-full md:block">
+            <Image
+              src="/images/cover/potong-coklat.jpg"
+              alt="login page cover"
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
+              priority
+            />
+          </span>
         </article>
       </div>
     </main>
@@ -204,3 +214,5 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     redirect: { destination: '/user/dashboard', permanent: false },
   }
 }
+
+export default LoginPage

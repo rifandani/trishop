@@ -1,4 +1,4 @@
-import { Disclosure, Transition } from '@headlessui/react'
+import { Disclosure } from '@headlessui/react'
 import { FaChevronUp } from 'react-icons/fa'
 
 const faq = [
@@ -54,33 +54,24 @@ export default function FAQComp(): JSX.Element {
   return (
     <main className="w-full bg-white">
       {/* real content */}
-      <div className="grid w-full grid-cols-1 gap-6 p-2 mx-auto mt-6 rounded-2xl md:grid-cols-2">
+      <div className="mx-auto mt-6 grid w-full grid-cols-1 gap-6 rounded-2xl p-2 md:grid-cols-2">
         {faq.map((el) => (
           <Disclosure as="div" className="mt-0" key={el.id}>
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-orange-800 bg-orange-100 rounded-lg hover:bg-orange-200 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-75">
+                <Disclosure.Button className="flex w-full justify-between rounded-lg bg-orange-100 px-4 py-2 text-left text-sm font-medium text-orange-800 hover:bg-orange-200 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-75">
                   <span>{el.question}</span>
 
                   <FaChevronUp
                     className={`${
-                      open ? 'transform rotate-180' : ''
-                    } w-5 h-5 text-orange-500`}
+                      open ? 'rotate-180 transform' : ''
+                    } h-5 w-5 text-orange-500`}
                   />
                 </Disclosure.Button>
 
-                <Transition
-                  enter="transition duration-100 ease-out"
-                  enterFrom="transform scale-90 opacity-0"
-                  enterTo="transform scale-100 opacity-100"
-                  leave="transition duration-65 ease-out"
-                  leaveFrom="transform scale-100 opacity-100"
-                  leaveTo="transform scale-90 opacity-0"
-                >
-                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-                    {el.answer}
-                  </Disclosure.Panel>
-                </Transition>
+                <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                  {el.answer}
+                </Disclosure.Panel>
               </>
             )}
           </Disclosure>

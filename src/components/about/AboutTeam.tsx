@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import AboutTeamCard from './AboutTeamCard'
 
 const teams = [
@@ -31,11 +32,11 @@ const teams = [
   },
 ]
 
-export default function AboutTeam(): JSX.Element {
+const AboutTeam: FC = () => {
   return (
     <section className="w-full bg-white">
       {/* real content */}
-      <div className="flex flex-wrap -m-4">
+      <div className="-m-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {teams.map((team) => (
           <AboutTeamCard key={team.id} team={team} />
         ))}
@@ -43,3 +44,5 @@ export default function AboutTeam(): JSX.Element {
     </section>
   )
 }
+
+export default AboutTeam

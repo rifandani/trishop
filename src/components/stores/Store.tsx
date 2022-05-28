@@ -1,3 +1,6 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import { FC } from 'react'
 import { FaLocationArrow } from 'react-icons/fa'
 
 export interface StoreProps {
@@ -9,32 +12,39 @@ export interface StoreProps {
   desc: string
 }
 
-export default function Store({
+const Store: FC<StoreProps> = ({
   imgSrc,
   imgAlt,
   rank,
   address,
   city,
   desc,
-}: StoreProps): JSX.Element {
+}) => {
   return (
-    <div className="flex px-8 mx-auto mt-12 bg-white min-w-screen">
+    <div className="min-w-screen mx-auto mt-12 flex bg-white px-8">
       {/* image */}
       <article className="w-1/2">
         <div className="flex flex-col overflow-hidden rounded-lg shadow-2xl">
-          <div className="flex items-center h-8 text-white bg-gray-900">
-            <div className="w-3 h-3 ml-3 bg-red-400 rounded-full"></div>
-            <div className="w-3 h-3 ml-2 bg-orange-400 rounded-full"></div>
-            <div className="w-3 h-3 ml-2 bg-green-400 rounded-full"></div>
+          <div className="flex h-8 items-center bg-gray-900 text-white">
+            <div className="ml-3 h-3 w-3 rounded-full bg-red-400"></div>
+            <div className="ml-2 h-3 w-3 rounded-full bg-orange-400"></div>
+            <div className="ml-2 h-3 w-3 rounded-full bg-green-400"></div>
           </div>
 
-          <img className="object-cover w-full h-64" src={imgSrc} alt={imgAlt} />
+          <Image
+            className="h-64 w-full object-cover"
+            src={imgSrc}
+            alt={imgAlt}
+            width={200}
+            height={200}
+            priority
+          />
         </div>
       </article>
 
       {/* content */}
-      <article className="relative w-1/2 h-full pl-12">
-        <h1 className="text-sm font-bold tracking-wide text-orange-800 uppercase">
+      <article className="relative h-full w-1/2 pl-12">
+        <h1 className="text-sm font-bold uppercase tracking-wide text-orange-800">
           Store {rank}
         </h1>
 
@@ -43,14 +53,15 @@ export default function Store({
           <br /> {city}.
         </h2>
         <p className="mt-3 text-base text-gray-500">{desc}</p>
-        <a
-          href="/"
-          className="flex items-center mt-8 font-medium text-orange-500 transition duration-500 transform hover:underline hover:skew-x-12 hover:text-orange-800"
-        >
-          <span>View in Google Maps</span>
-          <FaLocationArrow className="w-4 h-4 ml-3" />
-        </a>
+        <Link href="/">
+          <a className="mt-8 flex transform items-center font-medium text-orange-500 transition duration-500 hover:skew-x-12 hover:text-orange-800 hover:underline">
+            <span>View in Google Maps</span>
+            <FaLocationArrow className="ml-3 h-4 w-4" />
+          </a>
+        </Link>
       </article>
     </div>
   )
 }
+
+export default Store

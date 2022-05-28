@@ -1,17 +1,19 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link'
+import { FC } from 'react'
 import { BsArrowRight } from 'react-icons/bs'
 
-const Portfolio = (): JSX.Element => {
+const Portfolio: FC = () => {
   return (
-    <article className="container py-16 mx-auto">
+    <article className="container mx-auto py-16">
       <div className="flex flex-wrap">
-        <section className="w-full px-4 mb-8 lg:w-1/2 lg:mb-0">
-          <div className="flex flex-col justify-center h-full px-20 py-5 text-white bg-orange-800">
-            <p className="mt-2 text-sm italic uppercase">Showcase</p>
+        <section className="mb-8 w-full px-4 lg:mb-0 lg:w-1/2">
+          <div className="flex h-full flex-col justify-center bg-orange-800 px-20 py-5 text-white">
+            <p className="mt-2 text-sm uppercase italic">Showcase</p>
             <h2 className="mt-10 mb-5 text-2xl font-bold ">
               Witness the beauty of our works
             </h2>
-            <p className="max-w-sm mb-6 leading-7 text-justify">
+            <p className="mb-6 max-w-sm text-justify leading-7">
               We love cakes and chocolates - so do our customers. We constantly
               obsess over sourcing the highest quality ingredients. We always
               use local organic eggs, creamy local butter and highest quality
@@ -21,17 +23,17 @@ const Portfolio = (): JSX.Element => {
             <Link href="/products">
               <a className="flex items-center text-orange-300 hover:text-orange-500">
                 <div className="flex-initial">See all products</div>
-                <BsArrowRight className="flex-shrink w-4 ml-3" />
+                <BsArrowRight className="ml-3 w-4 flex-shrink" />
               </a>
             </Link>
           </div>
         </section>
 
         <section className="px-4 lg:w-1/2">
-          <div className="flex flex-wrap w-full h-full -m-2">
+          <div className="-m-2 flex h-full w-full flex-wrap">
             <div className="w-1/2 p-2">
               <img
-                className="object-cover shadow-md shadow-pop-bl"
+                className="shadow-pop-bl object-cover shadow-md"
                 src="/images/show1.jpg"
                 alt="show1"
               />
@@ -39,7 +41,7 @@ const Portfolio = (): JSX.Element => {
 
             <div className="w-1/2 p-2">
               <img
-                className="object-cover shadow-md shadow-pop-bl"
+                className="shadow-pop-bl object-cover shadow-md"
                 src="/images/show1.jpg"
                 alt="show2"
               />
@@ -47,7 +49,7 @@ const Portfolio = (): JSX.Element => {
 
             <div className="w-1/2 p-2">
               <img
-                className="object-cover shadow-md shadow-pop-bl"
+                className="shadow-pop-bl object-cover shadow-md"
                 src="/images/show2.jpg"
                 alt="show3"
               />
@@ -55,7 +57,7 @@ const Portfolio = (): JSX.Element => {
 
             <div className="w-1/2 p-2">
               <img
-                className="object-cover w-full shadow-md shadow-pop-bl"
+                className="shadow-pop-bl w-full object-cover shadow-md"
                 src="/images/show2.jpg"
                 alt="show4"
               />

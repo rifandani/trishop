@@ -1,13 +1,12 @@
-import { GetServerSideProps } from 'next'
+import CheckoutComp from 'components/cart/checkout/CheckoutComp'
+import Footer from 'components/common/Footer'
+import Nav from 'components/common/Nav'
 import { parse } from 'cookie'
 import { verify } from 'jsonwebtoken'
+import { GetServerSideProps, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
-// files
-import Nav from 'components/Nav'
-import CheckoutComp from 'components/cart/checkout/CheckoutComp'
-import Footer from 'components/Footer'
 
-function CheckoutPage(): JSX.Element {
+const CheckoutPage: NextPage = () => {
   return (
     <div className="">
       <NextSeo

@@ -1,20 +1,13 @@
-import Cors from 'cors'
-import { parse } from 'querystring'
 import { v2 as cld } from 'cloudinary'
-// files
 import nc from 'middlewares/nc'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
+import withCors from 'middlewares/withCors'
+import { parse } from 'querystring'
 
 export default nc
-  // cors, middleware 1
-  .use(
-    Cors({
-      methods: ['GET', 'POST', 'DELETE'],
-    })
-  )
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie mongodb, middleware 2
-  /* ----------------------------- GET req => /admin/cloudinary/images ---------------------------- */
-  .get(async (req, res) => {
+  .use(withCors(['GET', 'POST', 'DELETE']))
+  .use(withCheckAuthCookieAsAdmin())
+  .get('/api/v1/admin/cloudinary/resources', async (req, res) => {
     // there is no query for filtering & sorting
     if (Object.keys(req.query).length === 0) {
       const resources = await cld.api.resources({
@@ -31,15 +24,13 @@ export default nc
 
     // const customQuery = req.query
   })
-  /* ---------------------------- POST req => /admin/cloudinary/images ---------------------------- */
-  .post(async (_req, res) => {
+  .post('/api/v1/admin/cloudinary/resources', async (_req, res) => {
     // const image = await cld.uploader.upload()
 
     // POST success => Created ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     res.status(501).json({ error: false, message: 'Not yet implemented' })
   })
-  /* ------------------------- DELETE req => /admin/cloudinary/images?ids ------------------------- */
-  .delete(async (req, res) => {
+  .delete('/api/v1/admin/cloudinary/resources', async (req, res) => {
     // get query params
     const params = parse(req.url)
 

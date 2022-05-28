@@ -1,24 +1,17 @@
-import Cors from 'cors'
-// files
 import nc from 'middlewares/nc'
+import withCors from 'middlewares/withCors'
 import withMongoConnect from 'middlewares/withMongoConnect'
 import withYupConnect from 'middlewares/withYupConnect'
 import CouponModel from 'mongo/models/Coupon'
 import {
-  validateCouponApiSchema,
-  TValidateCouponApiSchema,
+  TValidateCouponApiSchema, validateCouponApiSchema
 } from 'yup/apiSchema'
 
 export default nc
-  // cors middleware
-  .use(
-    Cors({
-      methods: ['POST'],
-    })
-  )
+  .use(withCors(['POST'])) // cors
   .use(withMongoConnect()) // connect mongodb middleware
   .use(withYupConnect(validateCouponApiSchema)) // yup middleware
-  .post(async (req, res) => {
+  .post('/api/v1/public/validate/coupon', async (req, res) => {
     const { userId, code } = req.body as TValidateCouponApiSchema // destructure request body form
 
     // find existing coupon by {code}

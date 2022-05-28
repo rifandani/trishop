@@ -1,26 +1,20 @@
-import Cors from 'cors'
-// files
 import nc from 'middlewares/nc'
 import withCheckAuthCookieAsAdmin from 'middlewares/withCheckAuthCookieAsAdmin'
-import withYupConnect from 'middlewares/withYupConnect'
+import withCors from 'middlewares/withCors'
 import withMongoConnect from 'middlewares/withMongoConnect'
+import withYupConnect from 'middlewares/withYupConnect'
 import ProductModel from 'mongo/models/Product'
 import { productApiSchema, TProductApiSchema } from 'yup/apiSchema'
 
 export default nc
-  // cors, middleware 1
-  .use(
-    Cors({
-      methods: ['GET', 'POST'],
-    })
-  )
-  .use(withCheckAuthCookieAsAdmin()) // check auth cookie middleware
-  .use(withYupConnect(productApiSchema)) // yup middleware
-  .use(withMongoConnect()) // connect mongodb middleware
-  /* --------------------------------- GET req => /admin/products --------------------------------- */
-  .get(async (req, res) => {
+  .use(withCors(['GET', 'POST'])) // cors
+  .use(withCheckAuthCookieAsAdmin()) // check auth cookie
+  .use(withYupConnect(productApiSchema)) // yup
+  .use(withMongoConnect()) // connect mongodb
+  .get('/api/v1/admin/products', async (req, res) => {
     // there is no query for filtering & sorting
     if (Object.keys(req.query).length === 0) {
+      // find all products
       const products = await ProductModel.find()
 
       // GET success => OK ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -30,8 +24,8 @@ export default nc
 
     // const customQuery = req.query
   })
-  /* --------------------------------- POST req => /admin/products -------------------------------- */
-  .post(async (req, res) => {
+  .post('/api/v1/admin/products', async (req, res) => {
+    // destructure req.body
     const { title, price, stock, desc, labels, images } =
       req.body as TProductApiSchema
 

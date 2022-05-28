@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { NextHandler } from 'next-connect'
-import { NextApiRequest, NextApiResponse } from 'next'
-// files
 import dbConnect from 'mongo/config/dbConnect'
+import { NextApiRequest, NextApiResponse } from 'next'
+import { NextHandler } from 'next-connect'
 
 const withMongoConnect =
   () =>

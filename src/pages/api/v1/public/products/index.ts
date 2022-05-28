@@ -1,19 +1,12 @@
-import Cors from 'cors'
 import nc from 'middlewares/nc'
-// files
-import ProductModel from 'mongo/models/Product'
+import withCors from 'middlewares/withCors'
 import withMongoConnect from 'middlewares/withMongoConnect'
+import ProductModel from 'mongo/models/Product'
 
 export default nc
-  // cors, middleware 1
-  .use(
-    Cors({
-      methods: ['GET'],
-    })
-  )
-  .use(withMongoConnect()) // connet mongodb, middleware 2
-  .get(async (req, res) => {
-    /* --------------------------------- GET req => /public/products -------------------------------- */
+  .use(withCors(['GET'])) // cors
+  .use(withMongoConnect()) // connect mongodb
+  .get('/api/v1/public/products', async (req, res) => {
     if (Object.keys(req.query).length === 0) {
       const products = await ProductModel.find()
 

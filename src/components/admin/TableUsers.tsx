@@ -1,17 +1,19 @@
-import Axios from 'axios'
 import { h } from 'gridjs'
-import { mutate } from 'swr'
 import { Grid } from 'gridjs-react'
-import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
-// files
-import useUsers from 'hooks/useUsers'
+import { FC } from 'react'
+import { toast } from 'react-toastify'
+import { deleteAdminUser } from 'services/admin/users'
+import { useSWRConfig } from 'swr'
+import { IUsersProps } from 'types/User'
 
-export default function TableUsers(): JSX.Element {
-  // hooks
+const TableUsers: FC<IUsersProps> = ({ users }) => {
+  //#region GENERAL
   const { push } = useRouter()
-  const { users, usersIsLoading, usersIsError } = useUsers()
+  const { mutate } = useSWRConfig()
+  //#endregion
 
+  //#region HANDLE USER ACTIONS
   const editUser = (_id: string): Promise<boolean> =>
     push(`/admin/users/${_id}`)
 
@@ -23,8 +25,8 @@ export default function TableUsers(): JSX.Element {
         return
       }
 
-      // DELETE /admin/users/:_id
-      await Axios.delete(`/admin/users/${_id}`)
+      // call admin users service
+      await deleteAdminUser(_id)
 
       // trigger a revalidation (refetch) to make sure our local data is correct
       await mutate('/admin/users')
@@ -34,14 +36,13 @@ export default function TableUsers(): JSX.Element {
       toast.error(err.data.message)
     }
   }
+  //#endregion
 
   return (
-    <section className="flex flex-col mt-8">
+    <section className="mt-8 flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="min-w-full overflow-hidden sm:rounded-lg ">
-          {usersIsLoading && 'Loading...'}
-          {usersIsError && 'Error'}
-          {users && (
+          {
             <Grid
               data={users as any}
               search={true}
@@ -107,9 +108,11 @@ export default function TableUsers(): JSX.Element {
                 },
               ]}
             />
-          )}
+          }
         </div>
       </div>
     </section>
   )
 }
+
+export default TableUsers

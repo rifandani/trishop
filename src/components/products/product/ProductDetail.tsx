@@ -1,34 +1,36 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState, ChangeEvent, useMemo } from 'react'
-import { FaChevronRight, FaHeart, FaStar, FaCartPlus } from 'react-icons/fa'
+import { ChangeEvent, FC, useState } from 'react'
+import { FaCartPlus, FaChevronRight, FaHeart, FaStar } from 'react-icons/fa'
 import { toast } from 'react-toastify'
-// files
-import ImageSwiper from './ImageSwiper'
-import { useAppDispatch, useAppSelector } from 'redux/store'
 import { addProductToCart } from 'redux/slices/cart'
-import { IProductProps } from 'types/Product'
 import {
   addProductToWishlist,
   deleteProductFromWishlist,
 } from 'redux/slices/wishlist'
+import { useAppDispatch, useAppSelector } from 'redux/store'
+import { IProductProps } from 'types/Product'
+import SwiperZoomGallery from './SwiperZoomGallery'
 
-export default function ProductDetail({ product }: IProductProps): JSX.Element {
+const ProductDetail: FC<IProductProps> = ({ product }) => {
+  //#region GENERAL
   const { title, price, stock, desc, labels, images, sold, _id, reviews } =
-    product // destructure product props
+    product
 
-  // hooks
   const { push } = useRouter()
-  const wishlist = useAppSelector((state) => state.wishlist)
   const dispatch = useAppDispatch()
-
-  const [discount] = useState<number>(0.1)
-  const [quantity, setQuantity] = useState<string>('1')
   const [error, setError] = useState<string>('')
 
+  // wishlist
+  const wishlist = useAppSelector((state) => state.wishlist)
+  const productWishlisted = wishlist.values.find((prod) => prod._id === _id)
+
   // prices
+  const [discount] = useState<number>(0.1)
+  const [quantity, setQuantity] = useState<string>('1')
   const priceAfterDiscount = price - price * discount
   const subtotal = Number(quantity) * priceAfterDiscount
+
   // reviews
   const reviewsCount = reviews.length
   const averageStars =
@@ -39,33 +41,32 @@ export default function ProductDetail({ product }: IProductProps): JSX.Element {
             .reduce((acc, curr) => acc + curr) / reviewsCount
         ).toPrecision(2)
       : 0
+  //#endregion
 
-  // check if product already in wishlist
-  const productWishlisted = useMemo(
-    () => wishlist.values.find((prod) => prod._id === _id),
-    [wishlist]
-  )
-
-  async function addToCart(): Promise<void> {
-    // if quantity < 1
+  //#region ACTION HANDLER
+  const addToCart = async (): Promise<void> => {
+    // validation
     if (+quantity < 1) {
       setError('Input 1 or more')
       return
     }
 
-    const payload = {
-      ...product,
-      quantity: parseInt(quantity),
-    }
+    // dispatch cart action
+    dispatch(
+      addProductToCart({
+        ...product,
+        quantity: parseInt(quantity),
+      })
+    )
 
-    dispatch(addProductToCart(payload)) // dispatch cart
-
+    // on success
     toast.success('Product added to the cart')
   }
 
-  function onChangeQuantity(e: ChangeEvent<HTMLInputElement>): void {
+  const onChangeQuantity = (e: ChangeEvent<HTMLInputElement>): void => {
     const input = e.target.value
 
+    // validation
     if (Number(input) > stock) {
       setError(`Cannot exceed more than ${stock}`)
       return
@@ -74,67 +75,73 @@ export default function ProductDetail({ product }: IProductProps): JSX.Element {
       return
     }
 
+    // on success
     setError('')
     setQuantity(input)
   }
 
-  function addToWishlist(): void {
-    const payload = {
-      price,
-      _id: _id,
-      imageName: images[0].imageName,
-      imageUrl: images[0].imageUrl,
-      name: title,
-    }
+  const addToWishlist = (): void => {
+    // dispatch action
+    dispatch(
+      addProductToWishlist({
+        price,
+        _id: _id,
+        imageName: images[0].imageName,
+        imageUrl: images[0].imageUrl,
+        name: title,
+      })
+    )
 
-    dispatch(addProductToWishlist(payload)) // dispatch wishlist
-
+    // on success
     toast.success('Product added to wishlist')
   }
 
-  function deleteFromWishlist(): void {
-    dispatch(deleteProductFromWishlist(_id)) // dispatch wishlist
+  const deleteFromWishlist = (): void => {
+    // dispatch action
+    dispatch(deleteProductFromWishlist(_id))
 
+    // on success
     toast.info('Product deleted from the wishlist')
   }
 
   const clickLabel = (label: string): Promise<boolean> =>
     push(`/products/categories?_label=${label}`)
+  //#endregion
 
   return (
     <main className="py-6">
       {/* Breadcrumbs */}
-      <section className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-16">
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-16">
         <div className="flex items-center space-x-2 text-sm text-gray-400">
           <Link href="/">
-            <a className="hover:underline hover:text-orange-800">Home</a>
+            <a className="hover:text-orange-800 hover:underline">Home</a>
           </Link>
 
-          <FaChevronRight className="w-4 h-4 leading-none text-gray-300" />
+          <FaChevronRight className="h-4 w-4 leading-none text-gray-300" />
 
           <Link href="/products">
-            <a className="hover:underline hover:text-orange-800">Products</a>
+            <a className="hover:text-orange-800 hover:underline">Products</a>
           </Link>
 
-          <FaChevronRight className="w-4 h-4 leading-none text-gray-300" />
+          <FaChevronRight className="h-4 w-4 leading-none text-gray-300" />
 
           <span>Product Detail</span>
         </div>
       </section>
 
-      <section className="px-4 mx-auto mt-6 max-w-7xl sm:px-6 lg:px-16">
-        <article className="flex flex-col -mx-4 md:flex-row">
+      <section className="mx-auto mt-6 max-w-7xl px-4 sm:px-6 lg:px-16">
+        <article className="-mx-4 flex flex-col">
           {/* product image swiper */}
-          <ImageSwiper images={images} />
+          <SwiperZoomGallery images={images} />
 
           {/* isi product details */}
-          <div className="px-4 mt-6 md:mt-0 md:flex-1">
+          <div className="mt-6 px-4 md:mt-0 md:flex-1">
             {/* product title */}
             <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-800 md:text-3xl">
               {title}
             </h1>
 
-            <section className="flex items-center justify-between mb-5 border-b">
+            <section className="mb-5 flex items-center justify-between border-b">
               {/* stock */}
               <p className="text-xs font-semibold tracking-wide text-gray-400">
                 Stock <span className="text-gray-800">{stock}</span>
@@ -146,14 +153,14 @@ export default function ProductDetail({ product }: IProductProps): JSX.Element {
               </p>
 
               {/* reviews */}
-              <div className="flex items-center my-3 space-x-1">
-                <FaStar className="w-4 h-4 text-orange-500" />
+              <div className="my-3 flex items-center space-x-1">
+                <FaStar className="h-4 w-4 text-orange-500" />
 
-                <span className="pl-2 mt-1 text-xs font-semibold tracking-wide text-gray-800">
+                <span className="mt-1 pl-2 text-xs font-semibold tracking-wide text-gray-800">
                   {averageStars}
                 </span>
 
-                <span className="pl-2 mt-1 text-xs font-semibold tracking-wide text-gray-400">
+                <span className="mt-1 pl-2 text-xs font-semibold tracking-wide text-gray-400">
                   ({reviewsCount} reviews)
                 </span>
               </div>
@@ -162,7 +169,7 @@ export default function ProductDetail({ product }: IProductProps): JSX.Element {
             {/* price & discount */}
             <section className="flex items-center space-x-4">
               <div>
-                <div className="flex px-3 py-2 bg-gray-100 rounded-lg">
+                <div className="flex rounded-lg bg-gray-100 px-3 py-2">
                   <span className="mt-1 mr-2 text-orange-800">Rp</span>
 
                   <span className="mr-2 text-3xl font-bold text-orange-800 line-through">
@@ -194,7 +201,7 @@ export default function ProductDetail({ product }: IProductProps): JSX.Element {
             <p className="mt-5 text-gray-400">{desc}</p>
 
             {/* labels */}
-            <section className="flex items-center my-4">
+            <section className="my-4 flex flex-wrap items-center gap-3">
               {labels.map((label: string, i: number) => (
                 <button
                   className="product-label-btn"
@@ -209,15 +216,15 @@ export default function ProductDetail({ product }: IProductProps): JSX.Element {
             <hr className="my-5" />
 
             {/* quantity + subtotal */}
-            <section className="flex-col items-center mb-2">
+            <section className="mb-2 flex-col items-center">
               {/* quantity */}
               <div className="flex items-center">
-                <label className="text-xs font-semibold tracking-wide uppercase">
+                <label className="text-xs font-semibold uppercase tracking-wide">
                   Order
                 </label>
 
                 <input
-                  className="w-1/6 h-10 ml-8 cursor-pointer"
+                  className="ml-8 h-10 w-1/6 cursor-pointer"
                   type="number"
                   value={quantity}
                   onChange={onChangeQuantity}
@@ -233,8 +240,8 @@ export default function ProductDetail({ product }: IProductProps): JSX.Element {
               </div>
 
               {/* subtotal */}
-              <div className="flex items-center mt-5">
-                <p className="text-xs font-semibold tracking-wide uppercase">
+              <div className="mt-5 flex items-center">
+                <p className="text-xs font-semibold uppercase tracking-wide">
                   Subtotal
                 </p>
 
@@ -250,23 +257,23 @@ export default function ProductDetail({ product }: IProductProps): JSX.Element {
             </section>
 
             {/* cart & wishlist */}
-            <section className="flex items-center mt-6 space-x-4">
+            <section className="mt-6 flex items-center space-x-4">
               <button
-                className="flex items-center h-10 px-6 py-2 font-semibold text-white bg-orange-800 rounded-full hover:bg-orange-500"
+                className="flex h-10 items-center rounded-full bg-orange-800 px-6 py-2 font-semibold text-white hover:bg-orange-500"
                 onClick={addToCart}
               >
-                <FaCartPlus className="w-4 h-4 mr-2" />
-                <span className="mt-1 text-xs font-semibold tracking-wide uppercase">
+                <FaCartPlus className="mr-2 h-4 w-4" />
+                <span className="mt-1 text-xs font-semibold uppercase tracking-wide">
                   Add to Cart
                 </span>
               </button>
 
               <button
-                className="flex items-center h-10 px-6 py-2 text-gray-400 border border-gray-200 rounded-full hover:border-orange-800 hover:bg-orange-200 group"
+                className="group flex h-10 items-center rounded-full border border-gray-200 px-6 py-2 text-gray-400 hover:border-orange-800 hover:bg-orange-200"
                 onClick={productWishlisted ? deleteFromWishlist : addToWishlist}
               >
-                <FaHeart className="w-4 h-4 mr-2 group-hover:text-orange-800" />
-                <span className="text-xs font-semibold tracking-wide uppercase group-hover:text-orange-800">
+                <FaHeart className="mr-2 h-4 w-4 group-hover:text-orange-800" />
+                <span className="text-xs font-semibold uppercase tracking-wide group-hover:text-orange-800">
                   {productWishlisted
                     ? 'Delete from wishlist'
                     : 'Add to wishlist'}
@@ -279,3 +286,5 @@ export default function ProductDetail({ product }: IProductProps): JSX.Element {
     </main>
   )
 }
+
+export default ProductDetail

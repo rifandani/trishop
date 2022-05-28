@@ -1,4 +1,6 @@
 // files
+import { HttpResponse } from 'types'
+import { TAddProductSchema } from 'yup/schema'
 import { IReview } from './Review'
 
 export type TImage = {
@@ -31,19 +33,23 @@ export interface IProductsProps {
   products: IProduct[]
 }
 
-/* --------------------------------- client --------------------------------- */
-
-export interface APIResponseProduct {
-  error: boolean
-  product: IProduct
-  message?: string
+export interface IAddAndEditProduct extends TAddProductSchema {
+  images: TImage[]
 }
 
-export interface APIResponseProducts {
-  error: boolean
-  products: IProduct[]
-  count: number
-  message?: string
+/* --------------------------------- client --------------------------------- */
+
+export interface APIResponseProduct extends HttpResponse {
+  readonly product: IProduct
+}
+
+export interface APIResponseProducts extends HttpResponse {
+  readonly products: IProduct[]
+  readonly count: number
+}
+
+export interface APIResponsePostProduct extends HttpResponse {
+  readonly productId?: string
 }
 
 // import { Document, Model } from 'mongoose'
