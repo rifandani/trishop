@@ -1,9 +1,10 @@
-import { API_BASE_URL_ADMIN_COUPON } from 'config/constants'
-import { httpDelete, httpGet, httpPost } from 'services/http'
+import { API_BASE_URL_ADMIN_COUPON } from 'config/constants.config'
+import { httpDelete, httpGet, httpPost, httpPut } from 'services/http'
 import {
   APIResponseCoupon,
   APIResponseCoupons,
   APIResponsePostCoupon,
+  APIResponsePutCoupon,
   IAddAndEditCoupon,
   ICoupon,
 } from 'types/Coupon'
@@ -11,6 +12,10 @@ import {
 interface PostResponse {
   readonly status: number
   readonly data: APIResponsePostCoupon
+}
+interface PutResponse {
+  readonly status: number
+  readonly data: APIResponsePutCoupon
 }
 
 export async function getAdminCoupons(): Promise<ICoupon[]> {
@@ -37,6 +42,21 @@ export async function getAdminCoupon(couponId: string): Promise<ICoupon> {
     `${API_BASE_URL_ADMIN_COUPON}/${couponId}`
   )
   return res.data.coupon
+}
+
+export async function putAdminCoupon(
+  couponId: string,
+  couponInput: IAddAndEditCoupon
+): Promise<PutResponse> {
+  const res = await httpPut<APIResponsePutCoupon>(
+    `${API_BASE_URL_ADMIN_COUPON}/${couponId}`,
+    couponInput
+  )
+
+  return {
+    status: res.status,
+    data: res.data,
+  }
 }
 
 export async function deleteAdminCoupon(couponId: string): Promise<void> {

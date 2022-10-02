@@ -1,4 +1,4 @@
-import { API_BASE_URL_ADMIN_PRODUCT } from 'config/constants'
+import { API_BASE_URL_ADMIN_PRODUCT } from 'config/constants.config'
 import { httpDelete, httpGet, httpPost, httpPut } from 'services/http'
 import {
   APIResponsePostProduct,

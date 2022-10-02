@@ -1,5 +1,5 @@
 import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { API_URL_DEV, API_URL_PROD } from 'config/constants'
+import { API_URL_DEV, API_URL_PROD } from 'config/constants.config'
 import qs from 'qs'
 import { toast } from 'react-toastify'
 

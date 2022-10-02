@@ -1,4 +1,4 @@
-import { API_BASE_URL_ADMIN_REPORT } from 'config/constants'
+import { API_BASE_URL_ADMIN_REPORT } from 'config/constants.config'
 import { httpDelete, httpGet } from 'services/http'
 import {
   APIResponseDeleteReport,

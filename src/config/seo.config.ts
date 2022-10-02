@@ -28,20 +28,6 @@ const defaultSeoProps = {
     site: '@site',
     cardType: 'summary_large_image',
   },
-  additionalLinkTags: [
-    {
-      rel: 'icon',
-      href: '/favicon.ico',
-    },
-    {
-      rel: 'preconnect',
-      href: 'https://fonts.gstatic.com',
-    },
-    {
-      rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap',
-    },
-  ],
   additionalMetaTags: [
     {
       name: 'viewport',

@@ -1,5 +1,5 @@
-import Navbar from 'components/admin/AdminNavbar'
-import AddUser from 'components/admin/users/AddUser'
+import MAdminUserForm from 'components/organism/MAdminUserForm.organism'
+import MAdminNavbar from 'components/template/MAdminNavbar.template'
 import { parse } from 'cookie'
 import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
@@ -11,11 +11,9 @@ import { AuthCookiePayload } from 'types'
 const AddUserPage: NextPage = () => {
   return (
     <>
-      <NextSeo title="Add New User" />
+      <NextSeo title="Add User" />
 
-      <Navbar>
-        <AddUser />
-      </Navbar>
+      <MAdminNavbar content={<MAdminUserForm user={undefined} />} />
     </>
   )
 }

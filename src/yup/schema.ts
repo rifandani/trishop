@@ -1,4 +1,4 @@
-import { object, string, array, number, TypeOf } from 'yup'
+import { array, date, number, object, string, TypeOf } from 'yup'
 import 'yup-phone'
 
 export const checkoutContactSchema = object({
@@ -22,59 +22,77 @@ export const checkoutShippingSchema = object({
   address: string()
     .trim()
     .min(5, 'Address must be 5 characters or more')
-    .max(50, 'argument must be  characters or less')
+    .max(50, 'Address must be 50 characters or less')
     .required('Address required'),
   city: string()
     .trim()
     .min(2, 'City must be 2 characters or more')
-    .max(30, 'argument must be 30 characters or less')
+    .max(30, 'City must be 30 characters or less')
     .required('City required'),
   postalCode: string()
     .trim()
-    .min(3, 'Address must be 3 characters or more')
-    .max(30, 'argument must be 30 characters or less')
+    .min(3, 'Postal code must be 3 characters or more')
+    .max(30, 'Postal code must be 30 characters or less')
     .required('Postal code required'),
 }) // .camelCase()
 
 export const addProductSchema = object({
   title: string()
     .trim()
-    .min(3, 'title must be 3 characters or more')
-    .max(30, 'title must be 30 characters or less')
-    .required('title required'),
+    .min(3, 'Title must be 3 characters or more')
+    .max(30, 'Title must be 30 characters or less')
+    .required('Title required'),
   price: number()
-    .positive('price must be positive number')
-    .required('price required'),
+    .positive('Price must be positive number')
+    .required('Price required'),
   stock: number()
-    .positive('stock must be positive number')
-    .required('stock required'),
+    .positive('Stock must be positive number')
+    .required('Stock required'),
   desc: string()
     .trim()
-    .min(10, 'desc must be 10 characters or more')
-    .required('desc required'),
+    .min(10, 'Description must be 10 characters or more')
+    .required('Description required'),
   labels: array()
     .of(
       string()
-        .min(3, 'label must be 3 characters or more')
-        .required('label required')
+        .min(3, 'Label must be 3 characters or more')
+        .required('Label required')
     )
-    .min(1, 'labels must consists of 1 label string or more')
-    .max(3, 'labels must consists of 3 label string or less')
-    .required('labels required'),
+    .min(1, 'Input minimal 1 label')
+    .max(3, 'Input maximal 3 label')
+    .required('Labels required'),
 })
 
 export const addReportSchema = object({
   argument: string()
     .trim()
-    .min(5, 'argument must be 5 characters or more')
-    .max(50, 'argument must be 50 characters or less')
-    .required('argument required'),
-  typeId: number()
-    .min(1, 'typeId must be 1 or more')
-    .required('typeId required'),
+    .min(5, 'Argument must be 5 characters or more')
+    .max(50, 'Argument must be 50 characters or less')
+    .required('Argument required'),
+  typeId: number().min(1, 'Please input type').required('Type required'),
+})
+
+export const addCouponSchema = object({
+  discount: number()
+    .min(0, 'discount must be 0 or more')
+    .required('discount required'),
+  minTransaction: number()
+    .min(0, 'minTransaction must be 0 or more')
+    .required('minTransaction required'),
+  code: string()
+    .trim()
+    .min(3, 'code must be 3 characters or more')
+    .max(30, 'code must be 30 characters or less')
+    .required('code required'),
+  desc: string()
+    .trim()
+    .min(10, 'desc must be 10 characters or more')
+    .required('desc required'),
+  validUntil: date().required('validUntil required'),
 })
 
 export type TCheckoutContactSchema = TypeOf<typeof checkoutContactSchema>
 export type TCheckoutShippingSchema = TypeOf<typeof checkoutShippingSchema>
 export type TAddProductSchema = TypeOf<typeof addProductSchema>
 export type TAddReportSchema = TypeOf<typeof addReportSchema>
+export type TAddCouponSchema = TypeOf<typeof addCouponSchema>

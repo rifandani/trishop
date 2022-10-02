@@ -1,5 +1,5 @@
-import AdminDashboard from 'components/admin/AdminDashboard'
-import Navbar from 'components/admin/AdminNavbar'
+import MAdminDashboardContent from 'components/organism/MAdminDashboardContent.organism'
+import MAdminNavbar from 'components/template/MAdminNavbar.template'
 import { parse } from 'cookie'
 import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
@@ -13,9 +13,7 @@ const AdminDashboardPage: NextPage = () => {
     <>
       <NextSeo title="Admin Dashboard" />
 
-      <Navbar>
-        <AdminDashboard />
-      </Navbar>
+      <MAdminNavbar content={<MAdminDashboardContent />} />
     </>
   )
 }

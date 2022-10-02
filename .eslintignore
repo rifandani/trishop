@@ -5,6 +5,8 @@ dist
 next.config.js
 postcss.config.js
 tailwind.config.js
+CHANGELOG.md
+
 # cypress
 data
 build

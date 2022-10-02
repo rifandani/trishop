@@ -1,10 +1,11 @@
+import { Box } from '@mui/material'
 import { FC } from 'react'
 import { A11y, Autoplay, Navigation, Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { IReportsProps } from 'types/Report'
-import ReportCard from './ReportCard'
+import MAdminReportCard from '../atom/MAdminReportCard.atom'
 
-const SwiperReports: FC<IReportsProps> = ({ reports }) => {
+const MAdminSwiperReports: FC<IReportsProps> = ({ reports }) => {
   const swiperStyle = {
     '--swiper-navigation-color': '#92400e',
     '--swiper-pagination-color': '#92400e',
@@ -13,7 +14,7 @@ const SwiperReports: FC<IReportsProps> = ({ reports }) => {
   } as const
 
   return (
-    <section className="h-left-full w-full">
+    <Box className="h-full w-full">
       <Swiper
         className="rounded-md"
         style={swiperStyle}
@@ -30,16 +31,13 @@ const SwiperReports: FC<IReportsProps> = ({ reports }) => {
         }}
       >
         {reports.map((report) => (
-          <SwiperSlide
-            style={{ backgroundColor: 'rgba(229,231,235)' }} // bg-gray-200
-            key={report._id}
-          >
-            <ReportCard report={report} />
+          <SwiperSlide key={report._id}>
+            <MAdminReportCard report={report} />
           </SwiperSlide>
         ))}
       </Swiper>
-    </section>
+    </Box>
   )
 }
 
-export default SwiperReports
+export default MAdminSwiperReports
