@@ -1,5 +1,5 @@
-import Navbar from 'components/admin/AdminNavbar'
-import EditCoupon from 'components/admin/coupons/EditCoupon'
+import MAdminCouponForm from 'components/organism/MAdminCouponForm.organism'
+import MAdminNavbar from 'components/template/MAdminNavbar.template'
 import { parse } from 'cookie'
 import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
@@ -16,9 +16,7 @@ const EditCouponPage: NextPage<ICouponProps> = ({ coupon }) => {
     <>
       <NextSeo title="Edit Coupon" />
 
-      <Navbar>
-        <EditCoupon coupon={coupon} />
-      </Navbar>
+      <MAdminNavbar content={<MAdminCouponForm coupon={coupon} />} />
     </>
   )
 }

@@ -1,20 +1,14 @@
+import type {} from '@mui/lab/themeAugmentation'
 import { createTheme } from '@mui/material'
 import { SxProps } from '@mui/system'
+import type {} from '@mui/x-data-grid/themeAugmentation'
+import type {} from '@mui/x-date-pickers/themeAugmentation'
 
 export const generateSxStyles = <T = unknown>(
   params: Record<keyof T, SxProps<typeof theme>> | T
 ): Record<keyof T, SxProps<typeof theme>> | T => params
 
 export const theme = createTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 640,
-      md: 768,
-      lg: 1024,
-      xl: 1280,
-    },
-  },
   palette: {
     primary: {
       main: '#9a3412',

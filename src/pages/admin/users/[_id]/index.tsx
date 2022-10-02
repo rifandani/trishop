@@ -1,5 +1,5 @@
-import Navbar from 'components/admin/AdminNavbar'
-import EditUser from 'components/admin/users/EditUser'
+import MAdminUserForm from 'components/organism/MAdminUserForm.organism'
+import MAdminNavbar from 'components/template/MAdminNavbar.template'
 import { parse } from 'cookie'
 import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
@@ -15,9 +15,7 @@ const EditUserPage: NextPage<IUserProps> = ({ user }) => {
     <>
       <NextSeo title="Edit User" />
 
-      <Navbar>
-        <EditUser user={user} />
-      </Navbar>
+      <MAdminNavbar content={<MAdminUserForm user={user} />} />
     </>
   )
 }

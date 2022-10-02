@@ -46,8 +46,10 @@ export interface APIResponseCoupon extends HttpResponse {
 }
 
 export interface APIResponsePostCoupon extends HttpResponse {
-  readonly couponId?: string
+  readonly couponId: string
 }
+
+export type APIResponsePutCoupon = HttpResponse
 
 // import { Document, Model } from 'mongoose'
 // export interface ICouponDocument extends ICoupon, Document {}

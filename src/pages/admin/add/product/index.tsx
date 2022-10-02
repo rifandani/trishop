@@ -1,6 +1,7 @@
-import Navbar from 'components/admin/AdminNavbar'
-import AddProduct from 'components/admin/products/AddProduct'
+import MAdminProductForm from 'components/organism/MAdminProductForm.organism'
+import MAdminNavbar from 'components/template/MAdminNavbar.template'
 import { parse } from 'cookie'
+import useAdminProductFormViewModel from 'hooks/admin/product/useAdminProductForm.viewModel'
 import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
 import UserModel from 'mongo/models/User'
@@ -9,13 +10,15 @@ import { NextSeo } from 'next-seo'
 import { AuthCookiePayload } from 'types'
 
 const AddProductPage: NextPage = () => {
+  const adminProductForm = useAdminProductFormViewModel({ product: undefined })
+
   return (
     <>
       <NextSeo title="Add New Product" />
 
-      <Navbar>
-        <AddProduct />
-      </Navbar>
+      <MAdminNavbar
+        content={<MAdminProductForm adminProductForm={adminProductForm} />}
+      />
     </>
   )
 }

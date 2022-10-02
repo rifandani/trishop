@@ -1,6 +1,7 @@
-import Navbar from 'components/admin/AdminNavbar'
-import EditProduct from 'components/admin/products/EditProduct'
+import MAdminProductForm from 'components/organism/MAdminProductForm.organism'
+import MAdminNavbar from 'components/template/MAdminNavbar.template'
 import { parse } from 'cookie'
+import useAdminProductFormViewModel from 'hooks/admin/product/useAdminProductForm.viewModel'
 import { verify } from 'jsonwebtoken'
 import dbConnect from 'mongo/config/dbConnect'
 import ProductModel from 'mongo/models/Product'
@@ -12,13 +13,15 @@ import { IProductProps } from 'types/Product'
 import getQueryAsString from 'utils/getQueryAsString'
 
 const EditProductPage: NextPage<IProductProps> = ({ product }) => {
+  const adminProductForm = useAdminProductFormViewModel({ product })
+
   return (
     <>
       <NextSeo title="Edit Product" />
 
-      <Navbar>
-        <EditProduct product={product} />
-      </Navbar>
+      <MAdminNavbar
+        content={<MAdminProductForm adminProductForm={adminProductForm} />}
+      />
     </>
   )
 }
@@ -36,17 +39,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     // verify auth cookie
-    const decoded = verify(
+    const { sub, role } = verify(
       authCookie,
       process.env.MY_SECRET_KEY
     ) as AuthCookiePayload
-    const authUserId = decoded.sub
 
     // connect to mongodb
     await dbConnect()
 
     // if authUser does not exists
-    const authUserIsExists = await UserModel.exists({ _id: authUserId })
+    const authUserIsExists = await UserModel.exists({ _id: sub })
     if (!authUserIsExists) {
       return {
         redirect: { destination: '/login', permanent: false },
@@ -54,10 +56,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     // find authUser by id
-    // const authUser = await UserModel.findById(authUserId)
+    // const authUser = await UserModel.findById(sub)
 
     // if authUser.role === 'USER'
-    if (decoded.role === 'USER') {
+    if (role === 'USER') {
       return {
         redirect: { destination: '/user/dashboard', permanent: false },
       }

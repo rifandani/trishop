@@ -25,6 +25,13 @@ export interface IUsersProps {
   users: IUser[]
 }
 
+export interface IAddAndEditUser {
+  name: string
+  email: string
+  password: string
+  role: UserRole
+}
+
 /* ------------------------------ API Response ------------------------------ */
 
 export interface APIResponseAuthLoginRegister extends HttpResponse {
@@ -39,6 +46,12 @@ export interface APIResponseUsers extends HttpResponse {
   readonly users: IUser[]
   readonly count: number
 }
+
+export interface APIResponsePostUser extends HttpResponse {
+  readonly userId: string
+}
+
+export type APIResponsePutUser = HttpResponse
 
 // import { Document, Model } from 'mongoose'
 // export interface IUserDocument extends IUser, Document {}
