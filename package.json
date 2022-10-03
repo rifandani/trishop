@@ -16,7 +16,7 @@
     "axios"
   ],
   "scripts": {
-    "dev": "rm -rf ./.next && next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "build:export": "next build && next export",

@@ -10,7 +10,9 @@ import {
 } from '@mui/icons-material'
 import {
   Avatar,
+  Backdrop,
   Box,
+  CircularProgress,
   Collapse,
   Divider,
   Drawer as MuiDrawer,
@@ -120,6 +122,7 @@ const MAdminNavbar: FC<Props> = ({ content }) => {
   const { push, pathname } = useRouter()
   const [, setUser] = useLocalStorage<UserPayload>('user', null) // local storage
 
+  const [openBackdrop, setOpenBackdrop] = useState(false)
   const [openDrawer, setOpenDrawer] = useState(false)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
   const [openAddCollapse, setOpenAddCollapse] = useState(false)
@@ -145,6 +148,9 @@ const MAdminNavbar: FC<Props> = ({ content }) => {
 
   async function onLogout(): Promise<void> {
     try {
+      handleCloseUserMenu()
+      setOpenBackdrop(true)
+
       // call logout API
       await logout()
 
@@ -259,7 +265,7 @@ const MAdminNavbar: FC<Props> = ({ content }) => {
               onClose={handleCloseUserMenu}
             >
               {settingItemList.map((item) => (
-                <MenuItem key={item.label} onClick={handleCloseUserMenu}>
+                <MenuItem key={item.label} onClick={item.onClick}>
                   <ListItemIcon>
                     <Logout fontSize="small" color="primary" />
                   </ListItemIcon>
@@ -350,6 +356,13 @@ const MAdminNavbar: FC<Props> = ({ content }) => {
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
+
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={openBackdrop}
+        >
+          <CircularProgress color="primary" />
+        </Backdrop>
 
         {content}
       </Box>
