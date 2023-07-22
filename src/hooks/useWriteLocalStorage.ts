@@ -16,6 +16,16 @@ declare global {
 
 type SetValue<T> = Dispatch<SetStateAction<T>>
 
+// A wrapper for "JSON.parse()"" to support "undefined" value
+function parseJSON<T>(value: string | null): T | undefined {
+  try {
+    return value === 'undefined' ? undefined : JSON.parse(value ?? '')
+  } catch {
+    console.error('parsing error on', { value })
+    return undefined
+  }
+}
+
 function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
   // Get from local storage then
   // parse stored json or return initialValue
@@ -92,13 +102,3 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
 }
 
 export default useLocalStorage
-
-// A wrapper for "JSON.parse()"" to support "undefined" value
-function parseJSON<T>(value: string | null): T | undefined {
-  try {
-    return value === 'undefined' ? undefined : JSON.parse(value ?? '')
-  } catch {
-    console.error('parsing error on', { value })
-    return undefined
-  }
-}

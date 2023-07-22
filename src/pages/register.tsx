@@ -12,6 +12,34 @@ import { register } from 'services/auth'
 import { AuthCookiePayload } from 'types'
 import { registerApiSchema, TRegisterApiSchema } from 'yup/apiSchema'
 
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = parse(ctx.req.headers?.cookie ?? '')
+  const authCookie = cookies.auth
+
+  // no authCookie === not logged in
+  if (!authCookie)
+    return {
+      props: {},
+    }
+
+  // verify authCookie
+  const { role } = verify(
+    authCookie,
+    process.env.MY_SECRET_KEY
+  ) as AuthCookiePayload
+
+  // role === ADMIN
+  if (role === 'ADMIN')
+    return {
+      redirect: { destination: '/admin/dashboard', permanent: false },
+    }
+
+  // role === USER
+  return {
+    redirect: { destination: '/user/dashboard', permanent: false },
+  }
+}
+
 const RegisterPage: NextPage = () => {
   //#region GENERAL
   const { push } = useRouter()
@@ -189,37 +217,6 @@ const RegisterPage: NextPage = () => {
       </div>
     </main>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const cookies = parse(ctx.req.headers?.cookie ?? '')
-  const authCookie = cookies.auth
-
-  // kalau auth cookie tidak ada === belum login
-  if (!authCookie) {
-    return {
-      props: {},
-    }
-  }
-
-  // verify auth cookie
-  const decoded = verify(
-    authCookie,
-    process.env.MY_SECRET_KEY
-  ) as AuthCookiePayload
-  const role = decoded.role
-
-  // kalau user role === ADMIN
-  if (role === 'ADMIN') {
-    return {
-      redirect: { destination: '/admin/dashboard', permanent: false },
-    }
-  }
-
-  // user role === USER
-  return {
-    redirect: { destination: '/user/dashboard', permanent: false },
-  }
 }
 
 export default RegisterPage
